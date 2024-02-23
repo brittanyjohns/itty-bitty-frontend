@@ -1,0 +1,8 @@
+{
+  "name": "first_list",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite",
+  "id": "4a72f67d"
+}
