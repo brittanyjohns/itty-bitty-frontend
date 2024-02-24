@@ -22,6 +22,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import ViewBoard from './pages/ViewBoard';
 
 setupIonicReact();
 
@@ -38,6 +39,7 @@ const App: React.FC = () => (
         <Route path="/message/:id">
            <ViewMessage />
         </Route>
+        <Route path="/boards/:id" component={ViewBoard} exact={true} />
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>

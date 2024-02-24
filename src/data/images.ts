@@ -1,4 +1,5 @@
 export interface Image {
+    id: number;
     label: string;
     src: string;
     audio: string;

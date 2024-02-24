@@ -2,12 +2,17 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Image, getImages } from '../data/images';
 import { IonCol, IonGrid, IonRow, IonImg } from '@ionic/react';
 import '../index.css'
-const ImageGallery = () => {
+import { image } from 'ionicons/icons';
+const ImageGallery = (props: any) => {
     const gridRef = useRef(null); // Ref for the grid container
     const [images, setImages] = useState<Image[]>([]);
 
     const fetchImages = async () => {
-        const imgs = await getImages();
+        const propImages = props.images || []
+        console.log('propImages', propImages);
+        setImages(propImages);
+        const imgs = images;
+        console.log('fetchImages', imgs);
         setImages(imgs);
     }
 
@@ -56,9 +61,10 @@ const ImageGallery = () => {
 
     return (
         <div className="m-0 h-[calc(100vh-60px-32px)] w-[calc(100vw-32px)] overflow-hidden grid grid-cols-1 gap-1" ref={gridRef}>
+            <h1 className="text-2xl font-bold text-center">Image Gallery</h1>
             {images.map((image, i) => (
                 // <IonCol key={i} >
-                    <div className='flex relative w-full pb-full hover:shadow-lg hover:cursor-pointer text-center'  onClick={() => handleImageClick(image.audio)}>
+                    <div className='flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image.audio)}>
                         <IonImg src={image.src} alt={image.label} className="absolute object-contain w-full h-full top-0 left-0"/>
                         <span className="grow absolute inset-x-0 bottom-0 font-light text-xs md:text-sm lg:text-md rounded bg-white bg-opacity-90 overflow-hidden">
                             {image.label}

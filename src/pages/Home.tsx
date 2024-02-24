@@ -15,6 +15,7 @@ import {
 import './Home.css';
 import Grid from '../components/Grid';
 import ImageGallery from '../components/ImageGallery';
+import BoardList from '../components/BoardList';
 const Home: React.FC = () => {
 
   const [messages, setMessages] = useState<Message[]>([]);
@@ -45,7 +46,9 @@ const Home: React.FC = () => {
           </IonToolbar>
         </IonHeader>
 
-        <ImageGallery />
+        <BoardList />
+
+        {/* <ImageGallery /> */}
 
         
       </IonContent>
