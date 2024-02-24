@@ -13,7 +13,8 @@ import {
   useIonViewWillEnter
 } from '@ionic/react';
 import './Home.css';
-
+import Grid from '../components/Grid';
+import ImageGallery from '../components/ImageGallery';
 const Home: React.FC = () => {
 
   const [messages, setMessages] = useState<Message[]>([]);
@@ -31,12 +32,7 @@ const Home: React.FC = () => {
 
   return (
     <IonPage id="home-page">
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Inbox</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
+      <IonContent fullscreen scrollY={false}>
         <IonRefresher slot="fixed" onIonRefresh={refresh}>
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
@@ -44,14 +40,14 @@ const Home: React.FC = () => {
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">
-              Inbox
+              Image Gallery
             </IonTitle>
           </IonToolbar>
         </IonHeader>
 
-        <IonList>
-          {messages.map(m => <MessageListItem key={m.id} message={m} />)}
-        </IonList>
+        <ImageGallery />
+
+        
       </IonContent>
     </IonPage>
   );

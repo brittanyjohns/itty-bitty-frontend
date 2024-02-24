@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body,
+html,
+#root,
+ion-app,
+ion-page,
+.ion-page,
+ion-content {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.image-gallery-grid {
+    --ion-grid-padding: 0;
+    --ion-grid-padding-lg: 0;
+    height: calc(100vh - 56px);
+    /* Adjust based on header/footer height */
+    overflow-y: auto;
+    /* Allows inner scrolling if necessary */
+}
+
+.image-container ion-img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    /* Adjusts height to maintain aspect ratio */
+    object-fit: contain;
+    /* Ensures image fits within its container */
+}
+
+.label-and-audio {
+    text-align: center;
+    padding: 1px;
+}
+
+h2 {
+    font-size: calc(1rem + 1vw);
+    /* Responsive font size */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Handles overflow for long labels */
+    white-space: nowrap;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+audio {
+    width: 100%;
+    /* Ensures audio controls fit within the column */
+    margin-top: 8px;
+    /* Space above audio controls */
+}
+
+/* Ensure IonPage fills the viewport height */
+.ion-page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Adjust IonContent to fill available space and manage its overflow */
+ion-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* Prevents external scrolling */
+}
+
+/* Additional styles to ensure content within IonContent adapts */
+.image-gallery-container {
+    flex: 1;
+    /* Makes ImageGallery flexible within IonContent */
+    overflow-y: auto;
+    /* Allows scrolling within ImageGallery if necessary */
+}
+
+#home-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.image-label {
+    font-size: 1rem;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
