@@ -1,9 +1,10 @@
+import { Image } from './images';
 
 export interface Board {
     id: number;
     name: string;
     displayImage: string;
-    images: string[];
+    images: Image[];
 }
 
 // fetch('http://localhost:3000/api/boards')

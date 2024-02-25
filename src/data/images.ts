@@ -1,9 +1,13 @@
 export interface Image {
-    id: number;
-    label: string;
+    id: string; // Assuming each image has a unique ID for key purposes
     src: string;
-    audio: string;
-}
+    label: string;
+    audio?: string; // Make audio optional
+  }
+  
+  export interface ImageGalleryProps {
+    images: Image[];
+  }
 
 // fetch('http://localhost:3000/api/images')
 

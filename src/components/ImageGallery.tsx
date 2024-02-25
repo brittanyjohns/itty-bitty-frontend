@@ -1,19 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Image, getImages } from '../data/images';
+import { Image, ImageGalleryProps, getImages } from '../data/images';
 import { IonCol, IonGrid, IonRow, IonImg } from '@ionic/react';
 import '../index.css'
 import { image } from 'ionicons/icons';
-const ImageGallery = (props: any) => {
+const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
     const gridRef = useRef(null); // Ref for the grid container
-    const [images, setImages] = useState<Image[]>([]);
+    // const [images, setImages] = useState<Image[]>([]);
 
     const fetchImages = async () => {
-        const propImages = props.images || []
-        console.log('propImages', propImages);
-        setImages(propImages);
         const imgs = images;
         console.log('fetchImages', imgs);
-        setImages(imgs);
     }
 
     const resizeGrid = () => {
@@ -27,10 +23,11 @@ const ImageGallery = (props: any) => {
             const imagesCount = currentGrid.children.length || 0;
             const sqrt = Math.sqrt(imagesCount);
             const rows = Math.ceil(sqrt);
-            const cols = Math.round(sqrt);
+            let cols = Math.round(sqrt);
+            // cols += 1;
 
-            // const adjustedHeight = `calc(100vh - 60px - 32px)`;
-            const adjustedHeight = `calc(100vh - 80px)`;
+            const adjustedHeight = `calc(100vh - 80px - 32px)`;
+            // const adjustedHeight = `calc(100vh - 80px)`;
             const adjustedWidth = `calc(100vw - 32px)`;
 
             currentGrid.style.width = adjustedWidth;
@@ -60,8 +57,7 @@ const ImageGallery = (props: any) => {
     }, [images]);
 
     return (
-        <div className="m-0 h-[calc(100vh-60px-32px)] w-[calc(100vw-32px)] overflow-hidden grid grid-cols-1 gap-1" ref={gridRef}>
-            <h1 className="text-2xl font-bold text-center">Image Gallery</h1>
+        <div className="my-auto mx-auto h-[calc(100vh-60px-32px)] w-[calc(100vw-32px)] overflow-hidden grid grid-cols-1 gap-1" ref={gridRef}>
             {images.map((image, i) => (
                 // <IonCol key={i} >
                     <div className='flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image.audio)}>

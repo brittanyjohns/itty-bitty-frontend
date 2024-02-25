@@ -1,15 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Board, getBoard } from '../data/boards';
+import { Image } from '../data/images';
 import {
   IonBackButton,
   IonButtons,
   IonContent,
   IonHeader,
   IonIcon,
+  IonImg,
   IonItem,
   IonLabel,
   IonNote,
   IonPage,
+  IonTitle,
   IonToolbar,
   useIonViewWillEnter,
 } from '@ionic/react';
@@ -20,7 +23,6 @@ import ImageGallery from '../components/ImageGallery';
 
 const ViewBoard: React.FC = (props: any) => {
   const [board, setBoard] = useState<Board>();
-  const [images, setImages] = useState<any[]>(props.images || []);
   const params = useParams<{ id: string }>();
 
   const fetchBoard = async () => {
@@ -33,50 +35,29 @@ const ViewBoard: React.FC = (props: any) => {
 
   useIonViewWillEnter(() => {
     console.log('ViewBoard useIonViewWillEnter');
-    // fetchBoard();
-  });
-  
-  useEffect(() => {
     fetchBoard();
-    console.log('ViewBoard useEffect');
-    setImages(board?.images || []);
-    console.log('board', board);
-    console.log('board.images', board?.images);
-    // fetchBoard();
-  } , []);
+  });
+
+  // useEffect(() => {
+  //   fetchBoard();
+
+  // }, []);
 
   return (
     <IonPage id="view-board-page">
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton text="Inbox" defaultHref="/home"></IonBackButton>
+            <IonBackButton text="Back" defaultHref="/home"></IonBackButton>
+            <IonTitle>{board && board.name}</IonTitle>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen>
+      <IonContent fullscreen scrollY={false}>
         {board ? (
           <>
-            <IonItem>
-              <IonIcon aria-hidden="true" icon={personCircle} color="primary"></IonIcon>
-              <IonLabel className="ion-text-wrap">
-                <h2>
-                  {board.name}
-                  <span className="date">
-                    <IonNote>{board.id}</IonNote>
-                  </span>
-                </h2>
-                <h3>
-                  To: <IonNote>Me</IonNote>
-                </h3>
-              </IonLabel>
-            </IonItem>
-
-            <div className="ion-padding">
-              <h1>{board.name}</h1>
-              <ImageGallery images={images} />
-            </div>
+            <ImageGallery images={board.images} />
           </>
         ) : (
           <div>Board not found</div>
