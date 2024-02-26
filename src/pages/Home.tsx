@@ -33,7 +33,7 @@ const Home: React.FC = () => {
 
   return (
     <IonPage id="home-page">
-      <IonContent fullscreen scrollY={false}>
+      <IonContent fullscreen scrollY={true}>
         <IonRefresher slot="fixed" onIonRefresh={refresh}>
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
@@ -45,7 +45,7 @@ const Home: React.FC = () => {
             </IonTitle>
           </IonToolbar>
         </IonHeader>
-
+        <p>Home</p>
         <BoardList />
 
         {/* <ImageGallery /> */}

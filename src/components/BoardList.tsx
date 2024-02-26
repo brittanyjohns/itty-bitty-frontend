@@ -11,6 +11,10 @@ const BoardList = () => {
         console.log('fetchBoards');
         const allBoards = await getBoards();
         console.log('allBoards', allBoards);
+        if (!allBoards) {
+            console.error('Error fetching boards');
+            return;
+        }
         const boards = allBoards['boards']
         console.log('boards', boards);
         setBoards(boards);

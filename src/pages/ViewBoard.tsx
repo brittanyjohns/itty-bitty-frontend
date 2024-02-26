@@ -20,6 +20,7 @@ import { personCircle } from 'ionicons/icons';
 import { useParams } from 'react-router';
 import './ViewBoard.css';
 import ImageGallery from '../components/ImageGallery';
+import ReorderList from '../components/ReorderList';
 
 const ViewBoard: React.FC = (props: any) => {
   const [board, setBoard] = useState<Board>();
@@ -58,6 +59,7 @@ const ViewBoard: React.FC = (props: any) => {
         {board ? (
           <>
             <ImageGallery images={board.images} />
+            {/* <ReorderList /> */}
           </>
         ) : (
           <div>Board not found</div>

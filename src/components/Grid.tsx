@@ -5,28 +5,10 @@ import './main.css';
 
 function Grid() {
 
-    const images = getImages();
 
-    const imageElements = images.map((image, i) => {
-        return (
-            <IonCol key={i}>
-                <img src={image.src} alt={image.label} />
-            </IonCol>
-        );
-    }
-    );
-
-    <IonList>
-          {messages.map(m => <MessageListItem key={m.id} message={m} />)}
-        </IonList>
 
   return (
     <>
-      <IonGrid>
-        <IonRow>
-            {imageElements}
-        </IonRow>
-      </IonGrid>
 
       <IonGrid>
         <IonRow>
