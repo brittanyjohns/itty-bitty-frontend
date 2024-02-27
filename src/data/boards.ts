@@ -7,9 +7,8 @@ export interface Board {
     images: Image[];
 }
 
-// fetch('http://localhost:3000/api/boards')
-const BASE_URL = '10.0.2.2'; // 'localhost'
-
+// const BASE_URL = '10.0.2.2'; // For Android emulator
+const BASE_URL = 'localhost'; // For web development
 
 export const getBoards = () => {
     const boards = fetch(`http://${BASE_URL}:3000/api/boards`) // `http://localhost:3000/api/boards
