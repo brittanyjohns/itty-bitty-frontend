@@ -63,6 +63,10 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
         } else {
             setShowIcon(false);
         }
+        if (!audioSrc) {
+            speak(label);
+            return;
+        }
         setAudioList([...audioList, audioSrc as string]);
         const audio = new Audio(audioSrc);
         audio.play();
@@ -118,7 +122,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
                     // <IonCol key={i} >
                     <div className='flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)}>
                         <IonImg src={image.src} alt={image.label} className="absolute object-contain w-full h-full top-0 left-0" />
-                        <span className="grow absolute inset-x-0 bottom-0 font-light text-xs md:text-sm lg:text-md rounded bg-white bg-opacity-90 overflow-hidden">
+                        <span className="font-medium text-xs md:text-sm lg:text-md rounded bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black">
                             {image.label}
                             <audio>
                                 <source src={image.audio} type="audio/aac" />

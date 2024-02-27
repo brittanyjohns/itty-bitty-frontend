@@ -1,10 +1,12 @@
-import MessageListItem from '../components/MessageListItem';
 import { useState } from 'react';
-import { Message, getMessages } from '../data/messages';
+import { MenuLink, getMenu } from '../data/menu';
 import {
+  IonButtons,
   IonContent,
   IonHeader,
   IonList,
+  IonMenu,
+  IonMenuButton,
   IonPage,
   IonRefresher,
   IonRefresherContent,
@@ -16,13 +18,18 @@ import './Home.css';
 import Grid from '../components/Grid';
 import ImageGallery from '../components/ImageGallery';
 import BoardList from '../components/BoardList';
+import CreateButton from '../components/CreateButton';
+import Menu from '../components/Menu';
+import MenuListItem from '../components/MenuListItem';
 const Home: React.FC = () => {
 
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [menuLinks, setMenuLinks] = useState<MenuLink[]>([]);
 
   useIonViewWillEnter(() => {
-    const msgs = getMessages();
-    setMessages(msgs);
+    hideMenu();
+    const links = getMenu();
+    setMenuLinks(links);
+
   });
 
   const refresh = (e: CustomEvent) => {
@@ -31,28 +38,53 @@ const Home: React.FC = () => {
     }, 3000);
   };
 
-  return (
-    <IonPage id="home-page">
-      <IonContent fullscreen scrollY={true}>
-        <IonRefresher slot="fixed" onIonRefresh={refresh}>
-          <IonRefresherContent></IonRefresherContent>
-        </IonRefresher>
+  const hideMenu = () => {
+    const menu = document.querySelector('ion-menu');
+    if (menu) {
+      menu.close();
+    }
+  }
 
-        <IonHeader collapse="condense">
+  return (
+    <>
+      <IonMenu contentId="main-content" type="overlay">
+        <IonHeader>
           <IonToolbar>
-            <IonTitle size="large">
-              Image Gallery
-            </IonTitle>
+            <IonTitle>Menu Content</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <p>Home</p>
-        <BoardList />
-
-        {/* <ImageGallery /> */}
-
-        
-      </IonContent>
-    </IonPage>
+        <IonContent className="ion-padding">
+          <IonList>
+            {menuLinks.map(m => (
+              <MenuListItem key={m.id} menuLink={m} />
+            ))}
+          </IonList>
+        </IonContent>
+      </IonMenu>
+      <IonPage id="main-content">
+        <IonHeader>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonMenuButton></IonMenuButton>
+            </IonButtons>
+            <IonTitle>Menu</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent>
+          <IonRefresher slot="fixed" onIonRefresh={refresh}>
+            <IonRefresherContent></IonRefresherContent>
+          </IonRefresher>
+          <IonHeader collapse="condense">
+            <IonToolbar>
+              <IonTitle size="large">Home</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent fullscreen>
+            <BoardList />
+          </IonContent>
+        </IonContent>
+      </IonPage>
+    </>
   );
 };
 

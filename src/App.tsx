@@ -23,6 +23,8 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import ViewBoard from './pages/ViewBoard';
+import NewBoard from './pages/NewBoard';
+import NewImage from './pages/NewImage';
 
 setupIonicReact();
 
@@ -40,6 +42,11 @@ const App: React.FC = () => (
            <ViewMessage />
         </Route>
         <Route path="/boards/:id" component={ViewBoard} exact={true} />
+        <Route path="/boards/new" component={NewBoard} exact={true} />
+        <Route path="/images/new" component={NewImage} exact={true} />
+        <Route path="/boards" exact={true}>
+          <Home />
+        </Route>
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
