@@ -24,16 +24,24 @@ import { useParams } from 'react-router';
 import './NewBoard.css';
 import ImageGallery from '../components/ImageGallery';
 import ReorderList from '../components/ReorderList';
-
+import { SubmitHandler, useForm } from 'react-hook-form';
+type Inputs = {
+  name: string
+}
 const NewBoard: React.FC = (props: any) => {
-  const [board, setBoard] = useState<Board>();
-  const params = useParams<{ id: string }>();
-  useForm({
-    defaultValues: {
-      firstName: '',
-      lastName: ''
-    }
-  })
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>()
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data);
+    createBoard(data);
+    props.history.push('/home');
+  }
+  console.log(watch("name")) // watch input value by passing the name of it
+
   const hideMenu = () => {
     const menu = document.querySelector('ion-menu');
     if (menu) {
@@ -46,12 +54,10 @@ const NewBoard: React.FC = (props: any) => {
     hideMenu();
   });
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    console.log('handleSubmit');
-
-    createBoard(board);
-  }
+  // const handleSubmit = (e: any) => {
+  //   e.preventDefault();
+  //   console.log('handleSubmit');
+  // }
 
   // useEffect(() => {
   //   fetchBoard();
@@ -71,9 +77,9 @@ const NewBoard: React.FC = (props: any) => {
 
       <IonContent fullscreen scrollY={false}>
           <>
-          <form className="ion-padding" onSubmit={handleSubmit}>
+          <form className="ion-padding" onSubmit={handleSubmit(onSubmit)}>
             <IonItem>
-              <IonInput label="Name" placeholder="Enter new board name"></IonInput>
+              <IonInput label="Name" placeholder="Enter new board name" defaultValue="" {...register("name", { required: true })} />
             </IonItem>
             <IonButton className="ion-margin-top" type="submit" expand="block">
               Create

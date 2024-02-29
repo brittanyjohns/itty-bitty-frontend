@@ -24,6 +24,16 @@ const menuLinks: MenuLink[] = [
     endpoint: '/boards',
     name: 'Boards',
     id: 3
+  },
+  {
+    endpoint: '/sign-in',
+    name: 'Sign In',
+    id: 4
+  },
+  {
+    endpoint: '/sign-up',
+    name: 'Sign Up',
+    id: 5
   }
 ];
 

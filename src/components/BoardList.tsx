@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Board, getBoards } from '../data/boards';
-import { IonCol, IonGrid, IonRow, IonImg, IonList } from '@ionic/react';
+import { IonCol, IonGrid, IonRow, IonImg, IonList, IonButton } from '@ionic/react';
 import '../index.css'
 import BoardListItem from './BoardListItem';
 const BoardList = () => {
@@ -30,6 +30,11 @@ const BoardList = () => {
                 {boards && boards.map((board, i) => (
                     <BoardListItem key={i} board={board} />
                 ))}
+                {boards.length === 0 && 
+                <div className="text-center">
+                    <p>No boards found</p>
+                    <IonButton routerLink="/boards/new" color="primary">Create a new board</IonButton>
+                </div>}ll
             </IonList>
         </div>
     );

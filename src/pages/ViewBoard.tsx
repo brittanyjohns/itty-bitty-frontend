@@ -58,7 +58,7 @@ const ViewBoard: React.FC = (props: any) => {
       <IonContent fullscreen scrollY={false}>
         {board ? (
           <>
-            <ImageGallery images={board.images} />
+            {board && board.images && <ImageGallery images={board.images} />}
             {/* <ReorderList /> */}
           </>
         ) : (

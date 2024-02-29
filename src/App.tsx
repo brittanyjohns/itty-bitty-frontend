@@ -25,6 +25,10 @@ import './theme/variables.css';
 import ViewBoard from './pages/ViewBoard';
 import NewBoard from './pages/NewBoard';
 import NewImage from './pages/NewImage';
+import SignUpScreen from './pages/SignUpScreen';
+import SignInScreen from './pages/SignInScreen';
+import BoardList from './components/BoardList';
+import Dashboard from './pages/Dashboard';
 
 setupIonicReact();
 
@@ -32,21 +36,19 @@ const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
-        <Route path="/" exact={true}>
-          <Redirect to="/home" />
-        </Route>
+        <Route path="/" exact={true} component={Home} />
         <Route path="/home" exact={true}>
           <Home />
         </Route>
         <Route path="/message/:id">
            <ViewMessage />
         </Route>
+        <Route path="/boards" component={Dashboard} exact={true} />
         <Route path="/boards/:id" component={ViewBoard} exact={true} />
         <Route path="/boards/new" component={NewBoard} exact={true} />
         <Route path="/images/new" component={NewImage} exact={true} />
-        <Route path="/boards" exact={true}>
-          <Home />
-        </Route>
+        <Route path={"/sign-up"} component={SignUpScreen} exact={true} />
+        <Route path={"/sign-in"} component={SignInScreen} exact={true} />
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>

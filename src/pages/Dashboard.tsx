@@ -14,7 +14,7 @@ import {
   IonToolbar,
   useIonViewWillEnter
 } from '@ionic/react';
-import './Home.css';
+import './Dashboard.css';
 import Grid from '../components/Grid';
 import ImageGallery from '../components/ImageGallery';
 import BoardList from '../components/BoardList';
@@ -23,7 +23,7 @@ import Menu from '../components/Menu';
 import MenuListItem from '../components/MenuListItem';
 import { BASE_URL } from '../data/users';
 import SignUpScreen from './SignUpScreen';
-const Home: React.FC = () => {
+const Dashboard: React.FC = () => {
 
   const [menuLinks, setMenuLinks] = useState<MenuLink[]>([]);
 
@@ -78,7 +78,7 @@ const Home: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <IonContent fullscreen>
-            <SignUpScreen />
+            <BoardList />
           </IonContent>
         </IonContent>
       </IonPage>
@@ -86,4 +86,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Dashboard;
