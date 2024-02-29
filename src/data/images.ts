@@ -26,11 +26,20 @@ export const getImages = () => {
     return images;
 }
 
+const createHeaders = {
+    // 'Content-Type': 'multipart/form-data',
+    'Authorization':`Bearer ${localStorage.getItem('token')}`
+  };
+
 export const createImage = (formData: FormData) => {
+  for(var pair of formData.entries()) {
+    console.log("create Image Pair", pair[0]+', '+pair[1]);
+}
   const img = fetch(`http://${BASE_URL}images`, {
-      headers: userHeaders,
+      headers: createHeaders,
       method: 'POST',
       body: formData,
+
     })
     .then((response) => response.json())
       .then((result) => {

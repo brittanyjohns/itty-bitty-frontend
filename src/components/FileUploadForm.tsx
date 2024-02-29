@@ -8,9 +8,11 @@ import { useHistory } from 'react-router';
 const FileUploadForm: React.FC = () => {
   // State for the label
   const [label, setLabel] = useState<string>('');
+    const history = useHistory();
 
   // State for the file
   const [file, setFile] = useState<File | null>(null);
+  const [formData, setFormData] = useState<FormData | null>( new FormData());
 
   // Handle file change
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,27 +35,49 @@ const FileUploadForm: React.FC = () => {
     // Get a reference to the file that has just been added to the input
     // const fileInput = fileSumbitEvent.target as HTMLInputElement;
     // const file = fileInput.files?.item(0);
-    console.log('file', file);
     if (!file) return;
+    if (!formData) return;
     // Create a form data object using the FormData API
-    let formData = new FormData();
-    formData.append('image', file, file.name);
-    formData.append('label', label);
+    // let formData = new FormData();
+    formData.append('image[docs][image]', file);
+    formData.append('image[label]', label);
+    console.log('formData', formData);
     // Send the form data to the server
     const result = saveImage(formData);
-    console.log('result', result);
   };
 
   const saveImage = async (formData: FormData) => {
     const result = await createImage(formData);
     console.log('Save Result:', result);
-    return result;
+    if (result.error) {
+      console.error('Error:', result.error);
+      return result;
+    } else {
+      history.push('/home');
+      return result;
+    }
   };
 
+  const onFileChange = (ev: any) => {
+    console.log('onFileChange', ev);
+    const newFile = ev.target.files[0];
+    console.log('newFile', newFile);
+    console.log('formData', formData);
+    if (!formData) return;
+    // formData.append('doc[image]', newFile);
+    // formData.append('image[image]', newFile);
+    setFile(newFile);
+    console.log('file', file);
+    // formData.append('image[label]', label);
+    for(var pair of formData.entries()) {
+        console.log("Pair", pair[0]+', '+pair[1]);
+    }
+  }
   return (
     <IonPage>
       <IonContent className="flex items-center justify-center h-full">
-        <form onSubmit={uploadPhoto} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <form onSubmit={uploadPhoto} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" encType="multipart/form-data">
+
           <IonItem>
             <IonLabel position="floating">Label</IonLabel>
             <IonInput
@@ -66,18 +90,8 @@ const FileUploadForm: React.FC = () => {
 
           <IonItem>
             <IonLabel position="stacked">File Upload</IonLabel>
-            <input
-              type="file"
-              onChange={handleFileChange}
-              className="block w-full text-sm text-gray-500
-              file:mr-4 file:py-2 file:px-4
-              file:rounded-full file:border-0
-              file:text-sm file:font-semibold
-              file:bg-violet-50 file:text-violet-700
-              hover:file:bg-violet-100"
-              required
-            />
-          </IonItem>
+          <input type="file" onChange={ev => onFileChange(ev)}></input>
+\          </IonItem>
 
           <IonButton type="submit" expand="block" className="mt-4">
             Submit
