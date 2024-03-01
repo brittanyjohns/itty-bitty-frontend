@@ -1,6 +1,6 @@
 // Import necessary components and hooks
 import React, { useEffect, useRef, useState } from 'react';
-import { IonPage, IonContent, IonInput, IonButton, IonItem, IonLabel, useIonViewWillEnter, useIonViewDidEnter } from '@ionic/react';
+import { IonPage, IonContent, IonInput, IonButton, IonItem, IonLabel, useIonViewWillEnter, useIonViewDidEnter, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent } from '@ionic/react';
 import { createImage } from '../data/images';
 import { useHistory, useParams } from 'react-router';
 import { Board } from '../types';
@@ -74,12 +74,15 @@ const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
     console.log('FileUploadForm useEffect', label);
   } , [label]);
   return (
-      <IonContent className="ion-padding border">
+    <IonCard>
+    <IonCardHeader>
+      <IonCardTitle>Upload a new image</IonCardTitle>
+    </IonCardHeader>
+
+    <IonCardContent>
         <form onSubmit={uploadPhoto} encType="multipart/form-data">
           <IonItem>
-          <IonLabel position="stacked">Label</IonLabel>
-          </IonItem>
-          <IonItem>
+          <IonLabel position="stacked" id='label-label'>Label</IonLabel>
             <IonInput
               value={label}
               onIonInput={handleLabelChange}
@@ -87,7 +90,7 @@ const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
               required
             />
           </IonItem>
-          <IonLabel position="stacked">File Upload</IonLabel>
+          <IonLabel position="stacked" id="upload-label">File Upload</IonLabel>
           <IonItem>
           <input className='text-black' type="file" onChange={ev => onFileChange(ev)}></input>
             </IonItem>
@@ -96,7 +99,9 @@ const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
             Submit
           </IonButton>
         </form>
-      </IonContent>
+        </IonCardContent>
+        </IonCard>
+
   );
 };
 

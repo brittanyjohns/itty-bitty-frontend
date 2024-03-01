@@ -50,10 +50,7 @@ export const createBoard = (board: Board) => {
 export const updateBoard = (board: Board) => {
     const updatedBoard = fetch(`http://${BASE_URL}boards/${board.id}`, {
         method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
+        headers: userHeaders,
         body: JSON.stringify(board),
     })
         .then(response => response.json())
@@ -71,7 +68,33 @@ export async function addImageListToBoard(id: string, payload: { word_list: stri
       },
       body: JSON.stringify(payload),
     };
-    const response = await fetch(`${BASE_URL}boards/${id}/add_word_list`, requestInfo);
+    const response = await fetch(`http://${BASE_URL}boards/${id}/add_word_list`, requestInfo);
     const board: Board = await response.json();
+    return board;
+  }
+
+  export interface RemainingImageProps {
+    page: number | null;
+    query: string | null;
+  }
+
+  export async function getRemainingImages(id: string, props: RemainingImageProps): Promise<Image[]> {
+    const response = await fetch(`http://${BASE_URL}boards/${id}/remaining_images?page=${props.page}&query=${props.query}`,
+     { headers: userHeaders }) 
+    const images: Image[] = await response.json();
+    console.log("Get Remaining Images", images);
+    return images;
+  }
+
+  export async function addImageToBoard(id: string, image_id: string): Promise<Board> {
+    const requestInfo = {
+      method: "PUT",
+      headers: userHeaders,
+      body: JSON.stringify({ image_id }),
+    };
+    const response = await fetch(`http://${BASE_URL}boards/${id}/associate_image`, requestInfo);
+    console.log("Add Image to Board response", response);
+    const board: Board = await response.json();
+    console.log("Add Image to Board board", board);
     return board;
   }

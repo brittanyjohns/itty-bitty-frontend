@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { getBoard } from '../data/boards';
+import { getBoard, getRemainingImages } from '../data/boards';
 import { Image } from '../data/images';
 import {
   IonBackButton,
@@ -29,6 +29,8 @@ import ReorderList from '../components/ReorderList';
 import WordListForm from '../components/WordListForm';
 import FileUploadForm from '../components/FileUploadForm';
 import { OverlayEventDetail } from '@ionic/react/dist/types/components/react-component-lib/interfaces';
+import { set } from 'react-hook-form';
+import SelectImageGallery from '../components/SelectImageGallery';
 
 const ViewBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();
@@ -36,6 +38,8 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
   const params = useParams<{ id: string }>();
   const modal = useRef<HTMLIonModalElement>(null);
   const input = useRef<HTMLIonInputElement>(null);
+  const [remainingImages, setRemainingImages] = useState<Image[]>(); // State for the remaining images
+  const [page, setPage] = useState(1);
 
   const fetchBoard = async () => {
     console.log('ViewBoard fetchBoard');
@@ -43,16 +47,35 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
     console.log('board', board);
     console.log('board.images', board.images);
     setBoard(board);
+    const remainingImgs = await getRemainingImages(board.id, {page: page, query: null})
+    setRemainingImages(remainingImgs);
   }
 
   const closeModal = () => {
     modal.current?.dismiss()
   }
 
+  const nextPage = () => {
+    setPage(page + 1);
+  }
+
+  const previousPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  }
+
+  const getMoreImages = async () => {
+    if (!board) return;
+    const remainingImgs = await getRemainingImages(board.id, {page: page, query: null} )
+    setRemainingImages(remainingImgs);
+  }
+
   useEffect(() => {
-    console.log('ViewBoard useEffect');
-    console.log('isOpen', isOpen);
-  } , [isOpen]);
+    console.log('Remaining images', remainingImages);
+    getMoreImages();
+
+  } , [page]);
 
   const modalForm = (() => {
     return (
@@ -63,10 +86,17 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
             <IonButton onClick={() => closeModal()}>Cancel</IonButton>
           </IonButtons>
           <IonTitle>Add an Image</IonTitle>
+          <IonButtons slot="end">
+            <IonButton onClick={() => previousPage()}>Prev</IonButton>
+            <IonButton onClick={() => nextPage()}>Next</IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
         <FileUploadForm board={board} onCloseModal={closeModal} />
+        
+        {board && remainingImages && 
+            <SelectImageGallery images={remainingImages} boardId={board.id} page={page} />}
       </IonContent>
     </IonModal>
     )
@@ -83,12 +113,12 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
         <IonToolbar>
           <IonButtons slot="start">
             <IonBackButton text="Back" defaultHref="/home"></IonBackButton>
-            <IonTitle>{board && board.name} {board && board.images.length}</IonTitle>
           </IonButtons>
+          <IonTitle>{board && board.name}</IonTitle>
           <IonButtons slot="end">
-          <IonButton id="open-modal" expand="block">
-            Open
-          </IonButton>
+            <IonButton id="open-modal" expand="block">
+              Add
+            </IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>

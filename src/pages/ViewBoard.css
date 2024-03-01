@@ -48,3 +48,9 @@
 #view-message-page p {
   line-height: 1.4;
 }
+
+#label-label {
+  font-size: 0.9375rem;
+  font-weight: bold;
+  margin-bottom: 6px !important;
+}

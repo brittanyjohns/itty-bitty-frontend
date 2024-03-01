@@ -9,6 +9,12 @@ export interface Image {
     images: Image[];
   }
 
+  export interface SelectImageGalleryProps {
+    boardId: string;
+    images: Image[];
+    page: number;
+  }
+
 // fetch('http://localhostimages')
 // const BASE_URL = '10.0.2.2'; // 'localhost'
 const BASE_URL = 'localhost:4000/api/'; // 'localhost'

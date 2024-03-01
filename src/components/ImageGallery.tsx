@@ -24,10 +24,8 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
             const sqrt = Math.sqrt(imagesCount);
             const rows = Math.ceil(sqrt);
             let cols = Math.round(sqrt);
-            // cols += 1;
 
             const adjustedHeight = `calc(100vh - 115px - 32px)`;
-            // const adjustedHeight = `calc(100vh - 80px)`;
             const adjustedWidth = `calc(100vw - 32px)`;
 
             currentGrid.style.width = adjustedWidth;
@@ -59,11 +57,6 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
         const audio = new Audio(audioSrc);
         audio.play();
     };
-
-    // useEffect(() => {
-    //     fetchImages();
-    // }, []);
-
 
     const speak = async (text: string) => {
         await TextToSpeech.speak({
@@ -107,7 +100,6 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
             </div>
             <div className="my-auto mx-auto h-[calc(100vh-60px-32px)] w-[calc(100vw-32px)] overflow-hidden grid grid-cols-1 gap-1" ref={gridRef}>
                 {images.map((image, i) => (
-                    // <IonCol key={i} >
                     <div className='flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)} key={image.id}>
                         <IonImg src={image.src} alt={image.label} className="absolute object-contain w-full h-full top-0 left-0" />
                         <span className="font-medium text-xs md:text-sm lg:text-md rounded bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black">
@@ -117,7 +109,6 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
                             </audio>
                         </span>
                     </div>
-                    // </IonCol>
                 ))}
             </div>
         </div>
