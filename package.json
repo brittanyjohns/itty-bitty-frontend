@@ -24,6 +24,7 @@
     "@ionic/react-router": "^7.0.0",
     "@types/react-router": "^5.1.20",
     "@types/react-router-dom": "^5.3.3",
+    "@uidotdev/usehooks": "^2.4.1",
     "flowbite": "^2.3.0",
     "flowbite-react": "^0.7.2",
     "ionicons": "^7.0.0",

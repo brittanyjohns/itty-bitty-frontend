@@ -6,6 +6,7 @@ export interface Image {
   }
   
   export interface ImageGalleryProps {
+    boardId?: string | null;
     images: Image[];
   }
 

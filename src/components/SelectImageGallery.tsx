@@ -1,12 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Image, ImageGalleryProps, SelectImageGalleryProps, getImages } from '../data/images';
 import { IonCol, IonGrid, IonRow, IonImg, IonInput, IonButton, IonIcon, IonSearchbar, IonCardContent, IonCardHeader, IonCard, IonCardTitle, IonCardSubtitle } from '@ionic/react';
-import {
-    add,
-    playCircleOutline,
-    trashBinOutline
-} from 'ionicons/icons';
-import { TextToSpeech } from '@capacitor-community/text-to-speech';
+import { useLongPress } from "@uidotdev/usehooks";
 
 import '../index.css'
 // import TTS from 'cordova-plugin-tts';
@@ -32,7 +27,7 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
             let cols = Math.round(sqrt);
 
             const adjustedHeight = `calc(100vh - 60px - 32px)`;
-            const adjustedWidth = `calc(100vw - 120px - 32px)`;
+            const adjustedWidth = `calc(100vw - 190px - 32px)`;
 
             currentGrid.style.width = adjustedWidth;
             currentGrid.style.height = adjustedHeight;
@@ -102,12 +97,11 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
             Search existing images
           </IonCardTitle>
           <IonCardSubtitle>Click the image to add it to your board.</IonCardSubtitle>
-        </IonCardHeader>
-    
+        </IonCardHeader>    
         <IonCardContent>
             <IonSearchbar debounce={1000} onIonInput={handleSearch} animated={true} placeholder="Animated"></IonSearchbar>
         </IonCardContent>
-            <div className="my-auto mx-auto h-[calc(100vh-30px-32px)] w-[calc(100vw-60px-32px)] overflow-hidden grid grid-cols-3 gap-1" ref={gridRef}>
+            <div className="my-auto mx-auto h-[calc(100vh-30px-32px)] w-[calc(100vw-190px-32px)] grid grid-cols-3 gap-1" ref={gridRef}>
                 {remainingImages.map((image, i) => (
                     <div className='flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)} key={image.id}>
                         <IonImg src={image.src} alt={image.label} className="absolute object-contain w-full h-full top-0 left-0" />

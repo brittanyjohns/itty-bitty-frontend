@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { getBoard, getRemainingImages } from '../data/boards';
 import { Image } from '../data/images';
 import {
+  IonActionSheet,
   IonBackButton,
   IonButton,
   IonButtons,
@@ -18,6 +19,7 @@ import {
   IonTitle,
   IonToolbar,
   useIonModal,
+  useIonViewDidEnter,
   useIonViewWillEnter,
 } from '@ionic/react';
 import { Board } from '../types';
@@ -31,6 +33,10 @@ import FileUploadForm from '../components/FileUploadForm';
 import { OverlayEventDetail } from '@ionic/react/dist/types/components/react-component-lib/interfaces';
 import { set } from 'react-hook-form';
 import SelectImageGallery from '../components/SelectImageGallery';
+import { useLongPress } from '@uidotdev/usehooks';
+import React from 'react';
+import { Button } from 'flowbite-react';
+import LongPressButton from '../components/LongPressButton';
 
 const ViewBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();
@@ -47,7 +53,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
     console.log('board', board);
     console.log('board.images', board.images);
     setBoard(board);
-    const remainingImgs = await getRemainingImages(board.id, {page: page, query: null})
+    const remainingImgs = await getRemainingImages(board.id, { page: page, query: null })
     setRemainingImages(remainingImgs);
   }
 
@@ -65,9 +71,10 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
     }
   }
 
+
   const getMoreImages = async () => {
     if (!board) return;
-    const remainingImgs = await getRemainingImages(board.id, {page: page, query: null} )
+    const remainingImgs = await getRemainingImages(board.id, { page: page, query: null })
     setRemainingImages(remainingImgs);
   }
 
@@ -75,32 +82,33 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
     console.log('Remaining images', remainingImages);
     getMoreImages();
 
-  } , [page]);
+  }, [page]);
 
   const modalForm = (() => {
     return (
       <IonModal ref={modal} trigger="open-modal" isOpen={isOpen}>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonButton onClick={() => closeModal()}>Cancel</IonButton>
-          </IonButtons>
-          <IonTitle>Add an Image</IonTitle>
-          <IonButtons slot="end">
-            <IonButton onClick={() => previousPage()}>Prev</IonButton>
-            <IonButton onClick={() => nextPage()}>Next</IonButton>
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding">
-        <FileUploadForm board={board} onCloseModal={closeModal} />
-        
-        {board && remainingImages && 
+        <IonHeader>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonButton onClick={() => closeModal()}>Cancel</IonButton>
+            </IonButtons>
+            <IonTitle>Add an Image</IonTitle>
+            <IonButtons slot="end">
+              <IonButton onClick={() => previousPage()}>Prev</IonButton>
+              <IonButton onClick={() => nextPage()}>Next</IonButton>
+            </IonButtons>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent className="ion-padding">
+
+          <FileUploadForm board={board} onCloseModal={closeModal} />
+
+          {board && remainingImages &&
             <SelectImageGallery images={remainingImages} boardId={board.id} page={page} />}
-      </IonContent>
-    </IonModal>
+        </IonContent>
+      </IonModal>
     )
-  } );
+  });
 
   useIonViewWillEnter(() => {
     console.log('ViewBoard useIonViewWillEnter');
@@ -124,8 +132,11 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
       </IonHeader>
       {modalForm()}
 
-{board && 
-            <ImageGallery images={board.images} />}
+      {board &&
+        <>
+          <ImageGallery images={board.images} boardId={board.id} />
+        </>
+      }
       {board ? (
         <>
           {board.images && board.images.length < 1 &&
