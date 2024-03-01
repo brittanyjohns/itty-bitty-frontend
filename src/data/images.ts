@@ -31,19 +31,23 @@ const createHeaders = {
     'Authorization':`Bearer ${localStorage.getItem('token')}`
   };
 
-export const createImage = (formData: FormData) => {
+export const createImage = (formData: FormData, boardId?: string) => {
+  let endpoint = `http://${BASE_URL}images`;
+  if(boardId) {
+    formData.append('image[board_id]', boardId);
+    endpoint = `http://${BASE_URL}boards/${boardId}/add_image`;
+  }
+
   for(var pair of formData.entries()) {
     console.log("create Image Pair", pair[0]+', '+pair[1]);
 }
-  const img = fetch(`http://${BASE_URL}images`, {
+  const img = fetch(endpoint, {
       headers: createHeaders,
       method: 'POST',
       body: formData,
-
     })
     .then((response) => response.json())
       .then((result) => {
-        console.log('Result:', result);
         if (result.error) {
           console.error('Error:', result.error);
           return result;

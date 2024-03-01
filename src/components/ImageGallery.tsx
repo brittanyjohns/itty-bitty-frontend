@@ -16,22 +16,10 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
     const inputRef = useRef<HTMLIonInputElement>(null);
     const [showIcon, setShowIcon] = useState(false);
 
-    const handleInputChange = () => {
-        console.log('handleInputChange', inputRef.current?.value);
-    }
-    const fetchImages = async () => {
-        const imgs = images;
-        console.log('fetchImages', imgs);
-    }
-
     const resizeGrid = () => {
-        console.log('Resizing grid', gridRef.current);
         const currentGrid = gridRef.current ? gridRef.current as HTMLElement : null;
 
         if (currentGrid) {
-            console.log('currentGrid.style.width', currentGrid.style.width);
-            console.log('currentGrid.style.gridTemplateColumns', currentGrid.style.gridTemplateColumns);
-            console.log('currentGrid.style.gridTemplateRows', currentGrid.style.gridTemplateRows);
             const imagesCount = currentGrid.children.length || 0;
             const sqrt = Math.sqrt(imagesCount);
             const rows = Math.ceil(sqrt);
@@ -72,9 +60,9 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
         audio.play();
     };
 
-    useEffect(() => {
-        fetchImages();
-    }, []);
+    // useEffect(() => {
+    //     fetchImages();
+    // }, []);
 
 
     const speak = async (text: string) => {
@@ -105,22 +93,22 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
 
     return (
         <div>
-            <IonInput placeholder="" ref={inputRef} onIonChange={handleInputChange} readonly={true}>
+            <IonInput placeholder="" ref={inputRef} readonly={true}>
             </IonInput>
             <div className="flex justify-between">
-            {showIcon &&
-                <IonButton  size="small" onClick={() => speak(inputRef.current?.value as string)}><IonIcon slot="icon-only"
-                    icon={playCircleOutline} onClick={() => speak(inputRef.current?.value as string)}></IonIcon> </IonButton>
-            }
-            {showIcon && 
-                <IonButton size="small" onClick={() => clearInput()}><IonIcon slot="icon-only" icon={trashBinOutline} onClick={() => clearInput()}></IonIcon></IonButton>
-            
-            }
+                {showIcon &&
+                    <IonButton size="small" onClick={() => speak(inputRef.current?.value as string)}><IonIcon slot="icon-only"
+                        icon={playCircleOutline} onClick={() => speak(inputRef.current?.value as string)}></IonIcon> </IonButton>
+                }
+                {showIcon &&
+                    <IonButton size="small" onClick={() => clearInput()}><IonIcon slot="icon-only" icon={trashBinOutline} onClick={() => clearInput()}></IonIcon></IonButton>
+
+                }
             </div>
             <div className="my-auto mx-auto h-[calc(100vh-60px-32px)] w-[calc(100vw-32px)] overflow-hidden grid grid-cols-1 gap-1" ref={gridRef}>
                 {images.map((image, i) => (
                     // <IonCol key={i} >
-                    <div className='flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)}>
+                    <div className='flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)} key={image.id}>
                         <IonImg src={image.src} alt={image.label} className="absolute object-contain w-full h-full top-0 left-0" />
                         <span className="font-medium text-xs md:text-sm lg:text-md rounded bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black">
                             {image.label}

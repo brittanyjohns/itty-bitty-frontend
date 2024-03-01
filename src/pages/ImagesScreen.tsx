@@ -14,7 +14,7 @@ import {
   IonToolbar,
   useIonViewWillEnter
 } from '@ionic/react';
-import './Dashboard.css';
+import './Home.css';
 import Grid from '../components/Grid';
 import ImageGallery from '../components/ImageGallery';
 import BoardList from '../components/BoardList';
@@ -23,15 +23,22 @@ import Menu from '../components/Menu';
 import MenuListItem from '../components/MenuListItem';
 import { BASE_URL } from '../data/users';
 import SignUpScreen from './SignUpScreen';
-import MainMenu from '../components/MainMenu';
-const Dashboard: React.FC = () => {
+import { Image, getImages } from '../data/images';
+const ImagesScreen: React.FC = () => {
+    const [images, setImages] = useState<Image[]>([]);
+
+    const fetchImages = async () => {
+        const imgs = await getImages();
+        setImages(imgs);
+    }
 
   const [menuLinks, setMenuLinks] = useState<MenuLink[]>([]);
 
   useIonViewWillEnter(() => {
     hideMenu();
-    // const links = getMenu();
-    // setMenuLinks(links);
+    const links = getMenu();
+    setMenuLinks(links);
+    fetchImages(); 
 
   });
 
@@ -48,16 +55,30 @@ const Dashboard: React.FC = () => {
     }
   }
 
+
   return (
     <>
-      <MainMenu />
+      <IonMenu contentId="main-content" type="overlay">
+        <IonHeader>
+          <IonToolbar>
+            <IonTitle>Menu Content</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent className="ion-padding">
+          <IonList>
+            {menuLinks.map(m => (
+              <MenuListItem key={m.id} menuLink={m} />
+            ))}
+          </IonList>
+        </IonContent>
+      </IonMenu>
       <IonPage id="main-content">
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
               <IonMenuButton></IonMenuButton>
             </IonButtons>
-            <IonTitle>DASH Welcome to Itty Bitty Boards</IonTitle>
+            <IonTitle>Welcome to Itty Bitty Boards</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent>
@@ -65,7 +86,7 @@ const Dashboard: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <IonContent fullscreen>
-            <BoardList />
+            <ImageGallery images={images} />
           </IonContent>
         </IonContent>
       </IonPage>
@@ -73,4 +94,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default ImagesScreen;

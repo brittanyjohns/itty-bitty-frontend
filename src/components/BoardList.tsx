@@ -34,7 +34,7 @@ const BoardList = () => {
                 <div className="text-center">
                     <p>No boards found</p>
                     <IonButton routerLink="/boards/new" color="primary">Create a new board</IonButton>
-                </div>}ll
+                </div>}
             </IonList>
         </div>
     );

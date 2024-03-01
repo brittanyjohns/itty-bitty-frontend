@@ -12,6 +12,9 @@ import {
   IonInput,
   IonItem,
   IonLabel,
+  IonList,
+  IonMenu,
+  IonMenuButton,
   IonNote,
   IonPage,
   IonTitle,
@@ -28,10 +31,17 @@ import { createImage } from '../data/imageItems';
 import { NewImageItemPayload } from '../types';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import FileUploadForm from '../components/FileUploadForm';
+import { MenuLink, getMenu } from '../data/menu';
+import MenuListItem from '../components/MenuListItem';
+
 type Inputs = {
   label: string
 }
 const NewImage: React.FC = (props: any) => {
+
+  const [_isOpen, setIsOpen] = useState(false);
+
+  const [menuLinks, setMenuLinks] = useState<MenuLink[]>([]);
   const hideMenu = () => {
     const menu = document.querySelector('ion-menu');
     if (menu) {
@@ -42,9 +52,26 @@ const NewImage: React.FC = (props: any) => {
   useIonViewWillEnter(() => {
     console.log('NewImage useIonViewWillEnter');
     hideMenu();
+    const links = getMenu();
+    setMenuLinks(links);
   });
 
   return (
+    <>
+    <IonMenu contentId="new-image-page" type="overlay">
+    <IonHeader>
+      <IonToolbar>
+        <IonTitle>Menu Content</IonTitle>
+      </IonToolbar>
+    </IonHeader>
+    <IonContent className="ion-padding">
+      <IonList>
+        {menuLinks.map(m => (
+          <MenuListItem key={m.id} menuLink={m} />
+        ))}
+      </IonList>
+    </IonContent>
+  </IonMenu>
     <IonPage id="new-image-page">
       <IonHeader translucent>
         <IonToolbar>
@@ -52,15 +79,18 @@ const NewImage: React.FC = (props: any) => {
             <IonBackButton text="Back" defaultHref="/home"></IonBackButton>
             <IonTitle>New Image</IonTitle>
           </IonButtons>
+          <IonButtons slot="end">
+              <IonMenuButton></IonMenuButton>
+            </IonButtons>
         </IonToolbar>
       </IonHeader>
-
       <IonContent fullscreen scrollY={false}>
           <>
-          <FileUploadForm />
+          <FileUploadForm board={undefined} onCloseModal={undefined} />
           </>
       </IonContent>
     </IonPage>
+    </>
   );
 }
 

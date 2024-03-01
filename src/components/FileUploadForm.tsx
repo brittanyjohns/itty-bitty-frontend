@@ -1,105 +1,104 @@
 // Import necessary components and hooks
-import React, { useState } from 'react';
-import { IonPage, IonContent, IonInput, IonButton, IonItem, IonLabel } from '@ionic/react';
+import React, { useEffect, useRef, useState } from 'react';
+import { IonPage, IonContent, IonInput, IonButton, IonItem, IonLabel, useIonViewWillEnter, useIonViewDidEnter } from '@ionic/react';
 import { createImage } from '../data/images';
-import { save } from 'ionicons/icons';
-import { useHistory } from 'react-router';
-
-const FileUploadForm: React.FC = () => {
-  // State for the label
+import { useHistory, useParams } from 'react-router';
+import { Board } from '../types';
+import { set } from 'react-hook-form';
+interface IMyProps {board: Board | undefined,
+  onCloseModal: any}
+const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
   const [label, setLabel] = useState<string>('');
-    const history = useHistory();
+  const history = useHistory();
+  const [shouldDisable, setShouldDisable] = useState<boolean>(false);
+
+  // const [boardId, setBoardId] = useState<number>(parseInt(params.id, 10));
 
   // State for the file
   const [file, setFile] = useState<File | null>(null);
-  const [formData, setFormData] = useState<FormData | null>( new FormData());
 
-  // Handle file change
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const fileList = event.target.files;
-    if (!fileList) return;
-    setFile(fileList[0]); // Set the first file
-  };
-
-  // Handle form submission
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault(); // Prevent default form submission
-    // createImage({ label, file });
-    uploadPhoto(event);
-    // Process your form data here. For example, you can send it to a server.
-    console.log({ label, file });
-  };
   const uploadPhoto = (fileSumbitEvent: React.FormEvent<Element>) => {
-    fileSumbitEvent.preventDefault();
     console.log('uploadPhoto');
-    // Get a reference to the file that has just been added to the input
-    // const fileInput = fileSumbitEvent.target as HTMLInputElement;
-    // const file = fileInput.files?.item(0);
-    if (!file) return;
-    if (!formData) return;
+    fileSumbitEvent.preventDefault();
+
+    if(!label) return;
+    setShouldDisable(true);
+
+    // if (!file) return;
     // Create a form data object using the FormData API
-    // let formData = new FormData();
-    formData.append('image[docs][image]', file);
+    let formData = new FormData();
+    if (file) {
+      formData.append('image[docs][image]', file);
+    }
     formData.append('image[label]', label);
-    console.log('formData', formData);
+    console.log("About to save image", formData)
     // Send the form data to the server
-    const result = saveImage(formData);
+    saveImage(formData);
   };
 
   const saveImage = async (formData: FormData) => {
-    const result = await createImage(formData);
-    console.log('Save Result:', result);
+    let result
+    if(props.board) {
+      formData.append('board[id]', props.board.id);
+      result = await createImage(formData, props.board.id);
+    } else {
+      result = await createImage(formData);
+    }
+
     if (result.error) {
       console.error('Error:', result.error);
       return result;
     } else {
-      history.push('/home');
-      return result;
+      if(props.board) {
+        history.push(`/boards/${props.board.id}`);
+      } else {
+        history.push('/images');
+      }
+      if(props.onCloseModal) props.onCloseModal();
+      window.location.reload();
     }
   };
 
   const onFileChange = (ev: any) => {
-    console.log('onFileChange', ev);
     const newFile = ev.target.files[0];
-    console.log('newFile', newFile);
-    console.log('formData', formData);
-    if (!formData) return;
-    // formData.append('doc[image]', newFile);
-    // formData.append('image[image]', newFile);
+    if (!newFile) return;
     setFile(newFile);
-    console.log('file', file);
-    // formData.append('image[label]', label);
-    for(var pair of formData.entries()) {
-        console.log("Pair", pair[0]+', '+pair[1]);
-    }
   }
-  return (
-    <IonPage>
-      <IonContent className="flex items-center justify-center h-full">
-        <form onSubmit={uploadPhoto} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" encType="multipart/form-data">
 
+  const handleLabelChange = (event: CustomEvent) => {
+    setLabel(event.detail.value);
+  };
+
+
+  useEffect(() => {
+    console.log('FileUploadForm useEffect', label);
+  } , [label]);
+  return (
+      <IonContent className="ion-padding border">
+        <form onSubmit={uploadPhoto} encType="multipart/form-data">
           <IonItem>
-            <IonLabel position="floating">Label</IonLabel>
+          <IonLabel position="stacked">Label</IonLabel>
+          </IonItem>
+          <IonItem>
             <IonInput
               value={label}
-              onIonChange={(e) => setLabel(e.detail.value!)}
+              onIonInput={handleLabelChange}
               type="text"
               required
             />
           </IonItem>
-
+          <IonLabel position="stacked">File Upload</IonLabel>
           <IonItem>
-            <IonLabel position="stacked">File Upload</IonLabel>
-          <input type="file" onChange={ev => onFileChange(ev)}></input>
-\          </IonItem>
+          <input className='text-black' type="file" onChange={ev => onFileChange(ev)}></input>
+            </IonItem>
 
-          <IonButton type="submit" expand="block" className="mt-4">
+          <IonButton type="submit" expand="block" className="mt-4" hidden={!label} disabled={shouldDisable}>
             Submit
           </IonButton>
         </form>
       </IonContent>
-    </IonPage>
   );
 };
 
 export default FileUploadForm;
+

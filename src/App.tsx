@@ -29,6 +29,7 @@ import SignUpScreen from './pages/SignUpScreen';
 import SignInScreen from './pages/SignInScreen';
 import BoardList from './components/BoardList';
 import Dashboard from './pages/Dashboard';
+import ImagesScreen from './pages/ImagesScreen';
 
 setupIonicReact();
 
@@ -47,6 +48,7 @@ const App: React.FC = () => (
         <Route path="/boards/:id" component={ViewBoard} exact={true} />
         <Route path="/boards/new" component={NewBoard} exact={true} />
         <Route path="/images/new" component={NewImage} exact={true} />
+        <Route path="/images" component={ImagesScreen} exact={true} />
         <Route path={"/sign-up"} component={SignUpScreen} exact={true} />
         <Route path={"/sign-in"} component={SignInScreen} exact={true} />
       </IonRouterOutlet>
