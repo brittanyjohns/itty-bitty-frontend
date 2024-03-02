@@ -18,7 +18,6 @@ const MenuListItem: React.FC<MenuListItemProps> = ({ menuLink }) => {
         <h2>
           {menuLink.name}
         </h2>
-        <h3>{menuLink.name}</h3>
       </IonLabel>
     </IonItem>
   );
