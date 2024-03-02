@@ -8,16 +8,6 @@ import { isUserSignedIn, signOut } from '../data/users';
 const SignOutScreen: React.FC = () => {
   const history = useHistory();
 
-  useIonViewWillEnter(() => {
-    // Place the logic to remove the token here
-    // For example, if you're using localStorage:
-    console.log('useIonViewWillEnter');
-    // localStorage.removeItem('token');
-
-    // Redirect to home page
-    // history.push('/');
-  } );
-
   const handleSignOut = async () => {
 
     try {
@@ -36,7 +26,11 @@ const SignOutScreen: React.FC = () => {
   useEffect(() => {
     // Place the logic to remove the token here
     // For example, if you're using localStorage:
-    console.log('useEffect');
+    handleSignOut().then(() => {
+      console.log('User signed out');
+      history.push('/');
+      window.location.reload();
+    } );
     // localStorage.removeItem('token');
 
     // Redirect to home page
@@ -46,14 +40,8 @@ const SignOutScreen: React.FC = () => {
   // Optionally, return null or a loading spinner while the redirect is being processed
   return (
     <div>
-      {isUserSignedIn() && <IonButton
-        onClick={() => {
-          console.log('Sign out');
-          // Remove the token
-          // Redirect to home page
-          history.push('/');
-        }} >Sign Out</IonButton>}
-        {!isUserSignedIn() && <IonButton onClick={() => history.push('/sign-in')}>Sign In</IonButton>}
+      {!isUserSignedIn() && <IonButton onClick={() => history.push('/sign-in')}>Sign In</IonButton>}
+      {isUserSignedIn() && <IonButton onClick={handleSignOut}>Sign Out</IonButton>}
     </div>
   )
 };

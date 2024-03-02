@@ -2,7 +2,6 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
-import ViewMessage from './pages/ViewMessage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -27,12 +26,11 @@ import NewBoard from './pages/NewBoard';
 import NewImage from './pages/NewImage';
 import SignUpScreen from './pages/SignUpScreen';
 import SignInScreen from './pages/SignInScreen';
-import BoardList from './components/BoardList';
 import Dashboard from './pages/Dashboard';
 import ImagesScreen from './pages/ImagesScreen';
 import EditImageScreen from './pages/EditImageScreen';
 import SignOutScreen from './pages/SignOutScreen';
-import { isUserSignedIn } from './data/users';
+import NewMenu from './pages/NewMenu';
 
 setupIonicReact();
 
@@ -46,12 +44,10 @@ const App: React.FC = () => (
         <Route path="/home" exact={true}>
           <Home />
         </Route>
-        <Route path="/message/:id">
-           <ViewMessage />
-        </Route>
         <Route path="/boards" component={Dashboard} exact={true} />
         <Route path="/boards/:id" component={ViewBoard} exact={true} />
         <Route path="/boards/new" component={NewBoard} exact={true} />
+        <Route path="/menus/new" component={NewMenu} exact={true} />
         <Route path="/images/new" component={NewImage} exact={true} />
         <Route path="/images/:id/edit" component={EditImageScreen } exact={true} />
         <Route path="/images" component={ImagesScreen} exact={true} />

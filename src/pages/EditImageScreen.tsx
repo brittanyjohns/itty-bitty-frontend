@@ -1,26 +1,23 @@
-import { useEffect, useRef, useState } from 'react';
-import { Image, createImage, getImage, updateImage } from '../data/images';
+import { useState } from 'react';
+import { Image, getImage, updateImage } from '../data/images';
 import {
-  IonBackButton,
   IonButton,
   IonButtons,
-  IonCheckbox,
   IonContent,
   IonHeader,
   IonIcon,
-  IonImg,
   IonInput,
   IonItem,
   IonLabel,
-  IonNote,
   IonPage,
   IonTitle,
   IonToolbar,
   useIonViewWillEnter,
 } from '@ionic/react';
 
-import { SubmitHandler, set, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { useParams } from 'react-router';
+import { arrowBackCircleOutline } from 'ionicons/icons';
 
 const EditImageScreen: React.FC = (props: any) => {
     const params = useParams<{ id: string }>();
@@ -29,7 +26,6 @@ const EditImageScreen: React.FC = (props: any) => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Image>()
   const onSubmit: SubmitHandler<Image> = (data) => {
@@ -42,21 +38,11 @@ const EditImageScreen: React.FC = (props: any) => {
     updateImage(formData);
     props.history.push('/home');
   }
-  console.log(watch("label")) // watch input value by passing the label of it
-
-  const hideMenu = () => {
-    const menu = document.querySelector('ion-menu');
-    if (menu) {
-      menu.close();
-    }
-  }
 
   useIonViewWillEnter(() => {
-    console.log('EditImageScreen useIonViewWillEnter');
-    console.log('params', params);
-    const result = fetchImage();
-    console.log('result', result);
-    hideMenu();
+    fetchImage().then((img) => {
+      setImage(img);
+    } );
   });
 
   const fetchImage = async () => {
@@ -72,7 +58,9 @@ const EditImageScreen: React.FC = (props: any) => {
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton text="Back" defaultHref="/home"></IonBackButton>
+            <IonButton routerLink="/images">
+              <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
+            </IonButton>
             <IonTitle>Edit Image</IonTitle>
           </IonButtons>
         </IonToolbar>

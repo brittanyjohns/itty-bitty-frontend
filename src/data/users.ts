@@ -1,6 +1,6 @@
 //export const BASE_URL = '10.0.2.2:4000/api/'; // For Android emulator
 export const BASE_URL = 'localhost:4000/api/'; // For web development
-
+// ionic capacitor run android -l --host=192.168.254.1
 
 export const userHeaders = {   
     'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ export const signUp = (user: User) => {
 
 export const signOut = () => {
     const response = fetch(`http://${BASE_URL}v1/users/sign_out`, {
-        method: 'DELETE',
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -61,9 +61,20 @@ export const signOut = () => {
 }
 
 export const isUserSignedIn = () => {
-    return localStorage.getItem('token') !== null;
+    const token = localStorage.getItem('token')
+    return token != null;
 }
 
 export const getCurrentUser = () => {
-    return localStorage.getItem('token');
+    const response = fetch(`http://${BASE_URL}v1/users/current`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+    })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => console.error('Error fetching data: ', error));
+    console.log('Current User', response);
+    return response;
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Image, ImageGalleryProps, getImages } from '../data/images';
-import { IonCol, IonGrid, IonRow, IonImg, IonInput, IonButton, IonIcon } from '@ionic/react';
+import { Image, ImageGalleryProps } from '../data/images';
+import { IonImg, IonInput, IonButton, IonIcon } from '@ionic/react';
 import {
     playCircleOutline,
     trashBinOutline
@@ -17,6 +17,10 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId }) => {
     const [showIcon, setShowIcon] = useState(false);
     const [imageId, setImageId] = useState<string>('');
     const [leaving, setLeaving] = useState<boolean>(false);
+    const history = useHistory();
+    const [showActionList, setShowActionList] = useState<boolean>(false);
+    const longPressTimer = useRef<NodeJS.Timeout | null>(null);
+
     const resizeGrid = () => {
         const currentGrid = gridRef.current ? gridRef.current as HTMLElement : null;
 
@@ -82,59 +86,49 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId }) => {
         setShowIcon(false);
     }
 
-    const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        console.log('handleTouchStart', e);
-    }
+    const handleButtonPress = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+        const imageId = (event.target as HTMLDivElement).id;
 
-  const history = useHistory();
-  const [showActionList, setShowActionList] = useState<boolean>(false);
-  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
+        longPressTimer.current = setTimeout(() => {
+            setShowActionList(true); // Show the action list on long press
+            setLeaving(true);
+        }, 800); // 500 milliseconds threshold for long press
+    };
 
-  const handleButtonPress = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
-    const imageId = (event.target as HTMLDivElement).id;
+    const handleButtonRelease = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+        if (longPressTimer.current) {
+            clearTimeout(longPressTimer.current); // Cancel the timer if the button is released before the threshold
+            longPressTimer.current = null;
+        }
+    };
 
-    longPressTimer.current = setTimeout(() => {
-      setShowActionList(true); // Show the action list on long press
-      setLeaving(true);
-    }, 800); // 500 milliseconds threshold for long press
-  };
+    const handleActionSelected = (action: string) => {
+        if (action === 'delete') {
+            if (!boardId) {
+                console.error('Board ID is missing');
+                return;
+            }
+            const result = remove(imageId, boardId);
+            console.log('Action', result);
+            window.location.reload();
+        } else if (action === 'edit') {
+            history.push(`/images/${imageId}/edit`);
+        }
+        setShowActionList(false);
+    };
 
-  const handleButtonRelease = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current); // Cancel the timer if the button is released before the threshold
-      longPressTimer.current = null;
-    }
-  };
-
-  const handleActionSelected = (action: string) => {
-    if (action === 'delete') {
-        if (!boardId) {
-            console.error('Board ID is missing');
+    const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+        const imageId = (event.target as HTMLDivElement).id;
+        if (!imageId) {
             return;
         }
-        const result = remove(imageId, boardId);
-        console.log('Action', result);
-        window.location.reload();
-    } else if (action === 'edit') {
-      history.push(`/images/${imageId}/edit`);
+        setImageId(imageId);
     }
-    setShowActionList(false);
-  };
 
-  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    const imageId = (event.target as HTMLDivElement).id;
-    if (!imageId) {
-      console.error('Image ID is missing');
-      return;
-    }
-    setImageId(imageId);
-  }
-
-  const remove = async (imageId: string, boardId: string) => {
-    const result = await removeImageFromBoard(boardId, imageId);
-    console.log('Remove Image from Board', result);
-    return result;
+    const remove = async (imageId: string, boardId: string) => {
+        const result = await removeImageFromBoard(boardId, imageId);
+        console.log('Remove Image from Board', result);
+        return result;
     };
 
     // Resize grid on mount and when images state changes
@@ -164,7 +158,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId }) => {
                     <div className=' bg-white rounded-md flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)} key={image.id}
                         onTouchStart={(e) => handleButtonPress(e)}
                         onPointerDown={(e) => handlePointerDown(e)}
-                        onTouchEnd={(e) => handleButtonRelease(e) }
+                        onTouchEnd={(e) => handleButtonRelease(e)}
                         onMouseDown={(e) => handleButtonPress(e)} // For desktop
                         onMouseUp={handleButtonRelease} // For desktop
                         onMouseLeave={handleButtonRelease} // Cancel on mouse leave to handle edge cases
@@ -176,12 +170,12 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId }) => {
                                 <source src={image.audio} type="audio/aac" />
                             </audio>
                         </span>
-                    <ActionList
-                        isOpen={showActionList}
-                        onClose={() => setShowActionList(false)}
-                        onActionSelected={(action: string) => handleActionSelected(action)}
-                    />
-                                        </div>
+                        <ActionList
+                            isOpen={showActionList}
+                            onClose={() => setShowActionList(false)}
+                            onActionSelected={(action: string) => handleActionSelected(action)}
+                        />
+                    </div>
 
                 ))}
             </div>

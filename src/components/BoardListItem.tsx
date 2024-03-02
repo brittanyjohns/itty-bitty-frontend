@@ -5,7 +5,6 @@ import {
   } from '@ionic/react';
 import { Board } from '../data/boards';
 import './BoardListItem.css';
-import LongPressButton from './LongPressButton';
 
 interface BoardListItemProps {
   board: Board;

@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { getBoard, getRemainingImages } from '../data/boards';
 import { Image } from '../data/images';
 import {
-  IonBackButton,
   IonButton,
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonModal,
   IonPage,
   IonTitle,
@@ -14,6 +14,8 @@ import {
   useIonViewWillEnter,
 } from '@ionic/react';
 import { Board } from '../types';
+import { arrowBackCircleOutline } from 'ionicons/icons';
+
 import { useParams } from 'react-router';
 import './ViewBoard.css';
 import ImageGallery from '../components/ImageGallery';
@@ -97,11 +99,13 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton text="Back" defaultHref="/home"></IonBackButton>
+            <IonButton routerLink="/boards">
+              <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
+            </IonButton>
           </IonButtons>
           <IonTitle>{board && board.name}</IonTitle>
           <IonButtons slot="end">
-            <IonButton id="open-modal" expand="block">
+            <IonButton id="open-modal" expand="block" onClick={() => setIsOpen(true)}>
               Add
             </IonButton>
           </IonButtons>

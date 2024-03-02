@@ -8,6 +8,7 @@ const SignInScreen: React.FC = () => {
   const history = useHistory();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState<string>('');
 
   useIonViewWillEnter(() => {
     console.log('Sign UP- ionViewWillEnter event fired');
@@ -17,21 +18,24 @@ const SignInScreen: React.FC = () => {
     const user: NewUser = {
       email,
       password,
-      password_confirmation: '',
+      password_confirmation: passwordConfirmation,
     };
+
+    if (password !== passwordConfirmation) {
+      console.error('Password and password confirmation do not match');
+      alert('Password and password confirmation do not match');
+      return;
+    }
 
     try {
       const response = await signUp(user); // Assuming signUp returns the token directly or within a response object
-      console.log(response);
       localStorage.setItem('token', response.token); // Store the token
-      console.log('User signed up');
       history.push('/boards');
-      // Handle success (e.g., redirect to dashboard)
     } catch (error) {
       console.error('Error signing up: ', error);
       history.push('/sign-up');
-      // Handle error (e.g., show error message)
     }
+    window.location.reload();
   };
 
   return (
@@ -59,9 +63,9 @@ const SignInScreen: React.FC = () => {
             <div className="mb-6">
               <IonInput
                 type="password"
-                value={password}
+                value={passwordConfirmation}
                 placeholder="Confirm Password"
-                onIonChange={(e) => setPassword(e.detail.value!)}
+                onIonChange={(e) => setPasswordConfirmation(e.detail.value!)}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
               ></IonInput>
             </div>

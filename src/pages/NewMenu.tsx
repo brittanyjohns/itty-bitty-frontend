@@ -1,4 +1,4 @@
-import { createBoard } from '../data/boards';
+import { createMenu } from '../data/menus';
 import {
   IonButton,
   IonButtons,
@@ -10,38 +10,34 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  useIonViewWillEnter,
 } from '@ionic/react';
-import './NewBoard.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { arrowBackCircleOutline } from 'ionicons/icons';
 type Inputs = {
   name: string
 }
-const NewBoard: React.FC = (props: any) => {
+const NewMenu: React.FC = (props: any) => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Inputs>()
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
-    createBoard(data);
+    createMenu(data);
     props.history.push('/home');
   }
-  console.log(watch("name")) // watch input value by passing the name of it
 
   return (
-    <IonPage id="new-board-page">
+    <IonPage id="new-menu-page">
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start">
-          <IonButton routerLink="/boards">
+          <IonButton routerLink="/menus">
                 <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
               </IonButton>
           </IonButtons>
-          <IonTitle>New Board</IonTitle>
+          <IonTitle>New Menu</IonTitle>
 
         </IonToolbar>
       </IonHeader>
@@ -50,7 +46,7 @@ const NewBoard: React.FC = (props: any) => {
           <>
           <form className="ion-padding" onSubmit={handleSubmit(onSubmit)}>
             <IonItem>
-              <IonInput label="Name" placeholder="Enter new board name" defaultValue="" {...register("name", { required: true })} />
+              <IonInput label="Name" placeholder="Enter new menu name" defaultValue="" {...register("name", { required: true })} />
             </IonItem>
             <IonButton className="ion-margin-top" type="submit" expand="block">
               Create
@@ -62,4 +58,4 @@ const NewBoard: React.FC = (props: any) => {
   );
 }
 
-export default NewBoard;
+export default NewMenu;

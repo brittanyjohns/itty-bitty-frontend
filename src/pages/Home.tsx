@@ -1,11 +1,7 @@
-import { useEffect, useState } from 'react';
-import { MenuLink, getMenu } from '../data/menu';
 import {
   IonButtons,
   IonContent,
   IonHeader,
-  IonList,
-  IonMenu,
   IonMenuButton,
   IonPage,
   IonRefresher,
@@ -15,43 +11,48 @@ import {
   useIonViewWillEnter
 } from '@ionic/react';
 import './Home.css';
-import Grid from '../components/Grid';
-import ImageGallery from '../components/ImageGallery';
 import BoardList from '../components/BoardList';
-import CreateButton from '../components/CreateButton';
-import Menu from '../components/Menu';
-import MenuListItem from '../components/MenuListItem';
-import { BASE_URL, isUserSignedIn } from '../data/users';
-import SignUpScreen from './SignUpScreen';
+import { getCurrentUser, isUserSignedIn } from '../data/users';
+import SignInScreen from './SignUpScreen';
 import MainMenu from '../components/MainMenu';
+import SignUpScreen from './SignUpScreen';
+import { get } from 'react-hook-form';
+import { useEffect, useState } from 'react';
 const Home: React.FC = () => {
-
-  const [menuLinks, setMenuLinks] = useState<MenuLink[]>([]);
+  const [currentUser, setCurrentUser] = useState<any>(null);
 
   useIonViewWillEnter(() => {
-    hideMenu();
-    const links = getMenu();
-    setMenuLinks(links);
-
+    fetchCurrentUser().then((user) => {
+      setCurrentUser(user);
+    } );
   });
 
-  const refresh =  (e: CustomEvent) => {
+  const refresh = (e: CustomEvent) => {
     setTimeout(() => {
       e.detail.complete();
     }, 3000);
   };
 
-  const hideMenu = () => {
-    const menu = document.querySelector('ion-menu');
-    if (menu) {
-      menu.close();
+  
+  const fetchCurrentUser = async () => {
+    if (isUserSignedIn()) {
+      const userFromServer = await getCurrentUser();
+      console.log('userFromServer', userFromServer);
+      setCurrentUser(userFromServer);
+      return userFromServer;
     }
+
   }
 
+  useEffect(() => {
+    fetchCurrentUser().then((user) => {
+      setCurrentUser(user);
+    } );
+  } , []);
 
   return (
     <>
-    <MainMenu />
+      <MainMenu />
       <IonPage id="main-content">
         <IonHeader>
           <IonToolbar>
@@ -66,8 +67,8 @@ const Home: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <IonContent fullscreen>
-            <h1>Itty Bitty Boards</h1>
-            {isUserSignedIn() ? <BoardList /> : <SignUpScreen />}
+            <h1>Itty Bitty Boards{currentUser && currentUser.email}</h1>
+            <BoardList />
           </IonContent>
         </IonContent>
       </IonPage>

@@ -9,24 +9,3 @@ export interface Board {
     images: Image[];
   }
 
-export interface BoardWithImages extends Board {
-    images: Image[];
-  }
-  
- export interface NewBoardPayload {
-    name: string;
-    user_id: string;
-  }
-  
-export interface ImageItem {
-    image_url: string;
-    id: string;
-    label: string;
-    category: string;
-  }
-
-export interface NewImageItemPayload {
-    label: string;
-    image_url: string;
-    date: string;
-  }

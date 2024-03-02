@@ -1,15 +1,27 @@
 import { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonList, IonMenu, IonTitle, IonToolbar, useIonViewWillEnter } from '@ionic/react';
+import { IonContent, IonHeader, IonList, IonMenu, IonTitle, IonToolbar, useIonViewWillEnter, useIonViewWillLeave } from '@ionic/react';
 import { MenuLink, getMenu } from '../data/menu';
 import MenuListItem from './MenuListItem';
 import { isUserSignedIn } from '../data/users';
+
+export const hideMenu = () => {
+  const menu = document.querySelector('ion-menu');
+  if (menu) {
+    menu.close();
+  }
+}
 function MainMenu() {
   const [menuLinks, setMenuLinks] = useState<MenuLink[]>([]);
 
+  useIonViewWillLeave(() => {
+    console.log('Main Menu - ionViewWillLeave event fired');
+    hideMenu();
+  } );
+
   const filterList = () => {
     const filteredList: MenuLink[] = [];
-    const signedInLinks = ['sign-out', 'dashboard', 'boards', 'images', 'new-image', 'new-board'];
-    const signedOutLinks = ['sign-in', 'sign-up', 'about', 'contact'];
+    const signedInLinks = ['sign-out', 'dashboard', 'boards', 'images', 'new-image', 'new-board', 'new-menu'];
+    const signedOutLinks = ['sign-in', 'sign-up'];
     menuLinks.forEach((link) => {
       if (isUserSignedIn()) {
         if (signedInLinks.includes(link.slug ?? '')) {

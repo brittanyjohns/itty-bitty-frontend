@@ -8,29 +8,17 @@ import {
   IonRefresherContent,
   IonTitle,
   IonToolbar,
-  useIonViewWillEnter
 } from '@ionic/react';
 import './Dashboard.css';
 import BoardList from '../components/BoardList';
 import MainMenu from '../components/MainMenu';
 const Dashboard: React.FC = () => {
 
-  useIonViewWillEnter(() => {
-    hideMenu();
-  });
-
-  const refresh =  (e: CustomEvent) => {
+  const refresh = (e: CustomEvent) => {
     setTimeout(() => {
       e.detail.complete();
     }, 3000);
   };
-
-  const hideMenu = () => {
-    const menu = document.querySelector('ion-menu');
-    if (menu) {
-      menu.close();
-    }
-  }
 
   return (
     <>
