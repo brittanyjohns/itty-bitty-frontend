@@ -70,3 +70,24 @@ export const createImage = (formData: FormData, boardId?: string) => {
 }
 
 
+export const getImage = (id: string) => {
+    const image = fetch(`http://${BASE_URL}images/${id}`, { headers: userHeaders })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => console.error('Error fetching data: ', error));
+
+    return image;
+}
+
+export const updateImage = (formData: FormData) => {
+    const img = fetch(`http://${BASE_URL}images/${formData.get('image[id]')}`, {
+        headers: createHeaders,
+        method: 'PUT',
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => console.error('Error updating image: ', error));
+
+    return img;
+}

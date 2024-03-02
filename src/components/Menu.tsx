@@ -1,4 +1,3 @@
-import React from 'react';
 import { IonButtons, IonContent, IonHeader, IonMenu, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 function Menu() {
   return (

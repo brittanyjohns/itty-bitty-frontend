@@ -1,11 +1,7 @@
-import { useEffect, useState } from 'react';
-import { MenuLink, getMenu } from '../data/menu';
 import {
   IonButtons,
   IonContent,
   IonHeader,
-  IonList,
-  IonMenu,
   IonMenuButton,
   IonPage,
   IonRefresher,
@@ -15,24 +11,12 @@ import {
   useIonViewWillEnter
 } from '@ionic/react';
 import './Dashboard.css';
-import Grid from '../components/Grid';
-import ImageGallery from '../components/ImageGallery';
 import BoardList from '../components/BoardList';
-import CreateButton from '../components/CreateButton';
-import Menu from '../components/Menu';
-import MenuListItem from '../components/MenuListItem';
-import { BASE_URL } from '../data/users';
-import SignUpScreen from './SignUpScreen';
 import MainMenu from '../components/MainMenu';
 const Dashboard: React.FC = () => {
 
-  const [menuLinks, setMenuLinks] = useState<MenuLink[]>([]);
-
   useIonViewWillEnter(() => {
     hideMenu();
-    // const links = getMenu();
-    // setMenuLinks(links);
-
   });
 
   const refresh =  (e: CustomEvent) => {
@@ -57,7 +41,7 @@ const Dashboard: React.FC = () => {
             <IonButtons slot="start">
               <IonMenuButton></IonMenuButton>
             </IonButtons>
-            <IonTitle>DASH Welcome to Itty Bitty Boards</IonTitle>
+            <IonTitle>Welcome to Itty Bitty Boards</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent>

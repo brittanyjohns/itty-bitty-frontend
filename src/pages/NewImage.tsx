@@ -58,20 +58,6 @@ const NewImage: React.FC = (props: any) => {
 
   return (
     <>
-    <IonMenu contentId="new-image-page" type="overlay">
-    <IonHeader>
-      <IonToolbar>
-        <IonTitle>Menu Content</IonTitle>
-      </IonToolbar>
-    </IonHeader>
-    <IonContent className="ion-padding">
-      <IonList>
-        {menuLinks.map(m => (
-          <MenuListItem key={m.id} menuLink={m} />
-        ))}
-      </IonList>
-    </IonContent>
-  </IonMenu>
     <IonPage id="new-image-page">
       <IonHeader translucent>
         <IonToolbar>

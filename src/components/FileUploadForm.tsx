@@ -69,10 +69,6 @@ const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
     setLabel(event.detail.value);
   };
 
-
-  useEffect(() => {
-    console.log('FileUploadForm useEffect', label);
-  } , [label]);
   return (
     <IonCard>
     <IonCardHeader>

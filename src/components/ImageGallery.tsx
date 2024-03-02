@@ -20,7 +20,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId }) => {
     const inputRef = useRef<HTMLIonInputElement>(null);
     const [showIcon, setShowIcon] = useState(false);
     const [imageId, setImageId] = useState<string>('');
-
+    const [leaving, setLeaving] = useState<boolean>(false);
     const resizeGrid = () => {
         const currentGrid = gridRef.current ? gridRef.current as HTMLElement : null;
 
@@ -46,6 +46,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId }) => {
         const audioSrc = image.audio;
 
         console.log('handleImageClick', image);
+        console.log('redirecting?', leaving);
         const label = image.label;
         if (inputRef.current) {
             inputRef.current.value += ` ${label}`
@@ -54,6 +55,11 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId }) => {
             setShowIcon(true);
         } else {
             setShowIcon(false);
+        }
+
+        if (leaving) {
+            console.log('Leaving');
+            return;
         }
         if (!audioSrc) {
             speak(label);
@@ -94,12 +100,9 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId }) => {
   const handleButtonPress = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
     const imageId = (event.target as HTMLDivElement).id;
 
-    // setImageId(imageId);
-    console.log("Set Image ID", imageId);
     longPressTimer.current = setTimeout(() => {
       setShowActionList(true); // Show the action list on long press
-      console.log('Long press detected');
-      console.log('Image ID', imageId);
+      setLeaving(true);
     }, 800); // 500 milliseconds threshold for long press
   };
 
@@ -111,9 +114,6 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId }) => {
   };
 
   const handleActionSelected = (action: string) => {
-    console.log(`Action selected: ${action}`);
-    console.log('Image ID', imageId);
-    console.log('Board ID', boardId);
     if (action === 'delete') {
         if (!boardId) {
             console.error('Board ID is missing');
@@ -129,14 +129,12 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId }) => {
   };
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    console.log('handlePointerDown', event);
     const imageId = (event.target as HTMLDivElement).id;
     if (!imageId) {
       console.error('Image ID is missing');
       return;
     }
     setImageId(imageId);
-    console.log('handlePointerDown Image ID', imageId);
   }
 
   const remove = async (imageId: string, boardId: string) => {
@@ -169,7 +167,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId }) => {
             </div>
             <div className="my-auto mx-auto h-[calc(100vh-60px-32px)] w-[calc(100vw-32px)] overflow-hidden grid grid-cols-1 gap-1" ref={gridRef}>
                 {images.map((image, i) => (
-                    <div className='flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)} key={image.id}
+                    <div className=' bg-white rounded-md flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)} key={image.id}
                         onTouchStart={(e) => handleButtonPress(e)}
                         onPointerDown={(e) => handlePointerDown(e)}
                         onTouchEnd={(e) => handleButtonRelease(e) }
@@ -178,7 +176,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId }) => {
                         onMouseLeave={handleButtonRelease} // Cancel on mouse leave to handle edge cases
                     >
                         <IonImg id={image.id} src={image.src} alt={image.label} className="absolute object-contain w-full h-full top-0 left-0" />
-                        <span className="font-medium text-xs md:text-sm lg:text-md rounded bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black">
+                        <span className="font-medium text-sm md:text-sm lg:text-md rounded bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black">
                             {image.label}
                             <audio>
                                 <source src={image.audio} type="audio/aac" />

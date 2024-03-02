@@ -2,56 +2,35 @@ import { useEffect, useRef, useState } from 'react';
 import { getBoard, getRemainingImages } from '../data/boards';
 import { Image } from '../data/images';
 import {
-  IonActionSheet,
   IonBackButton,
   IonButton,
   IonButtons,
   IonContent,
   IonHeader,
-  IonIcon,
-  IonImg,
-  IonInput,
-  IonItem,
-  IonLabel,
   IonModal,
-  IonNote,
   IonPage,
   IonTitle,
   IonToolbar,
-  useIonModal,
-  useIonViewDidEnter,
   useIonViewWillEnter,
 } from '@ionic/react';
 import { Board } from '../types';
-import { personCircle } from 'ionicons/icons';
 import { useParams } from 'react-router';
 import './ViewBoard.css';
 import ImageGallery from '../components/ImageGallery';
-import ReorderList from '../components/ReorderList';
-import WordListForm from '../components/WordListForm';
 import FileUploadForm from '../components/FileUploadForm';
-import { OverlayEventDetail } from '@ionic/react/dist/types/components/react-component-lib/interfaces';
-import { set } from 'react-hook-form';
 import SelectImageGallery from '../components/SelectImageGallery';
-import { useLongPress } from '@uidotdev/usehooks';
 import React from 'react';
-import { Button } from 'flowbite-react';
-import LongPressButton from '../components/LongPressButton';
 
 const ViewBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();
   const [isOpen, setIsOpen] = useState(false);
   const params = useParams<{ id: string }>();
   const modal = useRef<HTMLIonModalElement>(null);
-  const input = useRef<HTMLIonInputElement>(null);
   const [remainingImages, setRemainingImages] = useState<Image[]>(); // State for the remaining images
   const [page, setPage] = useState(1);
 
   const fetchBoard = async () => {
-    console.log('ViewBoard fetchBoard');
     const board = await getBoard(parseInt(params.id, 10));
-    console.log('board', board);
-    console.log('board.images', board.images);
     setBoard(board);
     const remainingImgs = await getRemainingImages(board.id, { page: page, query: null })
     setRemainingImages(remainingImgs);
@@ -79,7 +58,6 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
   }
 
   useEffect(() => {
-    console.log('Remaining images', remainingImages);
     getMoreImages();
 
   }, [page]);
@@ -111,7 +89,6 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
   });
 
   useIonViewWillEnter(() => {
-    console.log('ViewBoard useIonViewWillEnter');
     fetchBoard();
   });
 

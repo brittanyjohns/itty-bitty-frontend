@@ -23,6 +23,7 @@ import Menu from '../components/Menu';
 import MenuListItem from '../components/MenuListItem';
 import { BASE_URL } from '../data/users';
 import SignUpScreen from './SignUpScreen';
+import MainMenu from '../components/MainMenu';
 const Home: React.FC = () => {
 
   const [menuLinks, setMenuLinks] = useState<MenuLink[]>([]);
@@ -50,20 +51,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <IonMenu contentId="main-content" type="overlay">
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>Menu Content</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent className="ion-padding">
-          <IonList>
-            {menuLinks.map(m => (
-              <MenuListItem key={m.id} menuLink={m} />
-            ))}
-          </IonList>
-        </IonContent>
-      </IonMenu>
+    <MainMenu />
       <IonPage id="main-content">
         <IonHeader>
           <IonToolbar>

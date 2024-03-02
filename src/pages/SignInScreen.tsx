@@ -1,5 +1,5 @@
 // src/components/SignInScreen.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IonPage, IonContent, IonInput, IonButton, useIonViewWillEnter } from '@ionic/react';
 import { User, signIn } from '../data/users';
 import { useHistory } from 'react-router-dom';
@@ -14,6 +14,10 @@ const SignInScreen: React.FC = () => {
       history.push('/boards');
     }
   });
+
+  useEffect(() => {
+    console.log('Sign IN- useEffect event fired');
+  }  , []);
 
   const handleSignIn = async () => {
     const user: User = {
