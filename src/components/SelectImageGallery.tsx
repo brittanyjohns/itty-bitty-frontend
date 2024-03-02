@@ -27,7 +27,7 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
             let cols = Math.round(sqrt);
 
             const adjustedHeight = `calc(100vh - 60px - 32px)`;
-            const adjustedWidth = `calc(100vw - 190px - 32px)`;
+            const adjustedWidth = `calc(100vw - 100px - 32px)`;
 
             currentGrid.style.width = adjustedWidth;
             currentGrid.style.height = adjustedHeight;
