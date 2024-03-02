@@ -1,3 +1,5 @@
+import { BASE_URL } from "./users";
+
 export interface Image {
     id: string; // Assuming each image has a unique ID for key purposes
     src: string;
@@ -15,10 +17,6 @@ export interface Image {
     images: Image[];
     page: number;
   }
-
-// fetch('http://localhostimages')
-// const BASE_URL = '10.0.2.2'; // 'localhost'
-const BASE_URL = 'localhost:4000/api/'; // 'localhost'
 
 const userHeaders = {   
   'Content-Type': 'application/json',

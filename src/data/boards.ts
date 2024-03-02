@@ -1,4 +1,5 @@
 import { Image } from './images';
+import { BASE_URL, userHeaders } from './users';
 
 export interface Board {
     id?: string;
@@ -7,12 +8,6 @@ export interface Board {
     images?: Image[];
 }
 
-// const BASE_URL = '10.0.2.2'; // For Android emulator
-const BASE_URL = 'localhost:4000/api/'; // For web development
-const userHeaders = {   
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${localStorage.getItem('token')}`
-};
 export const getBoards = () => {
     const boards = fetch(`http://${BASE_URL}boards`, { headers: userHeaders }) // `http://localhostboards
         .then(response => response.json())

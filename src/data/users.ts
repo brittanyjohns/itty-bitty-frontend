@@ -1,4 +1,12 @@
-export const BASE_URL = 'localhost'; // For web development
+//export const BASE_URL = '10.0.2.2:4000/api/'; // For Android emulator
+export const BASE_URL = 'localhost:4000/api/'; // For web development
+
+
+export const userHeaders = {   
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+};
+
 export interface NewUser {
     email: string;
     password: string;
@@ -10,7 +18,7 @@ export interface User {
     password: string;
 }
 export const signIn = (user: User) => {
-    const response = fetch(`http://${BASE_URL}:4000/api/v1/login`, {
+    const response = fetch(`http://${BASE_URL}v1/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -25,7 +33,7 @@ export const signIn = (user: User) => {
 }
 
 export const signUp = (user: User) => {
-    const response = fetch(`http://${BASE_URL}:4000/api/v1/users`, {
+    const response = fetch(`http://${BASE_URL}v1/users`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -40,8 +48,16 @@ export const signUp = (user: User) => {
 }
 
 export const signOut = () => {
+    const response = fetch(`http://${BASE_URL}v1/users/sign_out`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+    })
     localStorage.removeItem('token');
-    console.log('User signed out');
+    console.log('User signed out', response);
+    return response;
 }
 
 export const isUserSignedIn = () => {
