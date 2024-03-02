@@ -1,15 +1,26 @@
 // SignOut.tsx
 
-import { IonButton } from '@ionic/react';
+import { IonButton, useIonViewWillEnter } from '@ionic/react';
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 const SignOutScreen: React.FC = () => {
   const history = useHistory();
 
+  useIonViewWillEnter(() => {
+    // Place the logic to remove the token here
+    // For example, if you're using localStorage:
+    console.log('useIonViewWillEnter');
+    localStorage.removeItem('token');
+
+    // Redirect to home page
+    // history.push('/');
+  } );
+
   useEffect(() => {
     // Place the logic to remove the token here
     // For example, if you're using localStorage:
+    console.log('useEffect');
     localStorage.removeItem('token');
 
     // Redirect to home page

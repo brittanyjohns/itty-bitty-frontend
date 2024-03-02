@@ -45,22 +45,12 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
         window.location.reload();
     };
 
-    const clearInput = () => {
-        if (inputRef.current) {
-            inputRef.current.value = '';
-        }
-        setShowIcon(false);
-    }
-
     const handleSearch = (event: CustomEvent) => {
-        // const query = event.detail.value;
-        // console.log('handleSearch', query);
         let query = '';
         const target = event.target as HTMLIonSearchbarElement;
         if (target) query = target.value!.toLowerCase();
         setCurrentPage(1);
         getMoreImages(query);
-        console.log('handleSearch', query);
     }
 
     const getMoreImages = async (query: string) => {

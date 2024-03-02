@@ -60,6 +60,18 @@ export const updateBoard = (board: Board) => {
     return updatedBoard;
 }
 
+export const deleteBoard = (id: string) => {
+    const result = fetch(`http://${BASE_URL}boards/${id}`, {
+        method: 'DELETE',
+        headers: userHeaders,
+    })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => console.error('Error deleting board: ', error));
+
+    return result;
+}
+
 export async function addImageListToBoard(id: string, payload: { word_list: string[] }): Promise<Board> {
     const requestInfo = {
       method: "PUT",

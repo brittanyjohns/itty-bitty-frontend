@@ -6,14 +6,10 @@ import {
     trashBinOutline
 } from 'ionicons/icons';
 import { TextToSpeech } from '@capacitor-community/text-to-speech';
-
 import '../index.css'
-// import TTS from 'cordova-plugin-tts';
-import { image } from 'ionicons/icons';
 import { useHistory } from 'react-router';
 import ActionList from './ActionList';
 import { removeImageFromBoard } from '../data/boards';
-import { set } from 'react-hook-form';
 const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId }) => {
     const gridRef = useRef(null); // Ref for the grid container
     const [audioList, setAudioList] = useState<string[]>([]);
@@ -45,8 +41,6 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId }) => {
     const handleImageClick = (image: Image) => {
         const audioSrc = image.audio;
 
-        console.log('handleImageClick', image);
-        console.log('redirecting?', leaving);
         const label = image.label;
         if (inputRef.current) {
             inputRef.current.value += ` ${label}`
@@ -93,7 +87,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId }) => {
         console.log('handleTouchStart', e);
     }
 
-    const history = useHistory();
+  const history = useHistory();
   const [showActionList, setShowActionList] = useState<boolean>(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
 

@@ -21,7 +21,7 @@ import BoardList from '../components/BoardList';
 import CreateButton from '../components/CreateButton';
 import Menu from '../components/Menu';
 import MenuListItem from '../components/MenuListItem';
-import { BASE_URL } from '../data/users';
+import { BASE_URL, isUserSignedIn } from '../data/users';
 import SignUpScreen from './SignUpScreen';
 import MainMenu from '../components/MainMenu';
 const Home: React.FC = () => {
@@ -66,7 +66,8 @@ const Home: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <IonContent fullscreen>
-            <SignUpScreen />
+            <h1>Itty Bitty Boards</h1>
+            {isUserSignedIn() ? <BoardList /> : <SignUpScreen />}
           </IonContent>
         </IonContent>
       </IonPage>

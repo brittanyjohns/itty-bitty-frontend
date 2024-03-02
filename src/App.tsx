@@ -40,9 +40,9 @@ const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
-        <Route path="/">
-          {isUserSignedIn() ? <Redirect to="/home" /> : <Redirect to="/sign-in" />}
-        </Route>
+        <Route path="/" component={Home} exact={true} />
+          {/* {isUserSignedIn() ? <Redirect to="/home" /> : <Redirect to="/sign-in" />} */}
+
         <Route path="/home" exact={true}>
           <Home />
         </Route>
@@ -56,7 +56,8 @@ const App: React.FC = () => (
         <Route path="/images/:id/edit" component={EditImageScreen } exact={true} />
         <Route path="/images" component={ImagesScreen} exact={true} />
         <Route path={"/sign-up"} >
-          {isUserSignedIn() ? <Redirect to="/" /> : <SignUpScreen />}
+          <SignUpScreen />
+          {/* {isUserSignedIn() ? <Redirect to="/" /> : <SignUpScreen />} */}
         </Route>
         <Route path={"/sign-in"} component={SignInScreen} exact={true} />
         <Route path="/sign-out" component={SignOutScreen} exact={true} />
