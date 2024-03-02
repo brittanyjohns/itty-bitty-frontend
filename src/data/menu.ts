@@ -41,6 +41,12 @@ const menuLinks: MenuLink[] = [
     name: 'Sign Up',
     slug: 'sign-up',
     id: 5
+  },
+  {
+    endpoint: '/sign-out',
+    name: 'Sign Out',
+    slug: 'sign-out',
+    id: 6
   }
 ];
 

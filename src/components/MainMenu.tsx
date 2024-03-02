@@ -8,13 +8,15 @@ function MainMenu() {
 
   const filterList = () => {
     const filteredList: MenuLink[] = [];
+    const signedInLinks = ['sign-out', 'dashboard', 'boards', 'images', 'new-image', 'new-board'];
+    const signedOutLinks = ['sign-in', 'sign-up', 'about', 'contact'];
     menuLinks.forEach((link) => {
       if (isUserSignedIn()) {
-        if (link.slug !== 'sign-up' && link.slug !== 'sign-in') {
+        if (signedInLinks.includes(link.slug ?? '')) {
           filteredList.push(link)
         }
       } else {
-        if (link.slug !== 'dashboard' && link.slug !== 'sign-out') {
+        if (signedOutLinks.includes(link.slug ?? '')) {
           filteredList.push(link)
         }
       }

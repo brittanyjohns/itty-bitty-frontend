@@ -11,25 +11,25 @@ const SignInScreen: React.FC = () => {
 
   useIonViewWillEnter(() => {
     console.log('Sign UP- ionViewWillEnter event fired');
-    if (localStorage.getItem('token')) {
-      history.push('/boards');
-    }
+    
   });
-  const handleSignIn = async () => {
+  const handleSignUp = async () => {
     const user: NewUser = {
       email,
       password,
-      password_confirmation: password,
+      password_confirmation: '',
     };
 
     try {
       const response = await signUp(user); // Assuming signUp returns the token directly or within a response object
       console.log(response);
-        localStorage.setItem('token', response.token); // Store the token
-        console.log('User signed up');
+      localStorage.setItem('token', response.token); // Store the token
+      console.log('User signed up');
+      history.push('/boards');
       // Handle success (e.g., redirect to dashboard)
     } catch (error) {
       console.error('Error signing up: ', error);
+      history.push('/sign-up');
       // Handle error (e.g., show error message)
     }
   };
@@ -66,7 +66,7 @@ const SignInScreen: React.FC = () => {
               ></IonInput>
             </div>
             <div className="flex items-center justify-between">
-              <IonButton color="primary" onClick={handleSignIn}>
+              <IonButton color="primary" onClick={handleSignUp}>
                 Sign Up
               </IonButton>
             </div>

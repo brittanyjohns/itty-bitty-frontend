@@ -30,7 +30,7 @@ const BoardList = () => {
                 {boards && boards.map((board, i) => (
                     <BoardListItem key={i} board={board} />
                 ))}
-                {boards.length === 0 && 
+                {boards?.length === 0 && 
                 <div className="text-center">
                     <p>No boards found</p>
                     <IonButton routerLink="/boards/new" color="primary">Create a new board</IonButton>

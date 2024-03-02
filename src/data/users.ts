@@ -10,7 +10,7 @@ export interface User {
     password: string;
 }
 export const signIn = (user: User) => {
-    const response = fetch(`http://${BASE_URL}:4000/login`, {
+    const response = fetch(`http://${BASE_URL}:4000/api/v1/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

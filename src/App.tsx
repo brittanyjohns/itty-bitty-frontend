@@ -31,6 +31,8 @@ import BoardList from './components/BoardList';
 import Dashboard from './pages/Dashboard';
 import ImagesScreen from './pages/ImagesScreen';
 import EditImageScreen from './pages/EditImageScreen';
+import SignOutScreen from './pages/SignOutScreen';
+import { isUserSignedIn } from './data/users';
 
 setupIonicReact();
 
@@ -38,7 +40,9 @@ const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
-        <Route path="/" exact={true} component={Home} />
+        <Route path="/">
+          {isUserSignedIn() ? <Redirect to="/home" /> : <Redirect to="/sign-in" />}
+        </Route>
         <Route path="/home" exact={true}>
           <Home />
         </Route>
@@ -51,11 +55,13 @@ const App: React.FC = () => (
         <Route path="/images/new" component={NewImage} exact={true} />
         <Route path="/images/:id/edit" component={EditImageScreen } exact={true} />
         <Route path="/images" component={ImagesScreen} exact={true} />
-        <Route path={"/sign-up"} component={SignUpScreen} exact={true} />
+        <Route path={"/sign-up"} >
+          {isUserSignedIn() ? <Redirect to="/" /> : <SignUpScreen />}
+        </Route>
         <Route path={"/sign-in"} component={SignInScreen} exact={true} />
+        <Route path="/sign-out" component={SignOutScreen} exact={true} />
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
 );
-
 export default App;

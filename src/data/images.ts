@@ -25,6 +25,8 @@ const userHeaders = {
   'Authorization': `Bearer ${localStorage.getItem('token')}`
 };
 export const getImages = () => {
+  const userToken = localStorage.getItem('token');
+  console.log('userToken', userToken);
     const images = fetch(`http://${BASE_URL}images`, { headers: userHeaders })
         .then(response => response.json())
         .then(data => data)

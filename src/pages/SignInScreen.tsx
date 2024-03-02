@@ -8,8 +8,16 @@ const SignInScreen: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
+  const hideMenu = () => {
+    const menu = document.querySelector('ion-menu');
+    if (menu) {
+      menu.close();
+    }
+  }
+
   useIonViewWillEnter(() => {
     console.log('Sign IN- ionViewWillEnter event fired');
+    hideMenu();
     if (localStorage.getItem('token')) {
       history.push('/boards');
     }
@@ -27,9 +35,8 @@ const SignInScreen: React.FC = () => {
 
     try {
       const response = await signIn(user); // Assuming signIn returns the token directly or within a response object
-      console.log(response);
       localStorage.setItem('token', response.token); // Store the token
-      console.log('User signed in');
+      console.log('User signed in', response);
       history.push('/boards'); // Redirect to /boards
       // Handle success (e.g., redirect to dashboard)
     } catch (error) {
