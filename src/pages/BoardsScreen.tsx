@@ -13,23 +13,16 @@ import './Dashboard.css';
 import BoardList from '../components/BoardList';
 import MainMenu from '../components/MainMenu';
 import { useEffect, useState } from 'react';
-import { getCurrentUser } from '../data/users';
-const Dashboard: React.FC = () => {
-  const [currentUser, setCurrentUser] = useState<any>(null);
+import { User, getCurrentUser } from '../data/users';
+import { useCurrentUser } from '../hooks/useCurrentUser';
+const BoardsScreen: React.FC = () => {
+  const { currentUser, setCurrentUser } = useCurrentUser();
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
       e.detail.complete();
     }, 3000);
   };
-
-  useEffect(() => {
-    getCurrentUser().then((user) => {
-      console.log('user from useEffect', user);
-      setCurrentUser(user);
-    }
-    );
-  }, []);
 
   return (
     <>
@@ -48,6 +41,7 @@ const Dashboard: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <IonContent fullscreen>
+            {currentUser && <h2>Welcome {currentUser.email}</h2>}
             <BoardList />
           </IonContent>
         </IonContent>
@@ -56,4 +50,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default BoardsScreen;

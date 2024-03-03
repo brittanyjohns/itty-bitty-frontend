@@ -1,13 +1,15 @@
 // src/components/SignInScreen.tsx
 import React, { useEffect, useState } from 'react';
-import { IonPage, IonContent, IonInput, IonButton, useIonViewWillEnter, IonButtons, IonHeader, IonMenuButton, IonTitle, IonToolbar } from '@ionic/react';
+import { IonPage, IonContent, IonInput, IonButton, IonButtons, IonHeader, IonMenuButton, IonTitle, IonToolbar } from '@ionic/react';
 import { User, signIn } from '../data/users';
 import { useHistory } from 'react-router-dom';
 import MainMenu from '../components/MainMenu';
+import { useCurrentUser } from '../hooks/useCurrentUser';
 const SignInScreen: React.FC = () => {
   const history = useHistory();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const { currentUser, setCurrentUser } = useCurrentUser();
 
   const handleSignIn = async () => {
     const user: User = {
@@ -17,9 +19,10 @@ const SignInScreen: React.FC = () => {
 
     try {
       const response = await signIn(user); // Assuming signIn returns the token directly or within a response object
-      console.log('User signed in', response);
+      console.log('Sign In response', response);
       if (response.token) {
         localStorage.setItem('token', response.token); // Store the token
+        setCurrentUser(response.user);
         history.push('/boards'); // Redirect to /boards
         window.location.reload();
         return;
@@ -31,7 +34,7 @@ const SignInScreen: React.FC = () => {
       }
     } catch (error) {
       console.error('Error signing in: ', error);
-      // Handle error (e.g., show error message)
+      alert('Error signing in: ' + error);
     }
     history.push('/sign-in');
     window.location.reload();

@@ -11,11 +11,17 @@ export interface Image {
     boardId?: string | null;
     images: Image[];
   }
+  // (boardId, {
+  //           query: query,
+  //           page: page
+  //       });
 
   export interface SelectImageGalleryProps {
     boardId: string;
     images: Image[];
-    page: number;
+    // page: number;
+    // loadMoreImages: any;
+    getMoreImages: any;
   }
 
 const userHeaders = {   

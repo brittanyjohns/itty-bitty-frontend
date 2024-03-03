@@ -5,12 +5,14 @@ import '../index.css'
 import BoardListItem from './BoardListItem';
 import { useHistory } from 'react-router';
 import ActionList from './ActionList';
-import { isUserSignedIn } from '../data/users';
+// import { User, getCurrentUser, isUserSignedIn } from '../data/users';
+import SignInScreen from '../pages/SignUpScreen';
+import { useCurrentUser } from '../hooks/useCurrentUser';
 const BoardList = () => {
     const [boards, setBoards] = useState<Board[]>([]);
     const [boardId, setBoardId] = useState<string>('');
     const [leaving, setLeaving] = useState<boolean>(false);
-
+    const { currentUser, setCurrentUser } = useCurrentUser();
 
     const fetchBoards = async () => {
         const allBoards = await getBoards();
@@ -23,9 +25,7 @@ const BoardList = () => {
     }
 
     useEffect(() => {
-        if(isUserSignedIn()) {
-            fetchBoards();
-        }
+        fetchBoards();
     }, []);
 
     const history = useHistory();
@@ -99,11 +99,13 @@ const BoardList = () => {
                         </div>
                     </IonItem>
                 ))}
-                {boards?.length === 0 &&
+                {currentUser && boards?.length === 0 &&
                     <div className="text-center">
                         <p>No boards found</p>
                         <IonButton routerLink="/boards/new" color="primary">Create a new board</IonButton>
                     </div>}
+
+                {!currentUser && <SignInScreen />}
             </IonList>
         </div>
     );

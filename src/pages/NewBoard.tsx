@@ -28,7 +28,8 @@ const NewBoard: React.FC = (props: any) => {
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
     createBoard(data);
-    props.history.push('/home');
+    props.history.push('/boards');
+    window.location.reload();
   }
   console.log(watch("name")) // watch input value by passing the name of it
 

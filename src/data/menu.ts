@@ -47,6 +47,12 @@ const menuLinks: MenuLink[] = [
     name: 'Sign Out',
     slug: 'sign-out',
     id: 6
+  },
+  {
+    endpoint: '/dashboard',
+    name: 'Dashboard',
+    slug: 'dashboard',
+    id: 7
   }
 ];
 

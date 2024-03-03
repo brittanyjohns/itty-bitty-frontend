@@ -62,13 +62,13 @@ const Home: React.FC = () => {
             <IonTitle>Welcome to Itty Bitty Boards</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent>
+        <IonContent className='ion-padding'>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <IonContent fullscreen>
             <h1>Itty Bitty Boards{currentUser && currentUser.email}</h1>
-            <BoardList />
+            {isUserSignedIn() ? <BoardList /> : <SignInScreen />}
           </IonContent>
         </IonContent>
       </IonPage>

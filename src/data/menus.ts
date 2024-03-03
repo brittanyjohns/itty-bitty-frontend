@@ -80,12 +80,7 @@ export async function addImageListToMenu(id: string, payload: { word_list: strin
     return menu;
   }
 
-  export interface RemainingImageProps {
-    page: number | null;
-    query: string | null;
-  }
-
-  export async function getRemainingImages(id: string, props: RemainingImageProps): Promise<Image[]> {
+  export async function getMenuImages(id: string, props: any): Promise<Image[]> {
     const response = await fetch(`http://${BASE_URL}menus/${id}/remaining_images?page=${props.page}&query=${props.query}`,
      { headers: userHeaders }) 
     const images: Image[] = await response.json();

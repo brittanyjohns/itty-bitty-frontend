@@ -80,13 +80,8 @@ export async function addImageListToBoard(id: string, payload: { word_list: stri
     return board;
   }
 
-  export interface RemainingImageProps {
-    page: number | null;
-    query: string | null;
-  }
-
-  export async function getRemainingImages(id: string, props: RemainingImageProps): Promise<Image[]> {
-    const response = await fetch(`http://${BASE_URL}boards/${id}/remaining_images?page=${props.page}&query=${props.query}`,
+  export async function getRemainingImages(id: string, page: number, query: string): Promise<Image[]> {
+    const response = await fetch(`http://${BASE_URL}boards/${id}/remaining_images?page=${page}&query=${query}`,
      { headers: userHeaders }) 
     const images: Image[] = await response.json();
     return images;
@@ -99,22 +94,18 @@ export async function addImageListToBoard(id: string, payload: { word_list: stri
       body: JSON.stringify({ image_id }),
     };
     const response = await fetch(`http://${BASE_URL}boards/${id}/associate_image`, requestInfo);
-    console.log("Add Image to Board response", response);
     const board: Board = await response.json();
-    console.log("Add Image to Board board", board);
     return board;
   }
 
   export async function removeImageFromBoard(id: string, image_id: string): Promise<Board> {
     const body = JSON.stringify({ image_id });
-    console.log("Remove Image from Board body", body);
     const requestInfo = {
       method: "POST",
       headers: userHeaders,
       body: body,
     };
     const response = await fetch(`http://${BASE_URL}boards/${id}/remove_image`, requestInfo);
-    console.log("Remove Image from Board response", response);
     const board: Board = await response.json();
     return board;
   }

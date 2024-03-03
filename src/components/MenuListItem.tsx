@@ -1,7 +1,8 @@
 import {
   IonItem,
   IonLabel,
-  IonNote
+  IonNote,
+  useIonViewWillEnter
   } from '@ionic/react';
 import { MenuLink } from '../data/menu';
 import './MenuListItem.css';
@@ -11,6 +12,10 @@ interface MenuListItemProps {
 }
 
 const MenuListItem: React.FC<MenuListItemProps> = ({ menuLink }) => {
+
+  useIonViewWillEnter(() => {
+    console.log('MenuListItem ionViewWillEnter event fired');
+  } );
   return (
     <IonItem routerLink={`${menuLink.endpoint}`} detail={false}>
       <div slot="start" className="dot dot-unread"></div>

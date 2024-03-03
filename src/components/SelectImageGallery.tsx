@@ -1,21 +1,33 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Image, ImageGalleryProps, SelectImageGalleryProps, getImages } from '../data/images';
-import { IonCol, IonGrid, IonRow, IonImg, IonInput, IonButton, IonIcon, IonSearchbar, IonCardContent, IonCardHeader, IonCard, IonCardTitle, IonCardSubtitle } from '@ionic/react';
-import { useLongPress } from "@uidotdev/usehooks";
+import { Image, SelectImageGalleryProps } from '../data/images';
+import { IonImg, IonButton, IonSearchbar, IonCardContent, IonCardHeader, IonCard, IonCardTitle, IonCardSubtitle, IonButtons } from '@ionic/react';
 
 import '../index.css'
-// import TTS from 'cordova-plugin-tts';
-import { image } from 'ionicons/icons';
-import { addImageToBoard, getRemainingImages } from '../data/boards';
-import { get, set } from 'react-hook-form';
-const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId, page }) => {
-    const gridRef = useRef(null); // Ref for the grid container
-    const inputRef = useRef<HTMLIonInputElement>(null);
-    const [showIcon, setShowIcon] = useState(false);
+import { addImageToBoard } from '../data/boards';
+const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId, getMoreImages }) => {
+    const gridRef = useRef(null);
     const [remainingImages, setRemainingImages] = useState<Image[]>(images);
-    const [currentPage, setCurrentPage] = useState<number>(page);
+    const [page, setPage] = useState(1);
 
-    const [results, setResults] = useState<string[]>(remainingImages ? remainingImages.map((img) => img.label) : []);
+    const nextPage = () => {
+        setPage(page + 1);
+    }
+
+    const previousPage = () => {
+        if (page > 1) {
+            setPage(page - 1);
+        }
+    }
+
+    const loadMore = async (query?: string) => {
+        setRemainingImages(images);
+        if (!query) {
+            query = ''
+        }
+
+        const imgs = getMoreImages(page, query);
+        return imgs;
+    }
 
     const resizeGrid = () => {
         const currentGrid = gridRef.current ? gridRef.current as HTMLElement : null;
@@ -40,8 +52,7 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
 
     const handleImageClick = (image: Image) => {
         if (!image) return;
-        const result = addImageToBoard(boardId, image.id);
-        console.log('handleImageClick', image);
+        addImageToBoard(boardId, image.id);
         window.location.reload();
     };
 
@@ -49,48 +60,38 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
         let query = '';
         const target = event.target as HTMLIonSearchbarElement;
         if (target) query = target.value!.toLowerCase();
-        setCurrentPage(1);
-        getMoreImages(query);
+        setPage(1);
+        getMoreImages(1, query);
     }
 
-    const getMoreImages = async (query: string) => {
-        if (!boardId) return;
-        const remainingImgs = await getRemainingImages(boardId, {
-            query: query,
-            page: currentPage
-        });
-        setRemainingImages(remainingImgs);
-        console.log('getMoreImages', remainingImgs);
-      }
-
-    // Resize grid on mount and when images state changes
     useEffect(() => {
-        console.log('SelectImageGallery useEffect - Images changed');
         setRemainingImages(images);
-        // resizeGrid();
-        // Add window resize event listener to adjust grid on viewport change
-        // window.addEventListener('resize', resizeGrid);
-        // return () => window.removeEventListener('resize', resizeGrid);
     }, [images]);
 
     useEffect(() => {
         resizeGrid();
+    }, []);
 
-        setRemainingImages(images);
-        console.log('Remaining images', remainingImages);
-    }   , []);
+    useEffect(() => {
+        loadMore();
+      }, [page]);
 
     return (
         <IonCard>
-        <IonCardHeader>
-          <IonCardTitle>
-            Search existing images
-          </IonCardTitle>
-          <IonCardSubtitle>Click the image to add it to your board.</IonCardSubtitle>
-        </IonCardHeader>    
-        <IonCardContent>
+            <IonCardHeader>
+                <IonCardTitle>
+                    Search existing images
+                </IonCardTitle>
+                <IonCardSubtitle>Click the image to add it to your board.</IonCardSubtitle>
+            </IonCardHeader>
+            <IonCardContent>
             <IonSearchbar debounce={1000} onIonInput={handleSearch} animated={true} placeholder="Animated"></IonSearchbar>
-        </IonCardContent>
+
+                <IonButtons class="flex justify-between w-full">
+                    <IonButton onClick={() => previousPage()}>Prev</IonButton>
+                    <IonButton onClick={() => nextPage()}>Next</IonButton>
+                </IonButtons>
+            </IonCardContent>
             <div className="my-auto mx-auto h-[calc(100vh-30px-32px)] w-[calc(100vw-190px-32px)] grid grid-cols-3 gap-1" ref={gridRef}>
                 {remainingImages.map((image, i) => (
                     <div className='flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)} key={image.id}>

@@ -1,5 +1,5 @@
-export const BASE_URL = '10.0.2.2:4000/api/'; // For Android emulator
-// export const BASE_URL = 'localhost:4000/api/'; // For web development
+// export const BASE_URL = '10.0.2.2:4000/api/'; // For Android emulator
+export const BASE_URL = 'localhost:4000/api/'; // For web development
 // ionic capacitor run android -l --host=192.168.254.1
 
 export const userHeaders = {   
@@ -65,16 +65,38 @@ export const isUserSignedIn = () => {
     return token != null;
 }
 
-export const getCurrentUser = () => {
-    const response = fetch(`http://${BASE_URL}v1/users/current`, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-    })
-        .then(response => response.json())
-        .then(data => data)
-        .catch(error => console.error('Error fetching data: ', error));
-    console.log('Current User', response);
-    return response;
+// export const getCurrentUser = () => {
+//     const response = fetch(`http://${BASE_URL}v1/users/current`, {
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Authorization': `Bearer ${localStorage.getItem('token')}`
+//         },
+//     })
+//         .then(response => response.json())
+//         .then(data => data)
+//         .catch(error => console.error('Error fetching data: ', error));
+//     console.log('Current User', response);
+//     return response;
+// }
+
+export const getCurrentUser = async () => {
+    try {
+        const response = await fetch(`http://${BASE_URL}v1/users/current`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+        });
+        const data = await response.json();
+        console.log('Current User', data);
+        if (response.ok) {
+            return data.user; // Assuming the response structure is { user: currentUser }
+        } else {
+            console.error('Error fetching current user: ', data.error);
+            return null; // Handle unauthorized or other errors gracefully
+        }
+    } catch (error) {
+        console.error('Error fetching data: ', error);
+        return null;
+    }
 }
