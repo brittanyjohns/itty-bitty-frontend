@@ -7,6 +7,8 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
+  IonInput,
+  IonItem,
   IonModal,
   IonPage,
   IonTitle,
@@ -14,7 +16,7 @@ import {
   useIonViewWillEnter,
 } from '@ionic/react';
 import { Board } from '../types';
-import { arrowBackCircleOutline } from 'ionicons/icons';
+import { arrowBackCircleOutline, playCircleOutline, trashBinOutline } from 'ionicons/icons';
 
 import { useParams } from 'react-router';
 import './ViewBoard.css';
@@ -22,6 +24,7 @@ import ImageGallery from '../components/ImageGallery';
 import FileUploadForm from '../components/FileUploadForm';
 import SelectImageGallery from '../components/SelectImageGallery';
 import React from 'react';
+import { TextToSpeech } from '@capacitor-community/text-to-speech';
 
 const ViewBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();
@@ -29,7 +32,8 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
   const params = useParams<{ id: string }>();
   const modal = useRef<HTMLIonModalElement>(null);
   const [remainingImages, setRemainingImages] = useState<Image[]>(); // State for the remaining images
-
+  const inputRef = useRef<HTMLIonInputElement>(null);
+    const [showIcon, setShowIcon] = useState(false);
 
   const fetchBoard = async () => {
     const board = await getBoard(parseInt(params.id, 10));
@@ -86,6 +90,24 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
     )
   });
 
+  const speak = async (text: string) => {
+    await TextToSpeech.speak({
+        text: text,
+        lang: 'en-US',
+        rate: 1.0,
+        pitch: 1.0,
+        volume: 1.0,
+        category: 'ambient',
+    });
+};
+
+const clearInput = () => {
+    if (inputRef.current) {
+        inputRef.current.value = '';
+    }
+    setShowIcon(false);
+}
+
   useIonViewWillEnter(() => {
     fetchBoard();
   });
@@ -94,12 +116,25 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
     <IonPage id="view-board-page">
       <IonHeader translucent>
         <IonToolbar>
-          <IonButtons slot="start">
+          <IonButtons slot="start" className='mr-4'>
             <IonButton routerLink="/boards">
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
           </IonButtons>
-          <IonTitle>{board && board.name}</IonTitle>
+          <IonItem slot='start' className='w-full'>
+                <IonInput placeholder="" ref={inputRef} readonly={true} className='w-3/4'>
+                </IonInput>
+                <div className="flex justify-around">
+                    {showIcon &&
+                        <IonButton size="small" onClick={() => speak(inputRef.current?.value as string)}><IonIcon slot="icon-only"
+                            icon={playCircleOutline} onClick={() => speak(inputRef.current?.value as string)}></IonIcon> </IonButton>
+                    }
+                    {showIcon &&
+                        <IonButton size="small" onClick={() => clearInput()}><IonIcon slot="icon-only" icon={trashBinOutline} onClick={() => clearInput()}></IonIcon></IonButton>
+
+                    }
+                </div>
+            </IonItem>
           <IonButtons slot="end">
             <IonButton id="open-modal" expand="block" onClick={() => setIsOpen(true)}>
               Add
@@ -108,9 +143,9 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
         </IonToolbar>
       </IonHeader>
       {modalForm()}
-
+      <IonContent fullscreen scrollY={false}>
       {board &&
-          <ImageGallery images={board.images} boardId={board.id} />
+          <ImageGallery images={board.images} boardId={board.id} setShowIcon={setShowIcon} inputRef={inputRef} />
       }
       {board ? (
         <>
@@ -123,6 +158,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
       ) : (
         <div>Board not found</div>
       )}
+      </IonContent>
     </IonPage>
   );
 }

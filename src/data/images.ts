@@ -10,6 +10,8 @@ export interface Image {
   export interface ImageGalleryProps {
     boardId?: string | null;
     images: Image[];
+    setShowIcon: any;
+    inputRef: any;
   }
   // (boardId, {
   //           query: query,
