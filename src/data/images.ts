@@ -21,9 +21,8 @@ export interface Image {
   export interface SelectImageGalleryProps {
     boardId?: string;
     images: Image[];
-    // page: number;
-    // loadMoreImages: any;
-    getMoreImages: any;
+    onLoadMoreImages: any;
+    onImageClick: any;
   }
 
 const userHeaders = {   

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { getBoard, getRemainingImages } from '../data/boards';
+import { useRef, useState } from 'react';
+import { addImageToBoard, getBoard, getRemainingImages } from '../data/boards';
 import { Image } from '../data/images';
 import {
   IonButton,
@@ -16,7 +16,7 @@ import {
   useIonViewWillEnter,
 } from '@ionic/react';
 import { Board } from '../types';
-import { arrowBackCircleOutline, playCircleOutline, trashBinOutline } from 'ionicons/icons';
+import { add, arrowBackCircleOutline, playCircleOutline, trashBinOutline } from 'ionicons/icons';
 
 import { useParams } from 'react-router';
 import './ViewBoard.css';
@@ -36,7 +36,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
     const [showIcon, setShowIcon] = useState(false);
 
   const fetchBoard = async () => {
-    const board = await getBoard(parseInt(params.id, 10));
+    const board = await getBoard(params.id);
     setBoard(board);
     const remainingImgs = await getRemainingImages(board.id, 1, '');
     console.log('fetch board remainingImgs', remainingImgs);
@@ -47,7 +47,17 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
     modal.current?.dismiss()
   }
 
-  const onLoadMoreImages = async (page: number, query: string) => {
+  const handleImageClick = (image: Image) => {
+    console.log('Image clicked: ', image.id);
+    console.log('Image clicked: ', image.label);
+    console.log('Board clicked: ', board?.id);
+    // alert('Image clicked: ' + image.id);
+    if (!board) return;
+    addImageToBoard(board?.id, image.id);
+    closeModal();
+  };
+
+  const getMoreImages = async (page: number, query: string) => {
     console.log('Load More - view board page', page);
     console.log('Load More - view board query', query);
     console.log('Load More - view board board', board);
@@ -82,9 +92,12 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
         <IonContent id="board-modal">
 
           <FileUploadForm board={board} onCloseModal={closeModal} />
-
+          <div className="text-center p-2 border">
+            <p>OR</p>
           {board && remainingImages &&
-            <SelectImageGallery images={remainingImages} boardId={board.id} getMoreImages={onLoadMoreImages} />}
+            <SelectImageGallery images={remainingImages} boardId={board.id} onLoadMoreImages={getMoreImages} onImageClick={handleImageClick} /> 
+          }
+          </div>
         </IonContent>
       </IonModal>
     )
@@ -122,7 +135,7 @@ const clearInput = () => {
             </IonButton>
           </IonButtons>
           <IonItem slot='start' className='w-full'>
-                <IonInput placeholder="" ref={inputRef} readonly={true} className='w-3/4'>
+                <IonInput placeholder={board?.name} ref={inputRef} readonly={true} className='w-3/4'>
                 </IonInput>
                 <div className="flex justify-around">
                     {showIcon &&
@@ -135,15 +148,15 @@ const clearInput = () => {
                     }
                 </div>
             </IonItem>
-          <IonButtons slot="end">
-            <IonButton id="open-modal" expand="block" onClick={() => setIsOpen(true)}>
-              Add
+            <IonButtons slot="start" className='mr-4'>
+            <IonButton routerLink={`/boards/${board?.id}/edit`} >
+              <IonIcon slot="icon-only" icon={add} />
             </IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
       {modalForm()}
-      <IonContent fullscreen scrollY={false}>
+      <IonContent fullscreen scrollY={true}>
       {board &&
           <ImageGallery images={board.images} boardId={board.id} setShowIcon={setShowIcon} inputRef={inputRef} />
       }

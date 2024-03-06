@@ -2,7 +2,7 @@ import {
   IonItem,
   IonLabel,
   IonNote
-  } from '@ionic/react';
+} from '@ionic/react';
 import { Board } from '../data/boards';
 import './BoardListItem.css';
 
@@ -12,11 +12,9 @@ interface BoardListItemProps {
 
 const BoardListItem: React.FC<BoardListItemProps> = ({ board }) => {
   return (
-    <IonItem routerLink={`/boards/${board.id}`} detail={true} className='p-4'>
+    <IonItem routerLink={`/boards/${board.id}`} detail={true} className='p-4 w-full'>
       <IonLabel>
-        <h2>
-          {board.name}
-        </h2>
+        {board.name}
       </IonLabel>
     </IonItem>
   );

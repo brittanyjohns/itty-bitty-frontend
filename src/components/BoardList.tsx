@@ -52,6 +52,7 @@ const BoardList = () => {
     };
 
     const handleActionSelected = (action: string) => {
+        console.log('Action selected: ', action);
         if (action === 'delete') {
             if (!boardId) {
                 console.error('Board ID is missing');
@@ -62,7 +63,7 @@ const BoardList = () => {
         } else if (action === 'edit') {
             history.push(`/boards/${boards}/edit`);
         }
-        setShowActionList(false);
+        // setShowActionList(false);
     };
 
     const handleBoardClick = (board: Board) => {
@@ -78,8 +79,8 @@ const BoardList = () => {
     }
 
     return (
-        <div className="m-2 border-2 p-2">
-            <IonList>
+        <div className="w-full p-2">
+            <IonList className="w-full">
                 {boards && boards.map((board, i) => (
                     <IonItem key={i} onClick={() => handleBoardClick(board)}>
                         <div id={board.id} className='rounded-md flex relative w-full hover:cursor-pointer text-center' onClick={() => handleBoardClick(board)} key={board.id}

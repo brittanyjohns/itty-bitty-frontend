@@ -17,7 +17,7 @@ export const getBoards = () => {
     return boards;
 }
 
-export const getBoard = (id: number) => {
+export const getBoard = (id: string) => {
     const board = fetch(`http://${BASE_URL}boards/${id}`, { headers: userHeaders }) // `http://localhostboards
         .then(response => response.json())
         .then(data => data)

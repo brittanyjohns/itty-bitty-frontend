@@ -1,11 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Image, ImageGalleryProps } from '../data/images';
-import { IonImg, IonInput, IonButton, IonIcon, IonItem } from '@ionic/react';
-import {
-    image,
-    playCircleOutline,
-    trashBinOutline
-} from 'ionicons/icons';
+import { IonImg } from '@ionic/react';
+
 import { TextToSpeech } from '@capacitor-community/text-to-speech';
 import '../index.css'
 import { useHistory } from 'react-router';
@@ -14,35 +10,14 @@ import { removeImageFromBoard } from '../data/boards';
 const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId, setShowIcon, inputRef }) => {
     const gridRef = useRef(null); // Ref for the grid container
     const [audioList, setAudioList] = useState<string[]>([]);
-    // const inputRef = useRef<HTMLIonInputElement>(null);
-    // const [showIcon, setShowIcon] = useState(false);
     const [imageId, setImageId] = useState<string>('');
     const [leaving, setLeaving] = useState<boolean>(false);
     const history = useHistory();
     const [showActionList, setShowActionList] = useState<boolean>(false);
     const longPressTimer = useRef<NodeJS.Timeout | null>(null);
     const galleryRef = useRef<HTMLDivElement>(null);
-    const bumperRef = useRef<HTMLIonItemElement>(null);
-    const [galleryHeight, setGalleryHeight] = useState<number | null>(null);
-    const [parentHeight, setParentHeight] = useState<number | null>(null);
-
-
-    useEffect(() => {
-        if (galleryRef.current) {
-            const galleryElement = galleryRef.current;
-            const parentHeight = galleryElement.parentElement?.offsetHeight;
-            console.log('galleryRef.current', galleryRef.current.offsetHeight);
-            if (galleryElement) {
-                setGalleryHeight(galleryElement.offsetHeight);
-            }
-            if (parentHeight) {
-                setParentHeight(parentHeight);
-            }
-        }
-    })
 
     const resizeGrid = () => {
-        // const imagesCount = currentGrid.children.length || 0;
         const imagesCount = images.length;
         const sqrt = Math.sqrt(imagesCount);
         let rows = Math.ceil(sqrt);
@@ -50,60 +25,48 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId, setShowIco
         const gallery = galleryRef.current ? galleryRef.current as HTMLElement : null;
 
         const currentGrid = gridRef.current ? gridRef.current as HTMLElement : null;
-        const gallery1Width = gallery?.offsetWidth;
-        const gallery1Height = gallery?.offsetHeight;
-        console.log('galleryWidth', gallery1Width);
-        console.log('galleryHeight', gallery1Height);
-        console.log('currentGrid', currentGrid);
-        console.log('gallery', gallery);
-        console.log('imagesCount', imagesCount);
-        console.log('rows', rows);
-        console.log('cols', cols);
-
+        const galleryWidth = gallery?.offsetWidth;
+        const galleryHeight = gallery?.offsetHeight;
+        let landscapeRows = 3;
+        let portraitCols = 2;
+        if (imagesCount > 20) {
+            landscapeRows = 4;
+            portraitCols = 4;
+        }
         if (gallery) {
 
-            const adjustedHeight = `calc(100vh - 100px )`;
+            const adjustedHeight = `calc(100vh - 51px )`;
             const adjustedWidth = `calc(100vw)`;
-            const minImageHeight = 78;
-            const minImageWidth = 78;
 
-
-            let landscapeRows = 3;
-            let portraitCols = 2;
-            if (imagesCount > 20) {
-                landscapeRows = 4;
-                portraitCols = 3;
-            } else {
-                landscapeRows = 3;
-                portraitCols = 2;
-            }
-            const protraitRows = Math.ceil(imagesCount / portraitCols);
-
-
-
-            gallery.style.width = adjustedWidth;
-            gallery.style.height = adjustedHeight;
-            if (gallery1Width && gallery1Height && currentGrid) {
-                if (gallery1Width > gallery1Height) {
-                    console.log(`Landscape - setting landscapeRows: ${landscapeRows}`);
-                    // gallery.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
+            // gallery.style.width = adjustedWidth;
+            if (galleryWidth && galleryHeight && currentGrid) {
+                currentGrid.style.height = adjustedHeight;
+                currentGrid.style.width = adjustedWidth;
+                if (galleryWidth > galleryHeight) {
+                    if(galleryHeight > 600) {
+                        landscapeRows += 4;
+                    }
+                    //  landscape
                     currentGrid.style.gridTemplateRows = `repeat(${landscapeRows}, minmax(0, 1fr))`;
                 }
-                if (gallery1Width < gallery1Height) {
-                    cols = Math.ceil(imagesCount / rows);
-                    console.log(`Portrait - setting protraitRows: ${protraitRows}`);
+                if (galleryWidth < galleryHeight) {
+                    let protraitRows = (galleryWidth * 2) / 100;
+                    //  Round up to the nearest integer
+                    protraitRows = Math.floor(protraitRows);
 
-                    // currentGrid.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
-
+                    console.log('Testing protraitRows', protraitRows);
+                    // portrait
+                    if(galleryHeight > 600) {
+                        protraitRows += 1;
+                        console.log('Adding Row', protraitRows);
+                    }
+                    if(galleryHeight > 700) {
+                        protraitRows += 1;
+                        console.log('Adding Row', protraitRows);
+                    }
                     currentGrid.style.gridTemplateRows = `repeat(${protraitRows}, minmax(0, 1fr))`;
-                    // gallery.style.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr))`;
                 }
             }
-            // currentGrid.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
-        }
-
-        if (gallery) {
-
         }
     }
 
@@ -143,13 +106,6 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId, setShowIco
             category: 'ambient',
         });
     };
-
-    // const clearInput = () => {
-    //     if (inputRef.current) {
-    //         inputRef.current.value = '';
-    //     }
-    //     setShowIcon(false);
-    // }
 
     const handleButtonPress = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
         const imageId = (event.target as HTMLDivElement).id;
@@ -208,7 +164,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId, setShowIco
         <div className="gallery-container" ref={galleryRef}>
             <div className="my-auto mx-auto grid grid-rows-4 grid-flow-col gap-1 p-1 " ref={gridRef}>
                 {images.map((image, i) => (
-                    <div className='h-20 border p-1 bg-white rounded-md flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)} key={image.id}
+                    <div className='h-20 border bg-white rounded-md flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)} key={image.id}
                         onTouchStart={(e) => handleButtonPress(e)}
                         onPointerDown={(e) => handlePointerDown(e)}
                         onTouchEnd={(e) => handleButtonRelease(e)}

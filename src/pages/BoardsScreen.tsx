@@ -2,6 +2,7 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonItem,
   IonMenuButton,
   IonPage,
   IonRefresher,
@@ -43,8 +44,12 @@ const BoardsScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-            {currentUser && <h2>Welcome {currentUser.email}</h2>}
-            <BoardList />
+          <IonItem>
+          {currentUser && <h2>Welcome {currentUser.email}</h2>}
+          </IonItem>
+            <IonItem>
+              <BoardList />
+            </IonItem>
         </IonContent>
       </IonPage>
     </>
