@@ -29,6 +29,7 @@ const SignInScreen: React.FC = () => {
       } else {
         if (response.error) {
           console.error('Error signing in: ', response.error);
+          alert('Error signing in: ' + response.error);
         }
         console.error('Error signing in: ', response);
       }

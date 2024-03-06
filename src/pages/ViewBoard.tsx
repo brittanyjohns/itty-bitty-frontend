@@ -110,9 +110,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
       {modalForm()}
 
       {board &&
-        <>
           <ImageGallery images={board.images} boardId={board.id} />
-        </>
       }
       {board ? (
         <>

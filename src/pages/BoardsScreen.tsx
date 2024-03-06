@@ -43,10 +43,8 @@ const BoardsScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <IonContent fullscreen>
             {currentUser && <h2>Welcome {currentUser.email}</h2>}
             <BoardList />
-          </IonContent>
         </IonContent>
       </IonPage>
     </>

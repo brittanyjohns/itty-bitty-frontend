@@ -30,7 +30,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId }) => {
             const rows = Math.ceil(sqrt);
             let cols = Math.round(sqrt);
 
-            const adjustedHeight = `calc(100vh - 115px - 32px)`;
+            const adjustedHeight = `calc(100vh - 80px - 32px)`;
             const adjustedWidth = `calc(100vw - 32px)`;
 
             currentGrid.style.width = adjustedWidth;
@@ -140,7 +140,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId }) => {
     }, [images]);
 
     return (
-        <div>
+        <div className="gallery-container">
             <IonInput placeholder="" ref={inputRef} readonly={true}>
             </IonInput>
             <div className="flex justify-between">
@@ -153,9 +153,9 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId }) => {
 
                 }
             </div>
-            <div className="my-auto mx-auto h-[calc(100vh-60px-32px)] w-[calc(100vw-32px)] overflow-hidden grid grid-cols-1 gap-1" ref={gridRef}>
+            <div className="my-auto mx-auto h-[calc(100vh-60px-32px)] w-[calc(100vw-32px)] overflow-hidden grid grid-cols-1 gap-1 pt-5 pb-8" ref={gridRef}>
                 {images.map((image, i) => (
-                    <div className=' bg-white rounded-md flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)} key={image.id}
+                    <div className='border p-1 bg-white rounded-md flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)} key={image.id}
                         onTouchStart={(e) => handleButtonPress(e)}
                         onPointerDown={(e) => handlePointerDown(e)}
                         onTouchEnd={(e) => handleButtonRelease(e)}
