@@ -10,45 +10,18 @@ import {
   IonToolbar,
   useIonViewWillEnter
 } from '@ionic/react';
-import './Home.css';
 import BoardList from '../components/BoardList';
-import { getCurrentUser, isUserSignedIn } from '../data/users';
 import SignInScreen from './SignUpScreen';
 import MainMenu from '../components/MainMenu';
-import SignUpScreen from './SignUpScreen';
-import { get } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { useCurrentUser } from '../hooks/useCurrentUser';
 const Home: React.FC = () => {
-  const [currentUser, setCurrentUser] = useState<any>(null);
-
-  useIonViewWillEnter(() => {
-    fetchCurrentUser().then((user) => {
-      setCurrentUser(user);
-    } );
-  });
+  const { currentUser, setCurrentUser } = useCurrentUser();
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
       e.detail.complete();
     }, 3000);
   };
-
-  
-  const fetchCurrentUser = async () => {
-    if (isUserSignedIn()) {
-      const userFromServer = await getCurrentUser();
-      console.log('userFromServer', userFromServer);
-      setCurrentUser(userFromServer);
-      return userFromServer;
-    }
-
-  }
-
-  useEffect(() => {
-    fetchCurrentUser().then((user) => {
-      setCurrentUser(user);
-    } );
-  } , []);
 
   return (
     <>
@@ -68,7 +41,7 @@ const Home: React.FC = () => {
           </IonRefresher>
           <IonContent fullscreen>
             <h1>Itty Bitty Boards{currentUser && currentUser.email}</h1>
-            {isUserSignedIn() ? <BoardList /> : <SignInScreen />}
+            {currentUser ? <BoardList /> : <SignInScreen />}
           </IonContent>
         </IonContent>
       </IonPage>

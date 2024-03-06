@@ -6,18 +6,26 @@ import {
   } from '@ionic/react';
 import { MenuLink } from '../data/menu';
 import './MenuListItem.css';
+import { useHistory } from 'react-router';
+import { h } from 'ionicons/dist/types/stencil-public-runtime';
 
 interface MenuListItemProps {
   menuLink: MenuLink;
+  closeMenu: () => void;
 }
 
-const MenuListItem: React.FC<MenuListItemProps> = ({ menuLink }) => {
+const MenuListItem: React.FC<MenuListItemProps> = ({ menuLink, closeMenu }) => {
+  const history = useHistory();
 
-  useIonViewWillEnter(() => {
-    console.log('MenuListItem ionViewWillEnter event fired');
-  } );
+  const handleClick = (endpoint: string | undefined) => () => {
+    console.log('MenuListItem - handleClick', endpoint);
+    closeMenu();
+
+    history.push(endpoint ?? '');
+    
+  }
   return (
-    <IonItem routerLink={`${menuLink.endpoint}`} detail={false}>
+    <IonItem  onClick={handleClick(menuLink.endpoint)}>
       <div slot="start" className="dot dot-unread"></div>
       <IonLabel className="ion-text-wrap">
         <h2>

@@ -12,7 +12,6 @@ import {
   IonToolbar,
   useIonViewWillEnter,
 } from '@ionic/react';
-import './NewBoard.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { arrowBackCircleOutline } from 'ionicons/icons';
 type Inputs = {

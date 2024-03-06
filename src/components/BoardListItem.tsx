@@ -12,16 +12,11 @@ interface BoardListItemProps {
 
 const BoardListItem: React.FC<BoardListItemProps> = ({ board }) => {
   return (
-    <IonItem routerLink={`/boards/${board.id}`} detail={true}>
-      <div slot="start" className="dot dot-unread"></div>
-      <IonLabel className="ion-text-wrap">
+    <IonItem routerLink={`/boards/${board.id}`} detail={true} className='p-4'>
+      <IonLabel>
         <h2>
           {board.name}
-          <span className="date">
-            <IonNote>{board.id}</IonNote>
-          </span>
         </h2>
-        <h3>{board.name}</h3>
       </IonLabel>
     </IonItem>
   );

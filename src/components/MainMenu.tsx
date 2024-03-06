@@ -57,7 +57,7 @@ function MainMenu() {
         <IonContent className="ion-padding">
           <IonList>
             {filteredLinks.map(menuLink => (
-              <MenuListItem key={menuLink.id} menuLink={menuLink} />
+              <MenuListItem key={menuLink.id} menuLink={menuLink} closeMenu={hideMenu} />
             ))}
           </IonList>
         </IonContent>

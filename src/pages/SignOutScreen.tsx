@@ -5,6 +5,7 @@ import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { isUserSignedIn, signOut } from '../data/users';
 import { useCurrentUser } from '../hooks/useCurrentUser';
+import MainMenu from '../components/MainMenu';
 
 const SignOutScreen: React.FC = () => {
   const history = useHistory();
@@ -46,6 +47,7 @@ const SignOutScreen: React.FC = () => {
   // Optionally, return null or a loading spinner while the redirect is being processed
   return (
     <div>
+    <MainMenu />
       {!isUserSignedIn() && <IonButton onClick={() => history.push('/sign-in')}>Sign In</IonButton>}
       {isUserSignedIn() && <IonButton onClick={handleSignOut}>Sign Out</IonButton>}
     </div>

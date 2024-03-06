@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { IonPage, IonContent, IonInput, IonButton, useIonViewWillEnter, IonText } from '@ionic/react';
 import { NewUser, signUp } from '../data/users';
 import { useHistory } from 'react-router-dom';
+import MainMenu from '../components/MainMenu';
 
 const SignInScreen: React.FC = () => {
   const history = useHistory();
@@ -47,6 +48,8 @@ const SignInScreen: React.FC = () => {
   };
 
   return (
+    <>
+    <MainMenu />
     <IonPage>
       <IonContent className="ion-padding">
         <IonText className="text-3xl">Sign Up</IonText>
@@ -87,6 +90,7 @@ const SignInScreen: React.FC = () => {
         </div>
       </IonContent>
     </IonPage>
+    </>
   );
 };
 

@@ -9,7 +9,6 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import './Dashboard.css';
 import BoardList from '../components/BoardList';
 import MainMenu from '../components/MainMenu';
 import { useEffect, useState } from 'react';

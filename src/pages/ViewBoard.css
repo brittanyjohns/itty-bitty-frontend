@@ -1,4 +1,4 @@
-#view-message-page ion-item {
+/* #view-message-page ion-item {
   --inner-padding-end: 0;
   --background: transparent;
 }
@@ -10,7 +10,7 @@
 
 #view-message-page ion-item h2 {
   font-weight: 600;
-  
+   */
   /**
    * With larger font scales
    * the date/time should wrap to the next
@@ -18,7 +18,7 @@
    * space between the name and the date/time
    * if they can appear on the same line.
    */
-  display: flex;
+  /* display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
@@ -53,4 +53,8 @@
   font-size: 0.9375rem;
   font-weight: bold;
   margin-bottom: 6px !important;
+} */
+
+#board-modal {
+  background-color: red !important;
 }

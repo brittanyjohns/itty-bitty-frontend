@@ -11,7 +11,6 @@ ion-label {
 ion-item h2 {
   font-weight: 600;
   margin: 0;
-  
   /**
    * With larger font scales
    * the date/time should wrap to the next
@@ -22,7 +21,7 @@ ion-item h2 {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-}
+} 
 
 ion-item p {
   text-overflow: ellipsis;
@@ -48,7 +47,7 @@ ion-item ion-note {
 
 ion-item ion-note.md {
   margin-right: 14px;
-}
+} */
 
 .dot {
   display: block;
@@ -57,7 +56,7 @@ ion-item ion-note.md {
   border-radius: 50%;
   align-self: start;
   margin: 16px 10px 16px 16px;
-}
+} */
 
 .dot-unread {
   background: var(--ion-color-primary);
@@ -66,4 +65,14 @@ ion-item ion-note.md {
 ion-footer ion-title {
   font-size: 11px;
   font-weight: normal;
+}
+
+ion-icon .item-detail-icon {
+  font-size: 42px;
+  margin-right: 8px;
+  color: blueviolet;
+}
+
+.board-list-item {
+  background-color: blueviolet;
 }

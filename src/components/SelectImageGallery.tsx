@@ -51,7 +51,7 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
     }
 
     const handleImageClick = (image: Image) => {
-        if (!image) return;
+        if (!image || !boardId) return;
         addImageToBoard(boardId, image.id);
         window.location.reload();
     };
@@ -92,11 +92,11 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
                     <IonButton onClick={() => nextPage()}>Next</IonButton>
                 </IonButtons>
             </IonCardContent>
-            <div className="my-auto mx-auto h-[calc(100vh-30px-32px)] w-[calc(100vw-190px-32px)] grid grid-cols-3 gap-1" ref={gridRef}>
+            <div className="my-auto mx-auto h-[calc(100vh-30px-32px)] w-[calc(100vw-100px-32px)] grid grid-cols-3 gap-1" ref={gridRef}>
                 {remainingImages.map((image, i) => (
-                    <div className='flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)} key={image.id}>
+                    <div className='flex relative w-full hover:cursor-pointer text-center  bg-white rounded-lg' onClick={() => handleImageClick(image)} key={image.id}>
                         <IonImg src={image.src} alt={image.label} className="absolute object-contain w-full h-full top-0 left-0" />
-                        <span className="font-medium text-xs md:text-sm lg:text-md rounded bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black">
+                        <span className="font-medium text-xs md:text-sm lg:text-md rounded bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black">
                             {image.label}
                             <audio>
                                 <source src={image.audio} type="audio/aac" />

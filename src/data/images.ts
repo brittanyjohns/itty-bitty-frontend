@@ -17,7 +17,7 @@ export interface Image {
   //       });
 
   export interface SelectImageGalleryProps {
-    boardId: string;
+    boardId?: string;
     images: Image[];
     // page: number;
     // loadMoreImages: any;
@@ -96,4 +96,11 @@ export const updateImage = (formData: FormData) => {
         .catch(error => console.error('Error updating image: ', error));
 
     return img;
+}
+
+export async function getMoreImages(page: number, query: string): Promise<Image[]> {
+  const response = await fetch(`http://${BASE_URL}images?page=${page}&query=${query}`,
+   { headers: userHeaders }) 
+  const images: Image[] = await response.json();
+  return images;
 }

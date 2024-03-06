@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Board, deleteBoard, getBoards } from '../data/boards';
 import { IonList, IonButton, IonItem } from '@ionic/react';
-import '../index.css'
+// import '../index.css'
 import BoardListItem from './BoardListItem';
 import { useHistory } from 'react-router';
 import ActionList from './ActionList';
@@ -82,7 +82,7 @@ const BoardList = () => {
             <IonList>
                 {boards && boards.map((board, i) => (
                     <IonItem key={i} onClick={() => handleBoardClick(board)}>
-                        <div id={board.id} className=' bg-white rounded-md flex relative w-full hover:cursor-pointer text-center' onClick={() => handleBoardClick(board)} key={board.id}
+                        <div id={board.id} className='rounded-md flex relative w-full hover:cursor-pointer text-center' onClick={() => handleBoardClick(board)} key={board.id}
                             onTouchStart={(e) => handleButtonPress(e)}
                             onPointerDown={(e) => handlePointerDown(e)}
                             onTouchEnd={(e) => handleButtonRelease(e)}

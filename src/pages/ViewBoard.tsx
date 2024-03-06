@@ -75,7 +75,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
             <IonTitle>Add an Image</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent className="ion-padding">
+        <IonContent id="board-modal">
 
           <FileUploadForm board={board} onCloseModal={closeModal} />
 

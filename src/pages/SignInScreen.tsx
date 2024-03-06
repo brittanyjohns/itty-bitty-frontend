@@ -43,7 +43,8 @@ const SignInScreen: React.FC = () => {
   return (
     <>
       <MainMenu />
-      <IonPage>
+
+      <IonPage id="main-content">
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
@@ -52,9 +53,10 @@ const SignInScreen: React.FC = () => {
             <IonTitle>Welcome to Itty Bitty Boards</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent>
-          <div className="w-full max-w-xs">
-            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <IonContent className='ion-padding'>
+
+          <div>
+            <form className="bg-white">
               <div className="mb-4">
                 <IonInput
                   value={email}

@@ -104,3 +104,12 @@ ion-card {
   ion-card.active {
     box-shadow: var(--ion-color-warning) 0px 4px 16px;
   }
+.item-label-stacked {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    color: blue
+}
