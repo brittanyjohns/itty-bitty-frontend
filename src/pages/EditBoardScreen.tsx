@@ -50,10 +50,6 @@ const EditBoardScreen: React.FC<any> = () => {
   }
 
   const handleImageClick = (image: Image) => {
-    console.log('Image clicked: ', image.id);
-    console.log('Image clicked: ', image.label);
-    console.log('Board clicked: ', board?.id);
-    // alert('Image clicked: ' + image.id);
     if (!board) return;
     addImageToBoard(board?.id, image.id);
     setIsOpen(true);
@@ -66,7 +62,6 @@ const EditBoardScreen: React.FC<any> = () => {
     if (!board) return;
 
     const remainingImgs = await getRemainingImages(board.id, page, query);
-    console.log('Load More - edit board remainingImgs', remainingImgs);
     setRemainingImages(remainingImgs);
     return remainingImgs;
   }
@@ -128,7 +123,7 @@ const EditBoardScreen: React.FC<any> = () => {
           duration={3000}
         ></IonToast>
 
-        <div className="text-center p-2 border">
+        <div className="text-center">
           <p>OR</p>
           {board && remainingImages &&
             <SelectImageGallery images={remainingImages} boardId={board.id} onLoadMoreImages={getMoreImages} onImageClick={handleImageClick} />

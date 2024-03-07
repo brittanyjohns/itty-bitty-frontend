@@ -33,8 +33,6 @@ const BoardList = () => {
     const longPressTimer = useRef<NodeJS.Timeout | null>(null);
 
     const handleButtonPress = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        console.log('Buttone Press', (event.target as HTMLDivElement));
         const boardId = (event.target as HTMLDivElement).id;
         setBoardId(boardId);
 
@@ -61,13 +59,16 @@ const BoardList = () => {
             deleteBoard(boardId);
             window.location.reload();
         } else if (action === 'edit') {
-            history.push(`/boards/${boards}/edit`);
+            console.log('Edit board', boardId);
+            history.push(`/boards/${boardId}/edit`);
         }
         // setShowActionList(false);
     };
 
     const handleBoardClick = (board: Board) => {
-        history.push(`/boards/${board.id}`);
+        console.log('Board clicked: ', board.id);
+        // history.push(`/boards/${board.id}`);
+        setBoardId(board.id as string);
     }
 
     const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -82,7 +83,7 @@ const BoardList = () => {
         <div className="w-full p-2">
             <IonList className="w-full">
                 {boards && boards.map((board, i) => (
-                    <IonItem key={i} onClick={() => handleBoardClick(board)}>
+                    <IonItem key={i}>
                         <div id={board.id} className='rounded-md flex relative w-full hover:cursor-pointer text-center' onClick={() => handleBoardClick(board)} key={board.id}
                             onTouchStart={(e) => handleButtonPress(e)}
                             onPointerDown={(e) => handlePointerDown(e)}
@@ -96,6 +97,7 @@ const BoardList = () => {
                                 isOpen={showActionList}
                                 onClose={() => setShowActionList(false)}
                                 onActionSelected={(action: string) => handleActionSelected(action)}
+                                boardId={boardId}
                             />
                         </div>
                     </IonItem>

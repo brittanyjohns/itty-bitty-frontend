@@ -6,6 +6,7 @@ interface ActionListProps {
   isOpen: boolean;
   onClose: () => void;
   onActionSelected: (action: string) => void;
+  boardId: string;
 }
 
 const ActionList: React.FC<ActionListProps> = ({ isOpen, onClose, onActionSelected }) => {

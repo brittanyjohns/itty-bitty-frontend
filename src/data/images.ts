@@ -5,6 +5,13 @@ export interface Image {
     src: string;
     label: string;
     audio?: string; // Make audio optional
+    docs?: ImageDoc[];
+  }
+
+  export interface ImageDoc {
+    id: string;
+    src: string;
+    label: string;
   }
   
   export interface ImageGalleryProps {

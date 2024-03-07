@@ -139,7 +139,7 @@ const clearInput = () => {
                 </IonInput>
                 <div className="flex justify-around">
                     {showIcon &&
-                        <IonButton size="small" onClick={() => speak(inputRef.current?.value as string)}><IonIcon slot="icon-only"
+                        <IonButton className="tiny" size="small" onClick={() => speak(inputRef.current?.value as string)}><IonIcon slot="icon-only" className="tiny"
                             icon={playCircleOutline} onClick={() => speak(inputRef.current?.value as string)}></IonIcon> </IonButton>
                     }
                     {showIcon &&

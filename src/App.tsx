@@ -34,6 +34,7 @@ import NewMenu from './pages/NewMenu';
 import BoardsScreen from './pages/BoardsScreen';
 import { UserProvider } from './contexts/UserContext';
 import EditBoardScreen from './pages/EditBoardScreen';
+import ViewImageScreen from './pages/ViewImageScreen';
 
 
 setupIonicReact();
@@ -57,6 +58,7 @@ const App: React.FC = () => (
           <Route path="/menus/new" component={NewMenu} exact={true} />
           <Route path="/images/new" component={NewImage} exact={true} />
           <Route path="/images/:id/edit" component={EditImageScreen} exact={true} />
+          <Route path="/images/:id" component={ViewImageScreen} exact={true} />
           <Route path="/images" component={ImagesScreen} exact={true} />
           <Route path={"/sign-up"} >
             <SignUpScreen />

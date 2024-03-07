@@ -10,6 +10,7 @@ import {
   IonItem,
   IonLabel,
   IonPage,
+  IonText,
   IonTitle,
   IonToolbar,
   useIonViewWillEnter,
@@ -20,8 +21,8 @@ import { useParams } from 'react-router';
 import { arrowBackCircleOutline } from 'ionicons/icons';
 
 const EditImageScreen: React.FC = (props: any) => {
-    const params = useParams<{ id: string }>();
-    const [image, setImage] = useState<Image>({ id: '', src: '', label: '' });
+  const params = useParams<{ id: string }>();
+  const [image, setImage] = useState<Image>({ id: '', src: '', label: '' });
 
   const {
     register,
@@ -34,7 +35,7 @@ const EditImageScreen: React.FC = (props: any) => {
     formData.append('image[label]', data.label);
     formData.append('image[src]', image.src);
     formData.append('image[id]', image.id);
-    
+
     updateImage(formData);
     props.history.push('/home');
   }
@@ -42,7 +43,7 @@ const EditImageScreen: React.FC = (props: any) => {
   useIonViewWillEnter(() => {
     fetchImage().then((img) => {
       setImage(img);
-    } );
+    });
   });
 
   const fetchImage = async () => {
@@ -58,7 +59,7 @@ const EditImageScreen: React.FC = (props: any) => {
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton routerLink="/images">
+            <IonButton routerLink={`/images/${image.id}`}> {/* <IonButton routerLink="/home"> */}
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
             <IonTitle>Edit Image</IonTitle>
@@ -67,19 +68,18 @@ const EditImageScreen: React.FC = (props: any) => {
       </IonHeader>
 
       <IonContent fullscreen scrollY={false}>
-          <>
+        <IonText>Editing {image.label}</IonText>
+        <>
           <form className="ion-padding" onSubmit={handleSubmit(onSubmit)}>
-            <IonItem>
-              <IonLabel position="stacked">Label</IonLabel>
-              <IonInput
+            <IonInput
               value={image.label}
+              aria-label='label'
               placeholder="Enter new image label" defaultValue="" {...register("label", { required: true })} />
-            </IonItem>
             <IonButton className="ion-margin-top" type="submit" expand="block">
               Save
             </IonButton>
           </form>
-          </>
+        </>
       </IonContent>
     </IonPage>
   );

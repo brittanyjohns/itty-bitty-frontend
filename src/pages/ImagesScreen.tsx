@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   IonButtons,
   IonContent,
@@ -11,16 +11,14 @@ import {
   IonToolbar,
   useIonViewWillEnter
 } from '@ionic/react';
-import ImageGallery from '../components/ImageGallery';
 import { Image, getImages, getMoreImages } from '../data/images';
 import MainMenu from '../components/MainMenu';
 import SelectImageGallery from '../components/SelectImageGallery';
-import { addImageToBoard } from '../data/boards';
+import { useHistory } from 'react-router';
 
 const ImagesScreen: React.FC = () => {
   const [images, setImages] = useState<Image[]>([]);
-  const [remainingImages, setRemainingImages] = useState<Image[]>(); // State for the remaining images
-
+  const history = useHistory();
 
   const fetchImages = async () => {
     const imgs = await getImages();
@@ -31,7 +29,7 @@ const ImagesScreen: React.FC = () => {
     fetchImages();
 
   });
-
+  
   const handleGetMoreImages = async (page: number, query: string): Promise<Image[]> => {
     const additionalImages = await getMoreImages(page, query);
     console.log('Load More -  additionalImages', additionalImages);
@@ -40,7 +38,7 @@ const ImagesScreen: React.FC = () => {
   }
 
   const handleImageClick = (image: Image) => {
-    alert('Image clicked: ' + image.id);
+    history.push(`/images/${image.id}`);
 };
 
 
@@ -66,7 +64,7 @@ const ImagesScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <SelectImageGallery images={images} onLoadMoreImages={handleGetMoreImages} onImageClick={handleImageClick} />
+          {<SelectImageGallery images={images} onLoadMoreImages={handleGetMoreImages} onImageClick={handleImageClick} />}
         </IonContent>
       </IonPage>
     </>
