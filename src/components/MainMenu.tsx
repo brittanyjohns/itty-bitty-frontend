@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { IonContent, IonHeader, IonList, IonMenu, IonTitle, IonToolbar, useIonViewWillLeave, useIonViewWillEnter } from '@ionic/react';
 import { MenuLink, getMenu } from '../data/menu';
-import MenuListItem from './MenuListItem';
+import MenuListItem from './MainMenuListItem';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 
 export const hideMenu = () => {
@@ -18,7 +18,7 @@ function MainMenu() {
 
   // Function to filter links based on the current user's status
   const filterList = (links: MenuLink[]) => {
-    const signedInLinks = ['sign-out', 'dashboard', 'boards', 'images', 'new-image', 'new-board', 'dashboard'];
+    const signedInLinks = ['sign-out', 'dashboard', 'boards', 'images', 'new-image', 'new-board', 'dashboard', 'menus', 'new-menu'];
     const signedOutLinks = ['sign-in', 'sign-up'];
 
     return links.filter(link => {

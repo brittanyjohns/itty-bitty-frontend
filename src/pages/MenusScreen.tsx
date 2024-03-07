@@ -11,10 +11,10 @@ import {
   IonToolbar,
   useIonViewWillEnter,
 } from '@ionic/react';
-import BoardList from '../components/BoardList';
+import MenuList from '../components/MenuList';
 import MainMenu, { hideMenu } from '../components/MainMenu';
 import { useCurrentUser } from '../hooks/useCurrentUser';
-const BoardsScreen: React.FC = () => {
+const MenusScreen: React.FC = () => {
   const { currentUser, setCurrentUser } = useCurrentUser();
 
   const refresh = (e: CustomEvent) => {
@@ -37,7 +37,7 @@ const BoardsScreen: React.FC = () => {
             <IonButtons slot="start">
               <IonMenuButton></IonMenuButton>
             </IonButtons>
-            <IonTitle>Welcome to Itty Bitty Boards</IonTitle>
+            <IonTitle>Welcome to Itty Bitty Menus</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent className='ion-padding'>
@@ -48,7 +48,7 @@ const BoardsScreen: React.FC = () => {
           {currentUser && <h2>Welcome {currentUser.email}</h2>}
           </IonItem>
             <IonItem>
-              <BoardList />
+              <MenuList />
             </IonItem>
         </IonContent>
       </IonPage>
@@ -56,4 +56,4 @@ const BoardsScreen: React.FC = () => {
   );
 };
 
-export default BoardsScreen;
+export default MenusScreen;

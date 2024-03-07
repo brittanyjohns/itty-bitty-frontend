@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { addImageToBoard, getBoard, getRemainingImages } from '../data/boards';
 import { Image } from '../data/images';
 import {
@@ -9,6 +9,7 @@ import {
   IonIcon,
   IonInput,
   IonItem,
+  IonLoading,
   IonModal,
   IonPage,
   IonTitle,
@@ -21,87 +22,31 @@ import { add, arrowBackCircleOutline, playCircleOutline, trashBinOutline } from 
 import { useParams } from 'react-router';
 import './ViewBoard.css';
 import ImageGallery from '../components/ImageGallery';
-import FileUploadForm from '../components/FileUploadForm';
-import SelectImageGallery from '../components/SelectImageGallery';
 import React from 'react';
 import { TextToSpeech } from '@capacitor-community/text-to-speech';
 
 const ViewBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();
-  const [isOpen, setIsOpen] = useState(false);
   const params = useParams<{ id: string }>();
-  const modal = useRef<HTMLIonModalElement>(null);
-  const [remainingImages, setRemainingImages] = useState<Image[]>(); // State for the remaining images
   const inputRef = useRef<HTMLIonInputElement>(null);
     const [showIcon, setShowIcon] = useState(false);
+    const [showLoading, setShowLoading] = useState(false);
 
   const fetchBoard = async () => {
     const board = await getBoard(params.id);
+    if (!board) {
+      console.error('Error fetching board');
+      return;
+    } else {
+      console.log('board', board);
+    }
     setBoard(board);
-    const remainingImgs = await getRemainingImages(board.id, 1, '');
-    console.log('fetch board remainingImgs', remainingImgs);
-    setRemainingImages(remainingImgs);
+    if (board.images && board.images.length > 0) {
+      setShowLoading(false);
+    } else {
+      setShowLoading(true);
+    }
   }
-
-  const closeModal = () => {
-    modal.current?.dismiss()
-  }
-
-  const handleImageClick = (image: Image) => {
-    console.log('Image clicked: ', image.id);
-    console.log('Image clicked: ', image.label);
-    console.log('Board clicked: ', board?.id);
-    // alert('Image clicked: ' + image.id);
-    if (!board) return;
-    addImageToBoard(board?.id, image.id);
-    closeModal();
-  };
-
-  const getMoreImages = async (page: number, query: string) => {
-    console.log('Load More - view board page', page);
-    console.log('Load More - view board query', query);
-    console.log('Load More - view board board', board);
-
-    if (!board) return;
-    // if (!query) {
-    //   query = ''
-    // } 
-    // if (!page) {
-    //   page = 1
-    // }
-
-
-
-    const remainingImgs = await getRemainingImages(board.id, page, query);
-    console.log('Load More - view board remainingImgs', remainingImgs);
-    setRemainingImages(remainingImgs);
-    return remainingImgs;
-  }
-
-  const modalForm = (() => {
-    return (
-      <IonModal ref={modal} trigger="open-modal" isOpen={isOpen}>
-        <IonHeader>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonButton onClick={() => closeModal()}>Cancel</IonButton>
-            </IonButtons>
-            <IonTitle>Add an Image</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent id="board-modal">
-
-          <FileUploadForm board={board} onCloseModal={closeModal} />
-          <div className="text-center p-2 border">
-            <p>OR</p>
-          {board && remainingImages &&
-            <SelectImageGallery images={remainingImages} boardId={board.id} onLoadMoreImages={getMoreImages} onImageClick={handleImageClick} /> 
-          }
-          </div>
-        </IonContent>
-      </IonModal>
-    )
-  });
 
   const speak = async (text: string) => {
     await TextToSpeech.speak({
@@ -122,8 +67,27 @@ const clearInput = () => {
 }
 
   useIonViewWillEnter(() => {
-    fetchBoard();
+    console.log('useIonViewWillEnter');
+    console.log('board', board)
   });
+  // useEffect(() => {
+  //   fetchBoard();
+  // } , []);
+
+  useEffect(() => {
+    fetchBoard();
+    if(showLoading) {
+      setTimeout(() => {
+        if(board?.images && board.images.length > 0) {
+          setShowLoading(false);
+        } else {
+          setShowLoading(true);
+          fetchBoard();
+        }
+      }, 5000);
+    } 
+  }
+  , []);
 
   return (
     <IonPage id="view-board-page">
@@ -144,7 +108,6 @@ const clearInput = () => {
                     }
                     {showIcon &&
                         <IonButton size="small" onClick={() => clearInput()}><IonIcon slot="icon-only" icon={trashBinOutline} onClick={() => clearInput()}></IonIcon></IonButton>
-
                     }
                 </div>
             </IonItem>
@@ -155,8 +118,9 @@ const clearInput = () => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      {modalForm()}
       <IonContent fullscreen scrollY={false}>
+      <IonLoading message="Please wait while we create your board..." isOpen={showLoading} />
+
       {board &&
         <ImageGallery images={board.images} boardId={board.id} setShowIcon={setShowIcon} inputRef={inputRef} />
       }

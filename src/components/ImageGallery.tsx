@@ -131,7 +131,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId, setShowIco
             }
             const result = remove(imageId, boardId);
             console.log('Action', result);
-            window.location.reload();
+            // window.location.reload();
         } else if (action === 'edit') {
             history.push(`/images/${imageId}/edit`);
         }

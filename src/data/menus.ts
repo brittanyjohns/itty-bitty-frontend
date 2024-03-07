@@ -4,8 +4,11 @@ import { BASE_URL, userHeaders } from './users';
 export interface Menu {
     id?: string;
     name: string;
+    description?: string;
+    file?: File;
     displayImage?: string;
     images?: Image[];
+    boardId?: string;
 }
 
 export const getMenus = () => {
@@ -26,14 +29,16 @@ export const getMenu = (id: number) => {
     return menu;
 }
 
-export const createMenu = (menu: Menu) => {
+export const createMenu = (formData: FormData) => {
+    for(var pair of formData.entries()) {
+        console.log("create Menu Pair", pair[0]+', '+pair[1]);
+    }
     const newMenu = fetch(`http://${BASE_URL}menus`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify(menu),
+        body: formData,
     })
         .then(response => response.json())
         .then(data => data)

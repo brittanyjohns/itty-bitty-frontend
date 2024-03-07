@@ -3,35 +3,28 @@ import {
   IonLabel,
   IonNote,
   useIonViewWillEnter
-  } from '@ionic/react';
-import { MenuLink } from '../data/menu';
+} from '@ionic/react';
+import { Menu } from '../data/menus';
 import './MenuListItem.css';
-import { useHistory } from 'react-router';
-import { h } from 'ionicons/dist/types/stencil-public-runtime';
 
 interface MenuListItemProps {
-  menuLink: MenuLink;
-  closeMenu: () => void;
+  menu: Menu;
 }
 
-const MenuListItem: React.FC<MenuListItemProps> = ({ menuLink, closeMenu }) => {
-  const history = useHistory();
 
-  const handleClick = (endpoint: string | undefined) => () => {
-    console.log('MenuListItem - handleClick', endpoint);
-    closeMenu();
 
-    history.push(endpoint ?? '');
-    
-  }
+const MenuListItem: React.FC<MenuListItemProps> = ({ menu }) => {
+  useIonViewWillEnter(() => {
+    console.log('ionViewWillEnter event fired menu list');
+  } );
   return (
-    <IonItem  onClick={handleClick(menuLink.endpoint)}>
-      <div slot="start" className="dot dot-unread"></div>
-      <IonLabel className="ion-text-wrap">
-        <h2>
-          {menuLink.name}
-        </h2>
+    <IonItem routerLink={`/boards/${menu.boardId}`} detail={true} className='p-4 w-full'>
+      <IonLabel>
+        {menu.name}
       </IonLabel>
+      <IonNote slot="end">
+        {menu.boardId}
+      </IonNote>
     </IonItem>
   );
 };

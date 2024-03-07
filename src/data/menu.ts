@@ -7,53 +7,65 @@ export interface MenuLink {
 
 const menuLinks: MenuLink[] = [
   {
-    endpoint: '/boards/new',
-    name: 'New Board',
-    slug: 'new-board',
+    endpoint: '/dashboard',
+    name: 'Dashboard',
+    slug: 'dashboard',
     id: 0
-  },
-  {
-    endpoint: '/images/new',
-    name: 'New Image',
-    slug: 'new-image',
-    id: 1
-  },
-  {
-    endpoint: '/images',
-    name: 'Images',
-    slug: 'images',
-    id: 2
   },
   {
     endpoint: '/boards',
     name: 'Boards',
     slug: 'boards',
+    id: 1
+  },
+  {
+    endpoint: '/menus',
+    name: 'Menus',
+    slug: 'menus',
+    id: 2
+  },
+  {
+    endpoint: '/images',
+    name: 'Images',
+    slug: 'images',
     id: 3
+  },
+  {
+    endpoint: '/boards/new',
+    name: 'New Board',
+    slug: 'new-board',
+    id: 4
+  },
+  {
+    endpoint: '/menus/new',
+    name: 'New Menu',
+    slug: 'new-menu',
+    id: 5
+  },
+  {
+    endpoint: '/images/new',
+    name: 'New Image',
+    slug: 'new-image',
+    id: 6
   },
   {
     endpoint: '/sign-in',
     name: 'Sign In',
     slug: 'sign-in',
-    id: 4
+    id: 7
   },
   {
     endpoint: '/sign-up',
     name: 'Sign Up',
     slug: 'sign-up',
-    id: 5
+    id: 8
   },
   {
     endpoint: '/sign-out',
     name: 'Sign Out',
     slug: 'sign-out',
-    id: 6
+    id: 9
   },
-  {
-    endpoint: '/dashboard',
-    name: 'Dashboard',
-    slug: 'dashboard',
-    id: 7
-  }
 ];
 
 export const getMenu = () => menuLinks;
