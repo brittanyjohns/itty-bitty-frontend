@@ -5,13 +5,14 @@ const userHeaders = {
     'Authorization': `Bearer ${localStorage.getItem('token')}`
 };
 
-export const markAsCurrent = async (id: string): Promise<Image> => {
+export const markAsCurrent = async (id: string): Promise<any> => {
     const response = await fetch(`http://${BASE_URL}docs/${id}/mark_as_current`,
         {
             headers: userHeaders,
-            method: 'PUT'
+            method: 'POST'
         })
-    const image: Image = await response.json();
+    const image: any = await response.json();
+    console.log('markAsCurrent', image);
     return image;
 }
 // export async function removeImageFromMenu(id: string, image_id: string): Promise<Image> {

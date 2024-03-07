@@ -67,12 +67,12 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
                 {boardId && <IonCardSubtitle>Click an image to add it to the board</IonCardSubtitle>}
             </IonCardHeader>
             <IonCardContent>
-
                 <IonButtons class="flex justify-between w-full">
                     <IonButton onClick={() => previousPage()}>Prev</IonButton>
                     <IonButton onClick={() => nextPage()}>Next</IonButton>
                 </IonButtons>
             </IonCardContent>
+            <IonCardContent>
             <div className="my-auto mx-auto grid grid-cols-3 gap-1" ref={gridRef}>
                 {remainingImages.map((image, i) => (
                     <div className='flex relative w-full hover:cursor-pointer text-center border bg-white rounded-lg h-64' onClick={() => handleOnImageClick(image)} key={image.id} id={`image_${image.id}`}>
@@ -86,6 +86,11 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
                     </div>
                 ))}
             </div>
+            <IonButtons class="flex justify-between w-full mt-3">
+                    <IonButton onClick={() => previousPage()}>Prev</IonButton>
+                    <IonButton onClick={() => nextPage()}>Next</IonButton>
+                </IonButtons>
+            </IonCardContent>
         </IonCard>
     );
 };

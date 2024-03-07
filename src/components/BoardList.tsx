@@ -97,7 +97,6 @@ const BoardList = () => {
                                 isOpen={showActionList}
                                 onClose={() => setShowActionList(false)}
                                 onActionSelected={(action: string) => handleActionSelected(action)}
-                                boardId={boardId}
                             />
                         </div>
                     </IonItem>

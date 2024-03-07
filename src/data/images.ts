@@ -1,18 +1,19 @@
 import { BASE_URL } from "./users";
-
-export interface Image {
-    id: string; // Assuming each image has a unique ID for key purposes
-    src: string;
-    label: string;
-    audio?: string; // Make audio optional
-    docs?: ImageDoc[];
-  }
-
   export interface ImageDoc {
     id: string;
     src: string;
     label: string;
+    is_current?: boolean;
   }
+  
+  export interface Image {
+    id: string;
+    src: string;
+    label: string;
+    audio?: string;
+    docs?: ImageDoc[];
+  }
+  
   
   export interface ImageGalleryProps {
     boardId?: string | null;

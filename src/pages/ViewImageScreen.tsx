@@ -1,84 +1,59 @@
-import { useState } from 'react';
-import { Image, ImageDoc, getImage, updateImage } from '../data/images';
-import {
-  IonButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonImg,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonPage,
-  IonText,
-  IonTitle,
-  IonToolbar,
-  useIonViewWillEnter,
-} from '@ionic/react';
-
-import { SubmitHandler, useForm } from 'react-hook-form';
+import React, { useState, useEffect } from 'react';
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonImg, IonItem, IonLabel, IonPage, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { useParams } from 'react-router';
 import { arrowBackCircleOutline } from 'ionicons/icons';
-import { markAsCurrent } from '../data/docs';
-
-const ViewImageScreen: React.FC = (props: any) => {
-  const params = useParams<{ id: string }>();
+import { getImage, updateImage, Image, ImageDoc } from '../data/images'; // Adjust imports based on actual functions
+import { markAsCurrent } from '../data/docs'; // Adjust imports based on actual functions
+const ViewImageScreen: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
   const [image, setImage] = useState<Image>({ id: '', src: '', label: '', docs: [] });
-  const [docs, setDocs] = useState<ImageDoc[]>([]);
-  useIonViewWillEnter(() => {
-    fetchImage().then((img) => {
-      setImage(img);
-    });
-  });
+  const [currentDoc, setCurrentDoc] = useState<ImageDoc | null>(null);
 
   const fetchImage = async () => {
-    console.log('fetchImage');
-    const img = await getImage(params.id);
-    console.log('img', img.docs);
+    const img = await getImage(id); // Ensure getImage is typed to return a Promise<Image>
     setImage(img);
-    setDocs(img.docs);
-    return img;
-  }
+    const currentDoc = img.docs.find((doc: { is_current: any; }) => doc.is_current);
+    console.log('currentDoc', currentDoc);
+    setCurrentDoc(currentDoc || null);
+  };
 
-  const handleDocClick = (e: any) => {
-    console.log('Image clicked: ', e.target.id);
-    console.log('Image clicked: ', e.target.src);
-    markAsCurrent(e.target.id);
+  useEffect(() => {
     fetchImage();
-    window.location.reload();
-  }
+  }, [id]);
+
+  const handleDocClick = async (e: React.MouseEvent<HTMLIonImgElement>) => {
+    const target = e.target as HTMLImageElement;
+    const response = await markAsCurrent(target.id); // Ensure markAsCurrent returns a Promise
+    await fetchImage(); // Re-fetch image data to update state
+  };
 
   return (
-    <IonPage id="new-image-page">
+    <IonPage id="view-image-page">
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton routerLink={`/images`}> {/* <IonButton routerLink="/home"> */}
+            <IonButton routerLink={`/images`}>
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
             <IonTitle>View Image</IonTitle>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-
-      <IonContent fullscreen scrollY={false}>
-        <IonText>Viewing {image.label}</IonText>
+      <IonContent fullscreen scrollY={true} className='ion-padding ion-text-center'>
+        <IonText>{image.label}</IonText>
         <IonItem>
-            <IonImg id={image.id} src={image.src} alt={image.label} className="absolute object-contain w-full h-full top-0 left-0" />
-          </IonItem>
-        <>
-        <div className="my-auto mx-auto grid grid-rows-4 grid-flow-col gap-1 p-1 ">
-        {image && image.docs && image.docs.map((doc, index) => (
-          <IonItem key={index}>
-            <IonImg id={doc.id} src={doc.src} alt={doc.label} className="absolute object-contain w-full h-full top-0 left-0" onClick={handleDocClick} />
-          </IonItem>
-        ))}
-      </div>
-        </>
+          {currentDoc && <IonImg id={currentDoc.id} src={currentDoc.src} alt={currentDoc.label} onClick={handleDocClick} />}
+        </IonItem>
+        <div className="grid grid-rows-4 grid-flow-col gap-1 p-1">
+          {image?.docs && image.docs.map((doc, index) => (
+            <IonItem key={doc.id}>
+              <IonImg id={doc.id} src={doc.src} alt={doc.label} onClick={handleDocClick} />
+            </IonItem>
+          ))}
+        </div>
       </IonContent>
     </IonPage>
   );
-}
+};
 
 export default ViewImageScreen;

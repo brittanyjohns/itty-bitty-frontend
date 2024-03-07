@@ -35,6 +35,7 @@ import BoardsScreen from './pages/BoardsScreen';
 import { UserProvider } from './contexts/UserContext';
 import EditBoardScreen from './pages/EditBoardScreen';
 import ViewImageScreen from './pages/ViewImageScreen';
+import MenusScreen from './pages/MenusScreen';
 
 
 setupIonicReact();
@@ -60,6 +61,8 @@ const App: React.FC = () => (
           <Route path="/images/:id/edit" component={EditImageScreen} exact={true} />
           <Route path="/images/:id" component={ViewImageScreen} exact={true} />
           <Route path="/images" component={ImagesScreen} exact={true} />
+          <Route path="/menus/new" component={NewMenu} exact={true} />
+          <Route path="/menus" component={MenusScreen} exact={true} />
           <Route path={"/sign-up"} >
             <SignUpScreen />
             {/* {isUserSignedIn() ? <Redirect to="/" /> : <SignUpScreen />} */}

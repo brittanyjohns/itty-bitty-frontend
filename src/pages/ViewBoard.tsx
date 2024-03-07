@@ -156,9 +156,9 @@ const clearInput = () => {
         </IonToolbar>
       </IonHeader>
       {modalForm()}
-      <IonContent fullscreen scrollY={true}>
+      <IonContent fullscreen scrollY={false}>
       {board &&
-          <ImageGallery images={board.images} boardId={board.id} setShowIcon={setShowIcon} inputRef={inputRef} />
+        <ImageGallery images={board.images} boardId={board.id} setShowIcon={setShowIcon} inputRef={inputRef} />
       }
       {board ? (
         <>
