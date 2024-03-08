@@ -2,18 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { addImageToBoard, getBoard, getRemainingImages } from '../data/boards';
 import { Image } from '../data/images';
 import {
-  IonAccordion,
-  IonAccordionGroup,
   IonButton,
   IonButtons,
-  IonCard,
-  IonContent,
   IonHeader,
   IonIcon,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonModal,
   IonPage,
   IonText,
   IonTitle,
@@ -24,7 +16,7 @@ import {
 import { Board } from '../types';
 import { add, arrowBackCircleOutline, playCircleOutline, trashBinOutline } from 'ionicons/icons';
 
-import { useHistory, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import './ViewBoard.css';
 import ImageGallery from '../components/ImageGallery';
 import FileUploadForm from '../components/FileUploadForm';
@@ -33,14 +25,13 @@ import React from 'react';
 import { TextToSpeech } from '@capacitor-community/text-to-speech';
 import { set } from 'react-hook-form';
 
-const EditBoardScreen: React.FC<any> = () => {
+const SelectGalleryScreen: React.FC<any> = () => {
   const [board, setBoard] = useState<Board>();
   const [isOpen, setIsOpen] = useState(false);
   const modal = useRef<HTMLIonModalElement>(null);
   const [remainingImages, setRemainingImages] = useState<Image[]>(); // State for the remaining images
   const inputRef = useRef<HTMLIonInputElement>(null);
   const [showIcon, setShowIcon] = useState(false);
-  const history = useHistory();
 
   const fetchBoard = async () => {
     const boardId = window.location.pathname.split('/')[2];
@@ -56,15 +47,17 @@ const EditBoardScreen: React.FC<any> = () => {
   }
 
   const handleImageClick = (image: Image) => {
+    console.log('handleImageClick', image);
+    console.log('board', board);
     if (!board) {
       console.error('No board found');
       fetchBoard();
     } else {
       addImageToBoard(board?.id, image.id);
       setIsOpen(true);
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 3000);
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
     }
   };
 
@@ -87,46 +80,39 @@ const EditBoardScreen: React.FC<any> = () => {
     });
   };
 
-  const goToGallery = () => {
-    if (!board) {
-      console.error('No board found');
-      return;
+  const clearInput = () => {
+    if (inputRef.current) {
+      inputRef.current.value = '';
     }
-    history.push(`/boards/${board?.id}/gallery`);
+    setShowIcon(false);
   }
-
 
   useEffect(() => {
     fetchBoard();
-  }, []);
+  } , []);
 
   return (
     <IonPage id="edit-board-page">
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start" className='mr-4'>
-            <IonButton routerLink={`/boards/${board?.id}`}>
+            <IonButton routerLink={`/boards/${board?.id}/edit`}>
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
           </IonButtons>
-          <IonItem slot='start' className='w-full'>
-            <IonTitle>{board?.name}</IonTitle>
-
-          </IonItem>
+          <IonTitle>Add images to {board?.name} ({board?.images.length})</IonTitle>
         </IonToolbar>
       </IonHeader>
-
-      <IonContent id="board-modal">
-            <IonCard className='p-4'>
-            <FileUploadForm board={board} onCloseModal={closeModal} />
-            </IonCard>
-        <IonButton onClick={goToGallery} expand="block" fill="outline" color="primary" className="mt-4 w-5/6 mx-auto">
-          View Gallery
-        </IonButton>
-        </IonContent>
-
+      {board && remainingImages &&
+        <SelectImageGallery images={remainingImages} boardId={board.id} onLoadMoreImages={getMoreImages} onImageClick={handleImageClick} />
+      }
+      {board && remainingImages && remainingImages.length === 0 &&
+        <div className="text-center">
+          <p>No images found</p>
+        </div>
+      }
     </IonPage>
   );
 }
 
-export default EditBoardScreen;
+export default SelectGalleryScreen;

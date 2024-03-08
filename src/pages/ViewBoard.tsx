@@ -99,12 +99,9 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
             <IonButton routerLink="/boards">
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
-            <IonButton routerLink={`/boards/${board?.id}/edit`}>
-              <IonIcon slot="icon-only" icon={add} className='text-xs' />
-            </IonButton>
           </IonButtons>
           <IonItem slot='start' className='w-full'>
-            <IonInput placeholder={board?.name} ref={inputRef} readonly={true} className='w-full text-xs'>
+            <IonInput placeholder={board?.name} ref={inputRef} readonly={true} className='w-full text-xs text-justify'>
             </IonInput>
           </IonItem>
           <IonButtons slot="start">
