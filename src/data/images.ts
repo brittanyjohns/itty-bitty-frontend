@@ -40,7 +40,7 @@ const userHeaders = {
 export const getImages = () => {
   const userToken = localStorage.getItem('token');
   console.log('userToken', userToken);
-    const images = fetch(`http://${BASE_URL}images`, { headers: userHeaders })
+    const images = fetch(`${BASE_URL}images`, { headers: userHeaders })
         .then(response => response.json())
         .then(data => data)
         .catch(error => console.error('Error fetching data: ', error));
@@ -54,10 +54,10 @@ const createHeaders = {
   };
 
 export const createImage = (formData: FormData, boardId?: string) => {
-  let endpoint = `http://${BASE_URL}images`;
+  let endpoint = `${BASE_URL}images`;
   if(boardId) {
     formData.append('image[board_id]', boardId);
-    endpoint = `http://${BASE_URL}boards/${boardId}/add_image`;
+    endpoint = `${BASE_URL}boards/${boardId}/add_image`;
   }
 
   for(var pair of formData.entries()) {
@@ -86,7 +86,7 @@ export const createImage = (formData: FormData, boardId?: string) => {
 
 
 export const getImage = (id: string) => {
-    const image = fetch(`http://${BASE_URL}images/${id}`, { headers: userHeaders })
+    const image = fetch(`${BASE_URL}images/${id}`, { headers: userHeaders })
         .then(response => response.json())
         .then(data => data)
         .catch(error => console.error('Error fetching data: ', error));
@@ -95,7 +95,7 @@ export const getImage = (id: string) => {
 }
 
 export const updateImage = (formData: FormData) => {
-    const img = fetch(`http://${BASE_URL}images/${formData.get('image[id]')}`, {
+    const img = fetch(`${BASE_URL}images/${formData.get('image[id]')}`, {
         headers: createHeaders,
         method: 'PUT',
         body: formData,
@@ -108,7 +108,7 @@ export const updateImage = (formData: FormData) => {
 }
 
 export async function getMoreImages(page: number, query: string): Promise<Image[]> {
-  const response = await fetch(`http://${BASE_URL}images?page=${page}&query=${query}`,
+  const response = await fetch(`${BASE_URL}images?page=${page}&query=${query}`,
    { headers: userHeaders }) 
   const images: Image[] = await response.json();
   return images;
@@ -116,7 +116,7 @@ export async function getMoreImages(page: number, query: string): Promise<Image[
 
 export async function findOrCreateImage(formData: FormData, generate: boolean): Promise<Image> {
   formData.append('generate_image', generate ? '1' : '0');
-  const response = await fetch(`http://${BASE_URL}images/find_or_create`, {
+  const response = await fetch(`${BASE_URL}images/find_or_create`, {
     headers: createHeaders,
     method: 'POST',
     body: formData,
@@ -126,7 +126,7 @@ export async function findOrCreateImage(formData: FormData, generate: boolean): 
 }
 
 export async function generateImage(formData: FormData): Promise<Image> {
-  const response = await fetch(`http://${BASE_URL}images/generate`, {
+  const response = await fetch(`${BASE_URL}images/generate`, {
     headers: createHeaders,
     method: 'POST',
     body: formData,

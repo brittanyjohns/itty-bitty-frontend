@@ -12,7 +12,7 @@ export interface Menu {
 }
 
 export const getMenus = () => {
-    const menus = fetch(`http://${BASE_URL}menus`, { headers: userHeaders }) // `http://localhostmenus
+    const menus = fetch(`${BASE_URL}menus`, { headers: userHeaders }) // `localhostmenus
         .then(response => response.json())
         .then(data => data)
         .catch(error => console.error('Error fetching data: ', error));
@@ -21,7 +21,7 @@ export const getMenus = () => {
 }
 
 export const getMenu = (id: number) => {
-    const menu = fetch(`http://${BASE_URL}menus/${id}`, { headers: userHeaders }) // `http://localhostmenus
+    const menu = fetch(`${BASE_URL}menus/${id}`, { headers: userHeaders }) // `localhostmenus
         .then(response => response.json())
         .then(data => data)
         .catch(error => console.error('Error fetching data: ', error));
@@ -33,7 +33,7 @@ export const createMenu = (formData: FormData) => {
     for(var pair of formData.entries()) {
         console.log("create Menu Pair", pair[0]+', '+pair[1]);
     }
-    const newMenu = fetch(`http://${BASE_URL}menus`, {
+    const newMenu = fetch(`${BASE_URL}menus`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -48,7 +48,7 @@ export const createMenu = (formData: FormData) => {
 }
 
 export const updateMenu = (menu: Menu) => {
-    const updatedMenu = fetch(`http://${BASE_URL}menus/${menu.id}`, {
+    const updatedMenu = fetch(`${BASE_URL}menus/${menu.id}`, {
         method: 'PUT',
         headers: userHeaders,
         body: JSON.stringify(menu),
@@ -61,7 +61,7 @@ export const updateMenu = (menu: Menu) => {
 }
 
 export const deleteMenu = (id: string) => {
-    const result = fetch(`http://${BASE_URL}menus/${id}`, {
+    const result = fetch(`${BASE_URL}menus/${id}`, {
         method: 'DELETE',
         headers: userHeaders,
     })
@@ -80,13 +80,13 @@ export async function addImageListToMenu(id: string, payload: { word_list: strin
       },
       body: JSON.stringify(payload),
     };
-    const response = await fetch(`http://${BASE_URL}menus/${id}/add_word_list`, requestInfo);
+    const response = await fetch(`${BASE_URL}menus/${id}/add_word_list`, requestInfo);
     const menu: Menu = await response.json();
     return menu;
   }
 
   export async function getMenuImages(id: string, props: any): Promise<Image[]> {
-    const response = await fetch(`http://${BASE_URL}menus/${id}/remaining_images?page=${props.page}&query=${props.query}`,
+    const response = await fetch(`${BASE_URL}menus/${id}/remaining_images?page=${props.page}&query=${props.query}`,
      { headers: userHeaders }) 
     const images: Image[] = await response.json();
     return images;
@@ -98,7 +98,7 @@ export async function addImageListToMenu(id: string, payload: { word_list: strin
       headers: userHeaders,
       body: JSON.stringify({ image_id }),
     };
-    const response = await fetch(`http://${BASE_URL}menus/${id}/associate_image`, requestInfo);
+    const response = await fetch(`${BASE_URL}menus/${id}/associate_image`, requestInfo);
     console.log("Add Image to Menu response", response);
     const menu: Menu = await response.json();
     console.log("Add Image to Menu menu", menu);
@@ -113,7 +113,7 @@ export async function addImageListToMenu(id: string, payload: { word_list: strin
       headers: userHeaders,
       body: body,
     };
-    const response = await fetch(`http://${BASE_URL}menus/${id}/remove_image`, requestInfo);
+    const response = await fetch(`${BASE_URL}menus/${id}/remove_image`, requestInfo);
     console.log("Remove Image from Menu response", response);
     const menu: Menu = await response.json();
     return menu;

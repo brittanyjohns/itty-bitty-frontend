@@ -6,7 +6,7 @@ const userHeaders = {
 };
 
 export const markAsCurrent = async (id: string): Promise<any> => {
-    const response = await fetch(`http://${BASE_URL}docs/${id}/mark_as_current`,
+    const response = await fetch(`${BASE_URL}docs/${id}/mark_as_current`,
         {
             headers: userHeaders,
             method: 'POST'
@@ -23,7 +23,7 @@ export const markAsCurrent = async (id: string): Promise<any> => {
 //       headers: userHeaders,
 //       body: body,
 //     };
-//     const response = await fetch(`http://${BASE_URL}menus/${id}/remove_image`, requestInfo);
+//     const response = await fetch(`${BASE_URL}menus/${id}/remove_image`, requestInfo);
 //     console.log("Remove Image from Menu response", response);
 //     const menu: Image = await response.json();
 //     return menu;
