@@ -113,3 +113,24 @@ export async function getMoreImages(page: number, query: string): Promise<Image[
   const images: Image[] = await response.json();
   return images;
 }
+
+export async function findOrCreateImage(formData: FormData, generate: boolean): Promise<Image> {
+  formData.append('generate_image', generate ? '1' : '0');
+  const response = await fetch(`http://${BASE_URL}images/find_or_create`, {
+    headers: createHeaders,
+    method: 'POST',
+    body: formData,
+  });
+  const image: Image = await response.json();
+  return image;
+}
+
+export async function generateImage(formData: FormData): Promise<Image> {
+  const response = await fetch(`http://${BASE_URL}images/generate`, {
+    headers: createHeaders,
+    method: 'POST',
+    body: formData,
+  });
+  const image: Image = await response.json();
+  return image;
+}

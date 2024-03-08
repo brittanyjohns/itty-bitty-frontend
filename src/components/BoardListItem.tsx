@@ -18,7 +18,7 @@ const BoardListItem: React.FC<BoardListItemProps> = ({ board }) => {
       <IonLabel>
         {board.name}
       </IonLabel>
-        <IonNote slot="end">
+      <IonNote slot="end">
         {board.id}
       </IonNote>
     </IonItem>

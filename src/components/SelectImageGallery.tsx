@@ -2,9 +2,8 @@ import React, { useEffect, useState, useRef, MouseEventHandler } from 'react';
 import { Image, SelectImageGalleryProps } from '../data/images';
 import { IonImg, IonButton, IonSearchbar, IonCardContent, IonCardHeader, IonCard, IonCardTitle, IonCardSubtitle, IonButtons, IonTitle } from '@ionic/react';
 
-import '../index.css'
+
 const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId, onImageClick, onLoadMoreImages }) => {
-    const gridRef = useRef(null);
     const [remainingImages, setRemainingImages] = useState<Image[]>(images);
     const [page, setPage] = useState(1);
     const [searchInput, setSearchInput] = useState('');
@@ -24,10 +23,6 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
     };
 
     const handleOnImageClick = (image: Image) => {
-        console.log('Image clicked: event ', event);
-        const targetElement = document.getElementById(`image_${image.id}`);
-        const parentElement = targetElement?.parentElement as HTMLElement;
-        parentElement.classList.add('hidden');
         onImageClick(image);
     }
 
