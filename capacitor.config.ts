@@ -1,11 +1,11 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'first_list',
+  appId: 'com.ittybitty.frontend',
+  appName: 'itty-bitty-frontend',
   webDir: 'dist',
   loggingBehavior: 'production',
-  // bundledWebRuntime: false,
+  bundledWebRuntime: false,
   server: {
     // androidScheme: 'https',
     allowNavigation: ['*'],
