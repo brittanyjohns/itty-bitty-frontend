@@ -4,6 +4,8 @@ import { BASE_URL, userHeaders } from './users';
 export interface Board {
     id?: string;
     name: string;
+    description?: string;
+    parent_type?: string;
     displayImage?: string;
     images?: Image[];
 }
@@ -81,7 +83,12 @@ export async function addImageListToBoard(id: string, payload: { word_list: stri
   }
 
   export async function getRemainingImages(id: string, page: number, query: string): Promise<Image[]> {
-    const response = await fetch(`http://${BASE_URL}boards/${id}/remaining_images?page=${page}&query=${query}`,
+    let strPage = page.toString();
+    if (query && query.length > 0) {
+        strPage = ''
+        }
+        console.log('getRemainingImages', id, strPage, query);
+    const response = await fetch(`http://${BASE_URL}boards/${id}/remaining_images?page=${strPage}&query=${query}`,
      { headers: userHeaders }) 
     const images: Image[] = await response.json();
     return images;

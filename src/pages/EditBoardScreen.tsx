@@ -117,13 +117,13 @@ const EditBoardScreen: React.FC<any> = () => {
       </IonHeader>
 
       <IonContent id="board-modal">
-            <IonCard className='p-4'>
-            <FileUploadForm board={board} onCloseModal={closeModal} />
-            </IonCard>
+        <IonCard className='p-4'>
+          <FileUploadForm board={board} onCloseModal={closeModal} />
+        </IonCard>
         <IonButton onClick={goToGallery} expand="block" fill="outline" color="primary" className="mt-4 w-5/6 mx-auto">
           View Gallery
         </IonButton>
-        </IonContent>
+      </IonContent>
 
     </IonPage>
   );
