@@ -25,10 +25,9 @@ const ImagesScreen: React.FC = () => {
     setImages(imgs);
   }
 
-  useIonViewWillEnter(() => {
+  useEffect(() => {
     fetchImages();
-
-  });
+  }, []);
   
   const handleGetMoreImages = async (page: number, query: string): Promise<Image[]> => {
     const additionalImages = await getMoreImages(page, query);

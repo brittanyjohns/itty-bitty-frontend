@@ -173,7 +173,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId, setShowIco
                         onMouseLeave={handleButtonRelease} // Cancel on mouse leave to handle edge cases
                     >
                         <IonImg id={image.id} src={image.src} alt={image.label} className="absolute object-contain w-full h-full top-0 left-0" />
-                        <span className="font-medium text-xm md:text-sm lg:text-md rounded bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black">
+                        <span className="font-medium text-xs md:text-sm lg:text-md rounded bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black">
                             {image.label.length > 20 ? image.label.substring(0, 20) + "..." : image.label}
                             <audio>
                                 <source src={image.audio} type="audio/aac" />

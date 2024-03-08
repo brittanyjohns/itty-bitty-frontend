@@ -5,9 +5,9 @@ import { addImageToBoard, getBoard, getBoards } from '../data/boards';
 
 interface BoardDropdownProps {
     imageId: string;
-  }
-  
-  const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId }) => {
+}
+
+const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId }) => {
     const [boards, setBoards] = useState([]);
     const fetchBoards = async () => {
         const allBoards = await getBoards();
@@ -32,21 +32,21 @@ interface BoardDropdownProps {
     useEffect(() => {
         fetchBoards();
     }, []);
-  return (
-    <IonList>
-      <IonItem>
-        <IonSelect placeholder="Select a board" name="boardId" onIonChange={(e) => handleSelectChange(e)}>
-          <div slot="label">
-            Add image to: 
-          </div>
-          {boards && boards.map((board: { id: any; name: any; }) => (
-            <IonSelectOption key={board.id} value={board.id}>
-                {board.name}
-                </IonSelectOption>
-          ))}
-        </IonSelect>
-      </IonItem>
-    </IonList>
-  );
+    return (
+        <IonList>
+            <IonItem>
+                <IonSelect placeholder="Select a board" name="boardId" onIonChange={(e) => handleSelectChange(e)}>
+                    <div slot="label">
+                        Add image to:
+                    </div>
+                    {boards && boards.map((board: { id: any; name: any; }) => (
+                        <IonSelectOption key={board.id} value={board.id}>
+                            {board.name}
+                        </IonSelectOption>
+                    ))}
+                </IonSelect>
+            </IonItem>
+        </IonList>
+    );
 }
 export default BoardDropdown;
