@@ -11,6 +11,10 @@ const SignInScreen: React.FC = () => {
   const [password, setPassword] = useState<string>('');
   const { currentUser, setCurrentUser } = useCurrentUser();
 
+  const handleSetPassword = (e: CustomEvent) => {
+    setPassword(e.detail.value);
+  }
+
   const handleSignIn = async () => {
     const user: User = {
       email,
@@ -62,7 +66,7 @@ const SignInScreen: React.FC = () => {
                 <IonInput
                   value={email}
                   placeholder="Email"
-                  onIonChange={(e) => setEmail(e.detail.value!)}
+                  onIonInput={(e) => setEmail(e.detail.value!)}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 ></IonInput>
               </div>
@@ -71,7 +75,7 @@ const SignInScreen: React.FC = () => {
                   type="password"
                   value={password}
                   placeholder="Password"
-                  onIonChange={(e) => setPassword(e.detail.value!)}
+                  onIonInput={handleSetPassword}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                 ></IonInput>
               </div>
