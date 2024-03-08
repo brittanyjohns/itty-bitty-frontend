@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">first_list</string>
-    <string name="title_activity_main">first_list</string>
-    <string name="package_name">io.ionic.starter</string>
-    <string name="custom_url_scheme">io.ionic.starter</string>
+    <string name="app_name">itty-bitty-frontend</string>
+    <string name="title_activity_main">itty-bitty-frontend</string>
+    <string name="package_name">com.ittybitty.frontend</string>
+    <string name="custom_url_scheme">com.ittybitty.frontend</string>
 </resources>
