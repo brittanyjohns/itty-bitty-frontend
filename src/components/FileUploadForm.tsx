@@ -67,14 +67,7 @@ const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
   };
 
   return (
-    <IonCard>
-      <IonCardHeader>
-        <IonCardSubtitle>Upload a new image</IonCardSubtitle>
-      </IonCardHeader>
-
-      <IonCardContent className='bg-inherit'>
-        <form onSubmit={uploadPhoto} encType="multipart/form-data">
-          <IonItem>
+        <form onSubmit={uploadPhoto} encType="multipart/form-data" className='p-1 text-center'>
             <IonInput
               value={label}
               placeholder='Label'
@@ -84,17 +77,12 @@ const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
               className='pl-4'
               required
             />
-          </IonItem>
-          <IonItem>
-            <input className='bg-inherit w-full p-4 borderrounded-md' type="file" onChange={ev => onFileChange(ev)}></input>
-          </IonItem>
+            <input className='bg-inherit w-full p-4' type="file" onChange={ev => onFileChange(ev)}></input>
 
-          <IonButton type="submit" expand="block" className="mt-4" hidden={!label} disabled={shouldDisable}>
+          <IonButton type="submit" expand="block" className="mt-4 w-5/6 mx-auto" hidden={!label} disabled={shouldDisable}>
             Submit
           </IonButton>
         </form>
-      </IonCardContent>
-    </IonCard>
 
   );
 };
