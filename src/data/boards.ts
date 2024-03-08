@@ -11,7 +11,7 @@ export interface Board {
 }
 
 export const getBoards = () => {
-    const boards = fetch(`http://${BASE_URL}boards`, { headers: userHeaders }) // `http://localhostboards
+    const boards = fetch(`${BASE_URL}boards`, { headers: userHeaders }) // `localhostboards
         .then(response => response.json())
         .then(data => data)
         .catch(error => console.error('Error fetching data: ', error));
@@ -20,7 +20,7 @@ export const getBoards = () => {
 }
 
 export const getBoard = (id: string) => {
-    const board = fetch(`http://${BASE_URL}boards/${id}`, { headers: userHeaders }) // `http://localhostboards
+    const board = fetch(`${BASE_URL}boards/${id}`, { headers: userHeaders }) // `localhostboards
         .then(response => response.json())
         .then(data => data)
         .catch(error => console.error('Error fetching data: ', error));
@@ -29,7 +29,7 @@ export const getBoard = (id: string) => {
 }
 
 export const createBoard = (board: Board) => {
-    const newBoard = fetch(`http://${BASE_URL}boards`, {
+    const newBoard = fetch(`${BASE_URL}boards`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export const createBoard = (board: Board) => {
 }
 
 export const updateBoard = (board: Board) => {
-    const updatedBoard = fetch(`http://${BASE_URL}boards/${board.id}`, {
+    const updatedBoard = fetch(`${BASE_URL}boards/${board.id}`, {
         method: 'PUT',
         headers: userHeaders,
         body: JSON.stringify(board),
@@ -58,7 +58,7 @@ export const updateBoard = (board: Board) => {
 }
 
 export const deleteBoard = (id: string) => {
-    const result = fetch(`http://${BASE_URL}boards/${id}`, {
+    const result = fetch(`${BASE_URL}boards/${id}`, {
         method: 'DELETE',
         headers: userHeaders,
     })
@@ -77,7 +77,7 @@ export async function addImageListToBoard(id: string, payload: { word_list: stri
       },
       body: JSON.stringify(payload),
     };
-    const response = await fetch(`http://${BASE_URL}boards/${id}/add_word_list`, requestInfo);
+    const response = await fetch(`${BASE_URL}boards/${id}/add_word_list`, requestInfo);
     const board: Board = await response.json();
     return board;
   }
@@ -88,7 +88,7 @@ export async function addImageListToBoard(id: string, payload: { word_list: stri
         strPage = ''
         }
         console.log('getRemainingImages', id, strPage, query);
-    const response = await fetch(`http://${BASE_URL}boards/${id}/remaining_images?page=${strPage}&query=${query}`,
+    const response = await fetch(`${BASE_URL}boards/${id}/remaining_images?page=${strPage}&query=${query}`,
      { headers: userHeaders }) 
     const images: Image[] = await response.json();
     return images;
@@ -100,7 +100,7 @@ export async function addImageListToBoard(id: string, payload: { word_list: stri
       headers: userHeaders,
       body: JSON.stringify({ image_id }),
     };
-    const response = await fetch(`http://${BASE_URL}boards/${id}/associate_image`, requestInfo);
+    const response = await fetch(`${BASE_URL}boards/${id}/associate_image`, requestInfo);
     const board: Board = await response.json();
     return board;
   }
@@ -112,7 +112,7 @@ export async function addImageListToBoard(id: string, payload: { word_list: stri
       headers: userHeaders,
       body: body,
     };
-    const response = await fetch(`http://${BASE_URL}boards/${id}/remove_image`, requestInfo);
+    const response = await fetch(`${BASE_URL}boards/${id}/remove_image`, requestInfo);
     const board: Board = await response.json();
     return board;
   }
