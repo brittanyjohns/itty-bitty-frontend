@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { addImageToBoard, getBoard, getRemainingImages } from '../data/boards';
+import { Board, addImageToBoard, getBoard, getRemainingImages } from '../data/boards';
 import { Image } from '../data/images';
 import {
   IonButton,
@@ -16,7 +16,7 @@ import {
   IonToolbar,
   useIonViewWillEnter,
 } from '@ionic/react';
-import { Board } from '../types';
+
 import { add, arrowBackCircleOutline, playCircleOutline, trashBinOutline } from 'ionicons/icons';
 
 import { useParams } from 'react-router';
@@ -41,11 +41,6 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
       console.log('board', board);
     }
     setBoard(board);
-    if (board.images && board.images.length > 0) {
-      setShowLoading(false);
-    } else {
-      setShowLoading(true);
-    }
   }
 
   const speak = async (text: string) => {
@@ -82,11 +77,19 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
         if (board?.images && board.images.length > 0) {
           setShowLoading(false);
         } else {
-          setShowLoading(true);
-          fetchBoard();
+          if (board?.parent_type === 'Menu') {
+            setShowLoading(false);
+          } else {
+            setShowLoading(true);
+            fetchBoard();
+            console.log('fetching board', board);
+          }
+          // setShowLoading(true);
+
+
           // window.location.reload();
         }
-      }, 5000);
+      }, 1000);
     }
   }
     , []);
@@ -107,10 +110,10 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
           <IonButtons slot="start">
             {showIcon &&
               <IonButton size="small" onClick={() => speak(inputRef.current?.value as string)}>
-                <IonIcon slot="icon-only" className="tiny" icon={playCircleOutline} onClick={() => speak(inputRef.current?.value as string)}></IonIcon> 
+                <IonIcon slot="icon-only" className="tiny" icon={playCircleOutline} onClick={() => speak(inputRef.current?.value as string)}></IonIcon>
               </IonButton>
             }
-            </IonButtons>
+          </IonButtons>
           <IonButtons slot="end">
             {showIcon &&
               <IonButton size="small" onClick={() => clearInput()}>
@@ -123,7 +126,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
       <IonContent fullscreen scrollY={false}>
         <IonLoading message="Please wait while we create your board..." isOpen={showLoading} />
 
-        {board &&
+        {board && board.images &&
           <ImageGallery images={board.images} boardId={board.id} setShowIcon={setShowIcon} inputRef={inputRef} />
         }
         {board ? (
