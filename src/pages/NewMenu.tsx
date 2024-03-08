@@ -51,6 +51,7 @@ const NewMenu: React.FC = (props: any) => {
   }
 
   const saveMenu = async (formData: FormData) => {
+    console.log("formData", formData);
     let result = await createMenu(formData);
     if (result?.error) {
       console.error('Error:', result.error);

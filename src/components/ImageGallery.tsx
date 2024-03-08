@@ -43,7 +43,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId, setShowIco
                 currentGrid.style.height = adjustedHeight;
                 currentGrid.style.width = adjustedWidth;
                 if (galleryWidth > galleryHeight) {
-                    if(galleryHeight > 600) {
+                    if(galleryHeight > 700) {
                         landscapeRows += 4;
                     }
                     //  landscape
@@ -56,11 +56,11 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId, setShowIco
 
                     console.log('Testing protraitRows', protraitRows);
                     // portrait
-                    if(galleryHeight > 600) {
+                    if(galleryHeight > 700 && galleryHeight < 900) {
                         protraitRows += 1;
                         console.log('Adding Row', protraitRows);
                     }
-                    if(galleryHeight > 700) {
+                    if(galleryHeight > 900) {
                         protraitRows += 1;
                         console.log('Adding Row', protraitRows);
                     }
@@ -162,7 +162,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId, setShowIco
 
     return (
         <div className="gallery-container" ref={galleryRef}>
-            <div className="my-auto mx-auto grid grid-rows-4 grid-flow-col gap-1 p-1 " ref={gridRef}>
+            <div className="my-auto mx-auto grid grid-rows-4 grid-flow-col gap-1" ref={gridRef}>
                 {images.map((image, i) => (
                     <div className='h-20 border bg-white rounded-md flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)} key={image.id}
                         onTouchStart={(e) => handleButtonPress(e)}
@@ -173,8 +173,8 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId, setShowIco
                         onMouseLeave={handleButtonRelease} // Cancel on mouse leave to handle edge cases
                     >
                         <IonImg id={image.id} src={image.src} alt={image.label} className="absolute object-contain w-full h-full top-0 left-0" />
-                        <span className="font-medium text-sm md:text-sm lg:text-md rounded bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black">
-                            {image.label}
+                        <span className="font-medium text-xs md:text-sm lg:text-md rounded bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black">
+                            {image.label.length > 20 ? image.label.substring(0, 20) + "..." : image.label}
                             <audio>
                                 <source src={image.audio} type="audio/aac" />
                             </audio>
