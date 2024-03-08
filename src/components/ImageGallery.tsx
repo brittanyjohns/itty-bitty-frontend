@@ -43,7 +43,8 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId, setShowIco
                 currentGrid.style.height = adjustedHeight;
                 currentGrid.style.width = adjustedWidth;
                 if (galleryWidth > galleryHeight) {
-                    if(galleryHeight > 700) {
+                    if (galleryHeight > 700) {
+
                         landscapeRows += 4;
                     }
                     //  landscape
@@ -56,11 +57,11 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId, setShowIco
 
                     console.log('Testing protraitRows', protraitRows);
                     // portrait
-                    if(galleryHeight > 700 && galleryHeight < 900) {
+                    if (galleryHeight > 700 && galleryHeight < 900) {
                         protraitRows += 1;
                         console.log('Adding Row', protraitRows);
                     }
-                    if(galleryHeight > 900) {
+                    if (galleryHeight > 900) {
                         protraitRows += 1;
                         console.log('Adding Row', protraitRows);
                     }

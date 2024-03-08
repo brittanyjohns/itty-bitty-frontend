@@ -41,12 +41,12 @@ const ViewImageScreen: React.FC = () => {
       </IonHeader>
       <IonContent fullscreen scrollY={true} className='ion-padding ion-text-center'>
         <IonText>{image.label}</IonText>
-        <IonItem>
+        <IonItem className='h-80 w-80 border bg-white rounded-md flex relative hover:cursor-pointer text-center'>
           {currentDoc && <IonImg id={currentDoc.id} src={currentDoc.src} alt={currentDoc.label} onClick={handleDocClick} />}
         </IonItem>
-        <div className="grid grid-rows-4 grid-flow-col gap-1 p-1">
+        <div className="grid grid-cols-4 grid-flow-col gap-1 p-1">
           {image?.docs && image.docs.map((doc, index) => (
-            <IonItem key={doc.id}>
+            <IonItem key={doc.id} className='h-20 w-20'>
               <IonImg id={doc.id} src={doc.src} alt={doc.label} onClick={handleDocClick} />
             </IonItem>
           ))}
