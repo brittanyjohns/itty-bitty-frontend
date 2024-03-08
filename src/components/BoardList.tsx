@@ -1,17 +1,14 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Board, deleteBoard, getBoards } from '../data/boards';
+import React, { useEffect, useState } from 'react';
+import { Board, getBoards } from '../data/boards';
 import { IonList, IonButton, IonItem } from '@ionic/react';
-// import '../index.css'
 import BoardListItem from './BoardListItem';
 import { useHistory } from 'react-router';
-import ActionList from './ActionList';
-// import { User, getCurrentUser, isUserSignedIn } from '../data/users';
 import SignInScreen from '../pages/SignUpScreen';
 import { useCurrentUser } from '../hooks/useCurrentUser';
+
 const BoardList = () => {
     const [boards, setBoards] = useState<Board[]>([]);
     const [boardId, setBoardId] = useState<string>('');
-    const [leaving, setLeaving] = useState<boolean>(false);
     const { currentUser, setCurrentUser } = useCurrentUser();
 
     const fetchBoards = async () => {

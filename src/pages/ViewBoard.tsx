@@ -29,8 +29,8 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();
   const params = useParams<{ id: string }>();
   const inputRef = useRef<HTMLIonInputElement>(null);
-    const [showIcon, setShowIcon] = useState(false);
-    const [showLoading, setShowLoading] = useState(false);
+  const [showIcon, setShowIcon] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
 
   const fetchBoard = async () => {
     const board = await getBoard(params.id);
@@ -50,21 +50,21 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
 
   const speak = async (text: string) => {
     await TextToSpeech.speak({
-        text: text,
-        lang: 'en-US',
-        rate: 1.0,
-        pitch: 1.0,
-        volume: 1.0,
-        category: 'ambient',
+      text: text,
+      lang: 'en-US',
+      rate: 1.0,
+      pitch: 1.0,
+      volume: 1.0,
+      category: 'ambient',
     });
-};
+  };
 
-const clearInput = () => {
+  const clearInput = () => {
     if (inputRef.current) {
-        inputRef.current.value = '';
+      inputRef.current.value = '';
     }
     setShowIcon(false);
-}
+  }
 
   useIonViewWillEnter(() => {
     console.log('useIonViewWillEnter');
@@ -75,66 +75,71 @@ const clearInput = () => {
   // } , []);
 
   useEffect(() => {
+    console.log('useEffect - fetchBoard');
     fetchBoard();
-    if(showLoading) {
+    if (showLoading) {
       setTimeout(() => {
-        if(board?.images && board.images.length > 0) {
+        if (board?.images && board.images.length > 0) {
           setShowLoading(false);
         } else {
           setShowLoading(true);
           fetchBoard();
+          // window.location.reload();
         }
       }, 5000);
-    } 
+    }
   }
-  , []);
+    , []);
 
   return (
     <IonPage id="view-board-page">
       <IonHeader translucent>
         <IonToolbar>
-          <IonButtons slot="start" className='mr-4'>
+          <IonButtons slot="start">
             <IonButton routerLink="/boards">
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
+            <IonButton routerLink={`/boards/${board?.id}/edit`}>
+              <IonIcon slot="icon-only" icon={add} className='text-xs' />
+            </IonButton>
           </IonButtons>
           <IonItem slot='start' className='w-full'>
-                <IonInput placeholder={board?.name} ref={inputRef} readonly={true} className='w-3/4'>
-                </IonInput>
-                <div className="flex justify-around">
-                    {showIcon &&
-                        <IonButton className="tiny" size="small" onClick={() => speak(inputRef.current?.value as string)}><IonIcon slot="icon-only" className="tiny"
-                            icon={playCircleOutline} onClick={() => speak(inputRef.current?.value as string)}></IonIcon> </IonButton>
-                    }
-                    {showIcon &&
-                        <IonButton size="small" onClick={() => clearInput()}><IonIcon slot="icon-only" icon={trashBinOutline} onClick={() => clearInput()}></IonIcon></IonButton>
-                    }
-                </div>
-            </IonItem>
-            <IonButtons slot="start" className='mr-4'>
-            <IonButton routerLink={`/boards/${board?.id}/edit`} >
-              <IonIcon slot="icon-only" icon={add} />
-            </IonButton>
+            <IonInput placeholder={board?.name} ref={inputRef} readonly={true} className='w-full text-xs'>
+            </IonInput>
+          </IonItem>
+          <IonButtons slot="start">
+            {showIcon &&
+              <IonButton size="small" onClick={() => speak(inputRef.current?.value as string)}>
+                <IonIcon slot="icon-only" className="tiny" icon={playCircleOutline} onClick={() => speak(inputRef.current?.value as string)}></IonIcon> 
+              </IonButton>
+            }
+            </IonButtons>
+          <IonButtons slot="end">
+            {showIcon &&
+              <IonButton size="small" onClick={() => clearInput()}>
+                <IonIcon slot="icon-only" className="tiny" icon={trashBinOutline} onClick={() => clearInput()}></IonIcon>
+              </IonButton>
+            }
           </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen scrollY={false}>
-      <IonLoading message="Please wait while we create your board..." isOpen={showLoading} />
+        <IonLoading message="Please wait while we create your board..." isOpen={showLoading} />
 
-      {board &&
-        <ImageGallery images={board.images} boardId={board.id} setShowIcon={setShowIcon} inputRef={inputRef} />
-      }
-      {board ? (
-        <>
-          {board.images && board.images.length < 1 &&
-            <div className="text-center">
-              <p>No images found</p>
-            </div>
-          }
-        </>
-      ) : (
-        <div>Board not found</div>
-      )}
+        {board &&
+          <ImageGallery images={board.images} boardId={board.id} setShowIcon={setShowIcon} inputRef={inputRef} />
+        }
+        {board ? (
+          <>
+            {board.images && board.images.length < 1 &&
+              <div className="text-center">
+                <p>No images found</p>
+              </div>
+            }
+          </>
+        ) : (
+          <div>Board not found</div>
+        )}
       </IonContent>
     </IonPage>
   );

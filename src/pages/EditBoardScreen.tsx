@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { addImageToBoard, getBoard, getRemainingImages } from '../data/boards';
 import { Image } from '../data/images';
 import {
+  IonAccordion,
+  IonAccordionGroup,
   IonButton,
   IonButtons,
   IonContent,
@@ -9,8 +11,10 @@ import {
   IonIcon,
   IonInput,
   IonItem,
+  IonLabel,
   IonModal,
   IonPage,
+  IonText,
   IonTitle,
   IonToast,
   IonToolbar,
@@ -50,12 +54,16 @@ const EditBoardScreen: React.FC<any> = () => {
   }
 
   const handleImageClick = (image: Image) => {
-    if (!board) return;
-    addImageToBoard(board?.id, image.id);
-    setIsOpen(true);
-    setTimeout(() => {
-      window.location.reload();
-    } , 3000);
+    if (!board) {
+      console.error('No board found');
+      fetchBoard();
+    } else {
+      addImageToBoard(board?.id, image.id);
+      setIsOpen(true);
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 3000);
+    }
   };
 
   const getMoreImages = async (page: number, query: string) => {
@@ -85,7 +93,7 @@ const EditBoardScreen: React.FC<any> = () => {
   }
 
   useIonViewWillEnter(() => {
-    fetchBoard();
+    // fetchBoard();
   });
 
   return (
@@ -98,37 +106,52 @@ const EditBoardScreen: React.FC<any> = () => {
             </IonButton>
           </IonButtons>
           <IonItem slot='start' className='w-full'>
-            <IonInput placeholder={board?.name} ref={inputRef} readonly={true} className='w-3/4'>
-            </IonInput>
-            <div className="flex justify-around">
-              {showIcon &&
-                <IonButton size="small" onClick={() => speak(inputRef.current?.value as string)}><IonIcon slot="icon-only"
-                  icon={playCircleOutline} onClick={() => speak(inputRef.current?.value as string)}></IonIcon> </IonButton>
-              }
-              {showIcon &&
-                <IonButton size="small" onClick={() => clearInput()}><IonIcon slot="icon-only" icon={trashBinOutline} onClick={() => clearInput()}></IonIcon></IonButton>
+            <IonTitle>{board?.name}</IonTitle>
 
-              }
-            </div>
           </IonItem>
         </IonToolbar>
       </IonHeader>
 
       <IonContent id="board-modal">
-        <FileUploadForm board={board} onCloseModal={closeModal} />
-        <IonToast
-          isOpen={isOpen}
-          message="Image added to board!"
-          onDidDismiss={() => setIsOpen(false)}
-          duration={3000}
-        ></IonToast>
-
-        <div className="text-center">
-          <p>OR</p>
-          {board && remainingImages &&
-            <SelectImageGallery images={remainingImages} boardId={board.id} onLoadMoreImages={getMoreImages} onImageClick={handleImageClick} />
-          }
-        </div>
+        <IonAccordionGroup>
+          <IonAccordion value="first">
+            <IonItem slot="header" color="light">
+              <IonLabel className='ml-2'>Upload a Image</IonLabel>
+            </IonItem>
+            <div className="ion-padding" slot="content">
+              <FileUploadForm board={board} onCloseModal={closeModal} />
+            </div>
+          </IonAccordion>
+          <IonAccordion value="second">
+            <IonItem slot="header" color="light">
+              <IonLabel  className='ml-2'>Generate with AI</IonLabel>
+            </IonItem>
+            <div className="ion-padding" slot="content">
+              Second Content
+            </div>
+          </IonAccordion>
+          <IonAccordion value="third">
+            <IonItem slot="header" color="light">
+              <IonLabel className='ml-2'>Image Gallery</IonLabel>
+            </IonItem>
+            <div className="ion-padding" slot="content">
+              {board && remainingImages &&
+                <SelectImageGallery images={remainingImages} boardId={board.id} onLoadMoreImages={getMoreImages} onImageClick={handleImageClick} />
+              }
+              {board && remainingImages && remainingImages.length === 0 &&
+                <div className="text-center">
+                  <p>No images found</p>
+                </div>
+              }
+            </div>
+            <IonToast
+              isOpen={isOpen}
+              message="Image added to board!"
+              onDidDismiss={() => setIsOpen(false)}
+              duration={3000}
+            ></IonToast>
+          </IonAccordion>
+        </IonAccordionGroup>
       </IonContent>
     </IonPage>
   );

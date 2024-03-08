@@ -44,6 +44,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, boardId, setShowIco
                 currentGrid.style.width = adjustedWidth;
                 if (galleryWidth > galleryHeight) {
                     if (galleryHeight > 700) {
+
                         landscapeRows += 4;
                     }
                     //  landscape
