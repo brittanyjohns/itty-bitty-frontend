@@ -33,14 +33,6 @@ const BoardList = () => {
         setBoardId(board.id as string);
     }
 
-    const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-        const boardId = (event.target as HTMLDivElement).id;
-        if (!boardId) {
-            return;
-        }
-        setBoardId(boardId);
-    }
-
     return (
         <div className="w-full p-2">
             <IonList className="w-full">
