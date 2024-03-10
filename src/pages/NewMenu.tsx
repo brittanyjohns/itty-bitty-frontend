@@ -108,7 +108,7 @@ const NewMenu: React.FC = (props: any) => {
           
             <form className="ion-padding" onSubmit={uploadPhoto} encType="multipart/form-data">
             <IonItem>
-              <IonInput label="Name" placeholder="Enter new menu name" defaultValue="" onIonChange={e => setMenus({ ...menu, name: e.detail.value! })} required></IonInput>
+              <IonInput label="Name" placeholder="Enter new menu name" defaultValue="" onIonInput={e => setMenus({ ...menu, name: e.detail.value! })} required></IonInput>
             </IonItem>
 
             <IonItem>

@@ -72,25 +72,25 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
   useEffect(() => {
     console.log('useEffect - fetchBoard');
     fetchBoard();
-    if (showLoading) {
-      setTimeout(() => {
-        if (board?.images && board.images.length > 0) {
-          setShowLoading(false);
-        } else {
-          if (board?.parent_type === 'Menu') {
-            setShowLoading(false);
-          } else {
-            setShowLoading(true);
-            fetchBoard();
-            console.log('fetching board', board);
-          }
-          // setShowLoading(true);
+    // if (showLoading) {
+    //   setTimeout(() => {
+    //     if (board?.images && board.images.length > 0) {
+    //       setShowLoading(false);
+    //     } else {
+    //       if (board?.parent_type === 'Menu') {
+    //         setShowLoading(false);
+    //       } else {
+    //         setShowLoading(true);
+    //         fetchBoard();
+    //         console.log('fetching board', board);
+    //       }
+    //       // setShowLoading(true);
 
 
-          // window.location.reload();
-        }
-      }, 1000);
-    }
+    //       // window.location.reload();
+    //     }
+    //   }, 1000);
+    // }
   }
     , []);
 

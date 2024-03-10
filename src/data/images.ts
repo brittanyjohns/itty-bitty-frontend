@@ -10,6 +10,7 @@ import { BASE_URL } from "./users";
     id: string;
     src: string;
     label: string;
+    image_prompt?: string;
     audio?: string;
     docs?: ImageDoc[];
   }

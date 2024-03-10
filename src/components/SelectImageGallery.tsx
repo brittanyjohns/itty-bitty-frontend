@@ -40,7 +40,7 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
     }
 
     return (
-        <IonCard className='h-full'>
+        <div className='h-full'>
             <IonCardHeader>
                 <IonCardTitle>
                     <IonSearchbar debounce={1000} onIonInput={handleSearchInput} animated={true} placeholder="Search existing images"></IonSearchbar>
@@ -53,16 +53,16 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
                 </IonButtons>
             </IonCardHeader>
             <IonCardContent>
-                <div className="my-auto mx-auto grid grid-cols-3 gap-1" key={remainingImages.length}>
+                <div className="my-auto mx-auto grid grid-cols-3" key={remainingImages.length}>
                     {remainingImages.map((image, i) => (
-                        <div className='flex relative w-full hover:cursor-pointer text-center border bg-white rounded-lg min-h-24' onClick={() => handleOnImageClick(image)} key={image.id} id={`image_${image.id}`}>
+                        <div className='flex relative w-full hover:cursor-pointer text-center border bg-white rounded-lg min-h-24 m-1' onClick={() => handleOnImageClick(image)} key={image.id} id={`image_${image.id}`}>
                             <IonImg src={image.src} alt={image.label} className="absolute object-contain w-full h-full top-0 left-0" />
-                            <span className="font-medium text-xs md:text-sm lg:text-md rounded bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black">
+                            <div className="font-medium text-xs md:text-sm lg:text-md rounded bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black mt-2">
                                 {image.label}
                                 <audio>
                                     <source src={image.audio} type="audio/aac" />
                                 </audio>
-                            </span>
+                            </div>
                         </div>
                     ))}
                     {remainingImages.length < 1 && <p className="col-span-3 text-center">No images found</p>}
@@ -77,7 +77,7 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
                     <IonButton onClick={() => setPage(oldPage => oldPage + 1)}>Next</IonButton>
                 </IonButtons>
             </IonCardContent>
-        </IonCard>
+        </div>
     );
 };
 

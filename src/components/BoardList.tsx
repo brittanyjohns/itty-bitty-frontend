@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Board, getBoards } from '../data/boards';
-import { IonList, IonButton, IonItem } from '@ionic/react';
+import { IonList, IonButton, IonItem, IonNavLink } from '@ionic/react';
 import BoardListItem from './BoardListItem';
 import { useHistory } from 'react-router';
 import SignInScreen from '../pages/SignUpScreen';
 import { useCurrentUser } from '../hooks/useCurrentUser';
+import ImagesScreen from '../pages/ImagesScreen';
 
 const BoardList = () => {
     const [boards, setBoards] = useState<Board[]>([]);

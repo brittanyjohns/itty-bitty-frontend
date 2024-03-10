@@ -240,3 +240,8 @@ html {
   https://ionicframework.com/docs/layout/dynamic-font-scaling */
   --ion-dynamic-font: var(--ion-default-dynamic-font);
 }
+/*  position tab bar on the bottom */
+ion-tab-bar {
+  --ion-safe-area-inset-bottom: 0;
+  bottom: 0;
+}
