@@ -2,21 +2,20 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
-  IonItem,
   IonMenuButton,
   IonPage,
   IonRefresher,
   IonRefresherContent,
   IonTitle,
   IonToolbar,
-  useIonViewWillEnter,
 } from '@ionic/react';
 import BoardList from '../components/BoardList';
-import MainMenu, { hideMenu } from '../components/MainMenu';
-import { useCurrentUser } from '../hooks/useCurrentUser';
+import MainMenu from '../components/MainMenu';
+import { useEffect, useState } from 'react';
+import { getCurrentUser } from '../data/users';
 import Tabs from '../components/Tabs';
-const BoardsScreen: React.FC = () => {
-  const { currentUser, setCurrentUser } = useCurrentUser();
+const SettingsPage: React.FC = () => {
+  const [currentUser, setCurrentUser] = useState<any>(null);
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
@@ -24,10 +23,13 @@ const BoardsScreen: React.FC = () => {
     }, 3000);
   };
 
-  useIonViewWillEnter(() => {
-    hideMenu();
-  } );
-
+  useEffect(() => {
+    getCurrentUser().then((user) => {
+      console.log('user from useEffect', user);
+      setCurrentUser(user);
+    }
+    );
+  }, []);
 
   return (
     <>
@@ -38,22 +40,22 @@ const BoardsScreen: React.FC = () => {
             <IonButtons slot="start">
               <IonMenuButton></IonMenuButton>
             </IonButtons>
-            <IonTitle>Boards</IonTitle>
+            <IonTitle>Settings</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent className='ion-padding'>
+        <IonContent>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-            <IonItem>
-              <BoardList />
-            </IonItem>
+          <IonContent fullscreen>
+            <IonTitle>Settings</IonTitle>
+            {currentUser && currentUser.email}
+          </IonContent>
         </IonContent>
         <Tabs />
-
       </IonPage>
     </>
   );
 };
 
-export default BoardsScreen;
+export default SettingsPage;

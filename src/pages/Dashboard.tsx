@@ -13,6 +13,7 @@ import BoardList from '../components/BoardList';
 import MainMenu from '../components/MainMenu';
 import { useEffect, useState } from 'react';
 import { getCurrentUser } from '../data/users';
+import Tabs from '../components/Tabs';
 const Dashboard: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<any>(null);
 
@@ -51,6 +52,7 @@ const Dashboard: React.FC = () => {
           </IonContent>
         </IonContent>
       </IonPage>
+      <Tabs />
     </>
   );
 };

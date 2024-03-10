@@ -25,7 +25,7 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({ menuLink, closeMenu }) 
     
   }
   return (
-    <IonItem  onClick={handleClick(menuLink.endpoint)}>
+    <IonItem  onClick={handleClick(menuLink.endpoint)} className='hover:cursor-pointer' lines='none' detail={false} >
       <div slot="start" className="dot dot-unread"></div>
       <IonLabel className="ion-text-wrap">
         <h2>

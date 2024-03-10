@@ -14,13 +14,13 @@ interface BoardListItemProps {
 const BoardListItem: React.FC<BoardListItemProps> = ({ board }) => {
   return (
     <>
-    <IonItem className='p-4 w-full' routerLink={`/boards/${board.id}`} detail={true}>
+    <IonItem className='p-4 w-full' routerLink={`/boards/${board.id}`} detail={false} lines="none">
+      <IonNote slot="start">
+        {board.id}
+      </IonNote>
       <IonLabel>
         {board.name}
       </IonLabel>
-      <IonNote slot="end">
-        {board.id}
-      </IonNote>
     </IonItem>
     <IonButton routerLink={`/boards/${board.id}/edit`} fill="clear" slot="end" color="primary">
     Edit  

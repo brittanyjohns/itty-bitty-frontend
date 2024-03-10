@@ -15,6 +15,7 @@ import { Image, getImages, getMoreImages } from '../data/images';
 import MainMenu from '../components/MainMenu';
 import SelectImageGallery from '../components/SelectImageGallery';
 import { useHistory } from 'react-router';
+import Tabs from '../components/Tabs';
 
 const ImagesScreen: React.FC = () => {
   const [images, setImages] = useState<Image[]>([]);
@@ -56,7 +57,7 @@ const ImagesScreen: React.FC = () => {
             <IonButtons slot="start">
               <IonMenuButton></IonMenuButton>
             </IonButtons>
-            <IonTitle>Welcome to Itty Bitty Boards</IonTitle>
+            <IonTitle>Image Gallery</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent>
@@ -65,6 +66,8 @@ const ImagesScreen: React.FC = () => {
           </IonRefresher>
           {<SelectImageGallery images={images} onLoadMoreImages={handleGetMoreImages} onImageClick={handleImageClick} />}
         </IonContent>
+        <Tabs />
+
       </IonPage>
     </>
   );
