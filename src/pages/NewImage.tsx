@@ -33,7 +33,7 @@ const NewImage: React.FC = (props: any) => {
         </IonHeader>
         <IonContent fullscreen scrollY={false}>
           <>
-            <FileUploadForm board={undefined} onCloseModal={undefined} />
+            <FileUploadForm board={undefined} onCloseModal={undefined} showLabel={true} />
           </>
         </IonContent>
       </IonPage>

@@ -18,7 +18,7 @@ function MainMenu() {
 
   // Function to filter links based on the current user's status
   const filterList = (links: MenuLink[]) => {
-    const signedInLinks = ['sign-out', 'dashboard', 'boards', 'images', 'new-image', 'new-board', 'dashboard', 'menus', 'new-menu'];
+    const signedInLinks = ['sign-out', 'dashboard', 'boards', 'images', 'new-image', 'new-board', 'dashboard', 'menus', 'new-menu', 'settings']
     const signedOutLinks = ['sign-in', 'sign-up'];
 
     return links.filter(link => {

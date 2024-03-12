@@ -1,17 +1,21 @@
 // Import necessary components and hooks
-import React, { useState } from 'react';
-import { IonInput, IonButton, IonItem, IonLabel, useIonViewWillEnter, useIonViewDidEnter, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
+import { IonInput, IonButton, IonItem, IonLabel, useIonViewWillEnter, useIonViewDidEnter, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonText } from '@ionic/react';
 import { createImage } from '../data/images';
 import { useHistory } from 'react-router';
 import { Board } from '../data/boards';
+import { set } from 'react-hook-form';
 interface IMyProps {
   board: Board | undefined,
-  onCloseModal: any
+  onCloseModal: any,
+  showLabel: boolean,
+  existingLabel?: string
 }
 const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
   const [label, setLabel] = useState<string>('');
   const history = useHistory();
   const [shouldDisable, setShouldDisable] = useState<boolean>(false);
+  const [hideLabel, setHideLabel] = useState<boolean>(false);
 
   // State for the file
   const [file, setFile] = useState<File | null>(null);
@@ -68,25 +72,63 @@ const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
     setLabel(event.detail.value);
   };
 
+  useIonViewWillEnter(() => {
+    setHideLabel(!props.showLabel);
+    console.log('props0', props);
+    if (props.existingLabel) {
+      console.log('existingLabel', props.existingLabel);
+      setLabel(props.existingLabel);
+      setShouldDisable(false);
+    }
+  });
+  useEffect(() => {
+    if (props.existingLabel) {
+      console.log('existingLabel', props.existingLabel);
+      setLabel(props.existingLabel);
+      setHideLabel(true);
+      setShouldDisable(false);
+    }
+  } , []);
+
+  // return (
+  //       <form onSubmit={uploadPhoto} encType="multipart/form-data" className=''>
+  //           <IonInput
+  //             value={label}
+  //             placeholder='Label'
+  //             onIonInput={handleLabelChange}
+  //             type="text"
+  //             aria-label="Label"
+  //             className='pl-4'
+  //             required={!hideLabel}
+  //             hidden={hideLabel}
+  //           />
+  //           <input slot='start' className={props.showLabel ? '' : 'inline text-sm rounded-md w-3/4'} type="file" onChange={ev => onFileChange(ev)}></input>
+  //         <IonButton type="submit" className={props.showLabel ? '' : 'p-1 text-sm inline w-1/4'} hidden={!label} disabled={shouldDisable}>
+  //           {props.showLabel ? 'Save' : 'Upload'}
+  //         </IonButton>
+  //       </form>
+
+  // );
   return (
-        <form onSubmit={uploadPhoto} encType="multipart/form-data" className='p-1 text-center'>
-            <IonInput
-              value={label}
-              placeholder='Label'
-              onIonInput={handleLabelChange}
-              type="text"
-              aria-label="Label"
-              className='pl-4'
-              required
-            />
-            <input className='bg-inherit w-full p-4' type="file" onChange={ev => onFileChange(ev)}></input>
-
-          <IonButton type="submit" expand="block" className="mt-4 w-5/6 mx-auto" hidden={!label} disabled={shouldDisable}>
-            Submit
+    <form onSubmit={uploadPhoto} encType="multipart/form-data" className='p-2 shadow-xl'>
+      <IonText className='text-lg'>Upload your own image</IonText>
+        <IonInput
+          value={label}
+          placeholder='Label'
+          onIonChange={handleLabelChange} // Changed from onIonInput to onIonChange
+          type="text"
+          aria-label="Label"
+          className={`pl-4 ${hideLabel ? 'hidden' : ''}`} // Simplified conditional class application
+          required={!hideLabel}
+        />
+        <div className="flex items-center"> {/* Add this wrapper */}
+          <input type="file" onChange={ev => onFileChange(ev)} className="text-sm rounded-md flex-grow mr-2"/> {/* Adjusted classes for flex layout */}
+          <IonButton type="submit" disabled={shouldDisable} className="flex-shrink-0">
+            {props.showLabel ? 'Save' : 'Upload'}
           </IonButton>
-        </form>
-
-  );
+        </div>
+    </form>
+);
 };
 
 export default FileUploadForm;

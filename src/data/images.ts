@@ -14,6 +14,7 @@ import { BASE_URL } from "./users";
     image_prompt?: string;
     audio?: string;
     docs?: ImageDoc[];
+    display_doc?: ImageDoc;
   }
   
   
