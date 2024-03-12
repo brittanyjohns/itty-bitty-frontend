@@ -153,7 +153,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
 
     return (
         <div className="gallery-container" ref={galleryRef}>
-            <div className="grid grid-cols-1" ref={gridRef}>
+            <div className="grid grid-cols-1 gap-1" ref={gridRef}>
                 {images.map((image, i) => (
                 <div className='image-container border bg-white rounded-md flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)} key={image.id}
                 onTouchStart={(e) => handleButtonPress(e)}
