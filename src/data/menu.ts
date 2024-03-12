@@ -43,7 +43,7 @@ const menuLinks: MenuLink[] = [
     id: 5
   },
   {
-    endpoint: '/images/new',
+    endpoint: '/images/add',
     name: 'New Image',
     slug: 'new-image',
     id: 6
@@ -66,6 +66,12 @@ const menuLinks: MenuLink[] = [
     slug: 'sign-out',
     id: 9
   },
+  {
+    endpoint: '/settings',
+    name: 'Settings',
+    slug: 'settings',
+    id: 10
+  }
 ];
 
 export const getMenu = () => menuLinks;

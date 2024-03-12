@@ -1,5 +1,5 @@
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 
@@ -38,6 +38,7 @@ import ViewImageScreen from './pages/ViewImageScreen';
 import MenusScreen from './pages/MenusScreen';
 import SelectGalleryScreen from './pages/SelectGalleryScreen';
 import SettingsPage from './pages/SettingsPage';
+import { playCircle, radio, library, search, home, settings, albumsOutline, imagesOutline } from 'ionicons/icons';
 
 
 setupIonicReact();
@@ -46,34 +47,70 @@ const App: React.FC = () => (
   <UserProvider>
     <IonApp>
       <IonReactRouter>
-        <IonRouterOutlet>
-          <Route path="/" component={Home} exact={true} />
-          {/* {isUserSignedIn() ? <Redirect to="/home" /> : <Redirect to="/sign-in" />} */}
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route path="/" component={Home} exact={true} />
+            {/* {isUserSignedIn() ? <Redirect to="/home" /> : <Redirect to="/sign-in" />} */}
 
-          <Route path="/home" exact={true}>
-            <Home />
-          </Route>
-          <Route path="/boards" component={BoardsScreen} exact={true} />
-          <Route path="/dashboard" component={Dashboard} exact={true} />
-          <Route path="/boards/:id" component={ViewBoard} exact={true} />
-          <Route path="/boards/new" component={NewBoard} exact={true} />
-          <Route path="/boards/:id/edit" component={EditBoardScreen} exact={true} />
-          <Route path="/boards/:id/gallery" component={SelectGalleryScreen} exact={true} />
-          <Route path="/menus/new" component={NewMenu} exact={true} />
-          <Route path="/images/new" component={NewImage} exact={true} />
-          <Route path="/images/:id/edit" component={EditImageScreen} exact={true} />
-          <Route path="/images/:id" component={ViewImageScreen} exact={true} />
-          <Route path="/images" component={ImagesScreen} exact={true} />
-          <Route path="/menus/new" component={NewMenu} exact={true} />
-          <Route path="/menus" component={MenusScreen} exact={true} />
-          <Route path="/settings" component={SettingsPage} exact={true} />
-          <Route path={"/sign-up"} >
-            <SignUpScreen />
-            {/* {isUserSignedIn() ? <Redirect to="/" /> : <SignUpScreen />} */}
-          </Route>
-          <Route path={"/sign-in"} component={SignInScreen} exact={true} />
-          <Route path="/sign-out" component={SignOutScreen} exact={true} />
-        </IonRouterOutlet>
+            <Route path="/home" exact={true}>
+              <Home />
+            </Route>
+            <Route path="/boards" component={BoardsScreen} exact={true} />
+            <Route path="/dashboard" component={Dashboard} exact={true} />
+            <Route path="/boards/:id" component={ViewBoard} exact={true} />
+            <Route path="/boards/new" component={NewBoard} exact={true} />
+            <Route path="/boards/:id/edit" component={EditBoardScreen} exact={true} />
+            <Route path="/boards/:id/gallery" component={SelectGalleryScreen} exact={true} />
+            <Route path="/menus/new" component={NewMenu} exact={true} />
+
+            <Route path="/images/:id/edit" component={EditImageScreen} exact={true} />
+            <Route path="/images/:id" component={ViewImageScreen} exact={true} />
+            <Route path="/images/add" component={NewImage} exact={true} />
+            <Route path="/images" component={ImagesScreen} exact={true} />
+            <Route path="/menus/new" component={NewMenu} exact={true} />
+            <Route path="/menus" component={MenusScreen} exact={true} />
+            <Route path="/settings" component={SettingsPage} exact={true} />
+            <Route path={"/sign-up"} >
+              <SignUpScreen />
+              {/* {isUserSignedIn() ? <Redirect to="/" /> : <SignUpScreen />} */}
+            </Route>
+            <Route path={"/sign-in"} component={SignInScreen} exact={true} />
+            <Route path="/sign-out" component={SignOutScreen} exact={true} />
+          </IonRouterOutlet>
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="home" href="/home">
+              <IonIcon icon={playCircle} />
+              <IonLabel>Listen now</IonLabel>
+            </IonTabButton>
+
+            <IonTabButton tab="radio" href="/radio">
+              <IonIcon icon={radio} />
+              <IonLabel>Radio</IonLabel>
+            </IonTabButton>
+
+            <IonTabButton tab="library" href="/library">
+              <IonIcon icon={library} />
+              <IonLabel>Library</IonLabel>
+            </IonTabButton>
+
+            <IonTabButton tab="search" href="/search">
+              <IonIcon icon={search} />
+              <IonLabel>Search</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="home" href="/home" className=''>
+              <IonIcon icon={home} />
+              <IonLabel>Home</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="boards" href="/boards">
+              <IonIcon icon={albumsOutline} />
+              <IonLabel>Boards</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="images" href="/images">
+              <IonIcon icon={imagesOutline} />
+              <IonLabel>Images</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
       </IonReactRouter>
     </IonApp>
   </UserProvider>

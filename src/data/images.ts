@@ -1,3 +1,4 @@
+import { Board } from "./boards";
 import { BASE_URL } from "./users";
   export interface ImageDoc {
     id: string;
@@ -18,6 +19,7 @@ import { BASE_URL } from "./users";
   
   export interface ImageGalleryProps {
     boardId?: string | null;
+    board?: Board
     images: Image[];
     setShowIcon: any;
     inputRef: any;

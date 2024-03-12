@@ -4,6 +4,7 @@ import { Image } from '../data/images';
 import {
   IonButton,
   IonButtons,
+  IonContent,
   IonHeader,
   IonIcon,
   IonPage,
@@ -13,7 +14,7 @@ import {
   IonToolbar,
   useIonViewWillEnter,
 } from '@ionic/react';
-import { Board } from '../types';
+import { Board } from '../data/boards';
 import { add, arrowBackCircleOutline, playCircleOutline, trashBinOutline } from 'ionicons/icons';
 
 import { useParams } from 'react-router';
@@ -53,17 +54,21 @@ const SelectGalleryScreen: React.FC<any> = () => {
       console.error('No board found');
       fetchBoard();
     } else {
-      addImageToBoard(board?.id, image.id);
-      setIsOpen(true);
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
+      if (image.id && board.id) {
+        addImageToBoard(board.id, image.id);
+        setIsOpen(true);
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+      }
     }
   };
 
   const getMoreImages = async (page: number, query: string) => {
-    if (!board) return;
-
+    if (!board || !board.id) {
+      console.error('No board found');
+      return;
+    }
     const remainingImgs = await getRemainingImages(board.id, page, query);
     setRemainingImages(remainingImgs);
     return remainingImgs;
@@ -100,9 +105,10 @@ const SelectGalleryScreen: React.FC<any> = () => {
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
           </IonButtons>
-          <IonTitle>Add images to {board?.name} ({board?.images.length})</IonTitle>
+          <IonTitle>Add images to {board?.name} ({board?.images?.length})</IonTitle>
         </IonToolbar>
       </IonHeader>
+      <IonContent>
       {board && remainingImages &&
         <SelectImageGallery images={remainingImages} boardId={board.id} onLoadMoreImages={getMoreImages} onImageClick={handleImageClick} />
       }
@@ -111,6 +117,7 @@ const SelectGalleryScreen: React.FC<any> = () => {
           <p>No images found</p>
         </div>
       }
+      </IonContent>
     </IonPage>
   );
 }
