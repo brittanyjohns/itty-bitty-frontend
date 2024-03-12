@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { addImageToBoard, getBoard, getRemainingImages } from '../data/boards';
+import { addImageToBoard, getBoard, getRemainingImages, updateBoard } from '../data/boards';
 import { Image } from '../data/images';
 import {
   IonAccordion,
@@ -15,13 +15,15 @@ import {
   IonLabel,
   IonModal,
   IonPage,
+  IonSelect,
+  IonSelectOption,
   IonText,
   IonTitle,
   IonToast,
   IonToolbar,
   useIonViewWillEnter,
 } from '@ionic/react';
-import { Board } from '../types';
+import { Board } from '../data/boards';
 import { add, arrowBackCircleOutline, playCircleOutline, trashBinOutline } from 'ionicons/icons';
 
 import { useHistory, useParams } from 'react-router';
@@ -34,7 +36,7 @@ import { TextToSpeech } from '@capacitor-community/text-to-speech';
 import { set } from 'react-hook-form';
 
 const EditBoardScreen: React.FC<any> = () => {
-  const [board, setBoard] = useState<Board>();
+  const [board, setBoard] = useState<Board>({ id: '', name: '', number_of_columns: 0, images: [] });
   const [isOpen, setIsOpen] = useState(false);
   const modal = useRef<HTMLIonModalElement>(null);
   const [remainingImages, setRemainingImages] = useState<Image[]>(); // State for the remaining images
@@ -55,37 +57,35 @@ const EditBoardScreen: React.FC<any> = () => {
     modal.current?.dismiss()
   }
 
-  const handleImageClick = (image: Image) => {
-    if (!board) {
+
+  const handleGridChange = async (event: CustomEvent) => {
+    if (!board || !board.id) {
       console.error('No board found');
-      fetchBoard();
-    } else {
-      addImageToBoard(board?.id, image.id);
-      setIsOpen(true);
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 3000);
+      return;
     }
-  };
+    const gridSize = event.detail.value;
+    const updatedBoard = { ...board, number_of_columns: gridSize };
+    setBoard({ ...updatedBoard, number_of_columns: parseInt(updatedBoard.number_of_columns) });
 
-  const getMoreImages = async (page: number, query: string) => {
-    if (!board) return;
-
-    const remainingImgs = await getRemainingImages(board.id, page, query);
-    setRemainingImages(remainingImgs);
-    return remainingImgs;
   }
 
-  const speak = async (text: string) => {
-    await TextToSpeech.speak({
-      text: text,
-      lang: 'en-US',
-      rate: 1.0,
-      pitch: 1.0,
-      volume: 1.0,
-      category: 'ambient',
-    });
-  };
+  const handleSubmit = async () => {
+    if (!board) {
+      console.error('No board found');
+      return;
+    }
+    const updatedBoard = await updateBoard(board);
+    setBoard(updatedBoard);
+  }
+
+  const handleReset = () => {
+    if (!board) {
+      console.error('No board found');
+      return;
+    }
+    const updatedBoard = { ...board, number_of_columns: 0 };
+    setBoard(updatedBoard);
+  }
 
   const goToGallery = () => {
     if (!board) {
@@ -95,9 +95,13 @@ const EditBoardScreen: React.FC<any> = () => {
     history.push(`/boards/${board?.id}/gallery`);
   }
 
+  const gridSizeOptions = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ];
+
 
   useEffect(() => {
     fetchBoard();
+    console.log('fetchBoard', board);
+
   }, []);
 
   return (
@@ -117,12 +121,35 @@ const EditBoardScreen: React.FC<any> = () => {
       </IonHeader>
 
       <IonContent id="board-modal">
-        <IonCard className='p-4'>
-          <FileUploadForm board={board} onCloseModal={closeModal} />
-        </IonCard>
-        <IonButton onClick={goToGallery} expand="block" fill="outline" color="primary" className="mt-4 w-5/6 mx-auto">
+      <IonButton onClick={goToGallery} expand="block" fill="outline" color="primary" className="mt-4 w-5/6 mx-auto">
           View Gallery
         </IonButton>
+        <IonCard className='p-4'>
+          <IonText className='text-2xl text-center'>Upload an image</IonText>
+          <FileUploadForm board={board} onCloseModal={closeModal} />
+        </IonCard>
+        <IonCard className='p-4'>
+          <IonText className='text-2xl text-center'>Grid size Override</IonText>
+          <IonItem>
+            <IonItem>
+                <IonSelect placeholder="Select # of columns" name="number_of_columns" onIonChange={handleGridChange} value={board?.number_of_columns}>
+                    {gridSizeOptions.map((size) => (
+                        <IonSelectOption key={size} value={size}>
+                            {size}
+                        </IonSelectOption>
+                    ))} 
+                </IonSelect>
+            </IonItem>
+            <IonButtons>
+            <IonButton onClick={() => {
+              handleSubmit();
+            } } expand="block" fill="outline" color="primary" className="mt-4 w-5/6 mx-auto">
+              Save
+            </IonButton>
+            <IonButton onClick={() => {handleReset}  } expand="block" fill="outline" color="danger" className="mt-4 w-5/6 mx-auto">  Reset </IonButton>
+            </IonButtons>
+          </IonItem>
+        </IonCard>
       </IonContent>
 
     </IonPage>

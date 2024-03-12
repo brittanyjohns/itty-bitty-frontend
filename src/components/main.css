@@ -114,3 +114,7 @@ ion-card {
     margin-bottom: 8px;
     color: blue
 }
+
+.ion-img-cover {
+    object-fit: cover;
+}

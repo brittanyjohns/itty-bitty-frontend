@@ -70,8 +70,9 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
   // } , []);
 
   useEffect(() => {
-    console.log('useEffect - fetchBoard');
     fetchBoard();
+    console.log('useEffect - fetchBoard', board);
+
     // if (showLoading) {
     //   setTimeout(() => {
     //     if (board?.images && board.images.length > 0) {
@@ -127,7 +128,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
         <IonLoading message="Please wait while we create your board..." isOpen={showLoading} />
 
         {board && board.images &&
-          <ImageGallery images={board.images} boardId={board.id} setShowIcon={setShowIcon} inputRef={inputRef} />
+          <ImageGallery images={board.images} board={board} setShowIcon={setShowIcon} inputRef={inputRef} />
         }
         {board ? (
           <>

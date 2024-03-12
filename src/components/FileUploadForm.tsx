@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { IonInput, IonButton, IonItem, IonLabel, useIonViewWillEnter, useIonViewDidEnter, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent } from '@ionic/react';
 import { createImage } from '../data/images';
 import { useHistory } from 'react-router';
-import { Board } from '../types';
+import { Board } from '../data/boards';
 interface IMyProps {
   board: Board | undefined,
   onCloseModal: any
@@ -36,7 +36,9 @@ const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
   const saveImage = async (formData: FormData) => {
     let result
     if (props.board) {
-      formData.append('board[id]', props.board.id);
+      if (props.board && props.board.id) {
+        formData.append('board[id]', props.board.id);
+      }
       result = await createImage(formData, props.board.id);
     } else {
       result = await createImage(formData);
@@ -49,10 +51,10 @@ const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
       if (props.board) {
         history.push(`/boards/${props.board.id}`);
       } else {
-        history.push('/images');
+        history.push(`/images/${result.id}`);
       }
       if (props.onCloseModal) props.onCloseModal();
-      window.location.reload();
+      // window.location.reload();
     }
   };
 

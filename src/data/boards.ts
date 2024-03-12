@@ -7,6 +7,7 @@ export interface Board {
     description?: string;
     parent_type?: string;
     displayImage?: string;
+    number_of_columns: number;
     images?: Image[];
 }
 
@@ -45,6 +46,11 @@ export const createBoard = (board: Board) => {
 }
 
 export const updateBoard = (board: Board) => {
+    console.log('updateBoard', board);
+    const formData = new FormData();
+    formData.append('board[name]', board.name);
+    formData.append('board[description]', board.description || '');
+    formData.append('board[number_of_columns]', board.number_of_columns.toString());
     const updatedBoard = fetch(`${BASE_URL}boards/${board.id}`, {
         method: 'PUT',
         headers: userHeaders,
