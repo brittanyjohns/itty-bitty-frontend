@@ -35,24 +35,24 @@ const BoardList = () => {
     }
 
     return (
-        <div className="w-full p-2">
-            <IonList className="w-full">
-                {boards && boards.map((board, i) => (
-                    <IonItem key={i}>
-                        <div id={board.id} className='rounded-md flex relative w-full hover:cursor-pointer text-center' onClick={() => handleBoardClick(board)} key={board.id}>
-                            <BoardListItem board={board} />
-                        </div>
-                    </IonItem>
-                ))}
-                {currentUser && boards?.length === 0 &&
+        <IonList className="w-full">
+            {boards && boards.map((board, i) => (
+                <IonItem key={i}>
+                    <div id={board.id} className='rounded-md flex relative w-full hover:cursor-pointer text-center' onClick={() => handleBoardClick(board)} key={board.id}>
+                        <BoardListItem board={board} />
+                    </div>
+                </IonItem>
+            ))}
+            {currentUser && boards?.length === 0 &&
+                <IonItem>
                     <div className="text-center">
                         <p>No boards found</p>
                         <IonButton routerLink="/boards/new" color="primary">Create a new board</IonButton>
-                    </div>}
+                    </div>
+                </IonItem>}
 
-                {!currentUser && <SignInScreen />}
-            </IonList>
-        </div>
+            {!currentUser && <SignInScreen />}
+        </IonList>
     );
 };
 
