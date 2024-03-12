@@ -7,8 +7,7 @@ import './main.css'
 import { useHistory } from 'react-router';
 import ActionList from './ActionList';
 import { removeImageFromBoard } from '../data/boards';
-import { grid } from 'ionicons/icons';
-const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon, inputRef }) => {
+const BaseImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon, inputRef }) => {
     const gridRef = useRef(null); // Ref for the grid container
     const [audioList, setAudioList] = useState<string[]>([]);
     const [imageId, setImageId] = useState<string>('');
@@ -17,44 +16,43 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
     const [showActionList, setShowActionList] = useState<boolean>(false);
     const longPressTimer = useRef<NodeJS.Timeout | null>(null);
     const galleryRef = useRef<HTMLDivElement>(null);
+
     const resizeGrid = () => {
         const imagesCount = images.length;
+        let cols = 1;
+        let rows = 1;
     
-        // Calculate the number of columns based on the viewport width and the square root of the number of images.
-        // This aims to achieve a balance between the number of rows and columns.
-        const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
-        const optimalSize = Math.sqrt(viewportWidth * viewportHeight / imagesCount);
-        console.log('optimalSize', optimalSize);
-        const cols = Math.floor(viewportWidth / optimalSize);
+        if (imagesCount > 1) {
+            const sqrt = Math.sqrt(imagesCount);
+            rows = Math.ceil(sqrt);
+            cols = Math.round(sqrt);
+        }
     
         const gridTarget = gridRef.current ? gridRef.current as HTMLElement : null;
         if (!gridTarget) return;
-
-        const adjustedHeight = `calc(100vh - 60px)`; // Adjust as needed
+    
+        // For a single image, we want it to fill the entire viewport
+        if (imagesCount === 1) {
+            gridTarget.style.height = '100vh';
+            gridTarget.style.width = '100vw';
+            gridTarget.style.display = 'flex';
+            gridTarget.style.justifyContent = 'center';
+            gridTarget.style.alignItems = 'center';
+        } else {
+            // Adjust grid for multiple images
+            const adjustedHeight = `calc(100vh - 60px)`; // Adjust as needed
             const adjustedWidth = `calc(100vw)`; // Adjust as needed
     
             gridTarget.style.height = adjustedHeight;
             gridTarget.style.width = adjustedWidth;
             gridTarget.style.display = 'grid';
+        }
     
-        // Adjust the grid template to fit the calculated number of columns
-        // Each column width is set to '1fr' to distribute the space evenly
-        gridTarget.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-    
-        // There's no need to set the gridTemplateRows in this approach because the height of each row will automatically adjust to the content
+        // Set grid layout
+        gridTarget.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
+        gridTarget.style.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr))`;
     };
     
-    // Call resizeGrid function inside useEffect hook to adjust the grid on mount and when images state changes or viewport size changes
-    useEffect(() => {
-        resizeGrid();
-        window.addEventListener('resize', resizeGrid);
-        return () => {
-            window.removeEventListener('resize', resizeGrid);
-        };
-    }, [images]);
-    
-
 
 
     const handleImageClick = (image: Image) => {
@@ -111,17 +109,14 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
     };
 
     const handleActionSelected = (action: string) => {
-        console.log('Action Selected', action);
-        if (!imageId) {
-            return;
-        }
-
         if (action === 'delete') {
             if (!board?.id) {
+                console.error('Board ID is missing');
                 return;
             }
-            removeImageFromBoard(board.id, imageId);
-            window.location.reload();
+            const result = remove(imageId, board.id);
+            console.log('Action', result);
+            // window.location.reload();
         } else if (action === 'edit') {
             history.push(`/images/${imageId}/edit`);
         }
@@ -139,13 +134,12 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
     const remove = async (imageId: string, boardId: string) => {
         const result = await removeImageFromBoard(boardId, imageId);
         console.log('Remove Image from Board', result);
-
         return result;
     };
 
     // Resize grid on mount and when images state changes
     useEffect(() => {
-        resizeGrid();
+        // resizeGrid();
         // Add window resize event listener to adjust grid on viewport change
         window.addEventListener('resize', resizeGrid);
         return () => window.removeEventListener('resize', resizeGrid);
@@ -153,20 +147,19 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
 
     return (
         <div className="gallery-container" ref={galleryRef}>
-            <div className="grid grid-cols-1" ref={gridRef}>
+            <div className="grid grid-cols-3 gap-1" ref={gridRef}>
                 {images.map((image, i) => (
-                <div className='image-container border bg-white rounded-md flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)} key={image.id}
-                onTouchStart={(e) => handleButtonPress(e)}
+                    <div className='min-h-20 h-full border bg-white rounded-md flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)} key={image.id}
+                        onTouchStart={(e) => handleButtonPress(e)}
                         onPointerDown={(e) => handlePointerDown(e)}
                         onTouchEnd={(e) => handleButtonRelease(e)}
                         onMouseDown={(e) => handleButtonPress(e)} // For desktop
                         onMouseUp={handleButtonRelease} // For desktop
                         onMouseLeave={handleButtonRelease} // Cancel on mouse leave to handle edge cases
                     >
-
-                        <IonImg id={image.id} src={image.src} alt={image.label} className="ion-img-contain mx-auto" />
-                        <span className="font-medium text-xs md:text-sm lg:text-md rounded-sm bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black">
-                            {image.label.length > 15 ? image.label.substring(0, 20) + "..." : image.label}
+                        <IonImg id={image.id} src={image.src} alt={image.label} className="absolute ion-img-cover w-full h-full top-0 left-0" />
+                        <span className="font-medium text-xs md:text-sm lg:text-md rounded bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black">
+                            {image.label.length > 20 ? image.label.substring(0, 20) + "..." : image.label}
                             <audio>
                                 <source src={image.audio} type="audio/aac" />
                             </audio>
@@ -184,4 +177,4 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
     );
 };
 
-export default ImageGallery;
+export default BaseImageGallery;

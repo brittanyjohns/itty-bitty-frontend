@@ -126,7 +126,7 @@ const EditBoardScreen: React.FC<any> = () => {
         </IonButton>
         <IonCard className='p-4'>
           <IonText className='text-2xl text-center'>Upload an image</IonText>
-          <FileUploadForm board={board} onCloseModal={closeModal} />
+          <FileUploadForm board={board} onCloseModal={closeModal} showLabel={true} />
         </IonCard>
         <IonCard className='p-4'>
           <IonText className='text-2xl text-center'>Grid size Override</IonText>

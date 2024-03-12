@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonPage, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import React, { useState, useEffect, useRef } from 'react';
+import { IonButton, IonButtons, IonCard, IonContent, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonPage, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { useParams } from 'react-router';
 import { arrowBackCircleOutline } from 'ionicons/icons';
 import { getImage, updateImage, Image, ImageDoc, generateImage } from '../data/images'; // Adjust imports based on actual functions
@@ -8,28 +8,45 @@ import BoardDropdown from '../components/BoardDropdown';
 import FileUploadForm from '../components/FileUploadForm';
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [image, setImage] = useState<Image>({ id: '', src: '', label: '', docs: [], image_prompt: '' });
+  const [image, setImage] = useState<Image | null>(null)
   const [currentDoc, setCurrentDoc] = useState<ImageDoc | null>(null);
+  const imageGrid = useRef<HTMLDivElement>(null);
 
   const fetchImage = async () => {
     const img = await getImage(id); // Ensure getImage is typed to return a Promise<Image>
+    console.log('img', img);
     setImage(img);
-    const currentDoc = img.docs.find((doc: { is_current: any; }) => doc.is_current);
-    console.log('currentDoc', currentDoc);
-    setCurrentDoc(currentDoc || null);
+    return img;
   };
 
   useEffect(() => {
-    fetchImage();
-  }, [id ]);
+    async function getData() {
+      const imgToSet = await fetchImage();
+      console.log('imgToSet', imgToSet);
+      setImage(imgToSet);
+      console.log('imageGrid', imageGrid.current);
+      // toggleImageGrid();
+    }
+    getData();
+  }, []);
+
+  const toggleImageGrid = () => {
+    if (imageGrid.current) {
+      imageGrid.current.classList.toggle('hidden');
+    }
+  }
 
   const handleDocClick = async (e: React.MouseEvent<HTMLIonImgElement>) => {
     const target = e.target as HTMLImageElement;
-    const response = await markAsCurrent(target.id); // Ensure markAsCurrent returns a Promise
-    await fetchImage(); // Re-fetch image data to update state
+    console.log('handleDocClick - target', target);
+    await markAsCurrent(target.id); // Ensure markAsCurrent returns a Promise
+    const imgToSet = await fetchImage();
+    setImage(imgToSet);
+    setCurrentDoc(imgToSet.display_doc);
   };
 
   const handleGenerate = async () => {
+    if (!image) return;
     const formData = new FormData();
     formData.append('id', image.id);
     formData.append('image_prompt', image.image_prompt ?? '');
@@ -48,31 +65,42 @@ const ViewImageScreen: React.FC = () => {
             </IonButton>
             <IonTitle>View Image</IonTitle>
           </IonButtons>
+          {image && <BoardDropdown imageId={image.id} />}
+
         </IonToolbar>
       </IonHeader>
-        <IonText className='text-2xl' style={{display: 'block' }}>{image.label}</IonText>
-          {currentDoc && <IonImg id={currentDoc.id} src={currentDoc.src} alt={currentDoc.label} className='max-h-32' />}
-          {!currentDoc && <IonImg id={image.id} src={image.src} alt={image.label} />}
-        <div className='ion-padding'>
-        <FileUploadForm board={undefined} onCloseModal={undefined} />
-        </div>
-        
-        <div className="ion-padding">
-            <p className='font-bold'>Prompt:</p>
-            <IonInput onIonInput={(e) => setImage({ ...image, image_prompt: e.detail.value! })}></IonInput>
-          <IonButton onClick={handleGenerate}>Generate Image</IonButton>
+      <IonContent className='ion-padding' scrollY={true}>
 
-          <h1> Add to a board</h1>
-            <BoardDropdown imageId={image.id} />
+
+        <div className='ion-justify-content-center ion-align-items-center ion-text-center'>
+          <IonText className='font-bold text-2xl'>
+            {image && image.label}
+          </IonText>
+          {currentDoc && <IonImg id={currentDoc.id} src={currentDoc.src} alt={currentDoc.label} className='w-1/4 mx-auto' />}
+          {image && !currentDoc && <IonImg id={image.id} src={image.src} alt={image.label} className='w-1/4 mx-auto' />}
+        </div>
+        <div className=''>
+          {image && <FileUploadForm board={undefined} onCloseModal={undefined} showLabel={false} existingLabel={image.label} />}
         </div>
 
-        <div className="grid grid-cols-4 grid-flow-col gap-1 p-1">
-          {image?.docs && image.docs.map((doc, index) => (
-            <div key={doc.id} className='h-20 w-20'>
-              <IonImg id={doc.id} src={doc.src} alt={doc.label} onClick={handleDocClick} />
-            </div>
-          ))}
-        </div>
+        <IonList className="ion-padding">
+          <IonItem>
+            {image && <IonInput className='focus:border-blue-500' placeholder='Image Prompt' value={image.image_prompt} onIonInput={(e) => setImage({ ...image, image_prompt: e.detail.value! })}></IonInput>}
+            <IonButton color='primary' onClick={handleGenerate}>Generate Image</IonButton>
+          </IonItem>
+
+        </IonList>
+        <IonCard className="ion-padding">
+          <IonLabel className='font-bold text-xl'>Choose a different display image</IonLabel>
+          <div className="grid grid-cols-3 gap-4" ref={imageGrid} >
+            {image?.docs && image.docs.map((doc, index) => (
+              <div key={doc.id} className='h-20 w-20'>
+                <IonImg id={doc.id} src={doc.src} alt={doc.label} onClick={handleDocClick} />
+              </div>
+            ))}
+          </div>
+        </IonCard>
+      </IonContent>
     </IonPage>
   );
 };

@@ -41,7 +41,6 @@ const ImagesScreen: React.FC = () => {
     history.push(`/images/${image.id}`);
 };
 
-
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
       e.detail.complete();
@@ -66,8 +65,6 @@ const ImagesScreen: React.FC = () => {
           </IonRefresher>
           {<SelectImageGallery images={images} onLoadMoreImages={handleGetMoreImages} onImageClick={handleImageClick} />}
         </IonContent>
-        <Tabs />
-
       </IonPage>
     </>
   );

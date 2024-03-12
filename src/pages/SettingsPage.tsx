@@ -10,12 +10,29 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import BoardList from '../components/BoardList';
+import { Image, getImages } from '../data/images';
 import MainMenu from '../components/MainMenu';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getCurrentUser } from '../data/users';
 import Tabs from '../components/Tabs';
+import BaseImageGallery from '../components/BaseImageGallery';
+import { useHistory } from 'react-router';
 const SettingsPage: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<any>(null);
+  const [showIcon, setShowIcon] = useState(false);
+  const inputRef = useRef<HTMLIonInputElement>(null);
+
+  const [images, setImages] = useState<Image[]>([]);
+  const history = useHistory();
+
+  const fetchImages = async () => {
+    const imgs = await getImages();
+    setImages(imgs);
+  }
+
+  useEffect(() => {
+    fetchImages();
+  }, []);
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
@@ -50,6 +67,7 @@ const SettingsPage: React.FC = () => {
           <IonContent fullscreen>
             <IonTitle>Settings</IonTitle>
             {currentUser && currentUser.email}
+            <BaseImageGallery images={images} setShowIcon={setShowIcon} inputRef={inputRef} />
           </IonContent>
         </IonContent>
         <Tabs />
