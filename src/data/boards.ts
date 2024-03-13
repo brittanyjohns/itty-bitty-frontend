@@ -5,6 +5,7 @@ export interface Board {
     id?: string;
     name: string;
     description?: string;
+    predifined?: boolean;
     parent_type?: string;
     displayImage?: string;
     number_of_columns: number;

@@ -1,6 +1,6 @@
 // src/components/SignInScreen.tsx
 import React, { useEffect, useState } from 'react';
-import { IonPage, IonContent, IonInput, IonButton, IonButtons, IonHeader, IonMenuButton, IonTitle, IonToolbar } from '@ionic/react';
+import { IonPage, IonContent, IonInput, IonButton, IonButtons, IonHeader, IonMenuButton, IonTitle, IonToolbar, IonBackButton } from '@ionic/react';
 import { User, signIn } from '../data/users';
 import { useHistory } from 'react-router-dom';
 import MainMenu from '../components/MainMenu';
@@ -27,22 +27,17 @@ const SignInScreen: React.FC = () => {
       if (response.token) {
         localStorage.setItem('token', response.token); // Store the token
         setCurrentUser(response.user);
-        history.push('/boards'); // Redirect to /boards
+        history.push('/home'); // Redirect to /home
         window.location.reload();
         return;
       } else {
         if (response.error) {
-          console.error('Error signing in: ', response.error);
-          alert('Error signing in: ' + response.error);
+          alert('Error:\n' + response.error);
         }
-        console.error('Error signing in: ', response);
       }
     } catch (error) {
-      console.error('Error signing in: ', error);
       alert('Error signing in: ' + error);
     }
-    history.push('/sign-in');
-    window.location.reload();
   };
 
   return (
@@ -53,7 +48,7 @@ const SignInScreen: React.FC = () => {
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
-              <IonMenuButton></IonMenuButton>
+              <IonBackButton defaultHref="/home"></IonBackButton>
             </IonButtons>
             <IonTitle>Welcome to Itty Bitty Boards</IonTitle>
           </IonToolbar>

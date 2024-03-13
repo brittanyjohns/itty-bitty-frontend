@@ -21,9 +21,9 @@ const BoardList = ({ boards }: BoardListProps) => {
     }
 
     return (
-        <IonList className="w-full">
+        <IonList className="w-full" id="board-list" lines='inset' >
             {boards && boards.map((board, i) => (
-                <IonItem key={i}>
+                <IonItem key={i} >
                     <div id={board.id} className='rounded-md flex relative w-full hover:cursor-pointer text-center' onClick={() => handleBoardClick(board)} key={board.id}>
                         <BoardListItem board={board} />
                     </div>

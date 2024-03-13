@@ -25,7 +25,7 @@ const SignOutScreen: React.FC = () => {
     } catch (error) {
       console.error('Error signing up: ', error);
       alert('Error signing out: ' + error);
-      history.push('/sign-in');
+      history.push('/home');
       // Handle error (e.g., show error message)
     }
   };
@@ -35,7 +35,7 @@ const SignOutScreen: React.FC = () => {
     // For example, if you're using localStorage:
     handleSignOut().then(() => {
       console.log('User signed out');
-      history.push('/sign-in');
+      history.push('/home');
       window.location.reload();
     } );
     // localStorage.removeItem('token');

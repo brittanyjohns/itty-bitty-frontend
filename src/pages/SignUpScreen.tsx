@@ -38,13 +38,13 @@ const SignInScreen: React.FC = () => {
       const response = await signUp(user); // Assuming signUp returns the token directly or within a response object
       console.log("Sign Up response", response);
       localStorage.setItem('token', response.token); // Store the token
-      history.push('/boards');
+      history.push('/home');
     } catch (error) {
       console.error('Error signing up: ', error);
-      alert('Error signing up: ' + error);
-      history.push('/sign-up');
+      alert('Error signing up:\n ' + error);
+      // history.push('/sign-up');
     }
-    window.location.reload();
+    // window.location.reload();
   };
 
   return (

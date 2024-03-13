@@ -1,7 +1,9 @@
 import {
+  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonItem,
   IonLabel,
   IonMenuButton,
@@ -22,6 +24,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { getBoards } from '../data/boards';
 import { set } from 'react-hook-form';
+import { addCircleOutline } from 'ionicons/icons';
 const BoardsScreen: React.FC = () => {
   const { currentUser, setCurrentUser } = useCurrentUser();
   const history = useHistory();
@@ -79,6 +82,11 @@ const BoardsScreen: React.FC = () => {
               <IonMenuButton></IonMenuButton>
             </IonButtons>
             <IonTitle>Boards</IonTitle>
+            <IonButtons slot="end">
+              <IonButton routerLink="/boards/new" >
+                <IonIcon icon={addCircleOutline} />
+              </IonButton>
+            </IonButtons>
           </IonToolbar>
           <IonToolbar>
             <IonSegment value={segmentType} onIonChange={handleSegmentChange}>

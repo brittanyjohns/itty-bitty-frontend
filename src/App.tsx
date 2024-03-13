@@ -39,6 +39,7 @@ import MenusScreen from './pages/MenusScreen';
 import SelectGalleryScreen from './pages/SelectGalleryScreen';
 import SettingsPage from './pages/SettingsPage';
 import { fastFoodOutline, radio, library, search, home, settings, albumsOutline, imagesOutline } from 'ionicons/icons';
+import NewScenario from './pages/NewScenario';
 
 
 setupIonicReact();
@@ -57,6 +58,7 @@ const App: React.FC = () => (
             <Route path="/dashboard" component={Dashboard} exact={true} />
             <Route path="/boards/:id" component={ViewBoard} exact={true} />
             <Route path="/boards/new" component={NewBoard} exact={true} />
+            <Route path="/scenarios/new" component={NewScenario} exact={true} />
             <Route path="/boards/:id/edit" component={EditBoardScreen} exact={true} />
             <Route path="/boards/:id/gallery" component={SelectGalleryScreen} exact={true} />
             <Route path="/boards" component={BoardsScreen} exact={true} />

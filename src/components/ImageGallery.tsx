@@ -58,7 +58,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
 
     const handleImageClick = (image: Image) => {
         const audioSrc = image.audio;
-
+        console.log('Audio Src', audioSrc);
         const label = image.label;
         if (inputRef.current) {
             inputRef.current.value += ` ${label}`
@@ -170,11 +170,12 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
                                 <source src={image.audio} type="audio/aac" />
                             </audio>
                         </span>
+                        {board?.predifined && (
                         <ActionList
                             isOpen={showActionList}
                             onClose={() => setShowActionList(false)}
                             onActionSelected={(action: string) => handleActionSelected(action)}
-                        />
+                        />)}
                     </div>
 
                 ))}
