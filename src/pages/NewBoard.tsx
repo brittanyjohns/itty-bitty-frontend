@@ -1,4 +1,4 @@
-import { createBoard } from '../data/boards';
+import { Board, createBoard } from '../data/boards';
 import {
   IonButton,
   IonButtons,
@@ -14,17 +14,16 @@ import {
 } from '@ionic/react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { arrowBackCircleOutline } from 'ionicons/icons';
-type Inputs = {
-  name: string
-}
+import NewScenarioForm from '../components/NewScenarioForm';
+
 const NewBoard: React.FC = (props: any) => {
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<Inputs>()
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  } = useForm<Board>()
+  const onSubmit: SubmitHandler<Board> = (data) => {
     console.log(data);
     createBoard(data);
     props.history.push('/boards');

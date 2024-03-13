@@ -14,6 +14,7 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  useIonViewDidLeave,
   useIonViewWillEnter,
 } from '@ionic/react';
 
@@ -30,7 +31,8 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
   const params = useParams<{ id: string }>();
   const inputRef = useRef<HTMLIonInputElement>(null);
   const [showIcon, setShowIcon] = useState(false);
-  const [showLoading, setShowLoading] = useState(false);
+  const [showLoading, setShowLoading] = useState(true);
+  const [showEdit, setShowEdit] = useState(false);
 
   const fetchBoard = async () => {
     const board = await getBoard(params.id);
@@ -64,34 +66,23 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
   useIonViewWillEnter(() => {
     console.log('useIonViewWillEnter');
     console.log('board', board)
+
   });
-  // useEffect(() => {
-  //   fetchBoard();
-  // } , []);
+  useIonViewDidLeave(() => {
+    console.log('useIonViewDidLeave');
+    inputRef.current?.value && clearInput();
+    
+  } );
 
   useEffect(() => {
-    fetchBoard();
-    console.log('useEffect - fetchBoard', board);
+    async function fetchData() {
+      await fetchBoard();
+      setShowLoading(false);
+    }
 
-    // if (showLoading) {
-    //   setTimeout(() => {
-    //     if (board?.images && board.images.length > 0) {
-    //       setShowLoading(false);
-    //     } else {
-    //       if (board?.parent_type === 'Menu') {
-    //         setShowLoading(false);
-    //       } else {
-    //         setShowLoading(true);
-    //         fetchBoard();
-    //         console.log('fetching board', board);
-    //       }
-    //       // setShowLoading(true);
-
-
-    //       // window.location.reload();
-    //     }
-    //   }, 1000);
-    // }
+    fetchData();
+    const result = board?.predifined ? false : true;
+    setShowEdit(result);
   }
     , []);
 
@@ -121,7 +112,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
                 <IonIcon slot="icon-only" className="tiny" icon={trashBinOutline} onClick={() => clearInput()}></IonIcon>
               </IonButton>
             }
-              {!showIcon && <IonButton routerLink={`/boards/${params.id}/gallery`}>
+              {showEdit && !showIcon && <IonButton routerLink={`/boards/${params.id}/gallery`}>
                 <IonIcon icon={addCircleOutline} />
               </IonButton>}
           </IonButtons>

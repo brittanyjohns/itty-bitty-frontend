@@ -71,6 +71,12 @@ const menuLinks: MenuLink[] = [
     name: 'Settings',
     slug: 'settings',
     id: 10
+  },
+  {
+    endpoint: '/scenarios/new',
+    name: 'New Scenario',
+    slug: 'new-scenario',
+    id: 11
   }
 ];
 
