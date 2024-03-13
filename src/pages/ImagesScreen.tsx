@@ -65,6 +65,7 @@ const ImagesScreen: React.FC = () => {
           </IonRefresher>
           {<SelectImageGallery images={images} onLoadMoreImages={handleGetMoreImages} onImageClick={handleImageClick} />}
         </IonContent>
+        <Tabs />
       </IonPage>
     </>
   );

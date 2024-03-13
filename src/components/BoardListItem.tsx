@@ -23,7 +23,7 @@ const BoardListItem: React.FC<BoardListItemProps> = ({ board }) => {
       </IonLabel>
     </IonItem>
     <IonButton routerLink={`/boards/${board.id}/edit`} fill="clear" slot="end" color="primary">
-    Edit  
+      Edit 
   </IonButton>
   </>
   );

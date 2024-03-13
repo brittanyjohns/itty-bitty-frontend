@@ -17,7 +17,7 @@ import {
   useIonViewWillEnter,
 } from '@ionic/react';
 
-import { add, arrowBackCircleOutline, playCircleOutline, trashBinOutline } from 'ionicons/icons';
+import { add, addCircleOutline, arrowBackCircleOutline, playCircleOutline, trashBinOutline } from 'ionicons/icons';
 
 import { useParams } from 'react-router';
 import './ViewBoard.css';
@@ -121,6 +121,9 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
                 <IonIcon slot="icon-only" className="tiny" icon={trashBinOutline} onClick={() => clearInput()}></IonIcon>
               </IonButton>
             }
+              {!showIcon && <IonButton routerLink={`/boards/${params.id}/gallery`}>
+                <IonIcon icon={addCircleOutline} />
+              </IonButton>}
           </IonButtons>
         </IonToolbar>
       </IonHeader>
@@ -131,13 +134,13 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
           <ImageGallery images={board.images} board={board} setShowIcon={setShowIcon} inputRef={inputRef} />
         }
         {board ? (
-          <>
+          <div className="">
             {board.images && board.images.length < 1 &&
               <div className="text-center">
                 <p>No images found</p>
               </div>
             }
-          </>
+          </div>
         ) : (
           <div>Board not found</div>
         )}

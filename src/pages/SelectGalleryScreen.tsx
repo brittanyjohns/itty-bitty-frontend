@@ -7,6 +7,7 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
+  IonLoading,
   IonPage,
   IonText,
   IonTitle,
@@ -32,7 +33,7 @@ const SelectGalleryScreen: React.FC<any> = () => {
   const modal = useRef<HTMLIonModalElement>(null);
   const [remainingImages, setRemainingImages] = useState<Image[]>(); // State for the remaining images
   const inputRef = useRef<HTMLIonInputElement>(null);
-  const [showIcon, setShowIcon] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
 
   const fetchBoard = async () => {
     const boardId = window.location.pathname.split('/')[2];
@@ -48,8 +49,6 @@ const SelectGalleryScreen: React.FC<any> = () => {
   }
 
   const handleImageClick = (image: Image) => {
-    console.log('handleImageClick', image);
-    console.log('board', board);
     if (!board) {
       console.error('No board found');
       fetchBoard();
@@ -57,9 +56,10 @@ const SelectGalleryScreen: React.FC<any> = () => {
       if (image.id && board.id) {
         addImageToBoard(board.id, image.id);
         setIsOpen(true);
+        setShowLoading(true);
         setTimeout(() => {
           window.location.reload();
-        }, 3000);
+        }, 1000);
       }
     }
   };
@@ -74,24 +74,6 @@ const SelectGalleryScreen: React.FC<any> = () => {
     return remainingImgs;
   }
 
-  const speak = async (text: string) => {
-    await TextToSpeech.speak({
-      text: text,
-      lang: 'en-US',
-      rate: 1.0,
-      pitch: 1.0,
-      volume: 1.0,
-      category: 'ambient',
-    });
-  };
-
-  const clearInput = () => {
-    if (inputRef.current) {
-      inputRef.current.value = '';
-    }
-    setShowIcon(false);
-  }
-
   useEffect(() => {
     fetchBoard();
   } , []);
@@ -101,14 +83,17 @@ const SelectGalleryScreen: React.FC<any> = () => {
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start" className='mr-4'>
-            <IonButton routerLink={`/boards/${board?.id}/edit`}>
+            <IonButton routerLink={`/boards/${board?.id}`}>
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
           </IonButtons>
-          <IonTitle>Add images to {board?.name} ({board?.images?.length})</IonTitle>
+          <IonTitle className="text-sm">Add images to {board?.name} ({board?.images?.length})</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
+      <IonLoading className='loading-icon' cssClass='loading-icon' isOpen={showLoading} message={'Adding the image to your board...'} />
+      <FileUploadForm board={board} onCloseModal={closeModal} showLabel={true} />
+
       {board && remainingImages &&
         <SelectImageGallery images={remainingImages} boardId={board.id} onLoadMoreImages={getMoreImages} onImageClick={handleImageClick} />
       }

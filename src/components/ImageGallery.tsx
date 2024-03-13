@@ -25,7 +25,6 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
         const optimalSize = Math.sqrt(viewportWidth * viewportHeight / imagesCount);
-        console.log('optimalSize', optimalSize);
         const cols = Math.floor(viewportWidth / optimalSize);
     
         const gridTarget = gridRef.current ? gridRef.current as HTMLElement : null;
@@ -123,7 +122,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
             removeImageFromBoard(board.id, imageId);
             window.location.reload();
         } else if (action === 'edit') {
-            history.push(`/images/${imageId}/edit`);
+            history.push(`/images/${imageId}`);
         }
         setShowActionList(false);
     };

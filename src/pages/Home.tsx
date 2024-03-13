@@ -40,7 +40,7 @@ const Home: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-            <h1>Itty Bitty Boards{currentUser && currentUser.email}</h1>
+            <h1>Welcom to Itty Bitty Boards</h1>
         </IonContent>
         <Tabs />
       </IonPage>

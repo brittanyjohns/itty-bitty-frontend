@@ -48,7 +48,7 @@ const Dashboard: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <IonContent fullscreen>
-            <BoardList />
+            {currentUser}
           </IonContent>
         </IonContent>
       </IonPage>
