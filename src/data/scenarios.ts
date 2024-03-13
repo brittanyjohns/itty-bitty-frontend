@@ -28,7 +28,7 @@ export const createScenario = async (scenario: Scenario): Promise<Scenario> => {
     formData.append('scenario[prompt_text]', scenario.prompt_text);
     formData.append('scenario[age_range]', scenario.age_range);
     formData.append('scenario[number_of_images]', scenario.number_of_images.toString());
-    formData.append('scenario[token_limit]', scenario.number_of_images.toString());
+    formData.append('scenario[token_limit]', scenario.token_limit.toString());
 
     const response = await fetch(`${BASE_URL}scenarios`, {
         method: 'POST',
