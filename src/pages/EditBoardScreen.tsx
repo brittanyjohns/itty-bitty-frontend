@@ -95,7 +95,7 @@ const EditBoardScreen: React.FC<any> = () => {
     history.push(`/boards/${board?.id}/gallery`);
   }
 
-  const gridSizeOptions = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ];
+  const gridSizeOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
 
   useEffect(() => {
@@ -113,43 +113,39 @@ const EditBoardScreen: React.FC<any> = () => {
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
           </IonButtons>
-          <IonItem slot='start' className='w-full'>
-            <IonTitle>{board?.name}</IonTitle>
+          <IonTitle>Edit {board?.name}</IonTitle>
 
-          </IonItem>
         </IonToolbar>
       </IonHeader>
 
       <IonContent id="board-modal">
-      <IonButton onClick={goToGallery} expand="block" fill="outline" color="primary" className="mt-4 w-5/6 mx-auto">
+        <IonButton onClick={goToGallery} expand="block" fill="outline" color="primary" className="mt-4 w-5/6 mx-auto">
           View Gallery
         </IonButton>
-        <IonCard className='p-4'>
-          <IonText className='text-2xl text-center'>Upload an image</IonText>
-          <FileUploadForm board={board} onCloseModal={closeModal} showLabel={true} />
-        </IonCard>
-        <IonCard className='p-4'>
+
+        <div className='p-4 hidden'>
+          {/* hide until finshed */}
           <IonText className='text-2xl text-center'>Grid size Override</IonText>
           <IonItem>
             <IonItem>
-                <IonSelect placeholder="Select # of columns" name="number_of_columns" onIonChange={handleGridChange} value={board?.number_of_columns}>
-                    {gridSizeOptions.map((size) => (
-                        <IonSelectOption key={size} value={size}>
-                            {size}
-                        </IonSelectOption>
-                    ))} 
-                </IonSelect>
+              <IonSelect placeholder="Select # of columns" name="number_of_columns" onIonChange={handleGridChange} value={board?.number_of_columns}>
+                {gridSizeOptions.map((size) => (
+                  <IonSelectOption key={size} value={size}>
+                    {size}
+                  </IonSelectOption>
+                ))}
+              </IonSelect>
             </IonItem>
             <IonButtons>
-            <IonButton onClick={() => {
-              handleSubmit();
-            } } expand="block" fill="outline" color="primary" className="mt-4 w-5/6 mx-auto">
-              Save
-            </IonButton>
-            <IonButton onClick={() => {handleReset}  } expand="block" fill="outline" color="danger" className="mt-4 w-5/6 mx-auto">  Reset </IonButton>
+              <IonButton onClick={() => {
+                handleSubmit();
+              }} expand="block" fill="outline" color="primary" className="mt-4 w-5/6 mx-auto">
+                Save
+              </IonButton>
+              <IonButton onClick={() => { handleReset }} expand="block" fill="outline" color="danger" className="mt-4 w-5/6 mx-auto">  Reset </IonButton>
             </IonButtons>
           </IonItem>
-        </IonCard>
+        </div>
       </IonContent>
 
     </IonPage>

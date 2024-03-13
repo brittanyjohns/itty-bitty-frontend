@@ -90,27 +90,8 @@ const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
     }
   } , []);
 
-  // return (
-  //       <form onSubmit={uploadPhoto} encType="multipart/form-data" className=''>
-  //           <IonInput
-  //             value={label}
-  //             placeholder='Label'
-  //             onIonInput={handleLabelChange}
-  //             type="text"
-  //             aria-label="Label"
-  //             className='pl-4'
-  //             required={!hideLabel}
-  //             hidden={hideLabel}
-  //           />
-  //           <input slot='start' className={props.showLabel ? '' : 'inline text-sm rounded-md w-3/4'} type="file" onChange={ev => onFileChange(ev)}></input>
-  //         <IonButton type="submit" className={props.showLabel ? '' : 'p-1 text-sm inline w-1/4'} hidden={!label} disabled={shouldDisable}>
-  //           {props.showLabel ? 'Save' : 'Upload'}
-  //         </IonButton>
-  //       </form>
-
-  // );
   return (
-    <form onSubmit={uploadPhoto} encType="multipart/form-data" className='p-2 shadow-xl'>
+    <form onSubmit={uploadPhoto} encType="multipart/form-data" className='p-2 bg-gray-100 border'>
       <IonText className='text-lg'>Upload your own image</IonText>
         <IonInput
           value={label}

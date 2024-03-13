@@ -26,11 +26,11 @@ const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId }) => {
         const boardId = e.detail.value;
         console.log('Board selected: ', boardId);
         setBoardId(boardId);
-        // async function addSelectedImageToBoard() {
-        //     const response = await addImageToBoard(boardId, imageId);
-        //     console.log('Image added to board', response);
-        // }
-        // addSelectedImageToBoard();
+        async function addSelectedImageToBoard() {
+            const response = await addImageToBoard(boardId, imageId);
+            console.log('Image added to board', response);
+        }
+        addSelectedImageToBoard();
     }
 
     const handleAddImage = () => {
@@ -39,17 +39,17 @@ const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId }) => {
             console.error('No board selected');
             return;
         }
-        async function addSelectedImageToBoard() {
-            let response = null;
-            if (boardId !== null) {
-                response = await addImageToBoard(boardId, imageId);
-            }
-            console.log('Image added to board', response);
-            history.push(`/boards/${boardId}`);
+        // async function addSelectedImageToBoard() {
+        //     let response = null;
+        //     if (boardId !== null) {
+        //         response = await addImageToBoard(boardId, imageId);
+        //     }
+        //     console.log('Image added to board', response);
+        //     history.push(`/boards/${boardId}`);
 
-        }
-        addSelectedImageToBoard();
-        setBoardId(null);
+        // }
+        // addSelectedImageToBoard();
+        // setBoardId(null);
     }
 
     useEffect(() => {

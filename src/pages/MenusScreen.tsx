@@ -1,7 +1,9 @@
 import {
+  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonItem,
   IonMenuButton,
   IonPage,
@@ -14,6 +16,8 @@ import {
 import MenuList from '../components/MenuList';
 import MainMenu, { hideMenu } from '../components/MainMenu';
 import { useCurrentUser } from '../hooks/useCurrentUser';
+import Tabs from '../components/Tabs';
+import { addCircleOutline } from 'ionicons/icons';
 const MenusScreen: React.FC = () => {
   const { currentUser, setCurrentUser } = useCurrentUser();
 
@@ -25,7 +29,7 @@ const MenusScreen: React.FC = () => {
 
   useIonViewWillEnter(() => {
     hideMenu();
-  } );
+  });
 
 
   return (
@@ -37,7 +41,12 @@ const MenusScreen: React.FC = () => {
             <IonButtons slot="start">
               <IonMenuButton></IonMenuButton>
             </IonButtons>
-            <IonTitle>Welcome to Itty Bitty Menus</IonTitle>
+            <IonTitle>Menus</IonTitle>
+            <IonButtons slot="end">
+              <IonButton routerLink="/menus/new" >
+                <IonIcon icon={addCircleOutline} />
+              </IonButton>
+            </IonButtons>
           </IonToolbar>
         </IonHeader>
         <IonContent className='ion-padding'>
@@ -45,12 +54,10 @@ const MenusScreen: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <IonItem>
-          {currentUser && <h2>Welcome {currentUser.email}</h2>}
+            <MenuList />
           </IonItem>
-            <IonItem>
-              <MenuList />
-            </IonItem>
         </IonContent>
+        <Tabs />
       </IonPage>
     </>
   );

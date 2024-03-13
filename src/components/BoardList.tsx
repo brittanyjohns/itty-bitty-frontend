@@ -7,26 +7,12 @@ import SignInScreen from '../pages/SignUpScreen';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import ImagesScreen from '../pages/ImagesScreen';
 
-const BoardList = () => {
-    const [boards, setBoards] = useState<Board[]>([]);
+interface BoardListProps {
+    boards: Board[];
+}
+const BoardList = ({ boards }: BoardListProps) => {
     const [boardId, setBoardId] = useState<string>('');
     const { currentUser, setCurrentUser } = useCurrentUser();
-
-    const fetchBoards = async () => {
-        const allBoards = await getBoards();
-        if (!allBoards) {
-            console.error('Error fetching boards');
-            return;
-        }
-        const boards = allBoards['boards']
-        setBoards(boards);
-    }
-
-    useEffect(() => {
-        fetchBoards();
-    }, []);
-
-    const history = useHistory();
 
     const handleBoardClick = (board: Board) => {
         console.log('Board clicked: ', board.id);
