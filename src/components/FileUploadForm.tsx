@@ -1,6 +1,6 @@
 // Import necessary components and hooks
 import React, { useEffect, useState } from 'react';
-import { IonInput, IonButton, IonItem, IonLabel, useIonViewWillEnter, useIonViewDidEnter, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonText } from '@ionic/react';
+import { IonInput, IonButton, IonItem, IonLabel, useIonViewWillEnter, useIonViewDidEnter, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonText, IonLoading } from '@ionic/react';
 import { createImage } from '../data/images';
 import { useHistory } from 'react-router';
 import { Board } from '../data/boards';
@@ -16,6 +16,8 @@ const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
   const history = useHistory();
   const [shouldDisable, setShouldDisable] = useState<boolean>(false);
   const [hideLabel, setHideLabel] = useState<boolean>(false);
+  const [showLoading, setShowLoading] = useState(false);
+
 
   // State for the file
   const [file, setFile] = useState<File | null>(null);
@@ -39,6 +41,7 @@ const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
 
   const saveImage = async (formData: FormData) => {
     let result
+    setShowLoading(true);
     if (props.board) {
       if (props.board && props.board.id) {
         formData.append('board[id]', props.board.id);
@@ -58,7 +61,7 @@ const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
         history.push(`/images/${result.id}`);
       }
       if (props.onCloseModal) props.onCloseModal();
-      // window.location.reload();
+      window.location.reload();
     }
   };
 
@@ -88,28 +91,30 @@ const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
       setHideLabel(true);
       setShouldDisable(false);
     }
-  } , []);
+  }, []);
 
   return (
     <form onSubmit={uploadPhoto} encType="multipart/form-data" className='p-2 bg-gray-100 border'>
+      <IonLoading className='loading-icon' cssClass='loading-icon' isOpen={showLoading} message={'Adding the image to your board...'} />
+
       <IonText className='text-lg'>Upload your own image</IonText>
-        <IonInput
-          value={label}
-          placeholder='Label'
-          onIonChange={handleLabelChange} // Changed from onIonInput to onIonChange
-          type="text"
-          aria-label="Label"
-          className={`pl-4 ${hideLabel ? 'hidden' : ''}`} // Simplified conditional class application
-          required={!hideLabel}
-        />
-        <div className="flex items-center"> {/* Add this wrapper */}
-          <input type="file" onChange={ev => onFileChange(ev)} className="text-sm rounded-md flex-grow mr-2"/> {/* Adjusted classes for flex layout */}
-          <IonButton type="submit" disabled={shouldDisable} className="flex-shrink-0">
-            {props.showLabel ? 'Save' : 'Upload'}
-          </IonButton>
-        </div>
+      <IonInput
+        value={label}
+        placeholder='Label'
+        onIonChange={handleLabelChange} // Changed from onIonInput to onIonChange
+        type="text"
+        aria-label="Label"
+        className={`pl-4 ${hideLabel ? 'hidden' : ''}`} // Simplified conditional class application
+        required={!hideLabel}
+      />
+      <div className="flex items-center"> {/* Add this wrapper */}
+        <input type="file" onChange={ev => onFileChange(ev)} className="text-sm rounded-md flex-grow mr-2" /> {/* Adjusted classes for flex layout */}
+        <IonButton type="submit" disabled={shouldDisable} className="flex-shrink-0">
+          {props.showLabel ? 'Save' : 'Upload'}
+        </IonButton>
+      </div>
     </form>
-);
+  );
 };
 
 export default FileUploadForm;

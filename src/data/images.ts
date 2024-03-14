@@ -35,6 +35,7 @@ import { BASE_URL } from "./users";
     images: Image[];
     onLoadMoreImages: any;
     onImageClick: any;
+    searchInput: string;
   }
 
 const userHeaders = {   
