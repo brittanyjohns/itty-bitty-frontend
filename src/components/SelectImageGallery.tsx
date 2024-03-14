@@ -3,10 +3,10 @@ import { Image, SelectImageGalleryProps, findOrCreateImage } from '../data/image
 import { IonImg, IonButton, IonSearchbar, IonCardContent, IonCardHeader, IonCard, IonCardTitle, IonCardSubtitle, IonButtons, IonTitle } from '@ionic/react';
 
 
-const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId, onImageClick, onLoadMoreImages }) => {
+const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId, onImageClick, onLoadMoreImages, searchInput }) => {
     const [remainingImages, setRemainingImages] = useState<Image[]>(images);
     const [page, setPage] = useState(1);
-    const [searchInput, setSearchInput] = useState('');
+    // const [searchInput, setSearchInput] = useState('');
 
     useEffect(() => {
         const fetchImages = async () => {
@@ -15,12 +15,6 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
         };
         fetchImages();
     }, [page, searchInput]);
-
-    const handleSearchInput = async (event: CustomEvent) => {
-        const query = event.detail.value.toLowerCase();
-        setSearchInput(query);
-        setPage(1); // Reset to first page on new search
-    };
 
     const handleCreateImage = () => {
         console.log('Create Image', searchInput);
@@ -42,9 +36,7 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
     return (
         <div className='h-full'>
             <IonCardHeader>
-                <IonCardTitle>
-                    <IonSearchbar debounce={1000} onIonInput={handleSearchInput} animated={true} placeholder="Search existing images"></IonSearchbar>
-                </IonCardTitle>
+
                 {boardId && <IonCardSubtitle className='text-xs text-center'>Click an image to add it to the board</IonCardSubtitle>}
                 <IonButtons class="flex justify-between w-full text-center">
                     <IonButton disabled={page <= 1} onClick={() => setPage(oldPage => Math.max(1, oldPage - 1))}>Prev</IonButton>
@@ -71,11 +63,13 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
                     </IonButton>}
 
                 </div>
+                {remainingImages.length > 12 &&
                 <IonButtons class="flex justify-between w-full mt-3 text-center">
                     <IonButton disabled={page <= 1} onClick={() => setPage(oldPage => Math.max(1, oldPage - 1))}>Prev</IonButton>
                     <IonTitle>Page {page}</IonTitle>
                     <IonButton onClick={() => setPage(oldPage => oldPage + 1)}>Next</IonButton>
                 </IonButtons>
+                }
             </IonCardContent>
         </div>
     );

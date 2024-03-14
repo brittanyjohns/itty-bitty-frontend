@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonButton, IonItem, IonList, IonSelect, IonSelectOption, IonText } from '@ionic/react';
+import { IonButton, IonItem, IonList, IonLoading, IonSelect, IonSelectOption, IonText, IonToast } from '@ionic/react';
 import { get, set } from 'react-hook-form';
 import { addImageToBoard, getBoard, getBoards } from '../data/boards';
 import { useHistory } from 'react-router';
@@ -12,6 +12,12 @@ const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId }) => {
     const [boards, setBoards] = useState([]);
     const [boardId, setBoardId] = useState(null);
     const history = useHistory();
+    const [showLoading, setShowLoading] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
+    const selectRef = React.useRef<HTMLIonSelectElement>(null);
+
+
     const fetchBoards = async () => {
         const allBoards = await getBoards();
         if (!allBoards) {
@@ -26,50 +32,40 @@ const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId }) => {
         const boardId = e.detail.value;
         console.log('Board selected: ', boardId);
         setBoardId(boardId);
+        setShowLoading(true);
         async function addSelectedImageToBoard() {
             const response = await addImageToBoard(boardId, imageId);
             console.log('Image added to board', response);
+            const message = `Image added to board: ${response['name']}`;
+            setToastMessage(message);
+            setShowLoading(false);
+            setIsOpen(true);
+            setBoardId(null);
         }
         addSelectedImageToBoard();
-    }
-
-    const handleAddImage = () => {
-        console.log('Add image to board', boardId);
-        if (!boardId || boardId === null) {
-            console.error('No board selected');
-            return;
-        }
-        // async function addSelectedImageToBoard() {
-        //     let response = null;
-        //     if (boardId !== null) {
-        //         response = await addImageToBoard(boardId, imageId);
-        //     }
-        //     console.log('Image added to board', response);
-        //     history.push(`/boards/${boardId}`);
-
-        // }
-        // addSelectedImageToBoard();
-        // setBoardId(null);
     }
 
     useEffect(() => {
         fetchBoards();
     }, []);
+
     return (
         <IonList>
-            <IonItem>
-                <IonSelect placeholder="Select a board" name="boardId" onIonChange={(e) => handleSelectChange(e)}>
-                    <div slot="label">
-                        Add image to:
-                    </div>
+            <IonItem lines='none' >
+                <IonSelect placeholder="Select a board to add this image to" className='' name="boardId" onIonChange={(e) => handleSelectChange(e)} ref={selectRef}>
                     {boards && boards.map((board: { id: any; name: any; }) => (
                         <IonSelectOption key={board.id} value={board.id}>
                             {board.name}
                         </IonSelectOption>
                     ))}
                 </IonSelect>
-                <IonButton onClick={handleAddImage}>Add</IonButton>
             </IonItem>
+            <IonToast
+                isOpen={isOpen}
+                message={toastMessage}
+                onDidDismiss={() => setIsOpen(false)}
+                duration={2000}
+            ></IonToast>
         </IonList>
     );
 }

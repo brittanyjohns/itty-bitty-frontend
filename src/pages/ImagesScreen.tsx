@@ -7,6 +7,7 @@ import {
   IonPage,
   IonRefresher,
   IonRefresherContent,
+  IonSearchbar,
   IonTitle,
   IonToolbar,
   useIonViewWillEnter
@@ -20,6 +21,8 @@ import Tabs from '../components/Tabs';
 const ImagesScreen: React.FC = () => {
   const [images, setImages] = useState<Image[]>([]);
   const history = useHistory();
+  const [searchInput, setSearchInput] = useState('');
+  const [page, setPage] = useState(1);
 
   const fetchImages = async () => {
     const imgs = await getImages();
@@ -36,6 +39,12 @@ const ImagesScreen: React.FC = () => {
     setImages(additionalImages);
     return additionalImages;
   }
+
+  const handleSearchInput = async (event: CustomEvent) => {
+    const query = event.detail.value.toLowerCase();
+    setSearchInput(query);
+    setPage(1); // Reset to first page on new search
+};
 
   const handleImageClick = (image: Image) => {
     history.push(`/images/${image.id}`);
@@ -58,12 +67,15 @@ const ImagesScreen: React.FC = () => {
             </IonButtons>
             <IonTitle>Image Gallery</IonTitle>
           </IonToolbar>
+          <IonToolbar>
+          <IonSearchbar debounce={1000} onIonInput={handleSearchInput} animated={true} placeholder="Search existing images"></IonSearchbar>
+          </IonToolbar>
         </IonHeader>
         <IonContent>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          {<SelectImageGallery images={images} onLoadMoreImages={handleGetMoreImages} onImageClick={handleImageClick} />}
+          {<SelectImageGallery images={images} onLoadMoreImages={handleGetMoreImages} onImageClick={handleImageClick} searchInput={searchInput} />}
         </IonContent>
         <Tabs />
       </IonPage>
