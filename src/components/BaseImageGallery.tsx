@@ -149,7 +149,7 @@ const BaseImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowI
         <div className="gallery-container" ref={galleryRef}>
             <div className="grid grid-cols-3 gap-1" ref={gridRef}>
                 {images.map((image, i) => (
-                    <div className='min-h-20 h-full border bg-white rounded-md flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)} key={image.id}
+                    <div className='min-h-20 h-full flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)} key={image.id}
                         onTouchStart={(e) => handleButtonPress(e)}
                         onPointerDown={(e) => handlePointerDown(e)}
                         onTouchEnd={(e) => handleButtonRelease(e)}
@@ -158,7 +158,7 @@ const BaseImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowI
                         onMouseLeave={handleButtonRelease} // Cancel on mouse leave to handle edge cases
                     >
                         <IonImg id={image.id} src={image.src} alt={image.label} className="absolute ion-img-cover w-full h-full top-0 left-0" />
-                        <span className="font-medium text-xs md:text-sm lg:text-md rounded bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black">
+                        <span className="font-medium text-xs md:text-sm lg:text-md overflow-hidden absolute bottom-0 left-0 right-0">
                             {image.label.length > 20 ? image.label.substring(0, 20) + "..." : image.label}
                             <audio>
                                 <source src={image.audio} type="audio/aac" />

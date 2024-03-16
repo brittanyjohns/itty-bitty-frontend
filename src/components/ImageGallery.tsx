@@ -7,7 +7,8 @@ import './main.css'
 import { useHistory } from 'react-router';
 import ActionList from './ActionList';
 import { removeImageFromBoard } from '../data/boards';
-import { grid } from 'ionicons/icons';
+import { grid, image } from 'ionicons/icons';
+import ImageGalleryItem from './ImageGalleryItem';
 const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon, inputRef }) => {
     const gridRef = useRef(null); // Ref for the grid container
     const [audioList, setAudioList] = useState<string[]>([]);
@@ -19,31 +20,36 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
     const galleryRef = useRef<HTMLDivElement>(null);
     const resizeGrid = () => {
         const imagesCount = images.length;
-    
+
         // Calculate the number of columns based on the viewport width and the square root of the number of images.
         // This aims to achieve a balance between the number of rows and columns.
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
         const optimalSize = Math.sqrt(viewportWidth * viewportHeight / imagesCount);
         const cols = Math.floor(viewportWidth / optimalSize);
-    
+
         const gridTarget = gridRef.current ? gridRef.current as HTMLElement : null;
         if (!gridTarget) return;
 
         const adjustedHeight = `calc(100vh - 60px)`; // Adjust as needed
-            const adjustedWidth = `calc(100vw)`; // Adjust as needed
-    
-            gridTarget.style.height = adjustedHeight;
-            gridTarget.style.width = adjustedWidth;
-            gridTarget.style.display = 'grid';
-    
+        const adjustedWidth = `calc(100vw)`; // Adjust as needed
+
+        gridTarget.style.height = adjustedHeight;
+        gridTarget.style.width = adjustedWidth;
+        gridTarget.style.display = 'grid';
+
+        if (board?.number_of_columns && imagesCount > 4) {
+            gridTarget.style.gridTemplateColumns = `repeat(${board.number_of_columns}, 1fr)`;
+            return;
+        }
+
         // Adjust the grid template to fit the calculated number of columns
         // Each column width is set to '1fr' to distribute the space evenly
         gridTarget.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-    
+
         // There's no need to set the gridTemplateRows in this approach because the height of each row will automatically adjust to the content
     };
-    
+
     // Call resizeGrid function inside useEffect hook to adjust the grid on mount and when images state changes or viewport size changes
     useEffect(() => {
         resizeGrid();
@@ -52,7 +58,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
             window.removeEventListener('resize', resizeGrid);
         };
     }, [images]);
-    
+
 
 
 
@@ -95,14 +101,18 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
 
     const handleButtonPress = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
         const imageId = (event.target as HTMLDivElement).id;
+        console.log('Image ID', imageId);
 
         longPressTimer.current = setTimeout(() => {
             setShowActionList(true); // Show the action list on long press
             setLeaving(true);
-        }, 800); // 500 milliseconds threshold for long press
+            console.log('Long Press');
+        }, 500); // 500 milliseconds threshold for long press
     };
 
     const handleButtonRelease = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+        console.log('Button Release', showActionList);
+        console.log('longPressTimer', longPressTimer.current);
         if (longPressTimer.current) {
             clearTimeout(longPressTimer.current); // Cancel the timer if the button is released before the threshold
             longPressTimer.current = null;
@@ -126,6 +136,11 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
         }
         setShowActionList(false);
     };
+
+    const onActionListClose = () => {
+        setShowActionList(false);
+        setLeaving(false);
+    }
 
     const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
         const imageId = (event.target as HTMLDivElement).id;
@@ -154,34 +169,28 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
         <div className="gallery-container" ref={galleryRef}>
             <div className="grid grid-cols-1 gap-1" ref={gridRef}>
                 {images.map((image, i) => (
-                <div className='image-container border bg-white rounded-md flex relative w-full hover:cursor-pointer text-center' onClick={() => handleImageClick(image)} key={image.id}
-                onTouchStart={(e) => handleButtonPress(e)}
-                        onPointerDown={(e) => handlePointerDown(e)}
-                        onTouchEnd={(e) => handleButtonRelease(e)}
-                        onMouseDown={(e) => handleButtonPress(e)} // For desktop
-                        onMouseUp={handleButtonRelease} // For desktop
-                        onMouseLeave={handleButtonRelease} // Cancel on mouse leave to handle edge cases
-                    >
-
-                        <IonImg id={image.id} src={image.src} alt={image.label} className="ion-img-contain mx-auto" />
-                        <span className="font-medium text-xs md:text-sm lg:text-md rounded-sm bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black">
-                            {image.label.length > 15 ? image.label.substring(0, 20) + "..." : image.label}
-                            <audio>
-                                <source src={image.audio} type="audio/aac" />
-                            </audio>
-                        </span>
-                        {board?.predifined && (
+                    <div className='image-container bg-white rounded-md flex relative w-full hover:cursor-pointer text-center'
+                    onClick={() => handleImageClick(image)} key={image.id}
+                    onTouchStart={(e) => handleButtonPress(e)}
+                    onPointerDown={(e) => handlePointerDown(e)}
+                    onTouchEnd={(e) => handleButtonRelease(e)}
+                    onMouseDown={(e) => handleButtonPress(e)} // For desktop
+                    onMouseUp={handleButtonRelease} // For desktop
+                    onMouseLeave={handleButtonRelease} // Cancel on mouse leave to handle edge cases
+                  >
+              
+                    <ImageGalleryItem key={image.id} image={image} />
+                    
+                    {!board?.predifined && (
                         <ActionList
-                            isOpen={showActionList}
-                            onClose={() => setShowActionList(false)}
-                            onActionSelected={(action: string) => handleActionSelected(action)}
+                          isOpen={showActionList}
+                          onClose={() => onActionListClose()}
+                          onActionSelected={(action: string) => handleActionSelected(action)}
                         />)}
                     </div>
-
                 ))}
             </div>
-        </div>
-    );
+        </div>);
 };
 
 export default ImageGallery;

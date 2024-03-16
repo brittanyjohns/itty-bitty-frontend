@@ -40,7 +40,7 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({ onSave, onCancel, sce
   return (
     <IonPage>
       <IonContent className="p-4">
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-4">
+        <form onSubmit={handleSubmit} className="rounded-lg shadow-md p-4">
           {scenario.errors && scenario?.errors?.length > 0 && (
             <div className="text-red-500 p-2">
               <h2>{`${scenario.errors.length} error(s) prohibited this action from being saved:`}</h2>

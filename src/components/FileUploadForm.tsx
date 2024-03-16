@@ -94,10 +94,8 @@ const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
   }, []);
 
   return (
-    <form onSubmit={uploadPhoto} encType="multipart/form-data" className='p-2 bg-gray-100 border'>
+    <form onSubmit={uploadPhoto} encType="multipart/form-data" className='p-2'>
       <IonLoading className='loading-icon' cssClass='loading-icon' isOpen={showLoading} message={'Adding the image to your board...'} />
-
-      <IonText className='text-lg'>Upload your own image</IonText>
       <IonInput
         value={label}
         placeholder='Label'
