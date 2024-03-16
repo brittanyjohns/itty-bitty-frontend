@@ -62,6 +62,7 @@ const App: React.FC = () => (
             <Route path="/boards/:id/edit" component={EditBoardScreen} exact={true} />
             <Route path="/boards/:id/gallery" component={SelectGalleryScreen} exact={true} />
             <Route path="/boards" component={BoardsScreen} exact={true} />
+            <Route path="/scenarios" component={BoardsScreen} exact={true} />
 
             <Route path="/menus/new" component={NewMenu} exact={true} />
 

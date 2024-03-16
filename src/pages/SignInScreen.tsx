@@ -56,13 +56,13 @@ const SignInScreen: React.FC = () => {
         <IonContent className='ion-padding'>
 
           <div>
-            <form className="bg-white">
+            <form className="">
               <div className="mb-4">
                 <IonInput
                   value={email}
                   placeholder="Email"
                   onIonInput={(e) => setEmail(e.detail.value!)}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
                 ></IonInput>
               </div>
               <div className="mb-6">
@@ -71,7 +71,7 @@ const SignInScreen: React.FC = () => {
                   value={password}
                   placeholder="Password"
                   onIonInput={handleSetPassword}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                 ></IonInput>
               </div>
               <div className="flex items-center justify-between">
