@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IonButton, IonButtons, IonCard, IonContent, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { IonBackButton, IonButton, IonButtons, IonCard, IonContent, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
 import { useParams } from 'react-router';
 import { arrowBackCircleOutline, toggle } from 'ionicons/icons';
 import { getImage, updateImage, Image, ImageDoc, generateImage } from '../data/images'; // Adjust imports based on actual functions
 import { markAsCurrent } from '../data/docs'; // Adjust imports based on actual functions
 import BoardDropdown from '../components/BoardDropdown';
 import FileUploadForm from '../components/FileUploadForm';
+import { set } from 'react-hook-form';
+import { addImageToBoard } from '../data/boards';
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [image, setImage] = useState<Image | null>(null)
@@ -29,6 +31,7 @@ const ViewImageScreen: React.FC = () => {
       const imgToSet = await fetchImage();
       setImage(imgToSet);
       toggleForms(segmentType);
+      setCurrentDoc(imgToSet.display_doc);
     }
     getData();
   }, []);
@@ -82,10 +85,7 @@ const ViewImageScreen: React.FC = () => {
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton routerLink={`/images`}>
-              <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
-            </IonButton>
-            <IonTitle>View Image</IonTitle>
+            <IonBackButton defaultHref="/images" />
           </IonButtons>
           {image && <BoardDropdown imageId={image.id} />}
         </IonToolbar>
@@ -100,7 +100,6 @@ const ViewImageScreen: React.FC = () => {
             <IonSegmentButton value="generate">
               <IonLabel>Generate</IonLabel>
             </IonSegmentButton>
-
           </IonSegment>
         </IonToolbar>
       </IonHeader>
@@ -114,7 +113,8 @@ const ViewImageScreen: React.FC = () => {
           {image && !currentDoc && <IonImg id={image.id} src={image.src} alt={image.label} className='w-1/2 mx-auto' />}
           </div>
         </div>
-        <div className='mt-2 hidden' ref={uploadForm}>
+        <div className='mt-6 py-3 px-1 hidden text-center' ref={uploadForm}>
+        <IonText className='text-lg'>Upload your own image</IonText>
           {image && <FileUploadForm board={undefined} onCloseModal={undefined} showLabel={false} existingLabel={image.label} />}
         </div>
         <div className='mt-2 hidden' ref={generateForm}>
@@ -122,10 +122,18 @@ const ViewImageScreen: React.FC = () => {
             <IonItem className='my-2'>
               <IonText className='font-bold text-xl mt-2'>Generate an image with AI</IonText>
             </IonItem>
-            <IonItem className='mt-2'>
+            <IonItem className='mt-2 border-2'>
               <IonLoading className='loading-icon' cssClass='loading-icon' isOpen={showLoading} message={'Adding the image to your board...'} />
-              {image && <IonInput className='focus:border-blue-500 text-xs' placeholder='Enter prompt' onIonInput={(e) => setImage({ ...image, image_prompt: e.detail.value! })}></IonInput>}
-              <IonButton color='primary' onClick={handleGenerate}>Generate Image</IonButton>
+              {image && <IonTextarea fill='outline' className='' placeholder='Enter prompt' onIonInput={(e) => setImage({ ...image, image_prompt: e.detail.value! })}></IonTextarea>}
+            </IonItem>
+            <IonItem className='mt-2'>
+              <IonButton className='w-full text-lg' onClick={handleGenerate}>Generate Image</IonButton>
+            </IonItem>
+            <IonItem className='mt-2 font-mono text-center'>
+              <IonText className='text-sm'>This will generate an image based on the prompt you enter.</IonText>
+            </IonItem>
+            <IonItem className='mt-2 font-mono text-center text-red-400'>
+              <IonText className='ml-6'> It will cost 1 credit.</IonText>
             </IonItem>
           </IonList>
         </div>
