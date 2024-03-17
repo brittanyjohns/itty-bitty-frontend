@@ -1,39 +1,23 @@
 import { useEffect, useRef, useState } from 'react';
-import { addImageToBoard, getBoard, getRemainingImages, updateBoard } from '../data/boards';
+import { getBoard, getRemainingImages, updateBoard } from '../data/boards';
 import { Image } from '../data/images';
 import {
-  IonAccordion,
-  IonAccordionGroup,
   IonButton,
   IonButtons,
-  IonCard,
   IonContent,
   IonHeader,
   IonIcon,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonModal,
   IonPage,
-  IonSelect,
-  IonSelectOption,
-  IonText,
   IonTitle,
-  IonToast,
   IonToolbar,
-  useIonViewWillEnter,
 } from '@ionic/react';
 import { Board } from '../data/boards';
-import { add, arrowBackCircleOutline, playCircleOutline, trashBinOutline } from 'ionicons/icons';
+import { arrowBackCircleOutline } from 'ionicons/icons';
 
 import { useHistory, useParams } from 'react-router';
 import './ViewBoard.css';
-import ImageGallery from '../components/ImageGallery';
-import FileUploadForm from '../components/FileUploadForm';
-import SelectImageGallery from '../components/SelectImageGallery';
 import React from 'react';
-import { TextToSpeech } from '@capacitor-community/text-to-speech';
-import { set } from 'react-hook-form';
+import BoardForm from '../components/BoardForm';
 
 const EditBoardScreen: React.FC<any> = () => {
   const [board, setBoard] = useState<Board>({ id: '', name: '', number_of_columns: 0, images: [] });
@@ -49,42 +33,7 @@ const EditBoardScreen: React.FC<any> = () => {
     const board = await getBoard(boardId);
     setBoard(board);
     const remainingImgs = await getRemainingImages(board.id, 1, '');
-    console.log('fetch board remainingImgs', remainingImgs);
     setRemainingImages(remainingImgs);
-  }
-
-  const closeModal = () => {
-    modal.current?.dismiss()
-  }
-
-
-  const handleGridChange = async (event: CustomEvent) => {
-    if (!board || !board.id) {
-      console.error('No board found');
-      return;
-    }
-    const gridSize = event.detail.value;
-    const updatedBoard = { ...board, number_of_columns: gridSize };
-    setBoard({ ...updatedBoard, number_of_columns: parseInt(updatedBoard.number_of_columns) });
-
-  }
-
-  const handleSubmit = async () => {
-    if (!board) {
-      console.error('No board found');
-      return;
-    }
-    const updatedBoard = await updateBoard(board);
-    setBoard(updatedBoard);
-  }
-
-  const handleReset = () => {
-    if (!board) {
-      console.error('No board found');
-      return;
-    }
-    const updatedBoard = { ...board, number_of_columns: 0 };
-    setBoard(updatedBoard);
   }
 
   const goToGallery = () => {
@@ -123,29 +72,7 @@ const EditBoardScreen: React.FC<any> = () => {
           View Gallery
         </IonButton>
 
-        <div className='p-4 hidden'>
-          {/* hide until finshed */}
-          <IonText className='text-2xl text-center'>Grid size Override</IonText>
-          <IonItem>
-            <IonItem>
-              <IonSelect placeholder="Select # of columns" name="number_of_columns" onIonChange={handleGridChange} value={board?.number_of_columns}>
-                {gridSizeOptions.map((size) => (
-                  <IonSelectOption key={size} value={size}>
-                    {size}
-                  </IonSelectOption>
-                ))}
-              </IonSelect>
-            </IonItem>
-            <IonButtons>
-              <IonButton onClick={() => {
-                handleSubmit();
-              }} expand="block" fill="outline" color="primary" className="mt-4 w-5/6 mx-auto">
-                Save
-              </IonButton>
-              <IonButton onClick={() => { handleReset }} expand="block" fill="outline" color="danger" className="mt-4 w-5/6 mx-auto">  Reset </IonButton>
-            </IonButtons>
-          </IonItem>
-        </div>
+        <BoardForm board={board} setBoard={setBoard} />
       </IonContent>
 
     </IonPage>

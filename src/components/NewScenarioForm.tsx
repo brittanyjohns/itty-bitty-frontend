@@ -38,9 +38,7 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({ onSave, onCancel, sce
   };
 
   return (
-    <IonPage>
-      <IonContent className="p-4">
-        <form onSubmit={handleSubmit} className="rounded-lg shadow-md p-4">
+        <form onSubmit={handleSubmit} className="p-4">
           {scenario.errors && scenario?.errors?.length > 0 && (
             <div className="text-red-500 p-2">
               <h2>{`${scenario.errors.length} error(s) prohibited this action from being saved:`}</h2>
@@ -55,7 +53,8 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({ onSave, onCancel, sce
           <div className="flex flex-col gap-4">
             <div className="text-center">
               <IonLabel className="block font-bold mb-2">Scenario</IonLabel>
-              <p className="text-xs my-2">Enter the scenario you'd like to create a board for.</p>
+              <p className="text-md my-2">Enter the scenario you'd like to create a board for.</p>
+              <p className="text-sm my-2">Be as descriptive as possible to get the best results.</p>
               <IonTextarea 
                 value={promptText}
                 onIonChange={(e) => setPromptText(e.detail.value!)}
@@ -65,42 +64,39 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({ onSave, onCancel, sce
               />
             </div>
             <div className="text-center">
-              <IonLabel className="block font-bold mb-2">Age</IonLabel>
+              <IonLabel className=""></IonLabel>
               <IonSelect 
+                label='Age of person in scenario'
                 value={ageRange} 
                 onIonChange={(e) => setAgeRange(e.detail.value)}
                 placeholder="Select Age Range"
-                className="w-full"
-              >
+                className="">
                 {ageRangeList.map((range, index) => (
                   <IonSelectOption key={index} value={range}>{range}</IonSelectOption>
                 ))}
               </IonSelect>
-            </div>
-            <div className="text-center">
-              <IonLabel className="block font-bold mb-2">Images Count</IonLabel>
-              <IonSelect 
+
+              <IonSelect
+                label='Number of Images'
                 value={numberOfImages}
                 onIonChange={(e) => setNumberOfImages(parseInt(e.detail.value, 10))}
-                className="w-full"
+                className=""
               >
                 {imageOptions.map(option => (
                   <IonSelectOption key={option} value={option}>{option}</IonSelectOption>
                 ))}
               </IonSelect>
-            </div>
-            <div className="text-center">
-              <IonLabel className="block font-bold mb-2">Token Limit</IonLabel>
-              <IonSelect 
+              <IonSelect
+                label='Token Limit'
                 value={tokenLimit}
                 onIonChange={(e) => setTokenLimit(parseInt(e.detail.value, 10))}
-                className="w-full"
+                className=""
               >
                 {tokenOptions.map(option => (
                   <IonSelectOption key={option} value={option}>{option}</IonSelectOption>
                 ))}
               </IonSelect>
-              <p className="text-xs text-indigo-500 my-2">Note: A limit of 0 uses only placeholder images.</p>
+              <p className="text-sm text-red-500 my-2">Note: A limit of 0 uses only placeholder images.</p>
             </div>
           </div>
 
@@ -109,8 +105,6 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({ onSave, onCancel, sce
             <IonButton type="submit" color="primary">Save</IonButton>
           </div>
         </form>
-      </IonContent>
-    </IonPage>
   );
 };
 

@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Board, getBoards } from '../data/boards';
-import { IonList, IonButton, IonItem, IonNavLink } from '@ionic/react';
+import { useState } from 'react';
+import { Board } from '../data/boards';
+import { IonList, IonButton, IonItem } from '@ionic/react';
 import BoardListItem from './BoardListItem';
-import { useHistory } from 'react-router';
 import SignInScreen from '../pages/SignUpScreen';
 import { useCurrentUser } from '../hooks/useCurrentUser';
-import ImagesScreen from '../pages/ImagesScreen';
 
 interface BoardListProps {
     boards: Board[];
@@ -15,8 +13,6 @@ const BoardList = ({ boards }: BoardListProps) => {
     const { currentUser, setCurrentUser } = useCurrentUser();
 
     const handleBoardClick = (board: Board) => {
-        console.log('Board clicked: ', board.id);
-        // history.push(`/boards/${board.id}`);
         setBoardId(board.id as string);
     }
 

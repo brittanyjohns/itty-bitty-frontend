@@ -23,13 +23,14 @@ import Tabs from '../components/Tabs';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { getBoards } from '../data/boards';
-import { set } from 'react-hook-form';
 import { addCircleOutline } from 'ionicons/icons';
 const BoardsScreen: React.FC = () => {
   const { currentUser, setCurrentUser } = useCurrentUser();
   const history = useHistory();
   const [boards, setBoards] = useState([]);
   const [presetBoards, setPresetBoards] = useState([]);
+  const [userBoards, setUserBoards] = useState([]);
+  const [scenarioBoards, setScenarioBoards] = useState([]);
   const [segmentType, setSegmentType] = useState('user');
 
   const fetchBoards = async () => {
@@ -38,13 +39,16 @@ const BoardsScreen: React.FC = () => {
       console.error('Error fetching boards');
       return;
     }
-    setBoards(fetchedBoards['boards']);
+    setUserBoards(fetchedBoards['boards']);
+    setScenarioBoards(fetchedBoards['scenarios']);
     setPresetBoards(fetchedBoards['predefined_boards']);
+    console.log('Fetched boards', fetchedBoards);
+    setBoards(fetchedBoards['boards']);
   }
 
   useEffect(() => {
     fetchBoards();
-  }, [segmentType]);
+  }, []);
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
@@ -54,22 +58,26 @@ const BoardsScreen: React.FC = () => {
 
   const handleSegmentChange = (e: CustomEvent) => {
     setSegmentType(e.detail.value);
-    console.log('Segment selected', e.detail.value);
-    const type = e.detail.value;
-    // if (type === 'user') {
-    //   console.log('Setting boards to user boards');
-    //   setBoards(boards);
-    // }
-    // if (type === 'preset') {
-      
-    //   setBoards(presetBoards);
-    // }
-
   }
 
   useIonViewWillEnter(() => {
     hideMenu();
   });
+
+  useEffect(() => {
+    if (segmentType === 'user') {
+      setBoards(userBoards);
+    }
+
+    if (segmentType === 'preset') {
+      setBoards(presetBoards);
+    }
+
+    if (segmentType === 'scenario') {
+      setBoards(scenarioBoards);
+    }
+
+  } , [segmentType]);
 
 
   return (
@@ -94,7 +102,10 @@ const BoardsScreen: React.FC = () => {
                 <IonLabel>My Boards</IonLabel>
               </IonSegmentButton>
               <IonSegmentButton value="preset">
-                <IonLabel>Preset Boards</IonLabel>
+                <IonLabel>Presets</IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="scenario">
+                <IonLabel>Scenarios</IonLabel>
               </IonSegmentButton>
             </IonSegment>
           </IonToolbar>
@@ -104,7 +115,7 @@ const BoardsScreen: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <IonItem>
-            <BoardList boards={segmentType === 'user' ? boards : presetBoards} />
+            <BoardList boards={boards} />
           </IonItem>
         </IonContent>
         <Tabs />

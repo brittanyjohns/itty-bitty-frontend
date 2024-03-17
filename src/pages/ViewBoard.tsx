@@ -63,15 +63,11 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
     setShowIcon(false);
   }
 
-  useIonViewWillEnter(() => {
-    console.log('useIonViewWillEnter');
-    console.log('board', board)
-
-  });
+  // useIonViewWillEnter(() => {
+  //   fetchBoard();
+  // });
   useIonViewDidLeave(() => {
-    console.log('useIonViewDidLeave');
-    inputRef.current?.value && clearInput();
-    
+    inputRef.current?.value && clearInput();    
   } );
 
   useEffect(() => {
@@ -79,12 +75,10 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
       await fetchBoard();
       setShowLoading(false);
     }
-
     fetchData();
     const result = board?.predifined ? false : true;
     setShowEdit(result);
-  }
-    , []);
+  }, []);
 
   return (
     <IonPage id="view-board-page">

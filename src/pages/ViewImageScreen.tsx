@@ -1,17 +1,32 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IonBackButton, IonButton, IonButtons, IonCard, IonContent, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
+import {
+  IonBackButton,
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonImg, 
+  IonItem,
+  IonLabel,
+  IonList, 
+  IonLoading,
+  IonPage, 
+  IonSegment,
+  IonSegmentButton,
+  IonText,
+  IonTextarea,
+  IonToolbar
+} from '@ionic/react';
 import { useParams } from 'react-router';
-import { arrowBackCircleOutline, toggle } from 'ionicons/icons';
-import { getImage, updateImage, Image, ImageDoc, generateImage } from '../data/images'; // Adjust imports based on actual functions
+import { getImage, Image, generateImage } from '../data/images'; // Adjust imports based on actual functions
 import { markAsCurrent } from '../data/docs'; // Adjust imports based on actual functions
 import BoardDropdown from '../components/BoardDropdown';
 import FileUploadForm from '../components/FileUploadForm';
-import { set } from 'react-hook-form';
-import { addImageToBoard } from '../data/boards';
+
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [image, setImage] = useState<Image | null>(null)
-  const [currentDoc, setCurrentDoc] = useState<ImageDoc | null>(null);
+  const [currentImage, setCurrentImage] = useState<string>('');
   const imageGrid = useRef<HTMLDivElement>(null);
   const [showLoading, setShowLoading] = useState(false);
   const [segmentType, setSegmentType] = useState('gallery');
@@ -31,7 +46,11 @@ const ViewImageScreen: React.FC = () => {
       const imgToSet = await fetchImage();
       setImage(imgToSet);
       toggleForms(segmentType);
-      setCurrentDoc(imgToSet.display_doc);
+      if (imgToSet.display_doc.src) {
+        setCurrentImage(imgToSet.display_doc.src);
+      } else {
+        setCurrentImage(imgToSet.src);
+      }
     }
     getData();
   }, []);
@@ -59,7 +78,7 @@ const ViewImageScreen: React.FC = () => {
     await markAsCurrent(target.id); // Ensure markAsCurrent returns a Promise
     const imgToSet = await fetchImage();
     setImage(imgToSet);
-    setCurrentDoc(imgToSet.display_doc);
+    setCurrentImage(imgToSet.display_doc.src);
   };
 
   const handleGenerate = async () => {
@@ -109,12 +128,12 @@ const ViewImageScreen: React.FC = () => {
             {image && image.label}
           </IonText>
           <div className='mt-2'>
-          {currentDoc && <IonImg id={currentDoc.id} src={currentDoc.src} alt={currentDoc.label} className='w-1/2 mx-auto' />}
-          {image && !currentDoc && <IonImg id={image.id} src={image.src} alt={image.label} className='w-1/2 mx-auto' />}
+            {image && <IonImg id={image.id} src={currentImage} alt={image.label} className='w-1/2 mx-auto' />}
+            {/* {image && !currentImage && <IonImg id={image.id} src={image.src} alt={image.label} className='w-1/2 mx-auto' />} */}
           </div>
         </div>
         <div className='mt-6 py-3 px-1 hidden text-center' ref={uploadForm}>
-        <IonText className='text-lg'>Upload your own image</IonText>
+          <IonText className='text-lg'>Upload your own image</IonText>
           {image && <FileUploadForm board={undefined} onCloseModal={undefined} showLabel={false} existingLabel={image.label} />}
         </div>
         <div className='mt-2 hidden' ref={generateForm}>
@@ -137,25 +156,25 @@ const ViewImageScreen: React.FC = () => {
             </IonItem>
           </IonList>
         </div>
-        
-          <div className="ion-padding hidden" ref={imageGridWrapper}>
+
+        <div className="ion-padding hidden" ref={imageGridWrapper}>
           {image && image.docs && image.docs.length > 0 &&
-          <div className='ion-padding'>
-            <IonLabel className='font-sans text-sm'>Click on a different to display for this word</IonLabel>
-            <div className="grid grid-cols-3 gap-4 mt-3" ref={imageGrid} >
-              {image?.docs && image.docs.map((doc, index) => (
-                <div key={doc.id} className='h-20 w-20'>
-                  <IonImg id={doc.id} src={doc.src} alt={doc.label} onClick={handleDocClick} />
-                </div>
-              ))}
+            <div className='ion-padding'>
+              <IonLabel className='font-sans text-sm'>Click on a different to display for this word</IonLabel>
+              <div className="grid grid-cols-3 gap-4 mt-3" ref={imageGrid} >
+                {image?.docs && image.docs.map((doc, index) => (
+                  <div key={doc.id} className='h-20 w-20'>
+                    <IonImg id={doc.id} src={doc.src} alt={doc.label} onClick={handleDocClick} />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
           }
           {image && image.docs && image.docs.length < 1 &&
             <div className="text-center">
             </div>
           }
-          </div>
+        </div>
       </IonContent>
     </IonPage>
   );

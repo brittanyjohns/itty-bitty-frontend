@@ -7,8 +7,6 @@ import {
   IonHeader,
   IonIcon,
   IonInput,
-  IonItem,
-  IonLabel,
   IonPage,
   IonText,
   IonTitle,
@@ -30,7 +28,6 @@ const EditImageScreen: React.FC = (props: any) => {
     formState: { errors },
   } = useForm<Image>()
   const onSubmit: SubmitHandler<Image> = (data) => {
-    console.log("data", data);
     const formData = new FormData();
     formData.append('image[label]', data.label);
     formData.append('image[src]', image.src);

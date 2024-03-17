@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { IonButton, IonLoading } from '@ionic/react';
+import { IonLoading } from '@ionic/react';
 
 import './main.css';
 // const ActionList: React.FC<ActionListProps> = ({ isOpen, onClose, onActionSelected }) => {

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { IonButton, IonItem, IonList, IonLoading, IonSelect, IonSelectOption, IonText, IonToast } from '@ionic/react';
-import { get, set } from 'react-hook-form';
-import { addImageToBoard, getBoard, getBoards } from '../data/boards';
-import { useHistory } from 'react-router';
+import { IonItem, IonList, IonSelect, IonSelectOption, IonToast } from '@ionic/react';
+import { addImageToBoard, getBoards } from '../data/boards';
 
 interface BoardDropdownProps {
     imageId: string;
@@ -11,7 +9,6 @@ interface BoardDropdownProps {
 const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId }) => {
     const [boards, setBoards] = useState([]);
     const [boardId, setBoardId] = useState(null);
-    const history = useHistory();
     const [showLoading, setShowLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
@@ -30,12 +27,10 @@ const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId }) => {
 
     const handleSelectChange = (e: CustomEvent) => {
         const boardId = e.detail.value;
-        console.log('Board selected: ', boardId);
         setBoardId(boardId);
         setShowLoading(true);
         async function addSelectedImageToBoard() {
             const response = await addImageToBoard(boardId, imageId);
-            console.log('Image added to board', response);
             const message = `Image added to board: ${response['name']}`;
             setToastMessage(message);
             setShowLoading(false);

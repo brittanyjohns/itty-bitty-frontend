@@ -42,7 +42,6 @@ function MainMenu() {
   }, [menuLinks, currentUser]); // Depend on menuLinks and currentUser
 
   useIonViewWillLeave(() => {
-    console.log('Main Menu - ionViewWillLeave event fired');
     hideMenu();
   });
 

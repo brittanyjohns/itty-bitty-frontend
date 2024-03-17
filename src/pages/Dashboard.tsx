@@ -9,27 +9,16 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import BoardList from '../components/BoardList';
 import MainMenu from '../components/MainMenu';
-import { useEffect, useState } from 'react';
-import { getCurrentUser } from '../data/users';
 import Tabs from '../components/Tabs';
 const Dashboard: React.FC = () => {
-  const [currentUser, setCurrentUser] = useState<any>(null);
+
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
       e.detail.complete();
     }, 3000);
   };
-
-  useEffect(() => {
-    getCurrentUser().then((user) => {
-      console.log('user from useEffect', user);
-      setCurrentUser(user);
-    }
-    );
-  }, []);
 
   return (
     <>
@@ -48,7 +37,7 @@ const Dashboard: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <IonContent fullscreen>
-            {currentUser}
+            <IonTitle>Home</IonTitle>e
           </IonContent>
         </IonContent>
       </IonPage>
