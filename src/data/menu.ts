@@ -31,24 +31,6 @@ const menuLinks: MenuLink[] = [
     id: 3
   },
   {
-    endpoint: '/boards/new',
-    name: 'New Board',
-    slug: 'new-board',
-    id: 4
-  },
-  {
-    endpoint: '/menus/new',
-    name: 'New Menu',
-    slug: 'new-menu',
-    id: 5
-  },
-  {
-    endpoint: '/images/add',
-    name: 'New Image',
-    slug: 'new-image',
-    id: 6
-  },
-  {
     endpoint: '/sign-in',
     name: 'Sign In',
     slug: 'sign-in',
@@ -71,12 +53,6 @@ const menuLinks: MenuLink[] = [
     name: 'Settings',
     slug: 'settings',
     id: 10
-  },
-  {
-    endpoint: '/scenarios/new',
-    name: 'New Scenario',
-    slug: 'new-scenario',
-    id: 11
   }
 ];
 
