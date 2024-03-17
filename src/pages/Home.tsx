@@ -9,10 +9,7 @@ import {
   IonRefresherContent,
   IonTitle,
   IonToolbar,
-  useIonViewWillEnter
 } from '@ionic/react';
-import BoardList from '../components/BoardList';
-import SignInScreen from './SignUpScreen';
 import MainMenu from '../components/MainMenu';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import Tabs from '../components/Tabs';

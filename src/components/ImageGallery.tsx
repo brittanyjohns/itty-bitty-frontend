@@ -1,14 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Image, ImageGalleryProps } from '../data/images';
-import { IonImg } from '@ionic/react';
-
 import { TextToSpeech } from '@capacitor-community/text-to-speech';
 import './main.css'
 import { useHistory } from 'react-router';
 import ActionList from './ActionList';
 import { removeImageFromBoard } from '../data/boards';
-import { grid, image } from 'ionicons/icons';
 import ImageGalleryItem from './ImageGalleryItem';
+
 const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon, inputRef }) => {
     const gridRef = useRef(null); // Ref for the grid container
     const [audioList, setAudioList] = useState<string[]>([]);
@@ -18,6 +16,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
     const [showActionList, setShowActionList] = useState<boolean>(false);
     const longPressTimer = useRef<NodeJS.Timeout | null>(null);
     const galleryRef = useRef<HTMLDivElement>(null);
+
     const resizeGrid = () => {
         const imagesCount = images.length;
 
@@ -64,7 +63,6 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
 
     const handleImageClick = (image: Image) => {
         const audioSrc = image.audio;
-        console.log('Audio Src', audioSrc);
         const label = image.label;
         if (inputRef.current) {
             inputRef.current.value += ` ${label}`
@@ -101,18 +99,14 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
 
     const handleButtonPress = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
         const imageId = (event.target as HTMLDivElement).id;
-        console.log('Image ID', imageId);
 
         longPressTimer.current = setTimeout(() => {
             setShowActionList(true); // Show the action list on long press
             setLeaving(true);
-            console.log('Long Press');
         }, 500); // 500 milliseconds threshold for long press
     };
 
     const handleButtonRelease = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
-        console.log('Button Release', showActionList);
-        console.log('longPressTimer', longPressTimer.current);
         if (longPressTimer.current) {
             clearTimeout(longPressTimer.current); // Cancel the timer if the button is released before the threshold
             longPressTimer.current = null;
@@ -150,13 +144,6 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
         setImageId(imageId);
     }
 
-    const remove = async (imageId: string, boardId: string) => {
-        const result = await removeImageFromBoard(boardId, imageId);
-        console.log('Remove Image from Board', result);
-
-        return result;
-    };
-
     // Resize grid on mount and when images state changes
     useEffect(() => {
         resizeGrid();
@@ -170,23 +157,21 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
             <div className="grid grid-cols-1 gap-1" ref={gridRef}>
                 {images.map((image, i) => (
                     <div className='image-container flex relative w-full hover:cursor-pointer text-center'
-                    onClick={() => handleImageClick(image)} key={image.id}
-                    onTouchStart={(e) => handleButtonPress(e)}
-                    onPointerDown={(e) => handlePointerDown(e)}
-                    onTouchEnd={(e) => handleButtonRelease(e)}
-                    onMouseDown={(e) => handleButtonPress(e)} // For desktop
-                    onMouseUp={handleButtonRelease} // For desktop
-                    onMouseLeave={handleButtonRelease} // Cancel on mouse leave to handle edge cases
-                  >
-              
-                    <ImageGalleryItem key={image.id} image={image} />
-                    
-                    {!board?.predifined && (
-                        <ActionList
-                          isOpen={showActionList}
-                          onClose={() => onActionListClose()}
-                          onActionSelected={(action: string) => handleActionSelected(action)}
-                        />)}
+                        onClick={() => handleImageClick(image)} key={image.id}
+                        onTouchStart={(e) => handleButtonPress(e)}
+                        onPointerDown={(e) => handlePointerDown(e)}
+                        onTouchEnd={(e) => handleButtonRelease(e)}
+                        onMouseDown={(e) => handleButtonPress(e)}
+                        onMouseUp={handleButtonRelease} 
+                        onMouseLeave={handleButtonRelease}>
+                        <ImageGalleryItem key={image.id} image={image} />
+
+                        {!board?.predifined && (
+                            <ActionList
+                                isOpen={showActionList}
+                                onClose={() => onActionListClose()}
+                                onActionSelected={(action: string) => handleActionSelected(action)}
+                            />)}
                     </div>
                 ))}
             </div>

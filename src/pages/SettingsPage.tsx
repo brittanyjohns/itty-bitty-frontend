@@ -2,51 +2,27 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonItem,
+  IonList,
   IonMenuButton,
   IonPage,
   IonRefresher,
   IonRefresherContent,
+  IonText,
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import BoardList from '../components/BoardList';
-import { Image, getImages } from '../data/images';
 import MainMenu from '../components/MainMenu';
-import { useEffect, useRef, useState } from 'react';
-import { getCurrentUser } from '../data/users';
 import Tabs from '../components/Tabs';
-import BaseImageGallery from '../components/BaseImageGallery';
-import { useHistory } from 'react-router';
+import { useCurrentUser } from '../hooks/useCurrentUser';
 const SettingsPage: React.FC = () => {
-  const [currentUser, setCurrentUser] = useState<any>(null);
-  const [showIcon, setShowIcon] = useState(false);
-  const inputRef = useRef<HTMLIonInputElement>(null);
-
-  const [images, setImages] = useState<Image[]>([]);
-  const history = useHistory();
-
-  const fetchImages = async () => {
-    const imgs = await getImages();
-    setImages(imgs);
-  }
-
-  useEffect(() => {
-    fetchImages();
-  }, []);
+  const { currentUser } = useCurrentUser();
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
       e.detail.complete();
     }, 3000);
   };
-
-  useEffect(() => {
-    getCurrentUser().then((user) => {
-      console.log('user from useEffect', user);
-      setCurrentUser(user);
-    }
-    );
-  }, []);
 
   return (
     <>
@@ -64,10 +40,27 @@ const SettingsPage: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <IonContent fullscreen>
-            <IonTitle>Settings</IonTitle>
-            {currentUser && currentUser.email}
-            <BaseImageGallery images={images} setShowIcon={setShowIcon} inputRef={inputRef} />
+          <IonContent fullscreen className='ion-padding'>
+            <IonList>
+              <IonItem>
+                <IonText> Name: {currentUser && currentUser.name}</IonText>
+              </IonItem>
+              <IonItem>
+                <IonText> Email: {currentUser && currentUser.email}</IonText>
+              </IonItem>
+              <IonItem>
+                <IonText> Role: {currentUser && currentUser.role}</IonText>
+              </IonItem>
+              <IonItem>
+                <IonText> Tokens: {currentUser && currentUser.tokens}</IonText>
+              </IonItem>
+              <IonItem>
+                <IonText> Created At: {currentUser && currentUser.created_at}</IonText>
+              </IonItem>
+              <IonItem>
+                <IonText> Updated At: {currentUser && currentUser.updated_at}</IonText>
+              </IonItem>
+            </IonList>
           </IonContent>
         </IonContent>
         <Tabs />

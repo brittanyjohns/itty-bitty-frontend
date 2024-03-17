@@ -1,17 +1,21 @@
 // Import necessary components and hooks
 import React, { useEffect, useState } from 'react';
-import { IonInput, IonButton, IonItem, IonLabel, useIonViewWillEnter, useIonViewDidEnter, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonText, IonLoading } from '@ionic/react';
+import {
+  IonInput,
+  IonButton,
+  useIonViewWillEnter,
+  IonLoading
+} from '@ionic/react';
 import { createImage } from '../data/images';
 import { useHistory } from 'react-router';
 import { Board } from '../data/boards';
-import { set } from 'react-hook-form';
-interface IMyProps {
+interface FileUploadFormProps {
   board: Board | undefined,
   onCloseModal: any,
   showLabel: boolean,
   existingLabel?: string
 }
-const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
+const FileUploadForm: React.FC<FileUploadFormProps> = (props: FileUploadFormProps) => {
   const [label, setLabel] = useState<string>('');
   const history = useHistory();
   const [shouldDisable, setShouldDisable] = useState<boolean>(false);
@@ -23,7 +27,6 @@ const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
   const [file, setFile] = useState<File | null>(null);
 
   const uploadPhoto = (fileSumbitEvent: React.FormEvent<Element>) => {
-    console.log('uploadPhoto');
     fileSumbitEvent.preventDefault();
 
     if (!label) return;
@@ -77,16 +80,13 @@ const FileUploadForm: React.FC<IMyProps> = (props: IMyProps) => {
 
   useIonViewWillEnter(() => {
     setHideLabel(!props.showLabel);
-    console.log('props0', props);
     if (props.existingLabel) {
-      console.log('existingLabel', props.existingLabel);
       setLabel(props.existingLabel);
       setShouldDisable(false);
     }
   });
   useEffect(() => {
     if (props.existingLabel) {
-      console.log('existingLabel', props.existingLabel);
       setLabel(props.existingLabel);
       setHideLabel(true);
       setShouldDisable(false);

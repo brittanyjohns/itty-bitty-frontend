@@ -1,6 +1,5 @@
-// src/components/SignInScreen.tsx
 import React, { useState } from 'react';
-import { IonPage, IonContent, IonInput, IonButton, useIonViewWillEnter, IonText } from '@ionic/react';
+import { IonPage, IonContent, IonInput, IonButton, IonText } from '@ionic/react';
 import { NewUser, signUp } from '../data/users';
 import { useHistory } from 'react-router-dom';
 import MainMenu from '../components/MainMenu';
@@ -12,17 +11,14 @@ const SignInScreen: React.FC = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>('');
 
   const handlePassword = (password: string) => {
-    console.log('password', password);
     setPassword(password);
   };
 
   const handlePasswordConfirmation = (password: string) => {
-    console.log('password confirmation  ', password);
     setPasswordConfirmation(password);
   }
 
   const handleEmail = (email: string) => {
-    console.log('email', email);
     setEmail(email);
   }
 
@@ -34,17 +30,13 @@ const SignInScreen: React.FC = () => {
     };
 
     try {
-      console.log('user', user);
       const response = await signUp(user); // Assuming signUp returns the token directly or within a response object
-      console.log("Sign Up response", response);
       localStorage.setItem('token', response.token); // Store the token
       history.push('/home');
     } catch (error) {
       console.error('Error signing up: ', error);
       alert('Error signing up:\n ' + error);
-      // history.push('/sign-up');
     }
-    // window.location.reload();
   };
 
   return (

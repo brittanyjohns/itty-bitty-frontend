@@ -1,8 +1,6 @@
 import {
-  IonButton,
   IonItem,
   IonLabel,
-  IonNote
 } from '@ionic/react';
 import { Board } from '../data/boards';
 import './BoardListItem.css';

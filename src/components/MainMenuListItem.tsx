@@ -1,13 +1,10 @@
 import {
   IonItem,
   IonLabel,
-  IonNote,
-  useIonViewWillEnter
   } from '@ionic/react';
 import { MenuLink } from '../data/menu';
 import './MenuListItem.css';
 import { useHistory } from 'react-router';
-import { h } from 'ionicons/dist/types/stencil-public-runtime';
 
 interface MainMenuListItemProps {
   menuLink: MenuLink;

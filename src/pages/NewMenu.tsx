@@ -13,23 +13,14 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import { SubmitHandler, set, useForm } from 'react-hook-form';
 import { arrowBackCircleOutline } from 'ionicons/icons';
-import Menu from '../components/Menu';
-import MenuForm from '../components/MenuForm';
-import { FormEventHandler, useState } from 'react';
+import { useState } from 'react';
 type NewMenu = {
   name: string
   file: File
   description: string
 }
 const NewMenu: React.FC = (props: any) => {
-
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   formState: { errors },
-  // } = useForm<Inputs>()
 
   const [menu, setMenus] = useState<NewMenu>({ name: '', file: new File([''], 'filename'), description: '' });
   const [shouldDisable, setShouldDisable] = useState<boolean>(true);
@@ -41,7 +32,6 @@ const NewMenu: React.FC = (props: any) => {
     data.append('menu[name]', menu.name);
     data.append('menu[description]', menu.description);
     const file = menu.file;
-    console.log("file", file);
     if (file) {
       data.append('menu[docs][image]', file);
     }
@@ -51,23 +41,18 @@ const NewMenu: React.FC = (props: any) => {
   }
 
   const saveMenu = async (formData: FormData) => {
-    console.log("formData", formData);
     let result = await createMenu(formData);
     if (result?.error) {
       console.error('Error:', result.error);
       return result;
     } else {
-      console.log("result", result);
       const boardId = result.boardId;
-      console.log("boardId", boardId);
       setMenus({ name: '', file: new File([''], 'filename'), description: '' });
       props.history.push('/boards/' + boardId);
-      // window.location.reload();
     }
   }
 
   const onFileChange = (event: any) => {
-    console.log(event.target.files[0]);
     let description = "";
 
     event.preventDefault();

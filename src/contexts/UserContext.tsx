@@ -1,14 +1,8 @@
 // UserContext.tsx
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { getCurrentUser } from '../data/users';
+import { getCurrentUser, User } from '../data/users';
 
 // Define the shape of the context
-export interface User {
-    id: string;
-    name: string;
-    email: string;
-    // Add any other user properties you need
-}
 
 export interface UserContextType {
     currentUser: User | null;

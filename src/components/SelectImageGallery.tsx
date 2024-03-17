@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useRef, MouseEventHandler } from 'react';
-import { Image, SelectImageGalleryProps, findOrCreateImage } from '../data/images';
-import { IonImg, IonButton, IonSearchbar, IonCardContent, IonCardHeader, IonCard, IonCardTitle, IonCardSubtitle, IonButtons, IonTitle } from '@ionic/react';
-import { set } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
+import { Image, SelectImageGalleryProps } from '../data/images';
+import { IonImg, IonButton, IonButtons, IonTitle } from '@ionic/react';
 
 
 const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId, onImageClick, onLoadMoreImages, searchInput }) => {
@@ -28,7 +27,6 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
     return (
         <div className='ion-padding h-full'>
             <div>
-                {boardId && <IonTitle className='text-xs text-center'>Click an image to add it to the board</IonTitle>}
                 <IonButtons class="flex justify-between w-full text-center">
                     <IonButton disabled={page <= 1} onClick={() => setPage(oldPage => Math.max(1, oldPage - 1))}>Prev</IonButton>
                     <IonTitle>Page {page}</IonTitle>
@@ -36,11 +34,11 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
                 </IonButtons>
             </div>
             <div className="mt-1">
-                <div className="my-auto mx-auto grid grid-cols-3" key={remainingImages.length}>
+                <div className="my-auto mx-auto grid grid-cols-3 gap-5" key={remainingImages.length}>
                     {remainingImages.map((image, i) => (
                         <div className='flex relative w-full hover:cursor-pointer text-center min-h-24 m-1' onClick={() => handleOnImageClick(image)} key={image.id} id={`image_${image.id}`}>
                             <IonImg src={image.src} alt={image.label} className="absolute object-contain w-full h-full top-0 left-0" />
-                            <div className="font-medium text-xs md:text-sm lg:text-md overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black mt-2">
+                            <div className="font-medium text-xs md:text-sm lg:text-md bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black mt-2">
                                 {image.label}
                                 <audio>
                                     <source src={image.audio} type="audio/aac" />

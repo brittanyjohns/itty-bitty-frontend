@@ -31,17 +31,10 @@ const SignOutScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    // Place the logic to remove the token here
-    // For example, if you're using localStorage:
     handleSignOut().then(() => {
-      console.log('User signed out');
       history.push('/home');
       window.location.reload();
     } );
-    // localStorage.removeItem('token');
-
-    // Redirect to home page
-    // history.push('/');
   }, [history]);
 
   // Optionally, return null or a loading spinner while the redirect is being processed

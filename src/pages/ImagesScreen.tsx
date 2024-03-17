@@ -10,7 +10,6 @@ import {
   IonSearchbar,
   IonTitle,
   IonToolbar,
-  useIonViewWillEnter
 } from '@ionic/react';
 import { Image, getImages, getMoreImages } from '../data/images';
 import MainMenu from '../components/MainMenu';

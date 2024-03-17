@@ -20,6 +20,11 @@ export interface User {
     id?: number;
     email: string;
     password: string;
+    name?: string;
+    tokens?: number;
+    role?: string;
+    created_at?: string;
+    updated_at?: string;
 }
 export const signIn = (user: User) => {
     const response = fetch(`${BASE_URL}v1/login`, {

@@ -1,5 +1,4 @@
 import { IonCard, IonCardHeader, IonCardSubtitle, IonCardContent, IonItem, IonInput, IonButton } from "@ionic/react";
-import { upload } from "../data/menus";
 interface MenuFormProps {
     onSubmit: () => void;
     label: string;
@@ -8,10 +7,7 @@ interface MenuFormProps {
     shouldDisable: boolean;
 }
 const MenuForm: React.FC<MenuFormProps> = ({ onSubmit, label, handleLabelChange, onFileChange, shouldDisable }) => {
-    // const [label, setLabel] = useState<string>('');
-    // const [file, setFile] = useState<File>();
-    // const [menu, setMenu] = useState<any>({});
-    
+
     return (
         <IonCard>
           <IonCardHeader>
