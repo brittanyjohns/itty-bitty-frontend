@@ -34,7 +34,7 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({ images, boardId
                 </IonButtons>
             </div>
             <div className="mt-1">
-                <div className="my-auto mx-auto grid grid-cols-3 gap-5" key={remainingImages.length}>
+                <div className="my-auto mx-auto grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-1" key={remainingImages.length}>
                     {remainingImages.map((image, i) => (
                         <div className='flex relative w-full hover:cursor-pointer text-center min-h-24 m-1' onClick={() => handleOnImageClick(image)} key={image.id} id={`image_${image.id}`}>
                             <IonImg src={image.src} alt={image.label} className="absolute object-contain w-full h-full top-0 left-0" />

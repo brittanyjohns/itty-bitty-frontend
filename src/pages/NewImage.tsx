@@ -31,7 +31,7 @@ const NewImage: React.FC = (props: any) => {
             </IonButtons>
           </IonToolbar>
         </IonHeader>
-        <IonContent fullscreen scrollY={false}>
+        <IonContent fullscreen className='ion-padding'>
           <>
             <FileUploadForm board={undefined} onCloseModal={undefined} showLabel={true} />
           </>

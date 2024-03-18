@@ -4,6 +4,7 @@ import { Image } from '../data/images';
 import {
   IonButton,
   IonButtons,
+  IonInput,
   IonItem,
   IonLabel,
   IonList,
@@ -83,24 +84,24 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   return (
     <div className='p-4'>
       <IonList>
-        <IonItem>
-          <IonLabel>Number of Columns</IonLabel>
-
-          <IonSelect placeholder="Select # of columns" name="number_of_columns" onIonChange={handleGridChange} value={board?.number_of_columns}>
+        <IonItem className='mb-4'>
+          <IonInput label='Name' value={board?.name} placeholder="Enter Board Name" onIonInput={(e) => setBoard({ ...board, name: e.detail.value! })}></IonInput>
+        </IonItem>
+        <IonItem className='mb-4'>
+          <IonSelect label='Number of Columns' placeholder="Select # of columns" name="number_of_columns" onIonChange={handleGridChange} value={board?.number_of_columns}>
             {gridSizeOptions.map((size) => (
               <IonSelectOption key={size} value={size}>
                 {size}
               </IonSelectOption>
             ))}
           </IonSelect>
+          <IonButton onClick={handleReset} expand="block" fill="outline" color="danger" className="w-1/4 mt-4 ml-4">Reset </IonButton>
+
         </IonItem>
         <IonButtons>
-          <IonButton onClick={() => {
-            handleSubmit();
-          }} expand="block" fill="outline" color="primary" className="mt-4 w-5/6 mx-auto">
+          <IonButton onClick={handleSubmit} expand="block" fill="outline" color="primary" className="">
             Save
           </IonButton>
-          <IonButton onClick={handleReset} expand="block" fill="outline" color="danger" className="mt-4 w-5/6 mx-auto">Reset </IonButton>
         </IonButtons>
       </IonList>
     </div>

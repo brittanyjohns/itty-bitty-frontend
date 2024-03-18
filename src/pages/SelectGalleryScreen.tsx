@@ -1,13 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { IonButton, IonButtons, IonCard, IonContent, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText, IonTextarea, IonTitle, IonToast, IonToolbar } from '@ionic/react';
 import { useHistory, useParams } from 'react-router';
-import { arrowBackCircleOutline, toggle } from 'ionicons/icons';
+import { arrowBackCircleOutline, cloudUploadOutline, createOutline, imagesOutline, refreshCircleOutline, toggle } from 'ionicons/icons';
 import { getBoard, addImageToBoard, Board, getRemainingImages } from '../data/boards'; // Adjust imports based on actual functions
 import FileUploadForm from '../components/FileUploadForm';
 import { generateImage, getMoreImages } from '../data/images';
 import { Image } from '../data/images';
 import BoardForm from '../components/BoardForm';
 import SelectImageGallery from '../components/SelectImageGallery';
+import ImageGalleryItem from '../components/ImageGalleryItem';
+import './ViewBoard.css';
+interface SelectGalleryScreenProps {
+
+}
 const SelectGalleryScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [board, setBoard] = useState<Board | null>(null)
@@ -16,7 +21,6 @@ const SelectGalleryScreen: React.FC = () => {
   const [segmentType, setSegmentType] = useState('edit ');
   const uploadForm = useRef<HTMLDivElement>(null);
   const generateForm = useRef<HTMLDivElement>(null);
-  const boardGridWrapper = useRef<HTMLDivElement>(null);
   const editForm = useRef<HTMLDivElement>(null);
   const [image, setImage] = useState<Image | null>({ id: '', src: '', label: '', image_prompt: '' });
   const [remainingImages, setRemainingImages] = useState<Image[]>(); // State for the remaining images
@@ -27,11 +31,14 @@ const SelectGalleryScreen: React.FC = () => {
   const history = useHistory();
   const [toastMessage, setToastMessage] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('Generating Image...');
 
   const fetchBoard = async () => {
     const board = await getBoard(id); // Ensure getBoard is typed to return a Promise<Board>
+    console.log('board', board);
     setBoard(board);
-    const remainingImgs = await getRemainingImages(board.id, 1, '');
+    toggleForms(segmentType);
+    const remainingImgs = await getRemainingImages(board.id, 1, searchInput);
     setRemainingImages(remainingImgs);
     return board;
   };
@@ -46,36 +53,34 @@ const SelectGalleryScreen: React.FC = () => {
     const query = event.detail.value.toLowerCase();
     setSearchInput(query);
     setPage(1); // Reset to first page on new search
-};
+  };
 
   useEffect(() => {
     async function getData() {
+      console.log("id", id)
       const boardToSet = await fetchBoard();
       setBoard(boardToSet);
       toggleForms(segmentType);
     }
     getData();
-  }, [image]);
+  }, []);
 
   const toggleForms = (segmentType: string) => {
     if (segmentType === 'generate') {
       uploadForm.current?.classList.add('hidden');
       generateForm.current?.classList.remove('hidden');
-      boardGridWrapper.current?.classList.add('hidden');
       editForm.current?.classList.add('hidden');
       imageGalleryWrapper.current?.classList.add('hidden');
     }
     if (segmentType === 'upload') {
       uploadForm.current?.classList.remove('hidden');
       generateForm.current?.classList.add('hidden');
-      boardGridWrapper.current?.classList.add('hidden');
       editForm.current?.classList.add('hidden');
       imageGalleryWrapper.current?.classList.add('hidden');
     }
     if (segmentType === 'gallery') {
       uploadForm.current?.classList.add('hidden');
       generateForm.current?.classList.add('hidden');
-      boardGridWrapper.current?.classList.add('hidden');
       editForm.current?.classList.add('hidden');
       imageGalleryWrapper.current?.classList.remove('hidden');
     }
@@ -83,13 +88,12 @@ const SelectGalleryScreen: React.FC = () => {
     if (segmentType === 'edit') {
       uploadForm.current?.classList.add('hidden');
       generateForm.current?.classList.add('hidden');
-      boardGridWrapper.current?.classList.remove('hidden');
       editForm.current?.classList.remove('hidden');
       imageGalleryWrapper.current?.classList.add('hidden');
     }
   }
 
-  const handleDocClick = async (e: React.MouseEvent<HTMLIonImgElement>) => {
+  const handleDocClick = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const target = e.target as HTMLImageElement;
     history.push(`/images/${target.id}`);
   };
@@ -98,8 +102,10 @@ const SelectGalleryScreen: React.FC = () => {
     console.log('Generate Image', image);
     if (!image) return;
     const formData = new FormData();
-    formData.append('id', image.id);
-    formData.append('image_prompt', image.image_prompt ?? '');
+    formData.append("image[label]", image.label);
+    if (image.image_prompt) {
+      formData.append("image[image_prompt]", image.image_prompt);
+    }
     setShowLoading(true);
     const updatedImage = await generateImage(formData); // Ensure generateImage returns a Promise<Image>
     if (!board?.id) {
@@ -110,6 +116,8 @@ const SelectGalleryScreen: React.FC = () => {
     setImage(null);
 
     setShowLoading(false);
+    const message = `Image added to board: ${updatedImage.label}`;
+    setToastMessage(message);
     history.push(`/boards/${board.id}`);
   }
 
@@ -126,21 +134,28 @@ const SelectGalleryScreen: React.FC = () => {
     }
   }
 
+  const handleLabelInput = (e: CustomEvent) => {
+    const newLabel = e.detail.value;
+    if (image) {
+      setImage({ ...image, label: newLabel });
+    }
+  }
+
   const handleImageClick = (image: Image) => {
     setImage(image);
     setShowLoading(true);
-        async function addSelectedImageToBoard() {
-          if (!board?.id) {
-            console.error('Board ID is missing');
-            return;
-          }
-            const response = await addImageToBoard(board.id, image.id);
-            const message = `Image added to board: ${response['name']}`;
-            setToastMessage(message);
-            setShowLoading(false);
-            setIsOpen(true);
-        }
-        addSelectedImageToBoard();
+    async function addSelectedImageToBoard() {
+      if (!board?.id) {
+        console.error('Board ID is missing');
+        return;
+      }
+      const response = await addImageToBoard(board.id, image.id);
+      const message = `Image added to board: ${response['name']}`;
+      setToastMessage(message);
+      setShowLoading(false);
+      setIsOpen(true);
+    }
+    addSelectedImageToBoard();
   }
 
   return (
@@ -156,17 +171,17 @@ const SelectGalleryScreen: React.FC = () => {
         </IonToolbar>
         <IonToolbar>
           <IonSegment value={segmentType} onIonChange={handleSegmentChange}>
-          <IonSegmentButton value="edit">
-              <IonLabel>Edit</IonLabel>
+            <IonSegmentButton value="edit">
+              <IonLabel className='text-xl'><IonIcon icon={createOutline} /></IonLabel>
             </IonSegmentButton>
             <IonSegmentButton value="gallery">
-              <IonLabel>Gallery</IonLabel>
+              <IonLabel className='text-xl'><IonIcon icon={imagesOutline} /></IonLabel>
             </IonSegmentButton>
             <IonSegmentButton value="upload">
-              <IonLabel>Upload</IonLabel>
+              <IonLabel className='text-xl'><IonIcon icon={cloudUploadOutline} /></IonLabel>
             </IonSegmentButton>
             <IonSegmentButton value="generate">
-              <IonLabel>Generate</IonLabel>
+              <IonLabel className='text-xl'><IonIcon icon={refreshCircleOutline} /></IonLabel>
             </IonSegmentButton>
           </IonSegment>
         </IonToolbar>
@@ -177,6 +192,30 @@ const SelectGalleryScreen: React.FC = () => {
             {board && board.name}
           </IonText>
         </div>
+
+        <div className="ion-padding" ref={editForm}>
+          {board && <BoardForm board={board} setBoard={setBoard} />}
+          <div className="ion-padding">
+            {board && board.images && board.images.length > 0 &&
+              <div className='ion-padding'>
+                <IonLabel className='font-sans text-sm'>There are currently {board.images.length} images in this board. Click on an image to view it.</IonLabel>
+                <div className="grid grid-cols-3 gap-4 mt-3" ref={boardGrid} >
+                  {board?.images && board.images.map((img: Image, index: number) => (
+                    <div key={index} className="relative" onClick={handleDocClick}>
+                      <ImageGalleryItem key={index} image={img} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            }
+            {board && board.images && board.images.length < 1 &&
+              <div className="text-center">
+                <p>No images found</p>
+              </div>
+            }
+          </div>
+        </div>
+
         <div className='mt-6 py-3 px-1 hidden text-center' ref={uploadForm}>
           <IonText className='text-lg'>Upload your own board</IonText>
           {board && <FileUploadForm board={board} onCloseModal={undefined} showLabel={true} existingLabel={image?.label} />}
@@ -186,9 +225,13 @@ const SelectGalleryScreen: React.FC = () => {
             <IonItem className='my-2'>
               <IonText className='font-bold text-xl mt-2'>Generate an board with AI</IonText>
             </IonItem>
+
             <IonItem className='mt-2 border-2'>
-              <IonLoading className='loading-icon' cssClass='loading-icon' isOpen={showLoading} message={'Adding the board to your board...'} />
-              {board && <IonTextarea fill='outline' className='' placeholder='Enter prompt' onIonInput={handleImagePromptInput}></IonTextarea>}
+              {board && <IonInput className='' aria-label='label' value={image?.label} placeholder="Enter label" onIonInput={handleLabelInput}></IonInput>}
+            </IonItem>
+            <IonItem className='mt-2 border-2'>
+              <IonLoading className='loading-icon' cssClass='loading-icon' isOpen={showLoading} message={loadingMessage} />
+              {board && <IonTextarea className='' placeholder='Enter prompt' onIonInput={handleImagePromptInput}></IonTextarea>}
             </IonItem>
             <IonItem className='mt-2'>
               <IonButton className='w-full text-lg' onClick={handleGenerate}>Generate Image</IonButton>
@@ -202,41 +245,16 @@ const SelectGalleryScreen: React.FC = () => {
           </IonList>
         </div>
 
-        
-
         <div className="ion-padding hidden" ref={imageGalleryWrapper}>
-        <IonLabel className='font-sans text-sm'>Search for images - Click to add to board</IonLabel>
+          <IonLabel className='font-sans text-sm'>Search for images - Click to add to board</IonLabel>
           {remainingImages && <SelectImageGallery boardId={board?.id} onImageClick={handleImageClick} onLoadMoreImages={handleGetMoreImages} searchInput={searchInput} images={remainingImages} />}
         </div>
-
-        <div className="ion-padding hidden" ref={editForm}>
-          {board && <BoardForm board={board} setBoard={setBoard} />}
-        </div>
-        <div className="ion-padding hidden" ref={boardGridWrapper}>
-          {board && board.images && board.images.length > 0 &&
-            <div className='ion-padding'>
-              <IonLabel className='font-sans text-sm'>There are currently {board.images.length} images in this board. Click on an image to view it.</IonLabel>
-              <div className="grid grid-cols-3 gap-4 mt-3" ref={boardGrid} >
-                {board?.images && board.images.map((img: Image, index: number) => (
-                  <div key={img.id} className='h-20 w-20'>
-                    <IonImg id={img.id} src={img.src} alt={img.label} onClick={handleDocClick} />
-                  </div>
-                ))}
-              </div>
-            </div>
-          }
-          {board && board.images && board.images.length < 1 &&
-            <div className="text-center">
-              <p>No images found</p>
-            </div>
-          }
-        </div>
         <IonToast
-                isOpen={isOpen}
-                message={toastMessage}
-                onDidDismiss={() => setIsOpen(false)}
-                duration={2000}
-            ></IonToast>
+          isOpen={isOpen}
+          message={toastMessage}
+          onDidDismiss={() => setIsOpen(false)}
+          duration={2000}
+        ></IonToast>
       </IonContent>
     </IonPage>
   );
