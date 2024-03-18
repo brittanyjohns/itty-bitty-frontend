@@ -98,15 +98,17 @@ const FileUploadForm: React.FC<FileUploadFormProps> = (props: FileUploadFormProp
       <IonLoading className='loading-icon' cssClass='loading-icon' isOpen={showLoading} message={'Adding the image to your board...'} />
       <IonInput
         value={label}
-        placeholder='Label'
+        label='Label'
+        labelPlacement='floating'
         onIonChange={handleLabelChange} // Changed from onIonInput to onIonChange
         type="text"
         aria-label="Label"
-        className={`pl-4 ${hideLabel ? 'hidden' : ''}`} // Simplified conditional class application
+        placeholder="Enter new image label"
+        className={`rounded-md ${hideLabel ? 'hidden' : ''}`} // Simplified conditional class application
         required={!hideLabel}
       />
       <div className="flex items-center"> {/* Add this wrapper */}
-        <input type="file" onChange={ev => onFileChange(ev)} className="text-sm rounded-md flex-grow mr-2" /> {/* Adjusted classes for flex layout */}
+        <input type="file" onChange={ev => onFileChange(ev)} className='bg-inherit w-full p-4 rounded-md' required />
         <IonButton type="submit" disabled={shouldDisable} className="flex-shrink-0">
           {props.showLabel ? 'Save' : 'Upload'}
         </IonButton>

@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import {
+  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonMenuButton,
   IonPage,
   IonRefresher,
@@ -16,6 +18,7 @@ import MainMenu from '../components/MainMenu';
 import SelectImageGallery from '../components/SelectImageGallery';
 import { useHistory } from 'react-router';
 import Tabs from '../components/Tabs';
+import { addCircleOutline } from 'ionicons/icons';
 
 const ImagesScreen: React.FC = () => {
   const [images, setImages] = useState<Image[]>([]);
@@ -65,6 +68,11 @@ const ImagesScreen: React.FC = () => {
               <IonMenuButton></IonMenuButton>
             </IonButtons>
             <IonTitle>Image Gallery</IonTitle>
+            <IonButtons slot="end">
+              <IonButton routerLink="/images/add" >
+                <IonIcon icon={addCircleOutline} />
+              </IonButton>
+            </IonButtons>
           </IonToolbar>
           <IonToolbar>
           <IonSearchbar debounce={1000} onIonInput={handleSearchInput} animated={true} placeholder="Search existing images"></IonSearchbar>

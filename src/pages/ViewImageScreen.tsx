@@ -26,7 +26,7 @@ import FileUploadForm from '../components/FileUploadForm';
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [image, setImage] = useState<Image | null>(null)
-  const [currentImage, setCurrentImage] = useState<string>('');
+  const [currentImage, setCurrentImage] = useState<string |null>('');
   const imageGrid = useRef<HTMLDivElement>(null);
   const [showLoading, setShowLoading] = useState(false);
   const [segmentType, setSegmentType] = useState('gallery');
@@ -35,8 +35,7 @@ const ViewImageScreen: React.FC = () => {
   const imageGridWrapper = useRef<HTMLDivElement>(null);
 
   const fetchImage = async () => {
-    const img = await getImage(id); // Ensure getImage is typed to return a Promise<Image>
-    console.log('img', img);
+    const img = await getImage(id);
     setImage(img);
     return img;
   };
@@ -46,7 +45,7 @@ const ViewImageScreen: React.FC = () => {
       const imgToSet = await fetchImage();
       setImage(imgToSet);
       toggleForms(segmentType);
-      if (imgToSet.display_doc.src) {
+      if (imgToSet.display_doc && imgToSet.display_doc.src) {
         setCurrentImage(imgToSet.display_doc.src);
       } else {
         setCurrentImage(imgToSet.src);
@@ -78,14 +77,14 @@ const ViewImageScreen: React.FC = () => {
     await markAsCurrent(target.id); // Ensure markAsCurrent returns a Promise
     const imgToSet = await fetchImage();
     setImage(imgToSet);
-    setCurrentImage(imgToSet.display_doc.src);
+    setCurrentImage(imgToSet?.display_doc?.src ?? imgToSet.src);
   };
 
   const handleGenerate = async () => {
     if (!image) return;
     const formData = new FormData();
     formData.append('id', image.id);
-    formData.append('image_prompt', image.image_prompt ?? '');
+    formData.append('image[image_prompt]', image.image_prompt ?? '');
     setShowLoading(true);
     const updatedImage = await generateImage(formData); // Ensure generateImage returns a Promise<Image>
     setImage(updatedImage);
@@ -128,7 +127,7 @@ const ViewImageScreen: React.FC = () => {
             {image && image.label}
           </IonText>
           <div className='mt-2'>
-            {image && <IonImg id={image.id} src={currentImage} alt={image.label} className='w-1/2 mx-auto' />}
+            {currentImage && image && <IonImg id={image.id} src={currentImage} alt={image.label} className='w-1/2 mx-auto' />}
             {/* {image && !currentImage && <IonImg id={image.id} src={image.src} alt={image.label} className='w-1/2 mx-auto' />} */}
           </div>
         </div>
@@ -143,7 +142,7 @@ const ViewImageScreen: React.FC = () => {
             </IonItem>
             <IonItem className='mt-2 border-2'>
               <IonLoading className='loading-icon' cssClass='loading-icon' isOpen={showLoading} message={'Adding the image to your board...'} />
-              {image && <IonTextarea fill='outline' className='' placeholder='Enter prompt' onIonInput={(e) => setImage({ ...image, image_prompt: e.detail.value! })}></IonTextarea>}
+              {image && <IonTextarea className='' placeholder='Enter prompt' onIonInput={(e) => setImage({ ...image, image_prompt: e.detail.value! })}></IonTextarea>}
             </IonItem>
             <IonItem className='mt-2'>
               <IonButton className='w-full text-lg' onClick={handleGenerate}>Generate Image</IonButton>

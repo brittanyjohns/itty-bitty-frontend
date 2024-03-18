@@ -68,15 +68,12 @@ const BoardsScreen: React.FC = () => {
     if (segmentType === 'user') {
       setBoards(userBoards);
     }
-
     if (segmentType === 'preset') {
       setBoards(presetBoards);
     }
-
     if (segmentType === 'scenario') {
       setBoards(scenarioBoards);
     }
-
   } , [segmentType]);
 
 

@@ -12,6 +12,7 @@ import {
   IonLoading,
   IonModal,
   IonPage,
+  IonText,
   IonTitle,
   IonToolbar,
   useIonViewDidLeave,
@@ -33,6 +34,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
   const [showIcon, setShowIcon] = useState(false);
   const [showLoading, setShowLoading] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
+  const [imageCount, setImageCount] = useState(0);
 
   const fetchBoard = async () => {
     const board = await getBoard(params.id);
@@ -41,8 +43,20 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
       return;
     } else {
       console.log('board', board);
-    }
+      const imgCount = board?.images?.length;
+    console.log('imgCount', imgCount);
+    setImageCount(imgCount as number);
+    setShowLoading(false);
+
     setBoard(board);
+    if (imgCount === 0 && board?.parent_type === 'Menu') {
+      setShowLoading(true)
+      setTimeout(() => {
+        window.location.reload();
+      } , 2000);
+    }
+    }
+    
   }
 
   const speak = async (text: string) => {
@@ -63,9 +77,6 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
     setShowIcon(false);
   }
 
-  // useIonViewWillEnter(() => {
-  //   fetchBoard();
-  // });
   useIonViewDidLeave(() => {
     inputRef.current?.value && clearInput();    
   } );
@@ -73,11 +84,13 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
   useEffect(() => {
     async function fetchData() {
       await fetchBoard();
-      setShowLoading(false);
+      
     }
     fetchData();
     const result = board?.predifined ? false : true;
+    
     setShowEdit(result);
+    
   }, []);
 
   return (
@@ -115,20 +128,21 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
       <IonContent fullscreen scrollY={false}>
         <IonLoading message="Please wait while we create your board..." isOpen={showLoading} />
 
-        {board && board.images &&
+        {board && board.images && board.images.length > 0 &&
           <ImageGallery images={board.images} board={board} setShowIcon={setShowIcon} inputRef={inputRef} />
         }
-        {board ? (
-          <div className="">
-            {board.images && board.images.length < 1 &&
-              <div className="text-center">
-                <p>No images found</p>
-              </div>
-            }
+        {imageCount < 1 &&
+          <div className="text-center pt-32">
+            <p>No images found</p>
           </div>
-        ) : (
-          <div>Board not found</div>
-        )}
+
+            }
+            {(board?.parent_type === 'Menu') && imageCount < 1 &&
+          <div className="text-center pt-32">
+          <IonLoading message="Please wait while we create your board..." isOpen={showLoading} />
+          </div>
+
+            }
       </IonContent>
     </IonPage>
   );
