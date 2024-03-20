@@ -111,9 +111,7 @@ const BoardsScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <IonItem>
             <BoardList boards={boards} />
-          </IonItem>
         </IonContent>
         <Tabs />
 

@@ -10,6 +10,7 @@ export interface Board {
     displayImage?: string;
     number_of_columns: number;
     images?: Image[];
+    error?: string;
 }
 
 export const getBoards = () => {
@@ -113,13 +114,13 @@ export async function addImageListToBoard(id: string, payload: { word_list: stri
   }
 
   export async function removeImageFromBoard(id: string, image_id: string): Promise<Board> {
-    const body = JSON.stringify({ image_id });
     const requestInfo = {
       method: "POST",
       headers: userHeaders,
-      body: body,
+      body: JSON.stringify({ image_id }),
     };
     const response = await fetch(`${BASE_URL}boards/${id}/remove_image`, requestInfo);
     const board: Board = await response.json();
+    console.log('removeImageFromBoard', board);
     return board;
   }

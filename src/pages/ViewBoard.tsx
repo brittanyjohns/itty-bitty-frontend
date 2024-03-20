@@ -12,6 +12,8 @@ import {
   IonLoading,
   IonModal,
   IonPage,
+  IonRefresher,
+  IonRefresherContent,
   IonText,
   IonTitle,
   IonToolbar,
@@ -19,7 +21,7 @@ import {
   useIonViewWillEnter,
 } from '@ionic/react';
 
-import { add, addCircleOutline, arrowBackCircleOutline, playCircleOutline, trashBinOutline } from 'ionicons/icons';
+import { add, addCircleOutline, arrowBackCircleOutline, playCircleOutline, refresh, trashBinOutline } from 'ionicons/icons';
 
 import { useParams } from 'react-router';
 import './ViewBoard.css';
@@ -44,19 +46,22 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
     } else {
       console.log('board', board);
       const imgCount = board?.images?.length;
-    console.log('imgCount', imgCount);
-    setImageCount(imgCount as number);
-    setShowLoading(false);
+      console.log('imgCount', imgCount);
+      setImageCount(imgCount as number);
+      setShowLoading(false);
+      const result = board.predefined ? false : true;
+      console.log('result', result);
+      setShowEdit(result);
 
-    setBoard(board);
-    if (imgCount === 0 && board?.parent_type === 'Menu') {
-      setShowLoading(true)
-      setTimeout(() => {
-        window.location.reload();
-      } , 2000);
+      setBoard(board);
+      if (imgCount < 2 && board?.parent_type === 'Menu') {
+        setShowLoading(true)
+        setTimeout(() => {
+          window.location.reload();
+        }, 4000);
+      }
     }
-    }
-    
+
   }
 
   const speak = async (text: string) => {
@@ -78,20 +83,24 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
   }
 
   useIonViewDidLeave(() => {
-    inputRef.current?.value && clearInput();    
-  } );
+    inputRef.current?.value && clearInput();
+  });
 
   useEffect(() => {
     async function fetchData() {
       await fetchBoard();
-      
+
     }
     fetchData();
-    const result = board?.predifined ? false : true;
-    
-    setShowEdit(result);
-    
+
   }, []);
+
+  const refresh = (e: CustomEvent) => {
+    setTimeout(() => {
+      e.detail.complete();
+      fetchBoard();
+    }, 3000);
+  }
 
   return (
     <IonPage id="view-board-page">
@@ -119,13 +128,16 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
                 <IonIcon slot="icon-only" className="tiny" icon={trashBinOutline} onClick={() => clearInput()}></IonIcon>
               </IonButton>
             }
-              {showEdit && !showIcon && <IonButton routerLink={`/boards/${params.id}/gallery`}>
-                <IonIcon icon={addCircleOutline} />
-              </IonButton>}
+            {showEdit && !showIcon && <IonButton routerLink={`/boards/${params.id}/gallery`}>
+              <IonIcon icon={addCircleOutline} />
+            </IonButton>}
           </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen scrollY={false}>
+        <IonRefresher slot="fixed" onIonRefresh={refresh}>
+          <IonRefresherContent></IonRefresherContent>
+        </IonRefresher>
         <IonLoading message="Please wait while we create your board..." isOpen={showLoading} />
 
         {board && board.images && board.images.length > 0 &&
@@ -136,13 +148,13 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
             <p>No images found</p>
           </div>
 
-            }
-            {(board?.parent_type === 'Menu') && imageCount < 1 &&
+        }
+        {(board?.parent_type === 'Menu') && imageCount < 1 &&
           <div className="text-center pt-32">
-          <IonLoading message="Please wait while we create your board..." isOpen={showLoading} />
+            <IonLoading message="Please wait while we create your board..." isOpen={showLoading} />
           </div>
 
-            }
+        }
       </IonContent>
     </IonPage>
   );
