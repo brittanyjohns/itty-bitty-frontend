@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IonButton, IonButtons, IonCard, IonContent, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonPage, IonSegment, IonSegmentButton, IonText, IonTextarea, IonTitle, IonToast, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonCard, IonContent, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonPage, IonSearchbar, IonSegment, IonSegmentButton, IonText, IonTextarea, IonTitle, IonToast, IonToolbar } from '@ionic/react';
 import { useHistory, useParams } from 'react-router';
 import { arrowBackCircleOutline, cloudUploadOutline, createOutline, imagesOutline, refreshCircleOutline, toggle } from 'ionicons/icons';
 import { getBoard, addImageToBoard, Board, getRemainingImages } from '../data/boards'; // Adjust imports based on actual functions
@@ -10,6 +10,7 @@ import BoardForm from '../components/BoardForm';
 import SelectImageGallery from '../components/SelectImageGallery';
 import ImageGalleryItem from '../components/ImageGalleryItem';
 import './ViewBoard.css';
+import { useCurrentUser } from '../hooks/useCurrentUser';
 interface SelectGalleryScreenProps {
 
 }
@@ -32,6 +33,15 @@ const SelectGalleryScreen: React.FC = () => {
   const [toastMessage, setToastMessage] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('Generating Image...');
+  const { currentUser, setCurrentUser } = useCurrentUser();
+
+  const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
+    console.log('currentUser', currentUser);
+    if (currentUser && currentUser.tokens && currentUser.tokens >= numberOfTokens) {
+      return true;
+    }
+    return false;
+  }
 
   const fetchBoard = async () => {
     const board = await getBoard(id); // Ensure getBoard is typed to return a Promise<Board>
@@ -100,6 +110,11 @@ const SelectGalleryScreen: React.FC = () => {
 
   const handleGenerate = async () => {
     console.log('Generate Image', image);
+    if (!checkCurrentUserTokens()) {
+      alert('Sorry, you do not have enough tokens to generate an image. Please purchase more tokens to continue.');
+      console.error('User does not have enough tokens');
+      return;
+    }
     if (!image) return;
     const formData = new FormData();
     formData.append("image[label]", image.label);
@@ -195,9 +210,9 @@ const SelectGalleryScreen: React.FC = () => {
 
         <div className="ion-padding" ref={editForm}>
           {board && <BoardForm board={board} setBoard={setBoard} />}
-          <div className="ion-padding">
+          <div className="">
             {board && board.images && board.images.length > 0 &&
-              <div className='ion-padding'>
+              <div className=''>
                 <IonLabel className='font-sans text-sm'>There are currently {board.images.length} images in this board. Click on an image to view it.</IonLabel>
                 <div className="grid grid-cols-3 gap-4 mt-3" ref={boardGrid} >
                   {board?.images && board.images.map((img: Image, index: number) => (
@@ -221,7 +236,7 @@ const SelectGalleryScreen: React.FC = () => {
           {board && <FileUploadForm board={board} onCloseModal={undefined} showLabel={true} existingLabel={image?.label} />}
         </div>
         <div className='mt-2 hidden' ref={generateForm}>
-          <IonList className="ion-padding" lines='none' >
+          <IonList className="" lines='none' >
             <IonItem className='my-2'>
               <IonText className='font-bold text-xl mt-2'>Generate an board with AI</IonText>
             </IonItem>
@@ -245,8 +260,9 @@ const SelectGalleryScreen: React.FC = () => {
           </IonList>
         </div>
 
-        <div className="ion-padding hidden" ref={imageGalleryWrapper}>
+        <div className="hidden" ref={imageGalleryWrapper}>
           <IonLabel className='font-sans text-sm'>Search for images - Click to add to board</IonLabel>
+          <IonSearchbar className='mt-2' onIonChange={handleSearchInput}></IonSearchbar>
           {remainingImages && <SelectImageGallery boardId={board?.id} onImageClick={handleImageClick} onLoadMoreImages={handleGetMoreImages} searchInput={searchInput} images={remainingImages} />}
         </div>
         <IonToast

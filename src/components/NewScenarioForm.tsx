@@ -26,7 +26,7 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({ onSave, onCancel, sce
   const tokenOptions = Array.from({ length: 37 }, (_, i) => i);
 
   useEffect(() => {
-    setPromptText(scenario?.prompt_text || '');
+    setPromptText(scenario.prompt_text || '');
     setAgeRange(scenario?.age_range || '');
     setNumberOfImages(scenario?.number_of_images || 6);
     setTokenLimit(scenario?.token_limit || 0);
@@ -34,6 +34,9 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({ onSave, onCancel, sce
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (promptText === '') {
+      return;
+    }
     onSave({ prompt_text: promptText, age_range: ageRange, number_of_images: numberOfImages, token_limit: tokenLimit });
   };
 

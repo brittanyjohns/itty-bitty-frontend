@@ -14,7 +14,7 @@ interface MenuListItemProps {
 
 const MenuListItem: React.FC<MenuListItemProps> = ({ menu }) => {
   return (
-    <IonItem routerLink={`/boards/${menu.boardId}`} detail={true} className='p-4 w-full'>
+    <IonItem routerLink={`/menus/${menu.id}`} detail={true} className='p-4 w-full'>
       <IonLabel>
         {menu.name}
       </IonLabel>

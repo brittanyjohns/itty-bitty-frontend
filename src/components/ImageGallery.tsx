@@ -6,6 +6,7 @@ import { useHistory } from 'react-router';
 import ActionList from './ActionList';
 import { removeImageFromBoard } from '../data/boards';
 import ImageGalleryItem from './ImageGalleryItem';
+import FloatingWordsBtn from './FloatingWordsBtn';
 
 const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon, inputRef }) => {
     const gridRef = useRef(null); // Ref for the grid container
@@ -99,7 +100,10 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
 
     const handleButtonPress = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
         const imageId = (event.target as HTMLDivElement).id;
-
+        if (board?.predifined) {    
+            console.log('Predefined board');
+            return;
+        }
         longPressTimer.current = setTimeout(() => {
             setShowActionList(true); // Show the action list on long press
             setLeaving(true);
@@ -123,8 +127,20 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
             if (!board?.id) {
                 return;
             }
-            removeImageFromBoard(board.id, imageId);
-            window.location.reload();
+            async function removeImage() {
+                if (!board?.id) {
+                    return;
+                }
+                const result = await removeImageFromBoard(board.id, imageId);
+                if (result.error) {
+                    console.error('Error:', result.error);
+                    alert(`Error: ${result.error}`);
+                    return;
+                }
+                window.location.reload();
+            }
+            removeImage();
+            // window.location.reload();
         } else if (action === 'edit') {
             history.push(`/images/${imageId}`);
         }
@@ -145,15 +161,17 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, board, setShowIcon,
     }
 
     // Resize grid on mount and when images state changes
-    useEffect(() => {
-        resizeGrid();
-        // Add window resize event listener to adjust grid on viewport change
-        window.addEventListener('resize', resizeGrid);
-        return () => window.removeEventListener('resize', resizeGrid);
-    }, [images]);
+    // useEffect(() => {
+    //     resizeGrid();
+    //     // Add window resize event listener to adjust grid on viewport change
+    //     window.addEventListener('resize', resizeGrid);
+    //     return () => window.removeEventListener('resize', resizeGrid);
+    // }, [images]);
 
     return (
         <div className="gallery-container" ref={galleryRef}>
+                  <FloatingWordsBtn />
+
             <div className="grid grid-cols-1 gap-1" ref={gridRef}>
                 {images.map((image, i) => (
                     <div className='image-container flex relative w-full hover:cursor-pointer text-center'

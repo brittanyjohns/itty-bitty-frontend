@@ -15,6 +15,7 @@ import {
 } from '@ionic/react';
 import { arrowBackCircleOutline } from 'ionicons/icons';
 import { useState } from 'react';
+import { useCurrentUser } from '../hooks/useCurrentUser';
 type NewMenu = {
   name: string
   file: File
@@ -24,7 +25,17 @@ const NewMenu: React.FC = (props: any) => {
 
   const [menu, setMenus] = useState<NewMenu>({ name: '', file: new File([''], 'filename'), description: '' });
   const [shouldDisable, setShouldDisable] = useState<boolean>(true);
+  
+  const { currentUser, setCurrentUser } = useCurrentUser();
 
+  const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
+    console.log('currentUser', currentUser);
+    if (currentUser && currentUser.tokens && currentUser.tokens >= numberOfTokens) {
+      return true;
+    }
+    return false;
+  }
+  
   const uploadPhoto = (fileSumbitEvent: React.FormEvent<Element>) => {
     fileSumbitEvent.preventDefault();
     console.log(menu);
@@ -41,6 +52,12 @@ const NewMenu: React.FC = (props: any) => {
   }
 
   const saveMenu = async (formData: FormData) => {
+    const hasTokens = checkCurrentUserTokens(1);
+    if (!hasTokens) {
+      console.error('User does not have enough tokens');
+      alert('Sorry, you do not have enough tokens to generate an image. Please purchase more tokens to continue.');
+      return;
+    }
     let result = await createMenu(formData);
     if (result?.error) {
       console.error('Error:', result.error);

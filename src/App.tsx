@@ -40,6 +40,8 @@ import SelectGalleryScreen from './pages/SelectGalleryScreen';
 import SettingsPage from './pages/SettingsPage';
 import { fastFoodOutline, radio, library, search, home, settings, albumsOutline, imagesOutline } from 'ionicons/icons';
 import NewScenario from './pages/NewScenario';
+import ViewMenuScreen from './pages/ViewMenuScreen';
+import FloatingWordsBtn from './components/FloatingWordsBtn';
 
 
 setupIonicReact();
@@ -70,7 +72,9 @@ const App: React.FC = () => (
             <Route path="/images/:id" component={ViewImageScreen} exact={true} />
             <Route path="/images/add" component={NewImage} exact={true} />
             <Route path="/images" component={ImagesScreen} exact={true} />
+            <Route path="/menus/:id" component={ViewMenuScreen} exact={true} />
             <Route path="/menus/new" component={NewMenu} exact={true} />
+
             <Route path="/menus" component={MenusScreen} exact={true} />
             <Route path="/settings" component={SettingsPage} exact={true} />
             <Route path={"/sign-up"} >

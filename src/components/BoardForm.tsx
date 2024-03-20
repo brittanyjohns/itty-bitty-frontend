@@ -49,6 +49,7 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
     const updatedBoard = await updateBoard(board);
     setBoard(updatedBoard);
     history.push(`/boards/${board?.id}`);
+    window.location.reload();
   }
 
   const handleReset = () => {
@@ -82,7 +83,7 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   }, []);
 
   return (
-    <div className='p-4'>
+    <div className=''>
       <IonList>
         <IonItem className='mb-4'>
           <IonInput label='Name' value={board?.name} placeholder="Enter Board Name" onIonInput={(e) => setBoard({ ...board, name: e.detail.value! })}></IonInput>
@@ -95,11 +96,11 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
               </IonSelectOption>
             ))}
           </IonSelect>
-          <IonButton onClick={handleReset} expand="block" fill="outline" color="danger" className="w-1/4 mt-4 ml-4">Reset </IonButton>
+          <IonButton onClick={handleReset} expand="block" fill="outline" color="danger" className="w-1/5 mt-4 ml-4">Reset </IonButton>
 
         </IonItem>
         <IonButtons>
-          <IonButton onClick={handleSubmit} expand="block" fill="outline" color="primary" className="">
+          <IonButton onClick={handleSubmit} expand="block" fill="outline" color="primary" className="w-full">
             Save
           </IonButton>
         </IonButtons>

@@ -22,6 +22,7 @@ import { getImage, Image, generateImage } from '../data/images'; // Adjust impor
 import { markAsCurrent } from '../data/docs'; // Adjust imports based on actual functions
 import BoardDropdown from '../components/BoardDropdown';
 import FileUploadForm from '../components/FileUploadForm';
+import { useCurrentUser } from '../hooks/useCurrentUser';
 
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -33,6 +34,15 @@ const ViewImageScreen: React.FC = () => {
   const uploadForm = useRef<HTMLDivElement>(null);
   const generateForm = useRef<HTMLDivElement>(null);
   const imageGridWrapper = useRef<HTMLDivElement>(null);
+
+  const { currentUser, setCurrentUser } = useCurrentUser();
+
+  const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
+    if (currentUser && currentUser.tokens && currentUser.tokens >= numberOfTokens) {
+      return true;
+    }
+    return false;
+  }
 
   const fetchImage = async () => {
     const img = await getImage(id);
@@ -82,6 +92,12 @@ const ViewImageScreen: React.FC = () => {
 
   const handleGenerate = async () => {
     if (!image) return;
+    const hasTokens = checkCurrentUserTokens(1);
+    if (!hasTokens) {
+      alert('Sorry, you do not have enough tokens to generate an image. Please purchase more tokens to continue.');
+      console.error('User does not have enough tokens');
+      return;
+    }
     const formData = new FormData();
     formData.append('id', image.id);
     formData.append('image[image_prompt]', image.image_prompt ?? '');
