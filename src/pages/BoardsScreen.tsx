@@ -31,6 +31,7 @@ const BoardsScreen: React.FC = () => {
   const [presetBoards, setPresetBoards] = useState([]);
   const [userBoards, setUserBoards] = useState([]);
   const [scenarioBoards, setScenarioBoards] = useState([]);
+  const [sharedBoards, setSharedBoards] = useState([]);
   const [segmentType, setSegmentType] = useState('user');
 
   const fetchBoards = async () => {
@@ -42,6 +43,7 @@ const BoardsScreen: React.FC = () => {
     setUserBoards(fetchedBoards['boards']);
     setScenarioBoards(fetchedBoards['scenarios']);
     setPresetBoards(fetchedBoards['predefined_boards']);
+    setSharedBoards(fetchedBoards['shared_boards']);
     console.log('Fetched boards', fetchedBoards);
     setBoards(fetchedBoards['boards']);
   }
@@ -74,6 +76,9 @@ const BoardsScreen: React.FC = () => {
     if (segmentType === 'scenario') {
       setBoards(scenarioBoards);
     }
+    if (segmentType === 'shared') {
+      setBoards(sharedBoards);
+    }
   } , [segmentType]);
 
 
@@ -103,6 +108,9 @@ const BoardsScreen: React.FC = () => {
               </IonSegmentButton>
               <IonSegmentButton value="scenario">
                 <IonLabel>Scenarios</IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="shared">
+                <IonLabel>Shared</IonLabel>
               </IonSegmentButton>
             </IonSegment>
           </IonToolbar>
