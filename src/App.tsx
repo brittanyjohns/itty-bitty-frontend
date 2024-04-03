@@ -60,7 +60,6 @@ import {
 import NewScenario from "./pages/NewScenario";
 import ViewMenuScreen from "./pages/ViewMenuScreen";
 import FloatingWordsBtn from "./components/FloatingWordsBtn";
-import PredictiveImagesScreen from "./pages/PredictiveImagesScreen";
 import PredictiveIndex from "./pages/PredictiveIndex";
 
 setupIonicReact();
@@ -103,11 +102,6 @@ const App: React.FC = () => (
           <Route path="/images/:id" component={ViewImageScreen} exact={true} />
           <Route path="/images/add" component={NewImage} exact={true} />
           <Route path="/images" component={ImagesScreen} exact={true} />
-          <Route
-            path="/predictive/:id"
-            component={PredictiveImagesScreen}
-            exact={true}
-          />
 
           <Route path="/predictive" component={PredictiveIndex} exact={true} />
 
