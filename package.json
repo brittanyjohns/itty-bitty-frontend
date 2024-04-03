@@ -57,8 +57,5 @@
     "vite": "^5.0.0",
     "vitest": "^0.34.6"
   },
-  "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.9.5"
-  },
   "description": "An Ionic project"
 }
