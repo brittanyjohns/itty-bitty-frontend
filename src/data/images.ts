@@ -22,7 +22,7 @@ import { BASE_URL } from "./users";
     src: string;
     label: string;
     next_board_id: string;
-    nextImageIds: string[];
+    nextImageSrcs: string[];
     next_words: string[]
     image_prompt?: string;
     audio?: string;
@@ -166,4 +166,10 @@ export async function generateImage(formData: FormData): Promise<Image> {
   });
   const image: Image = await response.json();
   return image;
+}
+
+export async function getPredictiveImagesByIds(ids: string[]): Promise<PredictiveImage[]> {
+  const response = await fetch(`${BASE_URL}images/predictive?ids=${ids.join(',')}`, { headers: userHeaders });
+  const images: PredictiveImage[] = await response.json();
+  return images;
 }
