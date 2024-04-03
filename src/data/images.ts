@@ -16,7 +16,24 @@ import { BASE_URL } from "./users";
     docs?: ImageDoc[];
     display_doc?: ImageDoc;
   }
-  
+
+  export interface PredictiveImage {
+    id: string;
+    src: string;
+    label: string;
+    next_board_id: string;
+    next_words: string[]
+    image_prompt?: string;
+    audio?: string;
+    docs?: ImageDoc[];
+    display_doc?: ImageDoc;
+  }
+
+  export interface PredictiveImageGalleryProps {
+    predictiveImages: PredictiveImage[];
+    boardId: string;
+    onImageClick: any;
+  }
   
   export interface ImageGalleryProps {
     boardId?: string | null;
@@ -116,6 +133,16 @@ export async function getMoreImages(page: number, query: string): Promise<Image[
   const response = await fetch(`${BASE_URL}images?page=${page}&query=${query}`,
    { headers: userHeaders }) 
   const images: Image[] = await response.json();
+  return images;
+}
+
+export async function getPredictiveImages(boardId: string): Promise<PredictiveImage[]> {
+  console.log('getPredictiveImages boardId', boardId);
+  if (!boardId) {
+    return [];
+  }
+  const response = await fetch(`${BASE_URL}boards/${boardId}/predictive_images`, { headers: userHeaders });
+  const images: PredictiveImage[] = await response.json();
   return images;
 }
 

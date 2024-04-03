@@ -1,4 +1,4 @@
-import { Image } from './images';
+import { Image, PredictiveImage } from './images';
 import { BASE_URL, userHeaders } from './users';
 
 export interface Board {
@@ -13,6 +13,14 @@ export interface Board {
     error?: string;
 }
 
+export interface PredictiveBoard {
+    id: string;
+    name: string;
+    description: string;
+    number_of_columns: number;
+    images: PredictiveImage[];
+}
+
 export const getBoards = () => {
     const boards = fetch(`${BASE_URL}boards`, { headers: userHeaders }) // `localhostboards
         .then(response => response.json())
@@ -24,6 +32,15 @@ export const getBoards = () => {
 
 export const getBoard = (id: string) => {
     const board = fetch(`${BASE_URL}boards/${id}`, { headers: userHeaders }) // `localhostboards
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => console.error('Error fetching data: ', error));
+
+    return board;
+}
+
+export const getFirstPredictiveBoard = () => {
+    const board = fetch(`${BASE_URL}boards/first_predictive_board`, { headers: userHeaders }) // `localhostboards
         .then(response => response.json())
         .then(data => data)
         .catch(error => console.error('Error fetching data: ', error));
