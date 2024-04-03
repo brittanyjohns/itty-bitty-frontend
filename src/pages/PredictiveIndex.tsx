@@ -10,6 +10,7 @@ import {
   IonRefresher,
   IonRefresherContent,
   IonSearchbar,
+  IonText,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
@@ -19,7 +20,7 @@ import SelectImageGallery from "../components/SelectImageGallery";
 import { useHistory } from "react-router";
 import Tabs from "../components/Tabs";
 import { addCircleOutline } from "ionicons/icons";
-import { getFirstPredictiveBoard } from "../data/boards";
+import { getInitialImages } from "../data/boards";
 import PredictiveImageGallery from "../components/PredictiveImageGallery";
 
 const ImagesScreen: React.FC = () => {
@@ -28,7 +29,7 @@ const ImagesScreen: React.FC = () => {
   const [boardId, setBoardId] = useState("");
   const fetchFirstBoard = async () => {
     let imgs: PredictiveImage[] = [];
-    const board = await getFirstPredictiveBoard();
+    const board = await getInitialImages();
     setBoardId(board.id);
     console.log("setBoardId", board.id); // 'setBoardId', '1
     if (board.id) {
@@ -52,7 +53,8 @@ const ImagesScreen: React.FC = () => {
   }, []);
 
   const handleImageClick = (image: PredictiveImage) => {
-    history.push(`/predictive/${image.next_board_id}`);
+    console.log("PredictiveImage Clicked", image);
+    // history.push(`/images/${image.id}`);
   };
 
   const refresh = (e: CustomEvent) => {
@@ -83,13 +85,10 @@ const ImagesScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          {
-            <PredictiveImageGallery
-              predictiveImages={images}
-              onImageClick={handleImageClick}
-              boardId={boardId}
-            />
-          }
+          <IonText>
+            <h1>Image Gallery {images.length}</h1>
+          </IonText>
+          {<PredictiveImageGallery initialImages={images} />}
         </IonContent>
         <Tabs />
       </IonPage>
