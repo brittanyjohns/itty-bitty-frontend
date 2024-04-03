@@ -53,6 +53,12 @@ const menuLinks: MenuLink[] = [
     name: 'Settings',
     slug: 'settings',
     id: 10
+  },
+  {
+    endpoint: '/predictive',
+    name: 'Predictive',
+    slug: 'predictive',
+    id: 11
   }
 ];
 

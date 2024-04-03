@@ -1,15 +1,24 @@
-import { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonList, IonMenu, IonTitle, IonToolbar, useIonViewWillLeave, useIonViewWillEnter } from '@ionic/react';
-import { MenuLink, getMenu } from '../data/menu';
-import MenuListItem from './MainMenuListItem';
-import { useCurrentUser } from '../hooks/useCurrentUser';
+import { useEffect, useState } from "react";
+import {
+  IonContent,
+  IonHeader,
+  IonList,
+  IonMenu,
+  IonTitle,
+  IonToolbar,
+  useIonViewWillLeave,
+  useIonViewWillEnter,
+} from "@ionic/react";
+import { MenuLink, getMenu } from "../data/menu";
+import MenuListItem from "./MainMenuListItem";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 export const hideMenu = () => {
-  const menu = document.querySelector('ion-menu');
+  const menu = document.querySelector("ion-menu");
   if (menu) {
     menu.close();
   }
-}
+};
 
 function MainMenu() {
   const { currentUser } = useCurrentUser();
@@ -18,17 +27,24 @@ function MainMenu() {
 
   // Function to filter links based on the current user's status
   const filterList = (links: MenuLink[]) => {
-    const signedInLinks = ['sign-out', 'boards', 'images', 'menus', 'settings'];
-    const signedOutLinks = ['sign-in', 'sign-up'];
+    const signedInLinks = [
+      "sign-out",
+      "boards",
+      "images",
+      "menus",
+      "settings",
+      "predictive",
+    ];
+    const signedOutLinks = ["sign-in", "sign-up"];
 
-    return links.filter(link => {
+    return links.filter((link) => {
       if (currentUser) {
-        return signedInLinks.includes(link.slug ?? '');
+        return signedInLinks.includes(link.slug ?? "");
       } else {
-        return signedOutLinks.includes(link.slug ?? '');
+        return signedOutLinks.includes(link.slug ?? "");
       }
     });
-  }
+  };
 
   useIonViewWillEnter(() => {
     const links = getMenu();
@@ -55,8 +71,12 @@ function MainMenu() {
         </IonHeader>
         <IonContent className="ion-padding">
           <IonList>
-            {filteredLinks.map(menuLink => (
-              <MenuListItem key={menuLink.id} menuLink={menuLink} closeMenu={hideMenu} />
+            {filteredLinks.map((menuLink) => (
+              <MenuListItem
+                key={menuLink.id}
+                menuLink={menuLink}
+                closeMenu={hideMenu}
+              />
             ))}
           </IonList>
         </IonContent>
