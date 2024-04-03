@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   IonButton,
   IonButtons,
   IonContent,
   IonHeader,
   IonIcon,
+  IonInput,
+  IonItem,
   IonMenuButton,
   IonPage,
   IonRefresher,
@@ -17,18 +19,67 @@ import { PredictiveImage, getPredictiveImages } from "../data/images";
 import MainMenu from "../components/MainMenu";
 import { useHistory } from "react-router";
 import Tabs from "../components/Tabs";
-import { addCircleOutline } from "ionicons/icons";
+import {
+  addCircleOutline,
+  arrowBackCircleOutline,
+  playCircleOutline,
+  trashBinOutline,
+} from "ionicons/icons";
+import { TextToSpeech } from "@capacitor-community/text-to-speech";
+
 import { getInitialImages } from "../data/boards";
 import PredictiveImageGallery from "../components/PredictiveImageGallery";
+import { speak } from "../hoarder/TextToSpeech";
 
 const ImagesScreen: React.FC = () => {
   const [initialImages, setImages] = useState<PredictiveImage[]>([]);
   const history = useHistory();
   const [boardId, setBoardId] = useState("");
+  const inputRef = useRef<HTMLIonInputElement>(null);
+  const [showIcon, setShowIcon] = useState(false);
 
   const fetchFirstBoard = async () => {
     const imgs = await getInitialImages();
     setImages(imgs);
+  };
+
+  const handleImageSpeak = (image: PredictiveImage) => {
+    const audioSrc = image.audio;
+    const label = image.label;
+    if (inputRef.current) {
+      inputRef.current.value += ` ${label}`;
+    }
+    if (inputRef.current?.value) {
+      setShowIcon(true);
+    } else {
+      setShowIcon(false);
+    }
+
+    if (!audioSrc) {
+      speak(label);
+      return;
+    }
+    // setAudioList([...audioList, audioSrc as string]);
+    const audio = new Audio(audioSrc);
+    audio.play();
+  };
+
+  const speak = async (text: string) => {
+    await TextToSpeech.speak({
+      text: text,
+      lang: "en-US",
+      rate: 1.0,
+      pitch: 1.0,
+      volume: 1.0,
+      category: "ambient",
+    });
+  };
+
+  const clearInput = () => {
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+    setShowIcon(false);
   };
 
   useEffect(() => {
@@ -54,7 +105,44 @@ const ImagesScreen: React.FC = () => {
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
-              <IonMenuButton />
+              <IonButton routerLink="/boards">
+                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
+              </IonButton>
+            </IonButtons>
+            <IonItem slot="start" className="w-full">
+              <IonInput
+                placeholder="Predictive Images - BETA"
+                ref={inputRef}
+                readonly={true}
+                className="w-full text-xs text-justify"
+              ></IonInput>
+            </IonItem>
+            <IonButtons slot="start">
+              {showIcon && (
+                <IonButton
+                  size="small"
+                  onClick={() => speak(inputRef.current?.value as string)}
+                >
+                  <IonIcon
+                    slot="icon-only"
+                    className="tiny"
+                    icon={playCircleOutline}
+                    onClick={() => speak(inputRef.current?.value as string)}
+                  ></IonIcon>
+                </IonButton>
+              )}
+            </IonButtons>
+            <IonButtons slot="end">
+              {showIcon && (
+                <IonButton size="small" onClick={() => clearInput()}>
+                  <IonIcon
+                    slot="icon-only"
+                    className="tiny"
+                    icon={trashBinOutline}
+                    onClick={() => clearInput()}
+                  ></IonIcon>
+                </IonButton>
+              )}
             </IonButtons>
           </IonToolbar>
         </IonHeader>
@@ -65,7 +153,10 @@ const ImagesScreen: React.FC = () => {
           <IonText>
             <h1>Predictive Images - BETA {initialImages.length}</h1>
           </IonText>
-          <PredictiveImageGallery initialImages={initialImages} />
+          <PredictiveImageGallery
+            initialImages={initialImages}
+            onImageSpeak={handleImageSpeak}
+          />
         </IonContent>
         <Tabs />
       </IonPage>
