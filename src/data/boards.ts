@@ -39,7 +39,7 @@ export const getBoard = (id: string) => {
     return board;
 }
 
-export const getFirstPredictiveBoard = () => {
+export const getInitialImages = () => {
     const board = fetch(`${BASE_URL}boards/first_predictive_board`, { headers: userHeaders }) // `localhostboards
         .then(response => response.json())
         .then(data => data)

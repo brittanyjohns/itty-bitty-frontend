@@ -22,6 +22,7 @@ import { BASE_URL } from "./users";
     src: string;
     label: string;
     next_board_id: string;
+    nextImageIds: string[];
     next_words: string[]
     image_prompt?: string;
     audio?: string;
