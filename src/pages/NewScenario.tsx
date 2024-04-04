@@ -11,13 +11,22 @@ import {
 import NewScenarioForm from "../components/NewScenarioForm";
 
 const NewScenario: React.FC = (props: any) => {
+  const initialScenario: Scenario = {
+    name: "",
+    age_range: "0-3",
+    number_of_columns: 2,
+    number_of_images: 6,
+    token_limit: 0,
+  };
   const onSubmit = async (data: Scenario) => {
     const newScenario = await createScenario(data);
     if (newScenario.errors && newScenario.errors.length > 0) {
       console.error("Error creating scenario", newScenario.errors);
+      alert(`Error creating scenario: ${newScenario.errors.join(", ")}`);
     } else {
       console.log("Scenario created", newScenario);
-      props.history.push("/boards");
+      const boardId = newScenario.board_id;
+      props.history.push("/boards/" + boardId);
     }
   };
   return (
@@ -34,7 +43,7 @@ const NewScenario: React.FC = (props: any) => {
         <NewScenarioForm
           onSave={onSubmit}
           onCancel={() => props.history.push("/boards")}
-          scenario={{}}
+          scenario={initialScenario}
         />
       </IonContent>
     </IonPage>

@@ -69,6 +69,7 @@ const NewMenu: React.FC = (props: any) => {
     let result = await createMenu(formData);
     if (result?.error) {
       console.error("Error:", result.error);
+      alert(`Error creating menu: ${result.error}`);
       return result;
     } else {
       const boardId = result.boardId;

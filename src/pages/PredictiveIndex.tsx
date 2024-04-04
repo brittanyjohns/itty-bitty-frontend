@@ -30,6 +30,7 @@ import { TextToSpeech } from "@capacitor-community/text-to-speech";
 import { getInitialImages } from "../data/boards";
 import PredictiveImageGallery from "../components/PredictiveImageGallery";
 import { speak } from "../hoarder/TextToSpeech";
+import FloatingWordsBtn from "../components/FloatingWordsBtn";
 
 const ImagesScreen: React.FC = () => {
   const [initialImages, setImages] = useState<PredictiveImage[]>([]);
@@ -80,6 +81,7 @@ const ImagesScreen: React.FC = () => {
       inputRef.current.value = "";
     }
     setShowIcon(false);
+    fetchFirstBoard();
   };
 
   useEffect(() => {
@@ -109,12 +111,12 @@ const ImagesScreen: React.FC = () => {
                 <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
               </IonButton>
             </IonButtons>
-            <IonItem slot="start" className="w-full">
+            <IonItem slot="start" className="w-full" lines="none">
               <IonInput
                 placeholder="Predictive Images - BETA"
                 ref={inputRef}
                 readonly={true}
-                className="w-full text-xs text-justify"
+                className="w-full text-xs text-justify bg-inherit"
               ></IonInput>
             </IonItem>
             <IonButtons slot="start">
@@ -145,18 +147,19 @@ const ImagesScreen: React.FC = () => {
               )}
             </IonButtons>
           </IonToolbar>
+          <IonToolbar>
+            <IonTitle>Predictive Images</IonTitle>
+          </IonToolbar>
         </IonHeader>
-        <IonContent>
+        <IonContent className="ion-padding">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent />
           </IonRefresher>
-          <IonText>
-            <h1>Predictive Images - BETA {initialImages.length}</h1>
-          </IonText>
           <PredictiveImageGallery
             initialImages={initialImages}
             onImageSpeak={handleImageSpeak}
           />
+          <FloatingWordsBtn inputRef={inputRef} />
         </IonContent>
         <Tabs />
       </IonPage>

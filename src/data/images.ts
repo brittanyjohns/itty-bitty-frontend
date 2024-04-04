@@ -15,6 +15,7 @@ import { BASE_URL } from "./users";
     audio?: string;
     docs?: ImageDoc[];
     display_doc?: ImageDoc;
+    bg_color: string;
   }
 
   export interface PredictiveImage {
@@ -28,6 +29,7 @@ import { BASE_URL } from "./users";
     audio?: string;
     docs?: ImageDoc[];
     display_doc?: ImageDoc;
+    bg_color: string;
   }
 
   export interface PredictiveImageGalleryProps {

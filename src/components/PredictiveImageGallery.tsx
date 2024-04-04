@@ -19,7 +19,17 @@ const PredictiveImageGallery: React.FC<PredictiveImageGalleryProps> = ({
   const handleImageClick = async (image: PredictiveImage) => {
     handleImageSpeak(image);
     const newImages = await getPredictiveImages(image.id);
-    setCurrentImages(newImages);
+    const allImages = [...newImages, ...currentImages];
+    const uniqueImageIds = new Set(allImages.map((image) => image.id));
+    const uniqueImages = Array.from(uniqueImageIds).map((id) =>
+      allImages.find((image) => image.id === id)
+    );
+
+    const imagesToSet = uniqueImages.filter(
+      (image) => image !== undefined
+    ) as PredictiveImage[];
+
+    setCurrentImages(imagesToSet);
   };
 
   useEffect(() => {
@@ -27,12 +37,14 @@ const PredictiveImageGallery: React.FC<PredictiveImageGalleryProps> = ({
   }, [initialImages]);
 
   return (
-    <div className="grid grid-cols-4 gap-1">
+    <div className="grid grid-cols-4 gap-2">
       {currentImages.map((image, index) => (
         <div
-          key={image.id}
+          key={`${image.id}-${index}`}
           onClick={() => handleImageClick(image)}
-          className="cursor-pointer bg-white rounded-lg shadow-md p-1"
+          className={`cursor-pointer ${
+            image.bg_color || "bg-white"
+          } rounded-lg shadow-md p-1`}
         >
           <ImageComponent label={image.label} src={image.src} />
         </div>
