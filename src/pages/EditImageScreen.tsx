@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Image, getImage, updateImage } from '../data/images';
+import { useState } from "react";
+import { Image, getImage, updateImage } from "../data/images";
 import {
   IonButton,
   IonButtons,
@@ -12,30 +12,35 @@ import {
   IonTitle,
   IonToolbar,
   useIonViewWillEnter,
-} from '@ionic/react';
+} from "@ionic/react";
 
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useParams } from 'react-router';
-import { arrowBackCircleOutline } from 'ionicons/icons';
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useParams } from "react-router";
+import { arrowBackCircleOutline } from "ionicons/icons";
 
 const EditImageScreen: React.FC = (props: any) => {
   const params = useParams<{ id: string }>();
-  const [image, setImage] = useState<Image>({ id: '', src: '', label: '' });
+  const [image, setImage] = useState<Image>({
+    id: "",
+    src: "",
+    label: "",
+    bg_color: "",
+  });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Image>()
+  } = useForm<Image>();
   const onSubmit: SubmitHandler<Image> = (data) => {
     const formData = new FormData();
-    formData.append('image[label]', data.label);
-    formData.append('image[src]', image.src);
-    formData.append('image[id]', image.id);
+    formData.append("image[label]", data.label);
+    formData.append("image[src]", image.src);
+    formData.append("image[id]", image.id);
 
     updateImage(formData);
-    props.history.push('/home');
-  }
+    props.history.push("/home");
+  };
 
   useIonViewWillEnter(() => {
     fetchImage().then((img) => {
@@ -44,19 +49,21 @@ const EditImageScreen: React.FC = (props: any) => {
   });
 
   const fetchImage = async () => {
-    console.log('fetchImage');
+    console.log("fetchImage");
     const img = await getImage(params.id);
-    console.log('img', img);
+    console.log("img", img);
     setImage(img);
     return img;
-  }
+  };
 
   return (
     <IonPage id="new-image-page">
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton routerLink={`/images/${image.id}`}> {/* <IonButton routerLink="/home"> */}
+            <IonButton routerLink={`/images/${image.id}`}>
+              {" "}
+              {/* <IonButton routerLink="/home"> */}
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
             <IonTitle>Edit Image</IonTitle>
@@ -70,8 +77,11 @@ const EditImageScreen: React.FC = (props: any) => {
           <form className="ion-padding" onSubmit={handleSubmit(onSubmit)}>
             <IonInput
               value={image.label}
-              aria-label='label'
-              placeholder="Enter new image label" defaultValue="" {...register("label", { required: true })} />
+              aria-label="label"
+              placeholder="Enter new image label"
+              defaultValue=""
+              {...register("label", { required: true })}
+            />
             <IonButton className="ion-margin-top" type="submit" expand="block">
               Save
             </IonButton>
@@ -80,6 +90,6 @@ const EditImageScreen: React.FC = (props: any) => {
       </IonContent>
     </IonPage>
   );
-}
+};
 
 export default EditImageScreen;
