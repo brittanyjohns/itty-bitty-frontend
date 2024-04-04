@@ -40,6 +40,7 @@ import "./ViewBoard.css";
 import ImageGallery from "../components/ImageGallery";
 import React from "react";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
+import FloatingWordsBtn from "../components/FloatingWordsBtn";
 
 const ViewBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();
@@ -202,6 +203,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
             />
           </div>
         )}
+        <FloatingWordsBtn inputRef={inputRef} />
       </IonContent>
     </IonPage>
   );
