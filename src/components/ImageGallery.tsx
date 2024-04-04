@@ -47,7 +47,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     gridTarget.style.width = adjustedWidth;
     gridTarget.style.display = "grid";
 
-    if (board?.number_of_columns && imagesCount > 4) {
+    if (board?.number_of_columns) {
       gridTarget.style.gridTemplateColumns = `repeat(${board.number_of_columns}, 1fr)`;
       return;
     }
@@ -61,7 +61,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
 
   // Call resizeGrid function inside useEffect hook to adjust the grid on mount and when images state changes or viewport size changes
   useEffect(() => {
-    // resizeGrid();
+    resizeGrid();
     window.addEventListener("resize", resizeGrid);
     return () => {
       window.removeEventListener("resize", resizeGrid);
@@ -114,7 +114,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     }
     longPressTimer.current = setTimeout(() => {
       setShowActionList(true); // Show the action list on long press
-      setLeaving(true);
+      // setLeaving(true);
     }, 500); // 500 milliseconds threshold for long press
   };
 
@@ -170,18 +170,8 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     setImageId(imageId);
   };
 
-  // Resize grid on mount and when images state changes
-  // useEffect(() => {
-  //     resizeGrid();
-  //     // Add window resize event listener to adjust grid on viewport change
-  //     window.addEventListener('resize', resizeGrid);
-  //     return () => window.removeEventListener('resize', resizeGrid);
-  // }, [images]);
-
   return (
     <div className="gallery-container" ref={galleryRef}>
-      <FloatingWordsBtn inputRef={inputRef} />
-
       <div className="grid grid-cols-4 gap-2" ref={gridRef}>
         {images.map((image, i) => (
           <div
