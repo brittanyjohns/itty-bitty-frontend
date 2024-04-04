@@ -180,9 +180,9 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
 
   return (
     <div className="gallery-container" ref={galleryRef}>
-      <FloatingWordsBtn />
+      <FloatingWordsBtn inputRef={inputRef} />
 
-      <div className="grid grid-cols-4 gap-1" ref={gridRef}>
+      <div className="grid grid-cols-4 gap-2" ref={gridRef}>
         {images.map((image, i) => (
           <div
             className="cursor-pointer bg-white rounded-lg shadow-md p-1"
