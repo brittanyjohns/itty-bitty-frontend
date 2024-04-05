@@ -298,7 +298,7 @@ const SelectGalleryScreen: React.FC = () => {
         </div>
 
         <div className="mt-6 py-3 px-1 hidden text-center" ref={uploadForm}>
-          <IonText className="text-lg">Upload your own board</IonText>
+          <IonText className="text-lg">Upload your own image</IonText>
           {board && (
             <FileUploadForm
               board={board}

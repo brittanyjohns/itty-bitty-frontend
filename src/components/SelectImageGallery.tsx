@@ -12,17 +12,20 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
   const [remainingImages, setRemainingImages] = useState<Image[]>(images);
   const [page, setPage] = useState(1);
   // const [searchInput, setSearchInput] = useState('');
-
+  const fetchImages = async () => {
+    if (searchInput.length > 1) {
+      setPage(1);
+    }
+    const imgs = await onLoadMoreImages(page, searchInput);
+    setRemainingImages(imgs);
+  };
   useEffect(() => {
-    const fetchImages = async () => {
-      if (searchInput.length > 1) {
-        setPage(1);
-      }
-      const imgs = await onLoadMoreImages(page, searchInput);
-      setRemainingImages(imgs);
-    };
     fetchImages();
   }, [page, searchInput]);
+
+  useEffect(() => {
+    setRemainingImages(images);
+  }, [images]);
 
   const handleOnImageClick = (image: Image) => {
     onImageClick(image);
@@ -49,26 +52,27 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
           className="my-auto mx-auto grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-1"
           key={remainingImages.length}
         >
-          {remainingImages.map((image, i) => (
-            <div
-              className="flex relative w-full hover:cursor-pointer text-center min-h-24 p-1 bg-white rounded-lg"
-              onClick={() => handleOnImageClick(image)}
-              key={image.id}
-              id={`image_${image.id}`}
-            >
-              <IonImg
-                src={image.src}
-                alt={image.label}
-                className="absolute object-contain w-full h-full top-0 left-0"
-              />
-              <div className="font-medium text-xs md:text-sm lg:text-md bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black mt-2">
-                {image.label}
-                <audio>
-                  <source src={image.audio} type="audio/aac" />
-                </audio>
+          {remainingImages &&
+            remainingImages.map((image, i) => (
+              <div
+                className="flex relative w-full hover:cursor-pointer text-center min-h-24 p-1 bg-white rounded-md"
+                onClick={() => handleOnImageClick(image)}
+                key={image.id}
+                id={`image_${image.id}`}
+              >
+                <IonImg
+                  src={image.src}
+                  alt={image.label}
+                  className="absolute object-contain w-full h-full top-0 left-0"
+                />
+                <div className="font-medium text-xs md:text-sm lg:text-md bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black mt-2">
+                  {image.label}
+                  <audio>
+                    <source src={image.audio} type="audio/aac" />
+                  </audio>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
           {remainingImages.length < 1 && (
             <p className="col-span-3 text-center">No images found</p>
           )}

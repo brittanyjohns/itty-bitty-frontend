@@ -1,6 +1,7 @@
 // ActionList.tsx
-import React from 'react';
-import { IonActionSheet } from '@ionic/react';
+import React from "react";
+import { IonActionSheet } from "@ionic/react";
+import { Image, ImageGalleryProps } from "../data/images";
 
 interface ActionListProps {
   isOpen: boolean;
@@ -8,24 +9,33 @@ interface ActionListProps {
   onActionSelected: (action: string) => void;
 }
 
-const ActionList: React.FC<ActionListProps> = ({ isOpen, onClose, onActionSelected }) => {
+const ActionList: React.FC<ActionListProps> = ({
+  isOpen,
+  onClose,
+  onActionSelected,
+}) => {
+  const handleActionSelected = (action: string) => {
+    console.log("Action selected: ", action);
+    onActionSelected(action);
+  };
+
   return (
     <IonActionSheet
       isOpen={isOpen}
       onDidDismiss={onClose}
       buttons={[
         {
-          text: 'Delete',
-          role: 'destructive',
-          handler: () => onActionSelected('delete'),
+          text: "Delete",
+          role: "destructive",
+          handler: () => handleActionSelected("delete"),
         },
         {
-          text: 'Edit',
-          handler: () => onActionSelected('edit'),
+          text: "Edit",
+          handler: () => handleActionSelected("edit"),
         },
         {
-          text: 'Cancel',
-          role: 'cancel',
+          text: "Cancel",
+          role: "cancel",
         },
       ]}
     />
@@ -33,7 +43,6 @@ const ActionList: React.FC<ActionListProps> = ({ isOpen, onClose, onActionSelect
 };
 
 export default ActionList;
-
 
 // const [showActionList, setShowActionList] = useState<boolean>(false);
 // const longPressTimer = useRef<NodeJS.Timeout | null>(null);

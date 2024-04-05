@@ -7,7 +7,7 @@ interface ImageGalleryItemProps {
 
 const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({ image }) => {
   return (
-    <div className="cursor-pointer relative bg-white rounded-lg shadow-md">
+    <div className="cursor-pointer relative bg-white rounded-md shadow-sm">
       {/* Use IonImg for built-in lazy loading */}
       <IonImg
         src={image.src}

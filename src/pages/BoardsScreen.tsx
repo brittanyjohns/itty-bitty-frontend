@@ -15,15 +15,22 @@ import {
   IonTitle,
   IonToolbar,
   useIonViewWillEnter,
-} from '@ionic/react';
-import BoardList from '../components/BoardList';
-import MainMenu, { hideMenu } from '../components/MainMenu';
-import { useCurrentUser } from '../hooks/useCurrentUser';
-import Tabs from '../components/Tabs';
-import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
-import { getBoards } from '../data/boards';
-import { addCircleOutline } from 'ionicons/icons';
+} from "@ionic/react";
+import BoardList from "../components/BoardList";
+import MainMenu, { hideMenu } from "../components/MainMenu";
+import { useCurrentUser } from "../hooks/useCurrentUser";
+import Tabs from "../components/Tabs";
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router";
+import { getBoards } from "../data/boards";
+import {
+  addCircleOutline,
+  albumsOutline,
+  gridOutline,
+  imagesOutline,
+  peopleCircleOutline,
+  walkOutline,
+} from "ionicons/icons";
 const BoardsScreen: React.FC = () => {
   const { currentUser, setCurrentUser } = useCurrentUser();
   const history = useHistory();
@@ -32,21 +39,22 @@ const BoardsScreen: React.FC = () => {
   const [userBoards, setUserBoards] = useState([]);
   const [scenarioBoards, setScenarioBoards] = useState([]);
   const [sharedBoards, setSharedBoards] = useState([]);
-  const [segmentType, setSegmentType] = useState('user');
+  const [segmentType, setSegmentType] = useState("user");
+  const [pageTitle, setPageTitle] = useState("Your Boards");
 
   const fetchBoards = async () => {
     const fetchedBoards = await getBoards();
     if (!fetchedBoards) {
-      console.error('Error fetching boards');
+      console.error("Error fetching boards");
       return;
     }
-    setUserBoards(fetchedBoards['boards']);
-    setScenarioBoards(fetchedBoards['scenarios']);
-    setPresetBoards(fetchedBoards['predefined_boards']);
-    setSharedBoards(fetchedBoards['shared_boards']);
-    console.log('Fetched boards', fetchedBoards);
-    setBoards(fetchedBoards['boards']);
-  }
+    setUserBoards(fetchedBoards["boards"]);
+    setScenarioBoards(fetchedBoards["scenarios"]);
+    setPresetBoards(fetchedBoards["predefined_boards"]);
+    setSharedBoards(fetchedBoards["shared_boards"]);
+    console.log("Fetched boards", fetchedBoards);
+    setBoards(fetchedBoards["boards"]);
+  };
 
   useEffect(() => {
     fetchBoards();
@@ -60,27 +68,30 @@ const BoardsScreen: React.FC = () => {
 
   const handleSegmentChange = (e: CustomEvent) => {
     setSegmentType(e.detail.value);
-  }
+  };
 
   useIonViewWillEnter(() => {
     hideMenu();
   });
 
   useEffect(() => {
-    if (segmentType === 'user') {
+    if (segmentType === "user") {
       setBoards(userBoards);
+      setPageTitle("Your Boards");
     }
-    if (segmentType === 'preset') {
+    if (segmentType === "preset") {
       setBoards(presetBoards);
+      setPageTitle("Preset Boards");
     }
-    if (segmentType === 'scenario') {
+    if (segmentType === "scenario") {
       setBoards(scenarioBoards);
+      setPageTitle("Scenario Boards");
     }
-    if (segmentType === 'shared') {
+    if (segmentType === "shared") {
       setBoards(sharedBoards);
+      setPageTitle("Shared Boards");
     }
-  } , [segmentType]);
-
+  }, [segmentType]);
 
   return (
     <>
@@ -93,36 +104,51 @@ const BoardsScreen: React.FC = () => {
             </IonButtons>
             <IonTitle>Boards</IonTitle>
             <IonButtons slot="end">
-              <IonButton routerLink="/boards/new" >
+              <IonButton routerLink="/boards/new">
                 <IonIcon icon={addCircleOutline} />
               </IonButton>
             </IonButtons>
           </IonToolbar>
           <IonToolbar>
-            <IonSegment value={segmentType} onIonChange={handleSegmentChange}>
+            <IonSegment
+              value={segmentType}
+              onIonChange={handleSegmentChange}
+              className="w-full bg-inherit"
+            >
               <IonSegmentButton value="user">
-                <IonLabel>My Boards</IonLabel>
+                <IonLabel className="text-xl">
+                  <IonIcon icon={albumsOutline} />
+                </IonLabel>
               </IonSegmentButton>
               <IonSegmentButton value="preset">
-                <IonLabel>Presets</IonLabel>
+                <IonLabel className="text-xl">
+                  <IonIcon icon={gridOutline} />
+                </IonLabel>
               </IonSegmentButton>
               <IonSegmentButton value="scenario">
-                <IonLabel>Scenarios</IonLabel>
+                <IonLabel className="text-2xl mt-3 mb-2">
+                  <IonIcon icon={walkOutline} />
+                </IonLabel>
               </IonSegmentButton>
               <IonSegmentButton value="shared">
-                <IonLabel>Shared</IonLabel>
+                <IonLabel className="text-xl">
+                  <IonIcon
+                    icon={peopleCircleOutline}
+                    className="text-2xl mt-3 mb-2"
+                  />
+                </IonLabel>
               </IonSegmentButton>
             </IonSegment>
           </IonToolbar>
         </IonHeader>
-        <IonContent className='ion-padding'>
+        <IonContent className="ion-padding">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-            <BoardList boards={boards} />
+          <h2 className="mb-3 text-2xl font-bold">{pageTitle}</h2>
+          <BoardList boards={boards} />
         </IonContent>
         <Tabs />
-
       </IonPage>
     </>
   );

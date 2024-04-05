@@ -7,6 +7,7 @@ import ActionList from "./ActionList";
 import { removeImageFromBoard } from "../data/boards";
 import ImageGalleryItem from "./ImageGalleryItem";
 import FloatingWordsBtn from "./FloatingWordsBtn";
+import { set } from "react-hook-form";
 
 const ImageGallery: React.FC<ImageGalleryProps> = ({
   images,
@@ -16,7 +17,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
 }) => {
   const gridRef = useRef(null); // Ref for the grid container
   const [audioList, setAudioList] = useState<string[]>([]);
-  const [imageId, setImageId] = useState<string>("");
+  // const [imageId, setImageId] = useState<string>("");
   const [leaving, setLeaving] = useState<boolean>(false);
   const history = useHistory();
   const [showActionList, setShowActionList] = useState<boolean>(false);
@@ -113,9 +114,10 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
       return;
     }
     longPressTimer.current = setTimeout(() => {
+      console.log("Long press detected");
       setShowActionList(true); // Show the action list on long press
-      // setLeaving(true);
-    }, 500); // 500 milliseconds threshold for long press
+      setLeaving(true);
+    }, 1000); // 500 milliseconds threshold for long press
   };
 
   const handleButtonRelease = (
@@ -124,17 +126,23 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     if (longPressTimer.current) {
       clearTimeout(longPressTimer.current); // Cancel the timer if the button is released before the threshold
       longPressTimer.current = null;
+      setLeaving(false);
+      setShowActionList(false);
     }
   };
 
-  const handleActionSelected = (action: string) => {
+  const handleActionSelected = (action: string, image: Image) => {
     console.log("Action Selected", action);
+    console.log("Image", image);
+    const imageId = image.id;
     if (!imageId) {
+      console.error("Image ID not found");
       return;
     }
 
     if (action === "delete") {
       if (!board?.id) {
+        console.error("Board ID is missing");
         return;
       }
       async function removeImage() {
@@ -154,7 +162,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     } else if (action === "edit") {
       history.push(`/images/${imageId}`);
     }
-    setShowActionList(false);
+    onActionListClose();
   };
 
   const onActionListClose = () => {
@@ -162,37 +170,37 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     setLeaving(false);
   };
 
-  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    const imageId = (event.target as HTMLDivElement).id;
-    if (!imageId) {
-      return;
-    }
-    setImageId(imageId);
-  };
+  // const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+  //   const imageId = (event.target as HTMLDivElement).id;
+  //   if (!imageId) {
+  //     return;
+  //   }
+  //   setImageId(imageId);
+  // };
 
   return (
-    <div className="gallery-container" ref={galleryRef}>
+    <div className="gallery-container mt-3" ref={galleryRef}>
       <div className="grid grid-cols-4 gap-2" ref={gridRef}>
         {images.map((image, i) => (
           <div
-            className="cursor-pointer bg-white rounded-lg shadow-md p-1"
+            className="cursor-pointer bg-white rounded-md shadow-md p-1"
             onClick={() => handleImageClick(image)}
             key={image.id}
-            onTouchStart={(e) => handleButtonPress(e)}
-            onPointerDown={(e) => handlePointerDown(e)}
+            // onTouchStart={(e) => handleButtonPress(e)}
+            onPointerDown={(e) => handleButtonPress(e)}
             onTouchEnd={(e) => handleButtonRelease(e)}
             onMouseDown={(e) => handleButtonPress(e)}
             onMouseUp={handleButtonRelease}
             onMouseLeave={handleButtonRelease}
           >
-            <ImageGalleryItem key={image.id} image={image} />
+            <ImageGalleryItem key={`${image.id}-${i}`} image={image} />
 
             {!board?.predifined && (
               <ActionList
                 isOpen={showActionList}
                 onClose={() => onActionListClose()}
                 onActionSelected={(action: string) =>
-                  handleActionSelected(action)
+                  handleActionSelected(action, image)
                 }
               />
             )}
