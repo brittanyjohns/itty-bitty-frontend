@@ -67,17 +67,14 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
       setShowEdit(result);
 
       setBoard(board);
-      if (imgCount < 2 && board?.parent_type === "Menu") {
-        setShowLoading(true);
-        setTimeout(() => {
-          window.location.reload();
-        }, 4000);
-      }
+      // if (imgCount < 2 && board?.parent_type === "Menu") {
+      //   setShowLoading(true);
+      //   setTimeout(() => {
+      //     window.location.reload();
+      //   }, 4000);
+      // }
 
-      if (
-        board?.status === "pending" &&
-        board?.parent_type === "OpenaiPrompt"
-      ) {
+      if (board?.status === "pending") {
         setShowLoading(true);
         setTimeout(() => {
           window.location.reload();
@@ -181,7 +178,6 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
           message="Please wait while we create your board..."
           isOpen={showLoading}
         />
-
         {board && board.images && board.images.length > 0 && (
           <ImageGallery
             images={board.images}
@@ -198,12 +194,12 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
         {board?.parent_type === "Menu" && imageCount < 1 && (
           <div className="text-center pt-32">
             <IonLoading
-              message="Please wait while we create your board..."
+              message="Please wait while we load your board..."
               isOpen={showLoading}
             />
           </div>
         )}
-        <FloatingWordsBtn inputRef={inputRef} />
+        <FloatingWordsBtn inputRef={inputRef} words={board?.floating_words} />
       </IonContent>
     </IonPage>
   );

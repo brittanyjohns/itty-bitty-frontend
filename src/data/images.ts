@@ -139,6 +139,11 @@ export async function getMoreImages(page: number, query: string): Promise<Image[
   return images;
 }
 
+export async function getUserImages(): Promise<Image[]> {
+  const response = await fetch(`${BASE_URL}images/user_images`, { headers: userHeaders });
+  const images: Image[] = await response.json();
+  return images;
+}
 export async function getPredictiveImages(boardId: string): Promise<PredictiveImage[]> {
   console.log('getPredictiveImages boardId', boardId);
   if (!boardId) {

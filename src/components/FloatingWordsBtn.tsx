@@ -22,8 +22,9 @@ import { TextToSpeech } from "@capacitor-community/text-to-speech";
 import "./main.css";
 interface FloatingWordsBtnProps {
   inputRef: React.RefObject<HTMLIonInputElement>;
+  words?: string[];
 }
-function FloatingWordsBtn({ inputRef }: FloatingWordsBtnProps) {
+function FloatingWordsBtn({ inputRef, words }: FloatingWordsBtnProps) {
   const say = async (text: string) => {
     console.log("Saying:", text);
     if (inputRef.current) {
@@ -46,36 +47,15 @@ function FloatingWordsBtn({ inputRef }: FloatingWordsBtnProps) {
         <IonIcon icon={chevronUpCircle}></IonIcon>
       </IonFabButton>
       <IonFabList side="top">
-        <IonFabButton
-          onClick={() => say("please")}
-          className="custom-fab-button"
-        >
-          <IonLabel className="text-xs">Please</IonLabel>
-        </IonFabButton>
-        <IonFabButton
-          onClick={() => say("thank you")}
-          className="custom-fab-button"
-        >
-          <IonLabel className="text-xs">Thank you</IonLabel>
-        </IonFabButton>
-        <IonFabButton
-          onClick={() => say("hello")}
-          className="custom-fab-button"
-        >
-          <IonLabel className="text-xs">Hello</IonLabel>
-        </IonFabButton>
-        <IonFabButton
-          onClick={() => say("goodbye")}
-          className="custom-fab-button"
-        >
-          <IonLabel className="text-xs">Goodbye</IonLabel>
-        </IonFabButton>
-        <IonFabButton onClick={() => say("yes")} className="custom-fab-button">
-          <IonLabel className="text-xs">Yes</IonLabel>
-        </IonFabButton>
-        <IonFabButton onClick={() => say("no")} className="custom-fab-button">
-          <IonLabel className="text-xs">No</IonLabel>
-        </IonFabButton>
+        {words?.map((word, i) => (
+          <IonFabButton
+            key={`${word}-${i}`}
+            onClick={() => say(word)}
+            className="custom-fab-button"
+          >
+            <IonLabel className="mx-2 text-xs">{word}</IonLabel>
+          </IonFabButton>
+        ))}
       </IonFabList>
     </IonFab>
   );

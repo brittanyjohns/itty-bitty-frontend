@@ -11,6 +11,8 @@ export interface Board {
     number_of_columns: number;
     images?: Image[];
     error?: string;
+    floating_words?: string[];
+    voice?: string;
 }
 
 export interface PredictiveBoard {

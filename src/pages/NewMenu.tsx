@@ -9,6 +9,7 @@ import {
   IonIcon,
   IonInput,
   IonItem,
+  IonLoading,
   IonPage,
   IonTitle,
   IonToolbar,
@@ -16,6 +17,9 @@ import {
 import { arrowBackCircleOutline } from "ionicons/icons";
 import { useState } from "react";
 import { useCurrentUser } from "../hooks/useCurrentUser";
+import Tabs from "../components/Tabs";
+import { set } from "react-hook-form";
+
 type NewMenu = {
   name: string;
   file: File;
@@ -27,7 +31,7 @@ const NewMenu: React.FC = (props: any) => {
     file: new File([""], "filename"),
     description: "",
   });
-  const [shouldDisable, setShouldDisable] = useState<boolean>(true);
+  const [showLoading, setShowLoading] = useState<boolean>(false);
 
   const { currentUser, setCurrentUser } = useCurrentUser();
 
@@ -44,6 +48,19 @@ const NewMenu: React.FC = (props: any) => {
 
   const uploadPhoto = (fileSumbitEvent: React.FormEvent<Element>) => {
     fileSumbitEvent.preventDefault();
+
+    if (!menu.file.size || menu.file.size === 0) {
+      alert("Please select a file to upload");
+      return;
+    }
+    if (!menu.name) {
+      alert("Please enter a name for the menu");
+      return;
+    }
+    if (!menu.description) {
+      alert("Something went wrong. Please try a different image.");
+      return;
+    }
     console.log(menu);
     const data = new FormData();
     data.append("menu[name]", menu.name);
@@ -52,7 +69,6 @@ const NewMenu: React.FC = (props: any) => {
     if (file) {
       data.append("menu[docs][image]", file);
     }
-
     saveMenu(data);
     // props.history.push('/home');
   };
@@ -86,18 +102,20 @@ const NewMenu: React.FC = (props: any) => {
     let description = "";
 
     event.preventDefault();
+    console.log("File: ", event.target.files[0]);
     let file = event.target.files[0];
     // register("file", { value: file, required: true });
     let reader = new FileReader();
 
     reader.onload = (event: any) => {
+      setShowLoading(true);
+
       Tesseract.recognize(event.target.result, "eng", {
         logger: (m) => console.log(m),
       }).then(({ data: { text } }) => {
-        console.log("Text: ", text);
         description = text;
         setMenus({ ...menu, file: file, description: description });
-        setShouldDisable(false);
+        setShowLoading(false);
       });
     };
     reader.readAsArrayBuffer(file);
@@ -117,14 +135,18 @@ const NewMenu: React.FC = (props: any) => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen scrollY={true}>
-        <>
+      <IonContent fullscreen scrollY={false}>
+        <IonLoading
+          message="Please wait while we analyze your menu..."
+          isOpen={showLoading}
+        />
+        <div className="ion-padding">
           <form
             className="ion-padding"
             onSubmit={uploadPhoto}
             encType="multipart/form-data"
           >
-            <IonItem>
+            <IonItem lines="none" className="ion-margin-bottom">
               <IonInput
                 label="Name"
                 placeholder="Enter new menu name"
@@ -133,7 +155,7 @@ const NewMenu: React.FC = (props: any) => {
               ></IonInput>
             </IonItem>
 
-            <IonItem>
+            <IonItem lines="none" className="ion-margin-bottom">
               <input
                 className="bg-inherit w-full p-4 border rounded-md"
                 type="file"
@@ -141,17 +163,13 @@ const NewMenu: React.FC = (props: any) => {
               />
             </IonItem>
 
-            <IonButton
-              className="ion-margin-top"
-              type="submit"
-              expand="block"
-              disabled={shouldDisable}
-            >
+            <IonButton className="ion-margin-top" type="submit" expand="block">
               Create
             </IonButton>
           </form>
-          <IonButton onClick={() => console.log(menu)}>Log</IonButton>
-        </>
+          <IonButton onClick={() => console.log(menu)}>Log Menu</IonButton>
+        </div>
+        <Tabs />
       </IonContent>
     </IonPage>
   );
