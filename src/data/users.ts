@@ -18,13 +18,28 @@ export interface NewUser {
 }
 export interface User {
     id?: number;
-    email: string;
-    password: string;
+    email?: string;
+    password?: string;
     name?: string;
     tokens?: number;
     role?: string;
+    settings?: UserSetting;
     created_at?: string;
     updated_at?: string;
+    errors?: string[];
+}
+export interface VoiceSetting {
+    name: string;
+    language: string;
+    speed: number;
+    pitch: number;
+}
+
+export interface UserSetting {
+    id?: number;
+    name?: string;
+    voice: VoiceSetting;
+    errors?: string[];
 }
 export const signIn = (user: User) => {
     const response = fetch(`${BASE_URL}v1/login`, {
@@ -74,20 +89,6 @@ export const isUserSignedIn = () => {
     return token != null;
 }
 
-// export const getCurrentUser = () => {
-//     const response = fetch(`${BASE_URL}v1/users/current`, {
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'Authorization': `Bearer ${localStorage.getItem('token')}`
-//         },
-//     })
-//         .then(response => response.json())
-//         .then(data => data)
-//         .catch(error => console.error('Error fetching data: ', error));
-//     console.log('Current User', response);
-//     return response;
-// }
-
 export const getCurrentUser = async () => {
     try {
         const response = await fetch(`${BASE_URL}v1/users/current`, {
@@ -108,4 +109,31 @@ export const getCurrentUser = async () => {
         console.error('Error fetching data: ', error);
         return null;
     }
+}
+
+export const updateUserSettings = (formData: FormData, userId?: string) => {
+    console.log('updateUserSettings', formData);
+    console.log('userId', userId);
+
+  const endpoint = `${BASE_URL}users/${userId}/update_settings`;
+
+  const userSetting = fetch(endpoint, {
+      headers: userHeaders,
+      method: 'PUT',
+      body: JSON.stringify(formData),
+    })
+    .then((response) => response.json())
+      .then((result) => {
+        if (result.error) {
+          console.error('Error:', result.error);
+          return result;
+        } else {
+          return result;
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        return error;
+      });
+  return userSetting;
 }
