@@ -5,6 +5,7 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonImg,
   IonItem,
   IonLabel,
@@ -23,6 +24,12 @@ import { markAsCurrent } from "../data/docs"; // Adjust imports based on actual 
 import BoardDropdown from "../components/BoardDropdown";
 import FileUploadForm from "../components/FileUploadForm";
 import { useCurrentUser } from "../hooks/useCurrentUser";
+import {
+  cloudUploadOutline,
+  gridOutline,
+  refreshCircleOutline,
+} from "ionicons/icons";
+import { set } from "react-hook-form";
 
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -34,7 +41,7 @@ const ViewImageScreen: React.FC = () => {
   const uploadForm = useRef<HTMLDivElement>(null);
   const generateForm = useRef<HTMLDivElement>(null);
   const imageGridWrapper = useRef<HTMLDivElement>(null);
-
+  const [pageTitle, setPageTitle] = useState("");
   const { currentUser, setCurrentUser } = useCurrentUser();
 
   const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
@@ -73,13 +80,17 @@ const ViewImageScreen: React.FC = () => {
       uploadForm.current?.classList.add("hidden");
       generateForm.current?.classList.remove("hidden");
       imageGridWrapper.current?.classList.add("hidden");
+      setPageTitle("Generate an Image");
     }
     if (segmentType === "upload") {
+      setPageTitle("Upload an Image");
       uploadForm.current?.classList.remove("hidden");
       generateForm.current?.classList.add("hidden");
       imageGridWrapper.current?.classList.add("hidden");
     }
     if (segmentType === "gallery") {
+      const label = image?.label ?? "";
+      setPageTitle(`Images for ${label}`);
       uploadForm.current?.classList.add("hidden");
       generateForm.current?.classList.add("hidden");
       imageGridWrapper.current?.classList.remove("hidden");
@@ -132,22 +143,26 @@ const ViewImageScreen: React.FC = () => {
         <IonToolbar>
           <IonSegment value={segmentType} onIonChange={handleSegmentChange}>
             <IonSegmentButton value="gallery">
-              <IonLabel>Gallery</IonLabel>
+              <IonLabel className="text-xl">
+                <IonIcon icon={gridOutline} />
+              </IonLabel>
             </IonSegmentButton>
             <IonSegmentButton value="upload">
-              <IonLabel>Upload</IonLabel>
+              <IonLabel className="text-xl">
+                <IonIcon icon={cloudUploadOutline} />
+              </IonLabel>
             </IonSegmentButton>
             <IonSegmentButton value="generate">
-              <IonLabel>Generate</IonLabel>
+              <IonLabel className="text-xl">
+                <IonIcon icon={refreshCircleOutline} />
+              </IonLabel>
             </IonSegmentButton>
           </IonSegment>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding" scrollY={true}>
         <div className="ion-justify-content-center ion-align-items-center ion-text-center pt-1">
-          <IonText className="font-bold text-2xl">
-            {image && image.label}
-          </IonText>
+          <IonText className="font-bold text-2xl">{pageTitle}</IonText>
           <div className="mt-2">
             {currentImage && image && (
               <IonImg
@@ -211,11 +226,11 @@ const ViewImageScreen: React.FC = () => {
           </IonList>
         </div>
 
-        <div className="ion-padding hidden" ref={imageGridWrapper}>
+        <div className="hidden text-center" ref={imageGridWrapper}>
           {image && image.docs && image.docs.length > 0 && (
             <div className="ion-padding">
-              <IonLabel className="font-sans text-sm">
-                Click on a different to display for this word
+              <IonLabel className="font-sans text-md">
+                Click an image to display it for the word: "{image.label}"
               </IonLabel>
               <div className="grid grid-cols-3 gap-4 mt-3" ref={imageGrid}>
                 {image?.docs &&
@@ -229,6 +244,7 @@ const ViewImageScreen: React.FC = () => {
                         src={doc.src}
                         alt={doc.label}
                         onClick={handleDocClick}
+                        className="object-contain w-full h-full"
                       />
                     </div>
                   ))}

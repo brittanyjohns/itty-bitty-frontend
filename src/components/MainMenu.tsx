@@ -75,6 +75,7 @@ function MainMenu() {
               <MenuListItem
                 key={menuLink.id}
                 menuLink={menuLink}
+                icon={menuLink.icon}
                 closeMenu={hideMenu}
               />
             ))}

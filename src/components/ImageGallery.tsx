@@ -70,6 +70,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   }, [images]);
 
   const handleImageClick = (image: Image) => {
+    console.log("Click event", image);
     const audioSrc = image.audio;
     const label = image.label;
     if (inputRef.current) {
@@ -80,6 +81,8 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     } else {
       setShowIcon(false);
     }
+
+    console.log("Leaving", leaving);
 
     if (leaving) {
       console.log("Leaving");
@@ -108,6 +111,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   const handleButtonPress = (
     event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
   ) => {
+    console.log("Button pressed", leaving);
     const imageId = (event.target as HTMLDivElement).id;
     if (board?.predifined) {
       console.log("Predefined board");
@@ -123,6 +127,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   const handleButtonRelease = (
     event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
   ) => {
+    console.log("Button released");
     if (longPressTimer.current) {
       clearTimeout(longPressTimer.current); // Cancel the timer if the button is released before the threshold
       longPressTimer.current = null;
@@ -133,10 +138,10 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
 
   const handleActionSelected = (action: string, image: Image) => {
     console.log("Action Selected", action);
-    console.log("Image", image);
     const imageId = image.id;
     if (!imageId) {
       console.error("Image ID not found");
+      onActionListClose();
       return;
     }
 
@@ -147,12 +152,14 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
       }
       async function removeImage() {
         if (!board?.id) {
+          onActionListClose();
           return;
         }
         const result = await removeImageFromBoard(board.id, imageId);
         if (result.error) {
           console.error("Error:", result.error);
           alert(`Error: ${result.error}`);
+          onActionListClose();
           return;
         }
         window.location.reload();
@@ -162,7 +169,6 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     } else if (action === "edit") {
       history.push(`/images/${imageId}`);
     }
-    onActionListClose();
   };
 
   const onActionListClose = () => {
@@ -186,12 +192,12 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
             className="cursor-pointer bg-white rounded-md shadow-md p-1"
             onClick={() => handleImageClick(image)}
             key={image.id}
-            // onTouchStart={(e) => handleButtonPress(e)}
-            onPointerDown={(e) => handleButtonPress(e)}
+            onTouchStart={(e) => handleButtonPress(e)}
+            // onPointerDown={(e) => handleButtonPress(e)}
             onTouchEnd={(e) => handleButtonRelease(e)}
-            onMouseDown={(e) => handleButtonPress(e)}
-            onMouseUp={handleButtonRelease}
-            onMouseLeave={handleButtonRelease}
+            // onMouseDown={(e) => handleButtonPress(e)}
+            // onMouseUp={handleButtonRelease}
+            // onMouseLeave={handleButtonRelease}
           >
             <ImageGalleryItem key={`${image.id}-${i}`} image={image} />
 
