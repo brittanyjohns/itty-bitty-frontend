@@ -44,7 +44,31 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({
     scenario?.token_limit || 0
   );
 
-  const ageRangeList: string[] = ["0-3", "4-7", "8-12", "13+"]; // Example age ranges
+  const ageRangeList: string[] = [
+    "0-3",
+    "4-6",
+    "7-9",
+    "10-12",
+    "13-15",
+    "16-18",
+    "19-21",
+    "22-25",
+    "26-30",
+    "31-35",
+    "36-40",
+    "41-45",
+    "46-50",
+    "51-55",
+    "56-60",
+    "61-65",
+    "66-70",
+    "71-75",
+    "76-80",
+    "81-85",
+    "86-90",
+    "91-95",
+    "96-100",
+  ];
   const imageOptions = Array.from({ length: 31 }, (_, i) => 6 + i);
   const tokenOptions = Array.from({ length: 37 }, (_, i) => i);
 
