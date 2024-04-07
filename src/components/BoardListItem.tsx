@@ -22,7 +22,6 @@ const BoardListItem: React.FC<BoardListItemProps> = ({ board }) => {
       lines="none"
     >
       <IonText className="text-xl w-full font-bold">{board.name}</IonText>
-      <IonText className="text-sm text-gray-500">{boardDetails?.voice}</IonText>
     </IonItem>
   );
 };

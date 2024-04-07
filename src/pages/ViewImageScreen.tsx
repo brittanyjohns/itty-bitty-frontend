@@ -66,21 +66,24 @@ const ViewImageScreen: React.FC = () => {
     const urlParams = new URLSearchParams(queryString);
     const boardId = urlParams.get("boardId");
     setBoardId(boardId);
-    console.log("Board ID: ", boardId);
-    async function getData() {
-      const imgToSet = await fetchImage();
-      setImage(imgToSet);
-      toggleForms(segmentType, imgToSet);
-      if (imgToSet.display_doc && imgToSet.display_doc.src) {
-        setCurrentImage(imgToSet.display_doc.src);
-      } else {
-        setCurrentImage(imgToSet.src);
-      }
-    }
     getData();
   }, []);
 
+  const getData = async () => {
+    const imgToSet = await fetchImage();
+    setImage(imgToSet);
+    toggleForms(segmentType, imgToSet);
+    if (imgToSet.display_doc && imgToSet.display_doc.src) {
+      setCurrentImage(imgToSet.display_doc.src);
+    } else {
+      setCurrentImage(imgToSet.src);
+    }
+  };
+
   const toggleForms = (segmentType: string, imgToSet?: Image) => {
+    if (!imgToSet) {
+      imgToSet = image ?? undefined;
+    }
     const label = imgToSet?.label ?? "";
     if (segmentType === "generate") {
       setPageTitle(`Generate an Image for \n ${label}`);
@@ -139,7 +142,6 @@ const ViewImageScreen: React.FC = () => {
   };
 
   const onGenerateClick = () => {
-    console.log("Generating image for: ", image);
     handleGenerate();
   };
 

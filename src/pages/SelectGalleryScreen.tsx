@@ -268,9 +268,14 @@ const SelectGalleryScreen: React.FC = () => {
           </IonText>
         </div>
 
-        <div className="ion-padding" ref={editForm}>
+        <div className="" ref={editForm}>
+          <div className="mb-2">
+            <IonText className="text-sm text-gray-500">
+              Voice: {board?.voice}
+            </IonText>
+          </div>
           {board && <BoardForm board={board} setBoard={setBoard} />}
-          <div className="">
+          <div className="mt-3">
             {board && board.images && board.images.length > 0 && (
               <div className="">
                 <IonLabel className="font-sans text-sm">
