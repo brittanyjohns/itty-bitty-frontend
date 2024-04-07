@@ -76,12 +76,25 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({
     setPromptText(scenario.prompt_text || "");
     setAgeRange(scenario?.age_range || "");
     setNumberOfImages(scenario?.number_of_images || 6);
-    setTokenLimit(scenario?.token_limit || 0);
+    setTokenLimit(scenario?.token_limit || scenario?.number_of_images || 6);
   }, [scenario]);
+
+  const handleNumberSelection = (e: any) => {
+    const value = parseInt(e, 10);
+    console.log("value", value);
+    setNumberOfImages(value);
+    setTokenLimit(value);
+  };
+
+  const handlePromptInput = (value: string) => {
+    console.log("value", value);
+    setPromptText(value);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (promptText === "") {
+      alert("Please enter a scenario prompt.");
       return;
     }
     onSave({
@@ -116,7 +129,7 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({
           </p>
           <IonTextarea
             value={promptText}
-            onIonChange={(e) => setPromptText(e.detail.value!)}
+            onIonInput={(e) => handlePromptInput(e.detail.value!)}
             placeholder="Ex: 'First day at a new job'"
             rows={6}
             className="border rounded w-full"
@@ -141,7 +154,7 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({
           <IonSelect
             label="Number of Images"
             value={numberOfImages}
-            onIonChange={(e) => setNumberOfImages(parseInt(e.detail.value, 10))}
+            onIonChange={(e) => handleNumberSelection(e.detail.value)}
             className=""
           >
             {imageOptions.map((option) => (

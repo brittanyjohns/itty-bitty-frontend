@@ -143,33 +143,17 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   };
 
   return (
-    <div
-      className="cursor-pointer bg-white rounded-md shadow-md p-1"
-      onTouchStart={() => console.log("Touch Start")}
-      onMouseDown={() => console.log("Mouse Down")}
-      onTouchEnd={() => console.log("Touch End")}
-      onClick={() => handleImageClick(image)}
-      onMouseUp={() => {
-        console.log("Mouse Up");
-        handleButtonRelease();
-      }}
-      onMouseLeave={() => {
-        console.log("Mouse Leave - button release");
-        handleButtonRelease();
-      }}
-      onTouchStartCapture={() => {
-        console.log("Touch Start Capture");
-        handleButtonPress();
-      }}
-      onMouseDownCapture={() => console.log("Mouse Down Capture")}
-      // onTouchEndCapture={handleButtonRelease}
-    >
+    <div className="cursor-pointer bg-white rounded-md shadow-md p-1 h-fit">
       <IonImg
         src={image.src}
         alt={image.label}
-        className="object-contain w-full rounded-md shadow-md"
+        className="ion-img-contain mx-auto"
+        onClick={() => handleImageClick(image)}
         onMouseDown={() => console.log("Image Mouse Down")}
-        onTouchStart={() => console.log("Image Touch Start")}
+        onTouchStart={() => {
+          console.log("Image Touch Start");
+          handleButtonPress();
+        }}
         onMouseUp={() => console.log("Image Mouse Up")}
         onTouchEnd={() => {
           console.log("Image Touch End");
@@ -178,7 +162,11 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
         onMouseLeave={() => console.log("Image Mouse Leave")}
         onMouseEnter={() => console.log("Image Mouse Enter")}
       />
-      <span className="text-xs text-black">{image.label}</span>
+      <span className="font-medium pl-1 text-xs md:text-sm lg:text-md text-black">
+        {image.label.length > 15
+          ? `${image.label.substring(0, 15)}...`
+          : image.label}
+      </span>
       {image.audio && <audio src={image.audio} />}
       {!board?.predifined && (
         <ActionList
