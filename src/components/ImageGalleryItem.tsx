@@ -143,7 +143,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
         onMouseLeave={() => console.log("Image Mouse Leave")}
         onMouseEnter={() => console.log("Image Mouse Enter")}
       />
-      <span className="text-xs">{image.label}</span>
+      <span className="text-xs text-black">{image.label}</span>
       {image.audio && <audio src={image.audio} />}
       {!board?.predifined && (
         <ActionList

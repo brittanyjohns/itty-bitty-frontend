@@ -26,6 +26,7 @@ import { getBoards } from "../data/boards";
 import {
   addCircleOutline,
   albumsOutline,
+  earthOutline,
   gridOutline,
   imagesOutline,
   peopleCircleOutline,
@@ -127,7 +128,7 @@ const BoardsScreen: React.FC = () => {
               </IonSegmentButton>
               <IonSegmentButton value="scenario">
                 <IonLabel className="text-2xl mt-3 mb-2">
-                  <IonIcon icon={walkOutline} />
+                  <IonIcon icon={earthOutline} />
                 </IonLabel>
               </IonSegmentButton>
               <IonSegmentButton value="shared">
