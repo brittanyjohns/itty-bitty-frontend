@@ -8,9 +8,9 @@ import { useHistory } from "react-router";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
 interface ImageGalleryItemProps {
   image: Image;
-  board: any; // Adjust the type based on your actual board type
-  setShowIcon: (show: boolean) => void;
-  inputRef: React.RefObject<HTMLInputElement>;
+  board?: any; // Adjust the type based on your actual board type
+  setShowIcon?: (show: boolean) => void;
+  inputRef?: React.RefObject<HTMLInputElement>;
 }
 
 const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
@@ -71,13 +71,15 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     console.log("Click event", image);
     const audioSrc = image.audio;
     const label = image.label;
-    if (inputRef.current) {
+    if (inputRef?.current) {
       inputRef.current.value += ` ${label}`;
-    }
-    if (inputRef.current?.value) {
-      setShowIcon(true);
-    } else {
-      setShowIcon(false);
+      if (setShowIcon) {
+        if (inputRef.current?.value) {
+          setShowIcon(true);
+        } else {
+          setShowIcon(false);
+        }
+      }
     }
 
     if (!audioSrc) {
