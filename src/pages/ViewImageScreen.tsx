@@ -43,7 +43,7 @@ const ViewImageScreen: React.FC = () => {
   const imageGridWrapper = useRef<HTMLDivElement>(null);
   const [pageTitle, setPageTitle] = useState("");
   const { currentUser, setCurrentUser } = useCurrentUser();
-
+  const [boardId, setBoardId] = useState<string | null>(null);
   const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
     if (
       currentUser &&
@@ -62,6 +62,11 @@ const ViewImageScreen: React.FC = () => {
   };
 
   useEffect(() => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const boardId = urlParams.get("boardId");
+    setBoardId(boardId);
+    console.log("Board ID: ", boardId);
     async function getData() {
       const imgToSet = await fetchImage();
       setImage(imgToSet);
@@ -137,7 +142,10 @@ const ViewImageScreen: React.FC = () => {
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/images" />
+            {boardId && <IonBackButton defaultHref={`/boards/${boardId}`} />}
+            {!boardId && (
+              <IonBackButton defaultHref="/images" /> // Adjust route based on actual route}
+            )}
           </IonButtons>
           {image && <BoardDropdown imageId={image.id} />}
         </IonToolbar>

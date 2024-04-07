@@ -106,6 +106,15 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
   });
 
   useEffect(() => {
+    console.log("ViewBoard mounted");
+    // async function fetchData() {
+    //   await fetchBoard();
+    // }
+    // fetchData();
+  }, []);
+
+  useIonViewWillEnter(() => {
+    console.log("ViewBoard will enter");
     async function fetchData() {
       await fetchBoard();
     }
