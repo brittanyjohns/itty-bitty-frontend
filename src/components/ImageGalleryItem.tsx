@@ -1,16 +1,18 @@
 // ImageGalleryItem.tsx
 import React, { useState, useRef } from "react";
-import { IonImg } from "@ionic/react";
+import { IonImg, useIonViewDidLeave } from "@ionic/react";
 import { Image } from "../data/images";
 import ActionList from "./ActionList"; // Import ActionList for local use
 import { removeImageFromBoard } from "../data/boards";
 import { useHistory } from "react-router";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
+import { h } from "ionicons/dist/types/stencil-public-runtime";
 interface ImageGalleryItemProps {
   image: Image;
   board?: any; // Adjust the type based on your actual board type
   setShowIcon?: (show: boolean) => void;
   inputRef?: React.RefObject<HTMLInputElement>;
+  disableActionList?: boolean;
 }
 
 const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
@@ -18,6 +20,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   board,
   setShowIcon,
   inputRef,
+  disableActionList,
 }) => {
   const [showActionList, setShowActionList] = useState<boolean>(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
@@ -46,7 +49,12 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
 
   const editImage = (imageId: string) => {
     try {
-      history.push(`/images/${imageId}`);
+      if (!board) {
+        history.push(`/images/${imageId}`);
+      } else {
+        history.push(`/images/${imageId}?boardId=${board.id}`);
+      }
+      window.location.reload();
     } catch (error) {
       console.error("Error editing image: ", error);
       alert("Error editing image");
@@ -57,7 +65,14 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   const handleButtonPress = () => {
     console.log("Button Pressed");
     // handleImageClick(image);
-    longPressTimer.current = setTimeout(() => setShowActionList(true), 1000);
+    if (disableActionList) {
+      console.log("Action list disabled");
+      return;
+    }
+    longPressTimer.current = setTimeout(() => {
+      console.log("Long press detected");
+      setShowActionList(true);
+    }, 1000);
   };
 
   const handleButtonRelease = () => {
@@ -108,6 +123,11 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
 
   const [audioList, setAudioList] = useState<string[]>([]);
 
+  useIonViewDidLeave(() => {
+    console.log("Leaving ImageGalleryItem");
+    setShowActionList(false);
+  });
+
   const speak = async (text: string) => {
     await TextToSpeech.speak({
       text: text,
@@ -125,21 +145,30 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       onTouchStart={() => console.log("Touch Start")}
       onMouseDown={() => console.log("Mouse Down")}
       onTouchEnd={() => console.log("Touch End")}
-      onMouseUp={() => console.log("Mouse Up")}
-      onMouseLeave={() => console.log("Mouse Leave")}
+      onClick={() => handleImageClick(image)}
+      onMouseUp={() => {
+        console.log("Mouse Up");
+        handleButtonRelease();
+      }}
+      onMouseLeave={() => {
+        console.log("Mouse Leave");
+        handleButtonRelease();
+      }}
       onTouchStartCapture={handleButtonPress}
       onMouseDownCapture={() => console.log("Mouse Down Capture")}
-      onTouchEndCapture={handleButtonRelease}
+      // onTouchEndCapture={handleButtonRelease}
     >
       <IonImg
         src={image.src}
         alt={image.label}
-        className="mx-auto"
-        onClick={() => handleImageClick(image)}
+        className="object-contain w-full h-full"
         onMouseDown={() => console.log("Image Mouse Down")}
         onTouchStart={() => console.log("Image Touch Start")}
         onMouseUp={() => console.log("Image Mouse Up")}
-        onTouchEnd={() => console.log("Image Touch End")}
+        onTouchEnd={() => {
+          console.log("Image Touch End");
+          handleButtonRelease();
+        }}
         onMouseLeave={() => console.log("Image Mouse Leave")}
         onMouseEnter={() => console.log("Image Mouse Enter")}
       />

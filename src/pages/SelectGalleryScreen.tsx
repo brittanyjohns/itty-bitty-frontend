@@ -283,7 +283,11 @@ const SelectGalleryScreen: React.FC = () => {
                         className="relative"
                         onClick={handleDocClick}
                       >
-                        <ImageGalleryItem key={index} image={img} />
+                        <ImageGalleryItem
+                          key={index}
+                          image={img}
+                          disableActionList={true}
+                        />
                       </div>
                     ))}
                 </div>
