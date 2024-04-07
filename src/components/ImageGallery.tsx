@@ -50,8 +50,8 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
 
   useEffect(() => {
     resizeGrid();
-    window.addEventListener("resize", resizeGrid);
-    return () => window.removeEventListener("resize", resizeGrid);
+    // window.addEventListener("resize", resizeGrid);
+    // return () => window.removeEventListener("resize", resizeGrid);
   }, [images]);
 
   return (

@@ -30,8 +30,8 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   const history = useHistory();
 
   const fetchBoard = async () => {
-    const boardId = window.location.pathname.split("/")[2];
-    const board = await getBoard(boardId);
+    // const boardId = window.location.pathname.split("/")[2];
+    // const board = await getBoard(boardId);
     console.log("setBoard", board);
     setBoard(board);
   };
@@ -86,10 +86,6 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   const gridSizeOptions = [
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
   ];
-
-  useEffect(() => {
-    fetchBoard();
-  }, []);
 
   return (
     <div className="">

@@ -9,14 +9,16 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import NewScenarioForm from "../components/NewScenarioForm";
+import { useState } from "react";
 
 const NewScenario: React.FC = (props: any) => {
+  const [numOfImages, setNumOfImages] = useState(12); // [1]
   const initialScenario: Scenario = {
     name: "",
     age_range: "0-3",
     number_of_columns: 2,
-    number_of_images: 6,
-    token_limit: 0,
+    number_of_images: numOfImages,
+    token_limit: numOfImages,
   };
   const onSubmit = async (data: Scenario) => {
     const newScenario = await createScenario(data);

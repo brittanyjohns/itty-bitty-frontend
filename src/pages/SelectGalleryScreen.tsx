@@ -45,6 +45,8 @@ import SelectImageGallery from "../components/SelectImageGallery";
 import ImageGalleryItem from "../components/ImageGalleryItem";
 import "./ViewBoard.css";
 import { useCurrentUser } from "../hooks/useCurrentUser";
+import Tabs from "../components/Tabs";
+
 interface SelectGalleryScreenProps {}
 const SelectGalleryScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -110,15 +112,15 @@ const SelectGalleryScreen: React.FC = () => {
     setSearchInput(query);
     setPage(1); // Reset to first page on new search
   };
+  const loadPage = async () => {
+    console.log("id", id);
+    const boardToSet = await fetchBoard();
+    setBoard(boardToSet);
+    toggleForms(segmentType);
+  };
 
   useEffect(() => {
-    async function getData() {
-      console.log("id", id);
-      const boardToSet = await fetchBoard();
-      setBoard(boardToSet);
-      toggleForms(segmentType);
-    }
-    getData();
+    loadPage();
   }, []);
 
   const toggleForms = (segmentType: string) => {
@@ -387,6 +389,7 @@ const SelectGalleryScreen: React.FC = () => {
           duration={2000}
         ></IonToast>
       </IonContent>
+      <Tabs />
     </IonPage>
   );
 };

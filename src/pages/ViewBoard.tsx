@@ -183,10 +183,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
         <IonRefresher slot="fixed" onIonRefresh={refresh}>
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
-        <IonLoading
-          message="Please wait while we create your board..."
-          isOpen={showLoading}
-        />
+        <IonLoading message="Please wait..." isOpen={showLoading} />
         {board && board.images && board.images.length > 0 && (
           <ImageGallery
             images={board.images}
