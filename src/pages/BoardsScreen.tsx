@@ -127,8 +127,8 @@ const BoardsScreen: React.FC = () => {
                 </IonLabel>
               </IonSegmentButton>
               <IonSegmentButton value="scenario">
-                <IonLabel className="text-2xl mt-3 mb-2">
-                  <IonIcon icon={earthOutline} />
+                <IonLabel className="text-xl">
+                  <IonIcon icon={earthOutline} className="text-2xl mt-3 mb-2" />
                 </IonLabel>
               </IonSegmentButton>
               <IonSegmentButton value="shared">

@@ -79,7 +79,10 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     if (longPressTimer.current) {
       clearTimeout(longPressTimer.current);
     }
-    setShowActionList(false);
+    setTimeout(() => {
+      console.log("Button Released - closing action list");
+      setShowActionList(false);
+    }, 1000);
   };
 
   const handleImageClick = (image: Image) => {
@@ -151,17 +154,20 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
         handleButtonRelease();
       }}
       onMouseLeave={() => {
-        console.log("Mouse Leave");
+        console.log("Mouse Leave - button release");
         handleButtonRelease();
       }}
-      onTouchStartCapture={handleButtonPress}
+      onTouchStartCapture={() => {
+        console.log("Touch Start Capture");
+        handleButtonPress();
+      }}
       onMouseDownCapture={() => console.log("Mouse Down Capture")}
       // onTouchEndCapture={handleButtonRelease}
     >
       <IonImg
         src={image.src}
         alt={image.label}
-        className="object-contain w-full h-full"
+        className="object-contain w-full rounded-md shadow-md"
         onMouseDown={() => console.log("Image Mouse Down")}
         onTouchStart={() => console.log("Image Touch Start")}
         onMouseUp={() => console.log("Image Mouse Up")}
