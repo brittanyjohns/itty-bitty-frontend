@@ -199,7 +199,9 @@ const ViewImageScreen: React.FC = () => {
                 className="loading-icon"
                 cssClass="loading-icon"
                 isOpen={showLoading}
-                message={"Generating image..."}
+                message={
+                  "Generating image... Please wait a moment & check back."
+                }
               />
               {image && (
                 <IonTextarea

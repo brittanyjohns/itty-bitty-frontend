@@ -9,7 +9,9 @@ interface BoardListItemProps {
 
 const BoardListItem: React.FC<BoardListItemProps> = ({ board }) => {
   const [boardDetails, setBoardDetails] = useState(board);
+
   useEffect(() => {
+    console.log("BoardListItem useEffect", board);
     setBoardDetails(board);
   }, [board]);
   return (
