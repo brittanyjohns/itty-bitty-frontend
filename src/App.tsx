@@ -50,8 +50,13 @@ import SettingsPage from "./pages/SettingsPage";
 import NewScenario from "./pages/NewScenario";
 import ViewMenuScreen from "./pages/ViewMenuScreen";
 import PredictiveIndex from "./pages/PredictiveIndex";
+import { AndroidFullScreen } from "@awesome-cordova-plugins/android-full-screen";
 
 setupIonicReact();
+
+AndroidFullScreen.isImmersiveModeSupported()
+  .then(() => AndroidFullScreen.immersiveMode())
+  .catch(console.warn);
 
 const App: React.FC = () => (
   <UserProvider>
