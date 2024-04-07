@@ -65,7 +65,7 @@ const ViewImageScreen: React.FC = () => {
     async function getData() {
       const imgToSet = await fetchImage();
       setImage(imgToSet);
-      toggleForms(segmentType);
+      toggleForms(segmentType, imgToSet);
       if (imgToSet.display_doc && imgToSet.display_doc.src) {
         setCurrentImage(imgToSet.display_doc.src);
       } else {
@@ -75,7 +75,7 @@ const ViewImageScreen: React.FC = () => {
     getData();
   }, []);
 
-  const toggleForms = (segmentType: string) => {
+  const toggleForms = (segmentType: string, imgToSet?: Image) => {
     if (segmentType === "generate") {
       uploadForm.current?.classList.add("hidden");
       generateForm.current?.classList.remove("hidden");
@@ -89,7 +89,8 @@ const ViewImageScreen: React.FC = () => {
       imageGridWrapper.current?.classList.add("hidden");
     }
     if (segmentType === "gallery") {
-      const label = image?.label ?? "";
+      const label = imgToSet?.label ?? "";
+      console.log("Label: ", label);
       setPageTitle(`Images for ${label}`);
       uploadForm.current?.classList.add("hidden");
       generateForm.current?.classList.add("hidden");
@@ -198,7 +199,7 @@ const ViewImageScreen: React.FC = () => {
                 className="loading-icon"
                 cssClass="loading-icon"
                 isOpen={showLoading}
-                message={"Adding the image to your board..."}
+                message={"Generating image..."}
               />
               {image && (
                 <IonTextarea

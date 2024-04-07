@@ -47,19 +47,8 @@ import ViewImageScreen from "./pages/ViewImageScreen";
 import MenusScreen from "./pages/MenusScreen";
 import SelectGalleryScreen from "./pages/SelectGalleryScreen";
 import SettingsPage from "./pages/SettingsPage";
-import {
-  fastFoodOutline,
-  radio,
-  library,
-  search,
-  home,
-  settings,
-  albumsOutline,
-  imagesOutline,
-} from "ionicons/icons";
 import NewScenario from "./pages/NewScenario";
 import ViewMenuScreen from "./pages/ViewMenuScreen";
-import FloatingWordsBtn from "./components/FloatingWordsBtn";
 import PredictiveIndex from "./pages/PredictiveIndex";
 
 setupIonicReact();
