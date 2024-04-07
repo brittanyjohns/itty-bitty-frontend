@@ -6,6 +6,7 @@ import {
   IonHeader,
   IonIcon,
   IonLabel,
+  IonLoading,
   IonMenuButton,
   IonPage,
   IonRefresher,
@@ -15,6 +16,7 @@ import {
   IonSegmentButton,
   IonTitle,
   IonToolbar,
+  useIonViewWillEnter,
 } from "@ionic/react";
 import { Image, getImages, getMoreImages, getUserImages } from "../data/images";
 import MainMenu from "../components/MainMenu";
@@ -27,6 +29,7 @@ import {
   imagesOutline,
   personOutline,
 } from "ionicons/icons";
+import { set } from "react-hook-form";
 
 const ImagesScreen: React.FC = () => {
   const [images, setImages] = useState<Image[]>([]);
@@ -37,6 +40,8 @@ const ImagesScreen: React.FC = () => {
   const [allImages, setAllImages] = useState<Image[]>([]);
   const [segmentType, setSegmentType] = useState("all");
   const [pageTitle, setPageTitle] = useState("Your Boards");
+  const [showLoading, setShowLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState("Loading images");
 
   const fetchImages = async () => {
     const fetchedImages = await getImages();
@@ -44,9 +49,16 @@ const ImagesScreen: React.FC = () => {
     setAllImages(fetchedImages);
     const fetchedUserImages = await getUserImages();
     setUserImages(fetchedUserImages);
+    setShowLoading(false);
   };
 
   useEffect(() => {
+    console.log("useEffect fetching images");
+    setShowLoading(true);
+  }, []);
+
+  useIonViewWillEnter(() => {
+    console.log("fetching images");
     fetchImages();
   }, []);
 
@@ -145,6 +157,12 @@ const ImagesScreen: React.FC = () => {
               searchInput={searchInput}
             />
           }
+          <IonLoading
+            className="loading-icon"
+            cssClass="loading-icon"
+            isOpen={showLoading}
+            message={loadingMessage}
+          />
         </IonContent>
         <Tabs />
       </IonPage>

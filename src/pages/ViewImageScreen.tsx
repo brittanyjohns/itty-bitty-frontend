@@ -81,20 +81,20 @@ const ViewImageScreen: React.FC = () => {
   }, []);
 
   const toggleForms = (segmentType: string, imgToSet?: Image) => {
+    const label = imgToSet?.label ?? "";
     if (segmentType === "generate") {
+      setPageTitle(`Generate an Image for \n ${label}`);
       uploadForm.current?.classList.add("hidden");
       generateForm.current?.classList.remove("hidden");
       imageGridWrapper.current?.classList.add("hidden");
-      setPageTitle("Generate an Image");
     }
     if (segmentType === "upload") {
-      setPageTitle("Upload an Image");
+      setPageTitle(`Upload an Image for ${label} `);
       uploadForm.current?.classList.remove("hidden");
       generateForm.current?.classList.add("hidden");
       imageGridWrapper.current?.classList.add("hidden");
     }
     if (segmentType === "gallery") {
-      const label = imgToSet?.label ?? "";
       console.log("Label: ", label);
       setPageTitle(`Images for ${label}`);
       uploadForm.current?.classList.add("hidden");
@@ -126,9 +126,21 @@ const ViewImageScreen: React.FC = () => {
     formData.append("image[image_prompt]", image.image_prompt ?? "");
     setShowLoading(true);
     const updatedImage = await generateImage(formData); // Ensure generateImage returns a Promise<Image>
-    setImage(updatedImage);
-    fetchImage(); // Re-fetch image data to update state
-    setShowLoading(false);
+    // setImage(updatedImage);
+    // fetchImage(); // Re-fetch image data to update state
+    // setShowLoading(false);
+    console.log("Updated Image: ", updatedImage);
+    if (updatedImage) {
+      setTimeout(() => {
+        setShowLoading(false);
+        window.location.reload();
+      }, 10000);
+    }
+  };
+
+  const onGenerateClick = () => {
+    console.log("Generating image for: ", image);
+    handleGenerate();
   };
 
   const handleSegmentChange = (e: CustomEvent) => {
@@ -222,7 +234,7 @@ const ViewImageScreen: React.FC = () => {
               )}
             </IonItem>
             <IonItem className="mt-2">
-              <IonButton className="w-full text-lg" onClick={handleGenerate}>
+              <IonButton className="w-full text-lg" onClick={onGenerateClick}>
                 Generate Image
               </IonButton>
             </IonItem>
