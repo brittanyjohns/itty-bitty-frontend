@@ -72,6 +72,7 @@ const BoardsScreen: React.FC = () => {
   };
 
   useIonViewWillEnter(() => {
+    console.log("ionViewWillEnter event fired", segmentType);
     hideMenu();
   });
 
