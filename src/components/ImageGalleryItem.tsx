@@ -162,13 +162,13 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
         onMouseLeave={() => console.log("Image Mouse Leave")}
         onMouseEnter={() => console.log("Image Mouse Enter")}
       />
-      <span className="font-medium pl-1 text-xs md:text-sm lg:text-md text-black">
+      <span className="font-medium text-xs md:text-sm lg:text-md text-black">
         {image.label.length > 15
-          ? `${image.label.substring(0, 15)}...`
+          ? `${image.label.substring(0, 12)}...`
           : image.label}
       </span>
       {image.audio && <audio src={image.audio} />}
-      {!board?.predifined && (
+      {!board?.predefined && (
         <ActionList
           isOpen={showActionList}
           onClose={() => setShowActionList(false)}

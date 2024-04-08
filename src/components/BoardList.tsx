@@ -16,6 +16,13 @@ const BoardList = ({ boards }: BoardListProps) => {
     setBoardId(board.id as string);
   };
 
+  const shouldDisableActionList = (board: Board) => {
+    console.log("shouldDisableActionList", board);
+    const isPredefined = board?.predefined === true;
+
+    return isPredefined;
+  };
+
   return (
     <div className="ion-padding">
       <IonList className="w-full" id="board-list" lines="inset">
@@ -28,7 +35,10 @@ const BoardList = ({ boards }: BoardListProps) => {
                 onClick={() => handleBoardClick(board)}
                 key={board.id}
               >
-                <BoardListItem board={board} />
+                <BoardListItem
+                  board={board}
+                  disableActionList={shouldDisableActionList(board)}
+                />
               </div>
             </IonItem>
           ))}
