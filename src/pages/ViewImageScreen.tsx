@@ -195,6 +195,7 @@ const ViewImageScreen: React.FC = () => {
                 className="w-1/2 mx-auto"
               />
             )}
+            <p className="text-center text-sm">type: {image?.image_type}</p>
             {/* {image && !currentImage && <IonImg id={image.id} src={image.src} alt={image.label} className='w-1/2 mx-auto' />} */}
           </div>
         </div>

@@ -57,14 +57,6 @@ const SelectGalleryScreen: React.FC = () => {
   const uploadForm = useRef<HTMLDivElement>(null);
   const generateForm = useRef<HTMLDivElement>(null);
   const editForm = useRef<HTMLDivElement>(null);
-  const [image, setImage] = useState<Image | null>({
-    id: "",
-    src: "",
-    label: "",
-    image_prompt: "",
-    audio: "",
-    bg_color: "",
-  });
   const [remainingImages, setRemainingImages] = useState<Image[]>(); // State for the remaining images
   const inputRef = useRef<HTMLIonInputElement>(null);
   const [searchInput, setSearchInput] = useState("");
@@ -75,7 +67,15 @@ const SelectGalleryScreen: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("Generating Image...");
   const { currentUser, setCurrentUser } = useCurrentUser();
-
+  const initialImage = {
+    id: "",
+    src: "",
+    label: "",
+    image_prompt: "",
+    audio: "",
+    bg_color: "",
+  };
+  const [image, setImage] = useState<Image | null>(initialImage);
   const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
     console.log("currentUser", currentUser);
     if (
@@ -167,7 +167,10 @@ const SelectGalleryScreen: React.FC = () => {
       console.error("User does not have enough tokens");
       return;
     }
-    if (!image) return;
+    if (!image) {
+      console.error("Image is missing");
+      return;
+    }
     const formData = new FormData();
     formData.append("image[label]", image.label);
     if (image.image_prompt) {
@@ -180,7 +183,7 @@ const SelectGalleryScreen: React.FC = () => {
       return;
     }
     await addImageToBoard(board.id, updatedImage.id); // Ensure addImageToBoard returns a Promise<Board>
-    setImage(null);
+    setImage(initialImage);
 
     setShowLoading(false);
     const message = `Image added to board: ${updatedImage.label}`;
@@ -206,6 +209,8 @@ const SelectGalleryScreen: React.FC = () => {
     if (image) {
       setImage({ ...image, label: newLabel });
     }
+    console.log("image", image);
+    console.log("newLabel", newLabel);
   };
 
   const handleImageClick = (image: Image) => {
