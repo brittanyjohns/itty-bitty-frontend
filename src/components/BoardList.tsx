@@ -17,7 +17,6 @@ const BoardList = ({ boards }: BoardListProps) => {
   };
 
   const shouldDisableActionList = (board: Board) => {
-    console.log("shouldDisableActionList", board);
     const isPredefined = board?.predefined === true;
 
     return isPredefined;

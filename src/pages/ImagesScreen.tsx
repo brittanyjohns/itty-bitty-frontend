@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import {
   IonButton,
   IonButtons,
   IonContent,
   IonHeader,
   IonIcon,
+  IonInput,
+  IonItem,
   IonLabel,
+  IonList,
   IonLoading,
   IonMenuButton,
   IonPage,
@@ -14,11 +17,18 @@ import {
   IonSearchbar,
   IonSegment,
   IonSegmentButton,
+  IonText,
   IonTitle,
   IonToolbar,
   useIonViewWillEnter,
 } from "@ionic/react";
-import { Image, getImages, getMoreImages, getUserImages } from "../data/images";
+import {
+  Image,
+  createImage,
+  getImages,
+  getMoreImages,
+  getUserImages,
+} from "../data/images";
 import MainMenu from "../components/MainMenu";
 import SelectImageGallery from "../components/SelectImageGallery";
 import { useHistory } from "react-router";
@@ -28,6 +38,7 @@ import {
   albumsOutline,
   imagesOutline,
   personOutline,
+  trashBinOutline,
 } from "ionicons/icons";
 import { set } from "react-hook-form";
 
@@ -42,32 +53,36 @@ const ImagesScreen: React.FC = () => {
   const [pageTitle, setPageTitle] = useState("Your Boards");
   const [showLoading, setShowLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("Loading images");
-
+  const inputRef = createRef<HTMLIonInputElement>();
   const fetchImages = async () => {
     const fetchedImages = await getImages();
     setImages(fetchedImages);
     setAllImages(fetchedImages);
     const fetchedUserImages = await getUserImages();
     setUserImages(fetchedUserImages);
+    console.log("Fetched images", fetchedImages);
+    console.log("Fetched user images", fetchedUserImages);
     setShowLoading(false);
   };
-
-  useEffect(() => {
-    console.log("useEffect fetching images");
-    setShowLoading(true);
-  }, []);
-
   useIonViewWillEnter(() => {
     console.log("fetching images");
     fetchImages();
   }, []);
 
+  const showCreateBtn = (imgs: Image[]): boolean => {
+    const result = imgs.length === 0 && searchInput.length > 0;
+    return result;
+  };
+
   const handleGetMoreImages = async (
     page: number,
     query: string
   ): Promise<Image[]> => {
+    setLoadingMessage("Loading more images");
+    setShowLoading(true);
     const additionalImages = await getMoreImages(page, query);
     setImages(additionalImages);
+    setShowLoading(false);
     return additionalImages;
   };
 
@@ -77,12 +92,30 @@ const ImagesScreen: React.FC = () => {
     setPage(1); // Reset to first page on new search
   };
 
+  const clearInput = () => {
+    setSearchInput("");
+    setPage(1); // Reset to first page on new search
+  };
+
   const handleImageClick = (image: Image) => {
     history.push(`/images/${image.id}`);
   };
 
   const handleSegmentChange = (e: CustomEvent): void => {
     setSegmentType(e.detail.value);
+  };
+
+  const handleCreateImage = async (label: string) => {
+    console.log("Creating image for label", label);
+    setLoadingMessage("Creating image");
+    setShowLoading(true);
+    const formData = new FormData();
+    formData.append("image[label]", label);
+    const newImage = await createImage(formData);
+    setShowLoading(false);
+    if (newImage) {
+      history.push(`/images/${newImage.id}`);
+    }
   };
 
   useEffect(() => {
@@ -111,7 +144,9 @@ const ImagesScreen: React.FC = () => {
             <IonButtons slot="start">
               <IonMenuButton></IonMenuButton>
             </IonButtons>
-            <IonTitle>{pageTitle}</IonTitle>
+            <IonTitle>
+              {pageTitle} {images.length}
+            </IonTitle>
             <IonButtons slot="end">
               <IonButton routerLink="/images/add">
                 <IonIcon icon={addCircleOutline} />
@@ -140,6 +175,7 @@ const ImagesScreen: React.FC = () => {
             <IonSearchbar
               debounce={1000}
               onIonInput={handleSearchInput}
+              onIonClear={() => clearInput()}
               animated={true}
               placeholder="Search existing images"
             ></IonSearchbar>
@@ -149,14 +185,31 @@ const ImagesScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          {
-            <SelectImageGallery
-              images={images}
-              onLoadMoreImages={handleGetMoreImages}
-              onImageClick={handleImageClick}
-              searchInput={searchInput}
-            />
-          }
+          {showCreateBtn(images) && (
+            <IonList>
+              <IonItem slot="start" className="w-full">
+                <IonText>
+                  {" "}
+                  No images found for
+                  <strong> {searchInput}</strong>.
+                </IonText>
+                <IonButton
+                  slot="end"
+                  size="small"
+                  onClick={() => handleCreateImage(searchInput)}
+                >
+                  <IonIcon slot="icon-only" icon={addCircleOutline} />
+                </IonButton>
+              </IonItem>
+            </IonList>
+          )}
+          <SelectImageGallery
+            images={images}
+            onLoadMoreImages={handleGetMoreImages}
+            onImageClick={handleImageClick}
+            searchInput={searchInput}
+          />
+
           <IonLoading
             className="loading-icon"
             cssClass="loading-icon"

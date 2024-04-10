@@ -16,6 +16,7 @@ import { BASE_URL } from "./users";
     docs?: ImageDoc[];
     display_doc?: ImageDoc;
     bg_color: string;
+    image_type?: string;
   }
 
   export interface PredictiveImage {
