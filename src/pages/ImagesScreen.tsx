@@ -54,6 +54,7 @@ const ImagesScreen: React.FC = () => {
   const [showLoading, setShowLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("Loading images");
   const inputRef = createRef<HTMLIonInputElement>();
+  const [showCreateBtn, setShowCreateBtn] = useState(false);
   const fetchImages = async () => {
     const fetchedImages = await getImages();
     setImages(fetchedImages);
@@ -69,10 +70,10 @@ const ImagesScreen: React.FC = () => {
     fetchImages();
   }, []);
 
-  const showCreateBtn = (imgs: Image[]): boolean => {
-    const result = imgs.length === 0 && searchInput.length > 0;
-    return result;
-  };
+  // const showCreateBtn = (imgs: Image[]): boolean => {
+  //   const result = imgs.length === 0 && searchInput.length > 0;
+  //   return result;
+  // };
 
   const handleGetMoreImages = async (
     page: number,
@@ -82,6 +83,7 @@ const ImagesScreen: React.FC = () => {
     setShowLoading(true);
     const additionalImages = await getMoreImages(page, query);
     setImages(additionalImages);
+    setShowCreateBtn(additionalImages.length === 0 && query.length > 0);
     setShowLoading(false);
     return additionalImages;
   };
@@ -185,12 +187,12 @@ const ImagesScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          {showCreateBtn(images) && (
+          {showCreateBtn && (
             <IonList>
               <IonItem slot="start" className="w-full">
                 <IonText>
                   {" "}
-                  No images found for
+                  Create a new image for:
                   <strong> {searchInput}</strong>.
                 </IonText>
                 <IonButton
