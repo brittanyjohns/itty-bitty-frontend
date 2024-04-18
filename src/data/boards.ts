@@ -32,6 +32,15 @@ export const getBoards = () => {
     return boards;
 }
 
+export const getUserBoards = () => {
+    const boards = fetch(`${BASE_URL}boards/user_boards`, { headers: userHeaders }) // `localhostboards
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => console.error('Error fetching data: ', error));
+
+    return boards;
+}
+
 export const getBoard = (id: string) => {
     const board = fetch(`${BASE_URL}boards/${id}`, { headers: userHeaders }) // `localhostboards
         .then(response => response.json())
@@ -120,7 +129,7 @@ export async function addImageListToBoard(id: string, payload: { word_list: stri
     return images;
   }
 
-  export async function addImageToBoard(id: string, image_id: string): Promise<Board> {
+  export async function addImageToBoard(id: string, image_id: string): Promise<any> {
     const requestInfo = {
       method: "PUT",
       headers: userHeaders,

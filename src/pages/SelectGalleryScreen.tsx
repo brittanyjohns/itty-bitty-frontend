@@ -219,7 +219,7 @@ const SelectGalleryScreen: React.FC = () => {
         return;
       }
       const response = await addImageToBoard(board.id, image.id);
-      const message = `Image added to board: ${response["name"]}`;
+      const message = `Image added to board: ${response["board"]["name"]}`;
       setToastMessage(message);
       setShowLoading(false);
       setIsOpen(true);

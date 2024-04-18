@@ -55,7 +55,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   }, [images]);
 
   return (
-    <div className="gallery-container mt-3">
+    <div className="gallery-container">
       <div className="grid grid-cols-4 gap-2" ref={gridRef}>
         {images.map((image, index) => (
           <ImageGalleryItem

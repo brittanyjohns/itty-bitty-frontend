@@ -1,11 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import {
-  Board,
-  addImageToBoard,
-  getBoard,
-  getRemainingImages,
-} from "../data/boards";
-import { Image } from "../data/images";
+import { useRef, useState } from "react";
+import { Board, getBoard } from "../data/boards";
 import {
   IonButton,
   IonButtons,
@@ -15,23 +9,18 @@ import {
   IonInput,
   IonItem,
   IonLoading,
-  IonModal,
   IonPage,
   IonRefresher,
   IonRefresherContent,
-  IonText,
-  IonTitle,
   IonToolbar,
   useIonViewDidLeave,
   useIonViewWillEnter,
 } from "@ionic/react";
 
 import {
-  add,
   addCircleOutline,
   arrowBackCircleOutline,
   playCircleOutline,
-  refresh,
   trashBinOutline,
 } from "ionicons/icons";
 
@@ -57,22 +46,13 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
       console.error("Error fetching board");
       return;
     } else {
-      console.log("board", board);
       const imgCount = board?.images?.length;
-      console.log("imgCount", imgCount);
       setImageCount(imgCount as number);
       setShowLoading(false);
       const result = board.predefined ? false : true;
-      console.log("result", result);
       setShowEdit(result);
 
       setBoard(board);
-      // if (imgCount < 2 && board?.parent_type === "Menu") {
-      //   setShowLoading(true);
-      //   setTimeout(() => {
-      //     window.location.reload();
-      //   }, 4000);
-      // }
 
       if (board?.status === "pending") {
         setShowLoading(true);
@@ -105,16 +85,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
     inputRef.current?.value && clearInput();
   });
 
-  useEffect(() => {
-    console.log("ViewBoard mounted");
-    // async function fetchData() {
-    //   await fetchBoard();
-    // }
-    // fetchData();
-  }, []);
-
   useIonViewWillEnter(() => {
-    console.log("ViewBoard will enter");
     async function fetchData() {
       await fetchBoard();
     }

@@ -33,6 +33,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       removeImage(image.id, board.id);
       // Handle delete action
     } else if (action === "edit") {
+      console.log("Edit image");
       editImage(image.id);
     }
   };
@@ -59,7 +60,6 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       console.error("Error editing image: ", error);
       alert("Error editing image");
     }
-    // Handle edit image
   };
 
   const handleButtonPress = () => {
@@ -144,7 +144,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
 
   const defaultButtonOptions = [
     {
-      text: "Delete",
+      text: "Remove",
       role: "destructive",
       handler: () => handleActionSelected("delete"),
     },
@@ -176,8 +176,6 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
           console.log("Image Touch End");
           handleButtonRelease();
         }}
-        onMouseLeave={() => console.log("Image Mouse Leave")}
-        onMouseEnter={() => console.log("Image Mouse Enter")}
       />
       <span className="font-medium text-xs md:text-sm lg:text-md text-black">
         {image.label.length > 15

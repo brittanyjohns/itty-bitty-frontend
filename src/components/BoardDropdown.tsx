@@ -1,67 +1,79 @@
-import React, { useEffect, useState } from 'react';
-import { IonItem, IonList, IonSelect, IonSelectOption, IonToast } from '@ionic/react';
-import { addImageToBoard, getBoards } from '../data/boards';
+import React, { useEffect, useState } from "react";
+import {
+  IonItem,
+  IonList,
+  IonSelect,
+  IonSelectOption,
+  IonToast,
+} from "@ionic/react";
+import { addImageToBoard, getBoards } from "../data/boards";
 
 interface BoardDropdownProps {
-    imageId: string;
+  imageId: string;
 }
 
 const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId }) => {
-    const [boards, setBoards] = useState([]);
-    const [boardId, setBoardId] = useState(null);
-    const [showLoading, setShowLoading] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
-    const [toastMessage, setToastMessage] = useState('');
-    const selectRef = React.useRef<HTMLIonSelectElement>(null);
+  const [boards, setBoards] = useState([]);
+  const [boardId, setBoardId] = useState(null);
+  const [showLoading, setShowLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const selectRef = React.useRef<HTMLIonSelectElement>(null);
 
-
-    const fetchBoards = async () => {
-        const allBoards = await getBoards();
-        if (!allBoards) {
-            console.error('Error fetching boards');
-            return;
-        }
-        const boards = allBoards['boards']
-        setBoards(boards);
+  const fetchBoards = async () => {
+    const allBoards = await getBoards();
+    if (!allBoards) {
+      console.error("Error fetching boards");
+      return;
     }
+    const boards = allBoards["boards"];
+    setBoards(boards);
+  };
 
-    const handleSelectChange = (e: CustomEvent) => {
-        const boardId = e.detail.value;
-        setBoardId(boardId);
-        setShowLoading(true);
-        async function addSelectedImageToBoard() {
-            const response = await addImageToBoard(boardId, imageId);
-            const message = `Image added to board: ${response['name']}`;
-            setToastMessage(message);
-            setShowLoading(false);
-            setIsOpen(true);
-            setBoardId(null);
-        }
-        addSelectedImageToBoard();
+  const handleSelectChange = (e: CustomEvent) => {
+    const boardId = e.detail.value;
+    setBoardId(boardId);
+    setShowLoading(true);
+    async function addSelectedImageToBoard() {
+      const response = await addImageToBoard(boardId, imageId);
+      const message = `Image added to board: ${response["board"]["name"]}`;
+      setToastMessage(message);
+      setShowLoading(false);
+      setIsOpen(true);
+      setBoardId(null);
     }
+    addSelectedImageToBoard();
+  };
 
-    useEffect(() => {
-        fetchBoards();
-    }, []);
+  useEffect(() => {
+    fetchBoards();
+  }, []);
 
-    return (
-        <IonList>
-            <IonItem lines='none' >
-                <IonSelect placeholder="Select a board to add this image to" className='' name="boardId" onIonChange={(e) => handleSelectChange(e)} ref={selectRef}>
-                    {boards && boards.map((board: { id: any; name: any; }) => (
-                        <IonSelectOption key={board.id} value={board.id}>
-                            {board.name}
-                        </IonSelectOption>
-                    ))}
-                </IonSelect>
-            </IonItem>
-            <IonToast
-                isOpen={isOpen}
-                message={toastMessage}
-                onDidDismiss={() => setIsOpen(false)}
-                duration={2000}
-            ></IonToast>
-        </IonList>
-    );
-}
+  return (
+    <IonList>
+      <IonItem lines="none">
+        <IonSelect
+          placeholder="Select a board to add this image to"
+          className=""
+          name="boardId"
+          onIonChange={(e) => handleSelectChange(e)}
+          ref={selectRef}
+        >
+          {boards &&
+            boards.map((board: { id: any; name: any }) => (
+              <IonSelectOption key={board.id} value={board.id}>
+                {board.name}
+              </IonSelectOption>
+            ))}
+        </IonSelect>
+      </IonItem>
+      <IonToast
+        isOpen={isOpen}
+        message={toastMessage}
+        onDidDismiss={() => setIsOpen(false)}
+        duration={2000}
+      ></IonToast>
+    </IonList>
+  );
+};
 export default BoardDropdown;
