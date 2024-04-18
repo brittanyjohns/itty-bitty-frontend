@@ -181,3 +181,20 @@ export async function getPredictiveImagesByIds(ids: string[]): Promise<Predictiv
   const images: PredictiveImage[] = await response.json();
   return images;
 }
+
+export async function deleteImage(id: string): Promise<any> {
+  const response = await fetch(`${BASE_URL}images/${id}`, {
+    headers: userHeaders,
+    method: 'DELETE',
+  });
+  return response.json();
+}
+
+export async function removeDoc(imageId: string, docId: string|undefined): Promise<any> {
+  const response = await fetch(`${BASE_URL}images/${imageId}/hide_doc`, {
+    headers: userHeaders,
+    body: JSON.stringify({ doc_id: docId }),
+    method: 'POST',
+  });
+  return response.json();
+}

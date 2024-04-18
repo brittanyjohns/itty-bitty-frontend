@@ -58,7 +58,6 @@ const SelectGalleryScreen: React.FC = () => {
   const generateForm = useRef<HTMLDivElement>(null);
   const editForm = useRef<HTMLDivElement>(null);
   const [remainingImages, setRemainingImages] = useState<Image[]>(); // State for the remaining images
-  const inputRef = useRef<HTMLIonInputElement>(null);
   const [searchInput, setSearchInput] = useState("");
   const imageGalleryWrapper = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(1);
@@ -90,7 +89,7 @@ const SelectGalleryScreen: React.FC = () => {
 
   const fetchBoard = async () => {
     const board = await getBoard(id); // Ensure getBoard is typed to return a Promise<Board>
-    console.log("board", board);
+    console.log("fetch board", board);
     setBoard(board);
     toggleForms(segmentType);
     const remainingImgs = await getRemainingImages(board.id, 1, searchInput);
@@ -209,8 +208,6 @@ const SelectGalleryScreen: React.FC = () => {
     if (image) {
       setImage({ ...image, label: newLabel });
     }
-    console.log("image", image);
-    console.log("newLabel", newLabel);
   };
 
   const handleImageClick = (image: Image) => {

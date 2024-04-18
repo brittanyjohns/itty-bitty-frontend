@@ -142,6 +142,23 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     });
   };
 
+  const defaultButtonOptions = [
+    {
+      text: "Delete",
+      role: "destructive",
+      handler: () => handleActionSelected("delete"),
+    },
+    {
+      text: "Edit",
+      handler: () => handleActionSelected("edit"),
+    },
+    {
+      text: "Cancel",
+      role: "cancel",
+      handler: () => setShowActionList(false),
+    },
+  ];
+
   return (
     <div className="cursor-pointer bg-white rounded-md shadow-md p-1 h-fit">
       <IonImg
@@ -172,9 +189,8 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
         <ActionList
           isOpen={showActionList}
           onClose={() => setShowActionList(false)}
-          onActionSelected={(action) => {
-            handleActionSelected(action);
-          }}
+          onActionSelected={handleActionSelected}
+          buttonOptions={defaultButtonOptions}
         />
       )}
     </div>

@@ -71,7 +71,7 @@ const EditImageScreen: React.FC = (props: any) => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen scrollY={false}>
+      <IonContent fullscreen scrollY={true}>
         <IonText>Editing {image.label}</IonText>
         <>
           <form className="ion-padding" onSubmit={handleSubmit(onSubmit)}>

@@ -135,7 +135,7 @@ const NewMenu: React.FC = (props: any) => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen scrollY={false}>
+      <IonContent fullscreen scrollY={true}>
         <IonLoading
           message="Please wait while we analyze your menu..."
           isOpen={showLoading}
@@ -167,7 +167,6 @@ const NewMenu: React.FC = (props: any) => {
               Create
             </IonButton>
           </form>
-          <IonButton onClick={() => console.log(menu)}>Log Menu</IonButton>
         </div>
         <Tabs />
       </IonContent>
