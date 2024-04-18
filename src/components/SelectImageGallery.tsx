@@ -1,6 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Image, SelectImageGalleryProps } from "../data/images";
-import { IonImg, IonButton, IonButtons, IonTitle } from "@ionic/react";
+import {
+  IonImg,
+  IonButton,
+  IonButtons,
+  IonTitle,
+  IonActionSheet,
+} from "@ionic/react";
+import { useHistory } from "react-router";
+import { addImageToBoard, getUserBoards } from "../data/boards";
 
 const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
   images,
@@ -11,7 +19,12 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
 }) => {
   const [remainingImages, setRemainingImages] = useState<Image[]>(images);
   const [page, setPage] = useState(1);
-  // const [searchInput, setSearchInput] = useState('');
+  const [showActionList, setShowActionList] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
+  const [disableActionList, setDisableActionList] = useState(false);
+  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
+  const [userBoards, setUserBoards] = useState([]);
+  const history = useHistory();
   const fetchImages = async () => {
     if (searchInput.length > 1) {
       setPage(1);
@@ -19,16 +32,96 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
     const imgs = await onLoadMoreImages(page, searchInput);
     setRemainingImages(imgs);
   };
+
+  const fetchUserBoards = async () => {
+    // Fetch user boards
+    const fetchedBoards = await getUserBoards();
+    setUserBoards(fetchedBoards["boards"]);
+  };
   useEffect(() => {
     fetchImages();
   }, [page, searchInput]);
 
   useEffect(() => {
+    fetchUserBoards();
+  }, []);
+
+  useEffect(() => {
     setRemainingImages(images);
   }, [images]);
 
-  const handleOnImageClick = (image: Image) => {
+  const handleOnImageClick = (event: any, image: Image) => {
+    console.log("Event: ", event);
+    console.log("Image clicked", image, selectedImage);
+    if (showActionList) {
+      console.log("Action list is open, not handling click");
+      return;
+    }
     onImageClick(image);
+  };
+
+  const handleButtonPress = (image: Image) => {
+    if (selectedImage === null) {
+      console.log("No selected image, setting selected image", image);
+      setSelectedImage(image);
+    } else {
+      console.log("Selected image: ", selectedImage);
+    }
+    if (disableActionList) {
+      console.log("Action list disabled");
+      return;
+    }
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+    }
+    longPressTimer.current = setTimeout(() => {
+      console.log("Long press detected", image.id, selectedImage);
+      setSelectedImage(image);
+      setShowActionList(true);
+    }, 1000);
+  };
+
+  const handleButtonRelease = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+    }
+  };
+
+  const handleActionSelected = async (
+    action: string,
+    imageId: string,
+    selectedBoardId: string
+  ) => {
+    if (action === "add") {
+      if (!selectedBoardId) {
+        console.error("Board ID not provided");
+        return;
+      }
+      const result = await addImageToBoard(selectedBoardId, imageId);
+      console.log("Image added to board: ", result);
+      history.push(`/boards/${selectedBoardId}/gallery`);
+    } else {
+      console.log("Unknown action: ", action);
+    }
+  };
+
+  const setBoardButtons = () => {
+    const imageBtns = userBoards.map((board: any) => {
+      return {
+        text: board.name,
+        handler: () => {
+          if (selectedImage) {
+            handleActionSelected("add", selectedImage.id, board.id);
+          }
+        },
+      };
+    });
+    return imageBtns;
+  };
+  const imageBtns = setBoardButtons();
+
+  const onClose = () => {
+    setShowActionList(false);
   };
 
   return (
@@ -56,7 +149,9 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
             remainingImages.map((image, i) => (
               <div
                 className="flex relative w-full hover:cursor-pointer text-center min-h-24 p-1 bg-white rounded-md"
-                onClick={() => handleOnImageClick(image)}
+                onClick={(event) => handleOnImageClick(event, image)}
+                onTouchStart={() => handleButtonPress(image)}
+                onTouchEnd={handleButtonRelease}
                 key={image.id}
                 id={`image_${image.id}`}
               >
@@ -71,6 +166,12 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
                     <source src={image.audio} type="audio/aac" />
                   </audio>
                 </div>
+                <IonActionSheet
+                  isOpen={showActionList}
+                  onDidDismiss={onClose}
+                  header={`Add ${selectedImage?.label} to board`}
+                  buttons={imageBtns}
+                />
               </div>
             ))}
           {remainingImages.length < 1 && (

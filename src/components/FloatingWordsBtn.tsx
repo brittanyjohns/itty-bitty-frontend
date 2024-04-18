@@ -30,8 +30,9 @@ function FloatingWordsBtn({ inputRef, words }: FloatingWordsBtnProps) {
     if (inputRef.current) {
       inputRef.current.value += ` ${text}`;
     }
+    const textToSpeak = text.toLowerCase();
     await TextToSpeech.speak({
-      text: text,
+      text: textToSpeak,
       lang: "en-US",
       rate: 1.0,
       pitch: 1.0,

@@ -50,7 +50,7 @@ const ImagesScreen: React.FC = () => {
   const [userImages, setUserImages] = useState<Image[]>([]);
   const [allImages, setAllImages] = useState<Image[]>([]);
   const [segmentType, setSegmentType] = useState("all");
-  const [pageTitle, setPageTitle] = useState("Your Boards");
+  const [pageTitle, setPageTitle] = useState("Image Gallery");
   const [showLoading, setShowLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("Loading images");
   const inputRef = createRef<HTMLIonInputElement>();
@@ -63,6 +63,7 @@ const ImagesScreen: React.FC = () => {
     setUserImages(fetchedUserImages);
     console.log("Fetched images", fetchedImages);
     console.log("Fetched user images", fetchedUserImages);
+    console.log("fetch images page:", page);
     setShowLoading(false);
   };
   useIonViewWillEnter(() => {
@@ -146,9 +147,7 @@ const ImagesScreen: React.FC = () => {
             <IonButtons slot="start">
               <IonMenuButton></IonMenuButton>
             </IonButtons>
-            <IonTitle>
-              {pageTitle} {images.length}
-            </IonTitle>
+            <IonTitle>{pageTitle}</IonTitle>
             <IonButtons slot="end">
               <IonButton routerLink="/images/add">
                 <IonIcon icon={addCircleOutline} />
@@ -184,9 +183,9 @@ const ImagesScreen: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent>
-          <IonRefresher slot="fixed" onIonRefresh={refresh}>
+          {/* <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
-          </IonRefresher>
+          </IonRefresher> */}
           {showCreateBtn && (
             <IonList>
               <IonItem slot="start" className="w-full">
