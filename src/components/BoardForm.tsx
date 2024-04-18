@@ -1,17 +1,10 @@
-import { useEffect, useRef, useState } from "react";
-import {
-  addImageToBoard,
-  getBoard,
-  getRemainingImages,
-  updateBoard,
-} from "../data/boards";
-import { Image } from "../data/images";
+import { useEffect, useRef } from "react";
+import { updateBoard } from "../data/boards";
 import {
   IonButton,
   IonButtons,
   IonInput,
   IonItem,
-  IonLabel,
   IonList,
   IonSelect,
   IonSelectOption,
@@ -28,23 +21,45 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   const modal = useRef<HTMLIonModalElement>(null);
   const inputRef = useRef<HTMLIonInputElement>(null);
   const history = useHistory();
+  const [gridSize, setGridSize] = React.useState<number>(0);
 
-  const fetchBoard = async () => {
-    // const boardId = window.location.pathname.split("/")[2];
-    // const board = await getBoard(boardId);
-    console.log("setBoard", board);
-    setBoard(board);
+  // const fetchBoard = async () => {
+  //   console.log("setBoard", board);
+  //   setBoard(board);
+  // };
+
+  // const handleGridChange = async (event: CustomEvent) => {
+  //   if (!board || !board.id) {
+  //     console.error("No board found");
+  //     return;
+  //   }
+  //   const thisGridSize = event.detail.value;
+  //   console.log("setting thisGridSize", thisGridSize);
+  //   console.log("setting gridSize", gridSize);
+  //   setGridSize(gridSize);
+  //   console.log("gridSize", gridSize);
+  //   const updatedBoard = { ...board, number_of_columns: gridSize };
+  //   console.log("updatedBoard", updatedBoard);
+  //   setBoard(updatedBoard);
+  // };
+
+  useEffect(() => {
+    if (board) {
+      setGridSize(board.number_of_columns);
+    }
+  }, [gridSize, board]);
+
+  const handleGridSizeChange = (event: CustomEvent) => {
+    setGridSize(event.detail.value);
+    handleAfterAction();
   };
 
-  const handleGridChange = async (event: CustomEvent) => {
-    if (!board || !board.id) {
+  const handleAfterAction = () => {
+    if (!board) {
       console.error("No board found");
       return;
     }
-    const gridSize = event.detail.value;
-    console.log("gridSize", gridSize);
     const updatedBoard = { ...board, number_of_columns: gridSize };
-    console.log("updatedBoard", updatedBoard);
     setBoard(updatedBoard);
   };
 
@@ -75,13 +90,13 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
     history.push(`/boards/${board?.id}`);
   };
 
-  const goToGallery = () => {
-    if (!board) {
-      console.error("No board found");
-      return;
-    }
-    history.push(`/boards/${board?.id}/gallery`);
-  };
+  // const goToGallery = () => {
+  //   if (!board) {
+  //     console.error("No board found");
+  //     return;
+  //   }
+  //   history.push(`/boards/${board?.id}/gallery`);
+  // };
 
   const gridSizeOptions = [
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
@@ -103,7 +118,7 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
             label="Number of Columns"
             placeholder="Select # of columns"
             name="number_of_columns"
-            onIonChange={handleGridChange}
+            onIonChange={handleGridSizeChange}
             value={board?.number_of_columns}
           >
             {gridSizeOptions.map((size) => (

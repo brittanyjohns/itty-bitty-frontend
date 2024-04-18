@@ -19,7 +19,13 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useParams } from "react-router";
-import { getImage, Image, generateImage } from "../data/images"; // Adjust imports based on actual functions
+import {
+  getImage,
+  Image,
+  generateImage,
+  deleteImage,
+  removeDoc,
+} from "../data/images"; // Adjust imports based on actual functions
 import { markAsCurrent } from "../data/docs"; // Adjust imports based on actual functions
 import BoardDropdown from "../components/BoardDropdown";
 import FileUploadForm from "../components/FileUploadForm";
@@ -28,6 +34,8 @@ import {
   cloudUploadOutline,
   gridOutline,
   refreshCircleOutline,
+  remove,
+  trashBinOutline,
 } from "ionicons/icons";
 import { set } from "react-hook-form";
 
@@ -41,6 +49,7 @@ const ViewImageScreen: React.FC = () => {
   const uploadForm = useRef<HTMLDivElement>(null);
   const generateForm = useRef<HTMLDivElement>(null);
   const imageGridWrapper = useRef<HTMLDivElement>(null);
+  const deleteImageWrapper = useRef<HTMLDivElement>(null);
   const [pageTitle, setPageTitle] = useState("");
   const { currentUser, setCurrentUser } = useCurrentUser();
   const [boardId, setBoardId] = useState<string | null>(null);
@@ -54,6 +63,7 @@ const ViewImageScreen: React.FC = () => {
     }
     return false;
   };
+  const [showHardDelete, setShowHardDelete] = useState(false);
 
   const fetchImage = async () => {
     const img = await getImage(id);
@@ -65,6 +75,7 @@ const ViewImageScreen: React.FC = () => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const boardId = urlParams.get("boardId");
+    setShowHardDelete(currentUser?.role === "admin");
     setBoardId(boardId);
     getData();
   }, []);
@@ -80,6 +91,28 @@ const ViewImageScreen: React.FC = () => {
     }
   };
 
+  const handleDeleteImage = async () => {
+    if (!image) return;
+    const result = await deleteImage(image.id);
+    if (result["status"] === "success") {
+      alert("Image deleted successfully.");
+      window.location.href = "/images";
+    } else {
+      alert("Error deleting image..\n" + result["message"]);
+    }
+  };
+
+  const handleRemoveCurrentDoc = async () => {
+    if (!image) return;
+    const result = await removeDoc(image.id, image.display_doc?.id);
+    if (result["status"] === "success") {
+      alert("Display image removed successfully.");
+      window.location.reload();
+    } else {
+      alert("Error removing display image.\n" + result["message"]);
+    }
+  };
+
   const toggleForms = (segmentType: string, imgToSet?: Image) => {
     if (!imgToSet) {
       imgToSet = image ?? undefined;
@@ -90,12 +123,14 @@ const ViewImageScreen: React.FC = () => {
       uploadForm.current?.classList.add("hidden");
       generateForm.current?.classList.remove("hidden");
       imageGridWrapper.current?.classList.add("hidden");
+      deleteImageWrapper.current?.classList.add("hidden");
     }
     if (segmentType === "upload") {
       setPageTitle(`Upload an Image for ${label} `);
       uploadForm.current?.classList.remove("hidden");
       generateForm.current?.classList.add("hidden");
       imageGridWrapper.current?.classList.add("hidden");
+      deleteImageWrapper.current?.classList.add("hidden");
     }
     if (segmentType === "gallery") {
       console.log("Label: ", label);
@@ -103,6 +138,14 @@ const ViewImageScreen: React.FC = () => {
       uploadForm.current?.classList.add("hidden");
       generateForm.current?.classList.add("hidden");
       imageGridWrapper.current?.classList.remove("hidden");
+      deleteImageWrapper.current?.classList.add("hidden");
+    }
+    if (segmentType === "delete") {
+      setPageTitle(`Delete Image for ${label}`);
+      uploadForm.current?.classList.add("hidden");
+      generateForm.current?.classList.add("hidden");
+      imageGridWrapper.current?.classList.add("hidden");
+      deleteImageWrapper.current?.classList.remove("hidden");
     }
   };
 
@@ -180,13 +223,18 @@ const ViewImageScreen: React.FC = () => {
                 <IonIcon icon={refreshCircleOutline} />
               </IonLabel>
             </IonSegmentButton>
+            <IonSegmentButton value="delete">
+              <IonLabel className="text-xl">
+                <IonIcon icon={trashBinOutline} />
+              </IonLabel>
+            </IonSegmentButton>
           </IonSegment>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding" scrollY={true}>
         <div className="ion-justify-content-center ion-align-items-center ion-text-center pt-1">
           <IonText className="font-bold text-2xl">{pageTitle}</IonText>
-          <div className="mt-2">
+          <div className="mt-4">
             {currentImage && image && (
               <IonImg
                 id={image.id}
@@ -195,7 +243,6 @@ const ViewImageScreen: React.FC = () => {
                 className="w-1/2 mx-auto"
               />
             )}
-            <p className="text-center text-sm">type: {image?.image_type}</p>
             {/* {image && !currentImage && <IonImg id={image.id} src={image.src} alt={image.label} className='w-1/2 mx-auto' />} */}
           </div>
         </div>
@@ -279,6 +326,26 @@ const ViewImageScreen: React.FC = () => {
           )}
           {image && image.docs && image.docs.length < 1 && (
             <div className="text-center"></div>
+          )}
+        </div>
+        <div className="hidden text-center p-4" ref={deleteImageWrapper}>
+          <div className="mb-4">
+            <IonText className="text-xl">
+              Do you want to delete ONLY the above image?
+            </IonText>
+            <IonButton className="mt-2 w-full" onClick={handleRemoveCurrentDoc}>
+              Delete Current Image
+            </IonButton>
+          </div>
+          {showHardDelete && (
+            <div className="m-4 pt-4">
+              <IonText className="text-md">
+                Do you want to delete this image AND all variations of it?
+              </IonText>
+              <IonButton className="mt-2 w-full" onClick={handleDeleteImage}>
+                Delete Everything
+              </IonButton>
+            </div>
           )}
         </div>
       </IonContent>

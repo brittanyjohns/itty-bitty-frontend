@@ -36,7 +36,7 @@ const Home: React.FC = () => {
             <IonTitle>Home</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent className="ion-padding text-justified" scrollY={false}>
+        <IonContent className="ion-padding text-justified" scrollY={true}>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
@@ -76,7 +76,7 @@ const Home: React.FC = () => {
             If you have issues, please use the web version at{" "}
             <a
               className="font-bold"
-              href="https://ittybittyboards.com"
+              href="https://speakanyway.com"
               target="_blank"
             >
               {" "}

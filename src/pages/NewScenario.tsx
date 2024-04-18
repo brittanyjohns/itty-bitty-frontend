@@ -41,7 +41,7 @@ const NewScenario: React.FC = (props: any) => {
           <IonTitle>New Scenario</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen scrollY={false}>
+      <IonContent fullscreen scrollY={true}>
         <NewScenarioForm
           onSave={onSubmit}
           onCancel={() => props.history.push("/boards")}

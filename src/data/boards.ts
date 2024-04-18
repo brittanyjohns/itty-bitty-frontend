@@ -114,7 +114,6 @@ export async function addImageListToBoard(id: string, payload: { word_list: stri
     if (query && query.length > 0) {
         strPage = ''
         }
-        console.log('getRemainingImages', id, strPage, query);
     const response = await fetch(`${BASE_URL}boards/${id}/remaining_images?page=${strPage}&query=${query}`,
      { headers: userHeaders }) 
     const images: Image[] = await response.json();
