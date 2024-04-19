@@ -18,6 +18,9 @@ import {
   sunny,
   sunnyOutline,
   settingsOutline,
+  people,
+  peopleCircle,
+  peopleCircleOutline,
 } from "ionicons/icons";
 import { set } from "react-hook-form";
 const menuLinks: MenuLink[] = [
@@ -64,25 +67,32 @@ const menuLinks: MenuLink[] = [
     id: 8
   },
   {
+    endpoint: '/teams',
+    name: 'Teams',
+    slug: 'teams',
+    icon: peopleCircleOutline,
+    id: 10
+  },
+  {
     endpoint: '/settings',
     name: 'Settings',
     slug: 'settings',
     icon: settingsOutline,
-    id: 10
+    id: 11
   },
   {
     endpoint: '/predictive',
     name: 'Predictive',
     slug: 'predictive',
     icon: sunnyOutline,
-    id: 11
+    id: 12
   },
   {
     endpoint: '/sign-out',
     name: 'Sign Out',
     slug: 'sign-out',
     icon: logOutOutline,
-    id: 12
+    id: 13
   },
 ];
 

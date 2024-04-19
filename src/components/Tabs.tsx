@@ -1,11 +1,23 @@
 // Tabs.tsx
-import React from 'react';
-import { IonTabBar, IonTabButton, IonIcon, IonLabel, IonTab } from '@ionic/react';
-import { home, fastFoodOutline, imagesOutline, albumsOutline } from 'ionicons/icons';
+import React from "react";
+import {
+  IonTabBar,
+  IonTabButton,
+  IonIcon,
+  IonLabel,
+  IonTab,
+} from "@ionic/react";
+import {
+  home,
+  fastFoodOutline,
+  imagesOutline,
+  albumsOutline,
+  peopleCircleOutline,
+} from "ionicons/icons";
 
 const Tabs: React.FC = () => (
-  <IonTabBar slot="bottom" className=''>
-    <IonTabButton tab="home" href="/home" className=''>
+  <IonTabBar slot="bottom" className="">
+    <IonTabButton tab="home" href="/home" className="">
       <IonIcon icon={home} />
       <IonLabel>Home</IonLabel>
     </IonTabButton>
@@ -20,6 +32,10 @@ const Tabs: React.FC = () => (
     <IonTabButton tab="menus" href="/menus">
       <IonIcon icon={fastFoodOutline} />
       <IonLabel>Menus</IonLabel>
+    </IonTabButton>
+    <IonTabButton tab="teams" href="/teams">
+      <IonIcon icon={peopleCircleOutline} />
+      <IonLabel>Teams</IonLabel>
     </IonTabButton>
   </IonTabBar>
 );

@@ -32,8 +32,9 @@ function MainMenu() {
       "boards",
       "images",
       "menus",
-      "settings",
+      "teams",
       "predictive",
+      "settings",
     ];
     const signedOutLinks = ["sign-in", "sign-up"];
 
