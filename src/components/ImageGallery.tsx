@@ -64,6 +64,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
             board={board}
             setShowIcon={setShowIcon}
             inputRef={inputRef}
+            disableActionList={!board?.can_edit}
           />
         ))}
       </div>

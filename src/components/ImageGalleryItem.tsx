@@ -6,10 +6,9 @@ import ActionList from "./ActionList"; // Import ActionList for local use
 import { removeImageFromBoard } from "../data/boards";
 import { useHistory } from "react-router";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
-import { h } from "ionicons/dist/types/stencil-public-runtime";
 interface ImageGalleryItemProps {
   image: Image;
-  board?: any; // Adjust the type based on your actual board type
+  board?: any;
   setShowIcon?: (show: boolean) => void;
   inputRef?: React.RefObject<HTMLInputElement>;
   disableActionList?: boolean;
