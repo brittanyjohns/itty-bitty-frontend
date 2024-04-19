@@ -21,36 +21,21 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   const modal = useRef<HTMLIonModalElement>(null);
   const inputRef = useRef<HTMLIonInputElement>(null);
   const history = useHistory();
-  const [gridSize, setGridSize] = React.useState<number>(0);
-
-  // const fetchBoard = async () => {
-  //   console.log("setBoard", board);
-  //   setBoard(board);
-  // };
-
-  // const handleGridChange = async (event: CustomEvent) => {
-  //   if (!board || !board.id) {
-  //     console.error("No board found");
-  //     return;
-  //   }
-  //   const thisGridSize = event.detail.value;
-  //   console.log("setting thisGridSize", thisGridSize);
-  //   console.log("setting gridSize", gridSize);
-  //   setGridSize(gridSize);
-  //   console.log("gridSize", gridSize);
-  //   const updatedBoard = { ...board, number_of_columns: gridSize };
-  //   console.log("updatedBoard", updatedBoard);
-  //   setBoard(updatedBoard);
-  // };
+  const [gridSize, setGridSize] = React.useState<number>(
+    board.number_of_columns
+  );
 
   useEffect(() => {
     if (board) {
-      setGridSize(board.number_of_columns);
+      console.log("Board", board);
+      console.log("Grid size", gridSize);
     }
-  }, [gridSize, board]);
+  }, [board]);
 
   const handleGridSizeChange = (event: CustomEvent) => {
     setGridSize(event.detail.value);
+    console.log("event.detail.value", event.detail.value);
+    console.log("Grid size", gridSize);
     handleAfterAction();
   };
 
@@ -59,6 +44,7 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
       console.error("No board found");
       return;
     }
+    console.log("After action", gridSize);
     const updatedBoard = { ...board, number_of_columns: gridSize };
     setBoard(updatedBoard);
   };
@@ -68,10 +54,12 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
       console.error("No board found");
       return;
     }
-    const updatedBoard = await updateBoard(board);
-    setBoard(updatedBoard);
+    const updatingBoard = { ...board, number_of_columns: gridSize };
+
+    const savedBoard = await updateBoard(updatingBoard);
+    setBoard(savedBoard);
     history.push(`/boards/${board?.id}`);
-    window.location.reload();
+    // window.location.reload();
   };
 
   const handleReset = () => {
@@ -119,7 +107,7 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
             placeholder="Select # of columns"
             name="number_of_columns"
             onIonChange={handleGridSizeChange}
-            value={board?.number_of_columns}
+            value={gridSize}
           >
             {gridSizeOptions.map((size) => (
               <IonSelectOption key={size} value={size}>
