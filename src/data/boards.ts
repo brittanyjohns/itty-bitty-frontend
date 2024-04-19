@@ -13,6 +13,8 @@ export interface Board {
     error?: string;
     floating_words?: string[];
     voice?: string;
+    can_edit?: boolean;
+    can_delete?: boolean;
 }
 
 export interface PredictiveBoard {

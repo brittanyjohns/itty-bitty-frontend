@@ -50,7 +50,8 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
       setImageCount(imgCount as number);
       setShowLoading(false);
       const result = board.predefined ? false : true;
-      setShowEdit(result);
+      const userCanEdit = board.can_edit;
+      setShowEdit(userCanEdit && result);
 
       setBoard(board);
 
