@@ -51,6 +51,8 @@ import NewScenario from "./pages/NewScenario";
 import ViewMenuScreen from "./pages/ViewMenuScreen";
 import PredictiveIndex from "./pages/PredictiveIndex";
 import { AndroidFullScreen } from "@awesome-cordova-plugins/android-full-screen";
+import TeamsScreen from "./pages/TeamsScreen";
+import ViewTeamScreen from "./pages/ViewTeamScreen";
 
 setupIonicReact();
 
@@ -103,6 +105,8 @@ const App: React.FC = () => (
           <Route path="/menus/new" component={NewMenu} exact={true} />
 
           <Route path="/menus" component={MenusScreen} exact={true} />
+          <Route path="/teams" component={TeamsScreen} exact={true} />
+          <Route path="/teams/:id" component={ViewTeamScreen} exact={true} />
           <Route path="/settings" component={SettingsPage} exact={true} />
           <Route path={"/sign-up"}>
             <SignUpScreen />
