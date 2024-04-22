@@ -40,7 +40,7 @@ const Home: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <h1 className="text-2xl font-bold">Welcome to Itty Bitty Boards</h1>
+          <h1 className="text-2xl font-bold">Welcome to SpeakAnyWay</h1>
           {currentUser && (
             <p className="text-xl font-light mt-2">
               Click on the Boards tab to get started

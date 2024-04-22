@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Team } from "../data/teams";
 import { IonList, IonButton, IonItem, IonText } from "@ionic/react";
 import TeamListItem from "./TeamListItem";
-import SignInScreen from "../pages/SignUpScreen";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 
 interface TeamListProps {
@@ -49,8 +48,6 @@ const TeamList = ({ teams }: TeamListProps) => {
             </div>
           </IonItem>
         )}
-
-        {!currentUser && <SignInScreen />}
       </IonList>
     </div>
   );
