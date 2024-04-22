@@ -310,7 +310,9 @@ const ViewImageScreen: React.FC = () => {
                   image.docs.map((doc, index) => (
                     <div
                       key={doc.id}
-                      className="h-20 w-20 bg-white p-1 rounded-lg shadow-md"
+                      className={`h-20 w-20${
+                        image.bg_color || "bg-white"
+                      }p-1 rounded-lg shadow-md`}
                     >
                       <IonImg
                         id={doc.id}

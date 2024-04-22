@@ -160,7 +160,11 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
                   alt={image.label}
                   className="absolute object-contain w-full h-full top-0 left-0"
                 />
-                <div className="font-medium text-xs md:text-sm lg:text-md bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black mt-2">
+                <div
+                  className={`font-medium text-xs md:text-sm lg:text-md cursor-pointer ${
+                    image.bg_color || "bg-white"
+                  } rounded-lg shadow-md bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black mt-2`}
+                >
                   {image.label}
                   <audio>
                     <source src={image.audio} type="audio/aac" />
