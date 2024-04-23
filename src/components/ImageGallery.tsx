@@ -9,6 +9,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   board,
   setShowIcon,
   inputRef,
+  gridSize,
 }) => {
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -36,6 +37,11 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     gridTarget.style.width = adjustedWidth;
     gridTarget.style.display = "grid";
 
+    if (gridSize) {
+      gridTarget.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+      return;
+    }
+
     if (board?.number_of_columns) {
       gridTarget.style.gridTemplateColumns = `repeat(${board.number_of_columns}, 1fr)`;
       return;
@@ -52,7 +58,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     resizeGrid();
     // window.addEventListener("resize", resizeGrid);
     // return () => window.removeEventListener("resize", resizeGrid);
-  }, [images]);
+  }, [images, gridSize]);
 
   return (
     <div className="gallery-container">

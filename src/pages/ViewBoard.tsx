@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Board, getBoard } from "../data/boards";
+import { Board, getBoard, updateGridSize } from "../data/boards";
 import {
   IonButton,
   IonButtons,
@@ -30,6 +30,8 @@ import ImageGallery from "../components/ImageGallery";
 import React from "react";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
 import FloatingWordsBtn from "../components/FloatingWordsBtn";
+import BoardGridDropdown from "../components/BoardGridDropdown";
+import { set } from "react-hook-form";
 
 const ViewBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();
@@ -39,6 +41,9 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
   const [showLoading, setShowLoading] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
   const [imageCount, setImageCount] = useState(0);
+  const [gridSize, setGridSize] = useState(4);
+  // const [toastMessage, setToastMessage] = useState("");
+  // const [isOpen, setIsOpen] = useState(false);
 
   const fetchBoard = async () => {
     const board = await getBoard(params.id);
@@ -55,6 +60,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
       setShowEdit(userCanEdit && result);
 
       setBoard(board);
+      setGridSize(board.number_of_columns);
 
       if (board?.status === "pending") {
         setShowLoading(true);
@@ -81,6 +87,11 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
       inputRef.current.value = "";
     }
     setShowIcon(false);
+  };
+
+  const onHandleGridChange = async (gridSize: number) => {
+    console.log("Grid size changed: ", gridSize);
+    setGridSize(gridSize);
   };
 
   useIonViewDidLeave(() => {
@@ -111,8 +122,21 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
             </IonButton>
           </IonButtons>
           <IonItem slot="start" className="w-full">
+            <h1 className="text-center text-lg font-bold">
+              {board?.name || "Board"}
+            </h1>
+          </IonItem>
+          {!showIcon && (
+            <BoardGridDropdown
+              onUpdateGrid={onHandleGridChange}
+              gridSize={gridSize}
+            />
+          )}
+        </IonToolbar>
+        <IonToolbar>
+          <IonItem slot="start" className="w-full">
             <IonInput
-              placeholder={board?.name}
+              placeholder="Click an image to begin speaking"
               ref={inputRef}
               readonly={true}
               className="w-full text-xs text-justify"
@@ -163,6 +187,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
             board={board}
             setShowIcon={setShowIcon}
             inputRef={inputRef}
+            gridSize={gridSize}
           />
         )}
         {imageCount < 1 && (
