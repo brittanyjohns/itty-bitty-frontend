@@ -164,7 +164,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
         alt={image.label}
         className="ion-img-contain mx-auto"
       />
-      <span className="font-medium text-sm md:text-md lg:text-md text-black absolute bottom-0 m-1">
+      <span className="bg-white bg-opacity-80 w-full font-medium text-sm md:text-md lg:text-md text-black absolute bottom-0 left-0 p-1 pl-2 rounded-sm">
         {image.label.length > 15
           ? `${image.label.substring(0, 12)}...`
           : image.label}

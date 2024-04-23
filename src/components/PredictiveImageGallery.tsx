@@ -46,7 +46,11 @@ const PredictiveImageGallery: React.FC<PredictiveImageGalleryProps> = ({
             image.bg_color || "bg-white"
           } rounded-lg shadow-md p-1`}
         >
-          <ImageComponent label={image.label} src={image.src} />
+          <ImageComponent
+            label={image.label}
+            src={image.src}
+            bg_color={image.bg_color}
+          />
         </div>
       ))}
     </div>
