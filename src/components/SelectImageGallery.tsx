@@ -142,13 +142,15 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
       </div>
       <div className="mt-1">
         <div
-          className="my-auto bg-blue-400 mx-auto grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-1"
+          className="my-auto mx-auto grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-1"
           key={remainingImages.length}
         >
           {remainingImages &&
             remainingImages.map((image, i) => (
               <div
-                className="flex relative w-full hover:cursor-pointer text-center min-h-24 p-1 bg-white rounded-sm"
+                className={`flex relative w-full hover:cursor-pointer text-center min-h-24 p-1 cursor-pointer ${
+                  image.bg_color || "bg-white"
+                } rounded-sm`}
                 onClick={(event) => handleOnImageClick(event, image)}
                 onTouchStart={() => handleButtonPress(image)}
                 onTouchEnd={handleButtonRelease}
@@ -161,9 +163,7 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
                   className="absolute object-contain w-full h-full top-0 left-0"
                 />
                 <div
-                  className={`font-medium text-xs md:text-sm lg:text-md cursor-pointer ${
-                    image.bg_color || "bg-white"
-                  } rounded-sm shadow-md bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black mt-2`}
+                  className={`font-medium text-xs md:text-sm lg:text-md rounded-sm shadow-md bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black mt-2`}
                 >
                   {image.label}
                   <audio>
