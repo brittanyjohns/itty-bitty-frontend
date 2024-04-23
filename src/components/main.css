@@ -73,6 +73,37 @@ ion-fab-button::part(native):active::after {
   background-color: #b7f399;
 }
 
-.bg-img-blue {
+.bg-green-400 {
+  background-color: #b7f399;
+}
+
+.bg-orange-400 {
+  background-color: #ff9f00;
+}
+.bg-teal-400 {
   background-color: #00b2ff;
+}
+
+.bg-red-400 {
+  background-color: #c81515;
+}
+
+.bg-yellow-400 {
+  background-color: #fdec00;
+}
+
+.bg-purple-400 {
+  background-color: #a300ff;
+}
+
+.bg-pink-400 {
+  background-color: #ff00a2;
+}
+
+.bg-blue-400 {
+  background-color: #00b2ff;
+}
+
+.bg-gray-400 {
+  background-color: #a4a5a4;
 }
