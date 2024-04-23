@@ -46,6 +46,7 @@ import { BASE_URL } from "./users";
     images: Image[];
     setShowIcon: any;
     inputRef: any;
+    gridSize?: number;
   }
   // (boardId, {
   //           query: query,

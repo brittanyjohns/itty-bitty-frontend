@@ -1,4 +1,3 @@
-// ImageComponent.tsx
 import { IonImg } from "@ionic/react";
 import React from "react";
 

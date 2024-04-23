@@ -34,6 +34,19 @@ export const getBoards = () => {
     return boards;
 }
 
+export const updateGridSize = (id: string, size: number) => {
+    const updatedBoard = fetch(`${BASE_URL}boards/${id}/update_grid_size`, {
+        method: 'PUT',
+        headers: userHeaders,
+        body: JSON.stringify({ number_of_columns: size }),
+    })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => console.error('Error updating board: ', error));
+
+    return updatedBoard;
+}
+
 export const getUserBoards = () => {
     const boards = fetch(`${BASE_URL}boards/user_boards`, { headers: userHeaders }) // `localhostboards
         .then(response => response.json())
@@ -79,10 +92,10 @@ export const createBoard = (board: Board) => {
 
 export const updateBoard = (board: Board) => {
     console.log('updateBoard', board);
-    const formData = new FormData();
-    formData.append('board[name]', board.name);
-    formData.append('board[description]', board.description || '');
-    formData.append('board[number_of_columns]', board.number_of_columns.toString());
+    // const formData = new FormData();
+    // formData.append('board[name]', board.name);
+    // formData.append('board[description]', board.description || '');
+    // formData.append('board[number_of_columns]', board.number_of_columns.toString());
     const updatedBoard = fetch(`${BASE_URL}boards/${board.id}`, {
         method: 'PUT',
         headers: userHeaders,

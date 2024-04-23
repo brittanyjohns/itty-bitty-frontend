@@ -148,14 +148,12 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     <div
       className={`relative cursor-pointer ${
         image.bg_color || "bg-white"
-      } rounded-md shadow-md p-1 h-full`}
+      } rounded-md shadow-md p-1 h-fit`}
       onClick={() => handleImageClick(image)}
       onTouchStart={() => {
-        console.log("Image Touch Start");
         handleButtonPress();
       }}
       onTouchEnd={() => {
-        console.log("Image Touch End");
         handleButtonRelease();
       }}
     >

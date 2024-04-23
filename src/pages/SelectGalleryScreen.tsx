@@ -150,13 +150,6 @@ const SelectGalleryScreen: React.FC = () => {
     }
   };
 
-  const handleDocClick = async (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    const target = e.target as HTMLImageElement;
-    history.push(`/images/${target.id}`);
-  };
-
   const handleGenerate = async () => {
     console.log("Generate Image", image);
     if (!checkCurrentUserTokens()) {
@@ -287,11 +280,7 @@ const SelectGalleryScreen: React.FC = () => {
                 <div className="grid grid-cols-3 gap-4 mt-3" ref={boardGrid}>
                   {board?.images &&
                     board.images.map((img: Image, index: number) => (
-                      <div
-                        key={index}
-                        className="relative"
-                        onClick={handleDocClick}
-                      >
+                      <div key={index} className="relative">
                         <ImageGalleryItem
                           key={index}
                           image={img}
