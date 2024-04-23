@@ -142,13 +142,13 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
       </div>
       <div className="mt-1">
         <div
-          className="my-auto mx-auto grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-1"
+          className="my-auto bg-blue-400 mx-auto grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-1"
           key={remainingImages.length}
         >
           {remainingImages &&
             remainingImages.map((image, i) => (
               <div
-                className="flex relative w-full hover:cursor-pointer text-center min-h-24 p-1 bg-white rounded-md"
+                className="flex relative w-full hover:cursor-pointer text-center min-h-24 p-1 bg-white rounded-sm"
                 onClick={(event) => handleOnImageClick(event, image)}
                 onTouchStart={() => handleButtonPress(image)}
                 onTouchEnd={handleButtonRelease}
@@ -163,7 +163,7 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
                 <div
                   className={`font-medium text-xs md:text-sm lg:text-md cursor-pointer ${
                     image.bg_color || "bg-white"
-                  } rounded-lg shadow-md bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black mt-2`}
+                  } rounded-sm shadow-md bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black mt-2`}
                 >
                   {image.label}
                   <audio>

@@ -69,7 +69,8 @@ const App: React.FC = () => (
           {/* {isUserSignedIn() ? <Redirect to="/home" /> : <Redirect to="/sign-in" />} */}
 
           <Route path="/home" exact={true}>
-            <Home />
+            {/* <Home /> */}
+            <PredictiveIndex />
           </Route>
           <Route path="/dashboard" component={Dashboard} exact={true} />
           <Route path="/boards/:id" component={ViewBoard} exact={true} />

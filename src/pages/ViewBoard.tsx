@@ -47,6 +47,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
       return;
     } else {
       const imgCount = board?.images?.length;
+      console.log("Image count: ", imgCount);
       setImageCount(imgCount as number);
       setShowLoading(false);
       const result = board.predefined ? false : true;

@@ -94,7 +94,11 @@ const BoardListItem: React.FC<BoardListItemProps> = ({
         detail={false}
         lines="none"
       >
-        <IonText className="text-xl w-full font-bold">{board.name}</IonText>
+        <IonText className="text-xl w-full font-bold">
+          {board.name.length > 25
+            ? `${board.name.substring(0, 22)}...`
+            : board.name}
+        </IonText>
       </IonItem>
 
       {!board?.predefined && (

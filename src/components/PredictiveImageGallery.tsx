@@ -42,7 +42,7 @@ const PredictiveImageGallery: React.FC<PredictiveImageGalleryProps> = ({
         <div
           key={`${image.id}-${index}`}
           onClick={() => handleImageClick(image)}
-          className={`cursor-pointer ${
+          className={`cursor-pointer relative ${
             image.bg_color || "bg-white"
           } rounded-lg shadow-md p-1`}
         >
