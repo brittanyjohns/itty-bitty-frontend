@@ -1,4 +1,3 @@
-// ImageGalleryItem.tsx
 import React, { useState, useRef } from "react";
 import { IonImg, useIonViewDidLeave } from "@ionic/react";
 import { Image } from "../data/images";
@@ -26,13 +25,9 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   const history = useHistory();
 
   const handleActionSelected = (action: string) => {
-    console.log("Action selected: ", action);
-    console.log("Image: ", image);
     if (action === "delete") {
       removeImage(image.id, board.id);
-      // Handle delete action
     } else if (action === "edit") {
-      console.log("Edit image");
       editImage(image.id);
     }
   };
@@ -62,14 +57,10 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   };
 
   const handleButtonPress = () => {
-    console.log("Button Pressed");
-    // handleImageClick(image);
     if (disableActionList) {
-      console.log("Action list disabled");
       return;
     }
     longPressTimer.current = setTimeout(() => {
-      console.log("Long press detected");
       setShowActionList(true);
     }, 1000);
   };
@@ -79,13 +70,11 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       clearTimeout(longPressTimer.current);
     }
     setTimeout(() => {
-      console.log("Button Released - closing action list");
       setShowActionList(false);
     }, 1000);
   };
 
   const handleImageClick = (image: Image) => {
-    console.log("Click event", image);
     const audioSrc = image.audio;
     const label = image.label;
     if (inputRef?.current) {
@@ -105,14 +94,12 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     }
     setAudioList([...audioList, audioSrc as string]);
     const audio = new Audio(audioSrc);
-    // audio.play();
 
     const promise = audio.play();
     if (promise !== undefined) {
       promise
         .then(() => {
           console.log("Autoplay started");
-          // Autoplay started
         })
         .catch((error) => {
           console.log("Autoplay was prevented", error);
@@ -126,7 +113,6 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   const [audioList, setAudioList] = useState<string[]>([]);
 
   useIonViewDidLeave(() => {
-    console.log("Leaving ImageGalleryItem");
     setShowActionList(false);
   });
 
@@ -159,24 +145,26 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   ];
 
   return (
-    <div className="cursor-pointer bg-white rounded-md shadow-md p-1 h-fit">
+    <div
+      className={`relative cursor-pointer ${
+        image.bg_color || "bg-white"
+      } rounded-md shadow-md p-1 h-full`}
+      onClick={() => handleImageClick(image)}
+      onTouchStart={() => {
+        console.log("Image Touch Start");
+        handleButtonPress();
+      }}
+      onTouchEnd={() => {
+        console.log("Image Touch End");
+        handleButtonRelease();
+      }}
+    >
       <IonImg
         src={image.src}
         alt={image.label}
         className="ion-img-contain mx-auto"
-        onClick={() => handleImageClick(image)}
-        onMouseDown={() => console.log("Image Mouse Down")}
-        onTouchStart={() => {
-          console.log("Image Touch Start");
-          handleButtonPress();
-        }}
-        onMouseUp={() => console.log("Image Mouse Up")}
-        onTouchEnd={() => {
-          console.log("Image Touch End");
-          handleButtonRelease();
-        }}
       />
-      <span className="font-medium text-xs md:text-sm lg:text-md text-black">
+      <span className="font-medium text-sm md:text-md lg:text-md text-black absolute bottom-0 m-1">
         {image.label.length > 15
           ? `${image.label.substring(0, 12)}...`
           : image.label}
