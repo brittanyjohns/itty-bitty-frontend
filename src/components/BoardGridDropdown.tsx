@@ -6,15 +6,8 @@ import {
   IonSelectOption,
   IonToast,
 } from "@ionic/react";
-import {
-  Board,
-  addImageToBoard,
-  getBoards,
-  updateGridSize,
-} from "../data/boards";
 
 interface BoardGridDropdownProps {
-  // board: Board;
   gridSize: number;
   onUpdateGrid: any;
 }
@@ -34,14 +27,8 @@ const BoardGridDropdown: React.FC<BoardGridDropdownProps> = ({
 
   const handleSelectChange = (e: CustomEvent) => {
     const gridSize = e.detail.value;
-    console.log("Selected grid size: ", gridSize);
-    console.log("selectRef: ", selectRef.current?.value);
     onUpdateGrid(gridSize);
   };
-
-  useEffect(() => {
-    console.log("BoardGridDropdown board: ", gridSize);
-  }, []);
 
   return (
     <IonList slot="end" className="">

@@ -13,6 +13,7 @@ import { Board } from "../data/boards";
 
 import { useHistory } from "react-router";
 import React from "react";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 interface BoardFormProps {
   board: Board;
   setBoard: (board: Board) => void;
@@ -21,16 +22,10 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   const modal = useRef<HTMLIonModalElement>(null);
   const inputRef = useRef<HTMLIonInputElement>(null);
   const history = useHistory();
+  const { currentUser } = useCurrentUser();
   const [gridSize, setGridSize] = React.useState<number>(
     board.number_of_columns
   );
-
-  useEffect(() => {
-    if (board) {
-      console.log("Board", board);
-      console.log("Grid size", gridSize);
-    }
-  }, [board]);
 
   const handleGridSizeChange = (event: CustomEvent) => {
     setGridSize(event.detail.value);
@@ -59,7 +54,6 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
     const savedBoard = await updateBoard(updatingBoard);
     setBoard(savedBoard);
     history.push(`/boards/${board?.id}`);
-    // window.location.reload();
   };
 
   const handleReset = () => {
@@ -78,16 +72,8 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
     history.push(`/boards/${board?.id}`);
   };
 
-  // const goToGallery = () => {
-  //   if (!board) {
-  //     console.error("No board found");
-  //     return;
-  //   }
-  //   history.push(`/boards/${board?.id}/gallery`);
-  // };
-
   const gridSizeOptions = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
   ];
 
   return (
@@ -95,7 +81,7 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
       <IonList>
         <IonItem className="mb-4">
           <IonInput
-            label="Name"
+            label="Name:"
             value={board?.name}
             placeholder="Enter Board Name"
             onIonInput={(e) => setBoard({ ...board, name: e.detail.value! })}
@@ -103,9 +89,10 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
         </IonItem>
         <IonItem className="mb-4">
           <IonSelect
-            label="Number of Columns"
+            label="Number of Columns:"
             placeholder="Select # of columns"
             name="number_of_columns"
+            className=" mx-3"
             onIonChange={handleGridSizeChange}
             value={gridSize}
           >
@@ -115,27 +102,27 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
               </IonSelectOption>
             ))}
           </IonSelect>
-          <IonButton
-            onClick={handleReset}
-            expand="block"
-            fill="outline"
-            color="danger"
-            className="w-1/5 mt-4 ml-4"
-          >
-            Reset{" "}
-          </IonButton>
+          <IonButtons>
+            <IonButton
+              onClick={handleReset}
+              expand="block"
+              fill="outline"
+              color="danger"
+              slot="start"
+            >
+              Reset{" "}
+            </IonButton>
+
+            <IonButton
+              onClick={handleSubmit}
+              fill="outline"
+              color="primary"
+              slot="end"
+            >
+              Save
+            </IonButton>
+          </IonButtons>
         </IonItem>
-        <IonButtons>
-          <IonButton
-            onClick={handleSubmit}
-            expand="block"
-            fill="outline"
-            color="primary"
-            className="w-full"
-          >
-            Save
-          </IonButton>
-        </IonButtons>
       </IonList>
     </div>
   );

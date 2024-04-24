@@ -71,7 +71,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     }
     setTimeout(() => {
       setShowActionList(false);
-    }, 1000);
+    }, 3000);
   };
 
   const handleImageClick = (image: Image) => {
@@ -98,9 +98,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     const promise = audio.play();
     if (promise !== undefined) {
       promise
-        .then(() => {
-          console.log("Autoplay started");
-        })
+        .then(() => {})
         .catch((error) => {
           console.log("Autoplay was prevented", error);
           // Autoplay was prevented.
@@ -150,6 +148,12 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
         image.bg_color || "bg-white"
       } rounded-md shadow-md p-1 h-fit`}
       onClick={() => handleImageClick(image)}
+      onMouseDown={() => {
+        handleButtonPress();
+      }}
+      onMouseUp={() => {
+        handleButtonRelease();
+      }}
       onTouchStart={() => {
         handleButtonPress();
       }}
@@ -168,7 +172,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
           : image.label}
       </span>
       {image.audio && <audio src={image.audio} />}
-      {!board?.predefined && (
+      {!disableActionList && (
         <ActionList
           isOpen={showActionList}
           onClose={() => setShowActionList(false)}

@@ -1,3 +1,4 @@
+import { Layout } from "react-grid-layout";
 import { Board } from "./boards";
 import { BASE_URL } from "./users";
   export interface ImageDoc {
@@ -18,7 +19,17 @@ import { BASE_URL } from "./users";
     bg_color: string;
     image_type?: string;
     text_color?: string;
+    position?: number;
+    layout: DraggableGridLayout[];
   }
+
+  export interface DraggableGridLayout {
+    i: string;
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+  };
 
   export interface PredictiveImage {
     id: string;
@@ -47,6 +58,7 @@ import { BASE_URL } from "./users";
     setShowIcon: any;
     inputRef: any;
     gridSize?: number;
+    disableActionList?: boolean;
   }
   // (boardId, {
   //           query: query,

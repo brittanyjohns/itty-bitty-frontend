@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { useHistory } from "react-router";
 import { Image, ImageGalleryProps } from "../data/images";
 import ImageGalleryItem from "./ImageGalleryItem"; // Adjusted to handle its own ActionList visibility
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 const ImageGallery: React.FC<ImageGalleryProps> = ({
   images,
@@ -10,6 +11,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   setShowIcon,
   inputRef,
   gridSize,
+  disableActionList,
 }) => {
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -70,7 +72,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
             board={board}
             setShowIcon={setShowIcon}
             inputRef={inputRef}
-            disableActionList={!board?.can_edit}
+            disableActionList={disableActionList}
           />
         ))}
       </div>
