@@ -34,11 +34,24 @@ export const getBoards = () => {
     return boards;
 }
 
-export const updateGridSize = (id: string, size: number) => {
-    const updatedBoard = fetch(`${BASE_URL}boards/${id}/update_grid_size`, {
-        method: 'PUT',
+// export const updateGridSize = (id: string, size: number) => {
+//     const updatedBoard = fetch(`${BASE_URL}boards/${id}/update_grid_size`, {
+//         method: 'PUT',
+//         headers: userHeaders,
+//         body: JSON.stringify({ number_of_columns: size }),
+//     })
+//         .then(response => response.json())
+//         .then(data => data)
+//         .catch(error => console.error('Error updating board: ', error));
+
+//     return updatedBoard;
+// }
+
+export const saveLayout = (id: string, layout: any) => {
+    const updatedBoard = fetch(`${BASE_URL}boards/${id}/save_layout`, {
+        method: 'POST',
         headers: userHeaders,
-        body: JSON.stringify({ number_of_columns: size }),
+        body: JSON.stringify({ layout }),
     })
         .then(response => response.json())
         .then(data => data)

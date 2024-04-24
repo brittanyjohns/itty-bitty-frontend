@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Board, getBoard, updateGridSize } from "../data/boards";
+import { Board, getBoard, saveLayout } from "../data/boards";
 import {
   IonButton,
   IonButtons,
@@ -26,11 +26,12 @@ import {
 
 import { useParams } from "react-router";
 import "./ViewBoard.css";
-import ImageGallery from "../components/ImageGallery";
 import React from "react";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
 import FloatingWordsBtn from "../components/FloatingWordsBtn";
 import BoardGridDropdown from "../components/BoardGridDropdown";
+import { useCurrentUser } from "../hooks/useCurrentUser";
+import DraggableGrid from "../components/DraggableGrid";
 import { set } from "react-hook-form";
 
 const ViewBoard: React.FC<any> = ({ boardId }) => {
@@ -42,8 +43,9 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
   const [showEdit, setShowEdit] = useState(false);
   const [imageCount, setImageCount] = useState(0);
   const [gridSize, setGridSize] = useState(4);
-  // const [toastMessage, setToastMessage] = useState("");
-  // const [isOpen, setIsOpen] = useState(false);
+  const { currentUser } = useCurrentUser();
+  const [gridLayout, setGrid] = useState<any>([]);
+  const [numOfColumns, setNumOfColumns] = useState(4);
 
   const fetchBoard = async () => {
     const board = await getBoard(params.id);
@@ -52,7 +54,6 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
       return;
     } else {
       const imgCount = board?.images?.length;
-      console.log("Image count: ", imgCount);
       setImageCount(imgCount as number);
       setShowLoading(false);
       const result = board.predefined ? false : true;
@@ -60,6 +61,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
       setShowEdit(userCanEdit && result);
 
       setBoard(board);
+      setNumOfColumns(board.number_of_columns);
       setGridSize(board.number_of_columns);
 
       if (board?.status === "pending") {
@@ -89,9 +91,29 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
     setShowIcon(false);
   };
 
+  const shouldDisableActionList = () => {
+    if (currentUser?.role === "admin") {
+      return false;
+    }
+    if (board?.can_edit) {
+      return false;
+    }
+    return true;
+  };
+
+  const handeSaveLayout = async () => {
+    if (!board?.id) {
+      console.error("Board ID is missing");
+      return;
+    }
+    const updatedBoard = await saveLayout(board.id, gridLayout);
+    setBoard(updatedBoard);
+  };
+
   const onHandleGridChange = async (gridSize: number) => {
     console.log("Grid size changed: ", gridSize);
     setGridSize(gridSize);
+    setNumOfColumns(gridSize);
   };
 
   useIonViewDidLeave(() => {
@@ -181,13 +203,26 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
         <IonLoading message="Please wait..." isOpen={showLoading} />
-        {board && board.images && board.images.length > 0 && (
+        {/* {board && board.images && board.images.length > 0 && (
           <ImageGallery
             images={board.images}
             board={board}
             setShowIcon={setShowIcon}
             inputRef={inputRef}
             gridSize={gridSize}
+            disableActionList={shouldDisableActionList()}
+          />
+        )} */}
+        {board && (
+          <DraggableGrid
+            images={board.images}
+            board={board}
+            setShowIcon={setShowIcon}
+            inputRef={inputRef}
+            columns={numOfColumns}
+            disableActionList={shouldDisableActionList()}
+            onLayoutChange={(layout: any) => setGrid(layout)}
+            disableReorder={true}
           />
         )}
         {imageCount < 1 && (

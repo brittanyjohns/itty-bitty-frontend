@@ -21,6 +21,8 @@ import {
   IonTitle,
   IonToast,
   IonToolbar,
+  useIonViewDidEnter,
+  useIonViewWillEnter,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
 import {
@@ -36,6 +38,7 @@ import {
   addImageToBoard,
   Board,
   getRemainingImages,
+  saveLayout,
 } from "../data/boards"; // Adjust imports based on actual functions
 import FileUploadForm from "../components/FileUploadForm";
 import { generateImage, getMoreImages } from "../data/images";
@@ -46,6 +49,7 @@ import ImageGalleryItem from "../components/ImageGalleryItem";
 import "./ViewBoard.css";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import Tabs from "../components/Tabs";
+import DraggableGrid from "../components/DraggableGrid";
 
 interface SelectGalleryScreenProps {}
 const SelectGalleryScreen: React.FC = () => {
@@ -53,7 +57,7 @@ const SelectGalleryScreen: React.FC = () => {
   const [board, setBoard] = useState<Board | null>(null);
   const boardGrid = useRef<HTMLDivElement>(null);
   const [showLoading, setShowLoading] = useState(false);
-  const [segmentType, setSegmentType] = useState("edit ");
+  const [segmentType, setSegmentType] = useState("edit");
   const uploadForm = useRef<HTMLDivElement>(null);
   const generateForm = useRef<HTMLDivElement>(null);
   const editForm = useRef<HTMLDivElement>(null);
@@ -66,6 +70,7 @@ const SelectGalleryScreen: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("Generating Image...");
   const { currentUser, setCurrentUser } = useCurrentUser();
+  const [gridLayout, setGridLayout] = useState([]);
   const initialImage = {
     id: "",
     src: "",
@@ -73,10 +78,10 @@ const SelectGalleryScreen: React.FC = () => {
     image_prompt: "",
     audio: "",
     bg_color: "",
+    layout: [],
   };
   const [image, setImage] = useState<Image | null>(initialImage);
   const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
-    console.log("currentUser", currentUser);
     if (
       currentUser &&
       currentUser.tokens &&
@@ -117,6 +122,12 @@ const SelectGalleryScreen: React.FC = () => {
     setBoard(boardToSet);
     toggleForms(segmentType);
   };
+
+  useIonViewWillEnter(() => {
+    toggleForms("edit");
+    setSearchInput("");
+    setPage(1);
+  });
 
   useEffect(() => {
     loadPage();
@@ -180,7 +191,7 @@ const SelectGalleryScreen: React.FC = () => {
     setShowLoading(false);
     const message = `Image added to board: ${updatedImage.label}`;
     setToastMessage(message);
-    history.push(`/boards/${board.id}`);
+    // history.push(`/boards/${board.id}`);
   };
 
   const handleSegmentChange = (e: CustomEvent) => {
@@ -201,6 +212,23 @@ const SelectGalleryScreen: React.FC = () => {
     if (image) {
       setImage({ ...image, label: newLabel });
     }
+  };
+
+  const setGrid = (layout: any) => {
+    console.log("layout", layout);
+    setGridLayout(layout);
+  };
+
+  const handleSaveLayout = async () => {
+    if (!board?.id) {
+      console.error("Board ID is missing");
+      return;
+    }
+    const updatedBoard = await saveLayout(board.id, gridLayout);
+    const message = "Board layout saved";
+    setToastMessage(message);
+    setIsOpen(true);
+    setBoard(updatedBoard);
   };
 
   const handleImageClick = (image: Image) => {
@@ -277,18 +305,18 @@ const SelectGalleryScreen: React.FC = () => {
                   There are currently {board.images.length} images in this
                   board. Click on an image to view it.
                 </IonLabel>
-                <div className="grid grid-cols-3 gap-4 mt-3" ref={boardGrid}>
-                  {board?.images &&
-                    board.images.map((img: Image, index: number) => (
-                      <div key={index} className="relative">
-                        <ImageGalleryItem
-                          key={index}
-                          image={img}
-                          disableActionList={true}
-                        />
-                      </div>
-                    ))}
-                </div>
+                <IonButton
+                  className="mt-5 block w-5/6 mx-auto text-lg"
+                  onClick={handleSaveLayout}
+                >
+                  Save Layout
+                </IonButton>
+                <DraggableGrid
+                  images={board.images}
+                  columns={board.number_of_columns}
+                  onLayoutChange={(layout: any) => setGrid(layout)}
+                  disableActionList={true}
+                />
               </div>
             )}
             {board && board.images && board.images.length < 1 && (
