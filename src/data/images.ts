@@ -20,7 +20,7 @@ import { BASE_URL } from "./users";
     image_type?: string;
     text_color?: string;
     position?: number;
-    layout: DraggableGridLayout[];
+    layout?: DraggableGridLayout[];
   }
 
   export interface DraggableGridLayout {
