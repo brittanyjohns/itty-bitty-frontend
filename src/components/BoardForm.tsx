@@ -17,8 +17,13 @@ import { useCurrentUser } from "../hooks/useCurrentUser";
 interface BoardFormProps {
   board: Board;
   setBoard: (board: Board) => void;
+  onGridSizeChange?: any;
 }
-const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
+const BoardForm: React.FC<BoardFormProps> = ({
+  board,
+  setBoard,
+  onGridSizeChange,
+}) => {
   const modal = useRef<HTMLIonModalElement>(null);
   const inputRef = useRef<HTMLIonInputElement>(null);
   const history = useHistory();
@@ -29,8 +34,6 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
 
   const handleGridSizeChange = (event: CustomEvent) => {
     setGridSize(event.detail.value);
-    console.log("event.detail.value", event.detail.value);
-    console.log("Grid size", gridSize);
     handleAfterAction();
   };
 
@@ -92,7 +95,7 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
             label="Number of Columns:"
             placeholder="Select # of columns"
             name="number_of_columns"
-            className=" mx-3"
+            className="mr-2"
             onIonChange={handleGridSizeChange}
             value={gridSize}
           >
@@ -103,16 +106,6 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
             ))}
           </IonSelect>
           <IonButtons>
-            <IonButton
-              onClick={handleReset}
-              expand="block"
-              fill="outline"
-              color="danger"
-              slot="start"
-            >
-              Reset{" "}
-            </IonButton>
-
             <IonButton
               onClick={handleSubmit}
               fill="outline"

@@ -56,9 +56,9 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
       const imgCount = board?.images?.length;
       setImageCount(imgCount as number);
       setShowLoading(false);
-      const result = board.predefined ? false : true;
-      const userCanEdit = board.can_edit;
-      setShowEdit(userCanEdit && result);
+      const userCanEdit = board.can_edit || currentUser?.role === "admin";
+      console.log("User can edit: ", userCanEdit);
+      setShowEdit(userCanEdit);
 
       setBoard(board);
       setNumOfColumns(board.number_of_columns);
@@ -71,6 +71,11 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
         }, 4000);
       }
     }
+  };
+
+  const setGridLayout = (layout: any) => {
+    console.log("Setting grid layout: ", layout);
+    setGrid(layout);
   };
 
   const speak = async (text: string) => {
@@ -148,15 +153,16 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
               {board?.name || "Board"}
             </h1>
           </IonItem>
-          {!showIcon && (
-            <BoardGridDropdown
-              onUpdateGrid={onHandleGridChange}
-              gridSize={gridSize}
-            />
-          )}
+          <IonButtons slot="end">
+            {showEdit && !showIcon && (
+              <IonButton routerLink={`/boards/${params.id}/gallery`}>
+                <IonIcon icon={addCircleOutline} />
+              </IonButton>
+            )}
+          </IonButtons>
         </IonToolbar>
         <IonToolbar>
-          <IonItem slot="start" className="w-full">
+          <IonItem slot="start" className="pl-4 w-full">
             <IonInput
               placeholder="Click an image to begin speaking"
               ref={inputRef}
@@ -190,11 +196,6 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
                 ></IonIcon>
               </IonButton>
             )}
-            {showEdit && !showIcon && (
-              <IonButton routerLink={`/boards/${params.id}/gallery`}>
-                <IonIcon icon={addCircleOutline} />
-              </IonButton>
-            )}
           </IonButtons>
         </IonToolbar>
       </IonHeader>
@@ -203,16 +204,6 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
         <IonLoading message="Please wait..." isOpen={showLoading} />
-        {/* {board && board.images && board.images.length > 0 && (
-          <ImageGallery
-            images={board.images}
-            board={board}
-            setShowIcon={setShowIcon}
-            inputRef={inputRef}
-            gridSize={gridSize}
-            disableActionList={shouldDisableActionList()}
-          />
-        )} */}
         {board && (
           <DraggableGrid
             images={board.images}
@@ -221,7 +212,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
             inputRef={inputRef}
             columns={numOfColumns}
             disableActionList={shouldDisableActionList()}
-            onLayoutChange={(layout: any) => setGrid(layout)}
+            onLayoutChange={(layout: any) => setGridLayout(layout)}
             disableReorder={true}
           />
         )}

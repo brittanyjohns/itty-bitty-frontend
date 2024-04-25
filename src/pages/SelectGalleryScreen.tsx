@@ -94,7 +94,6 @@ const SelectGalleryScreen: React.FC = () => {
 
   const fetchBoard = async () => {
     const board = await getBoard(id); // Ensure getBoard is typed to return a Promise<Board>
-    console.log("fetch board", board);
     setBoard(board);
     toggleForms(segmentType);
     const remainingImgs = await getRemainingImages(board.id, 1, searchInput);
@@ -291,20 +290,26 @@ const SelectGalleryScreen: React.FC = () => {
           </IonText>
         </div>
 
-        <div className="" ref={editForm}>
+        <div className="lg:px-12" ref={editForm}>
           <div className="mb-2">
             <IonText className="text-sm text-gray-500">
               Voice: {board?.voice}
             </IonText>
           </div>
-          {board && <BoardForm board={board} setBoard={setBoard} />}
-          <div className="mt-3">
+          <div className="w-11/12 lg:w-1/2 mx-auto">
+            {board && <BoardForm board={board} setBoard={setBoard} />}
+          </div>
+          <div className="mt-3 px-8 lg:px-12">
             {board && board.images && board.images.length > 0 && (
               <div className="">
-                <IonLabel className="font-sans text-sm">
+                <p className="text-center font-bold text-lg">
                   There are currently {board.images.length} images in this
-                  board. Click on an image to view it.
-                </IonLabel>
+                  board.
+                </p>
+                <p className="text-center font-bold text-md">
+                  Drag and drop to rearrange the layout.
+                </p>
+
                 <IonButton
                   className="mt-5 block w-5/6 mx-auto text-lg"
                   onClick={handleSaveLayout}
