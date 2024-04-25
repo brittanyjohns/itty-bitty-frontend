@@ -31,7 +31,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   const [width, setWidth] = useState(window.innerWidth);
   const [rowHeight, setRowHeight] = useState(180);
   const updateRowHeight = () => {
-    const adjustWidth = width - 100;
+    const adjustWidth = width - 50;
     const dynamicRowHeight = Math.floor(adjustWidth / columns);
     setRowHeight(dynamicRowHeight);
   };
