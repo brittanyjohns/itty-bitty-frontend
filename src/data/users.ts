@@ -98,11 +98,11 @@ export const getCurrentUser = async () => {
             },
         });
         const data = await response.json();
-        console.log('Current User', data);
+        const currentTime = new Date().getTime();
+        console.log('Current User', data, currentTime);
         if (response.ok) {
             return data.user; // Assuming the response structure is { user: currentUser }
         } else {
-            console.error('Error fetching current user: ', data.error);
             return null; // Handle unauthorized or other errors gracefully
         }
     } catch (error) {

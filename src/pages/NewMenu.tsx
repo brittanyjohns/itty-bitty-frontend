@@ -111,7 +111,7 @@ const NewMenu: React.FC = (props: any) => {
       setShowLoading(true);
 
       Tesseract.recognize(event.target.result, "eng", {
-        logger: (m) => console.log(m),
+        // logger: (m) => console.log(m),
       }).then(({ data: { text } }) => {
         description = text;
         setMenus({ ...menu, file: file, description: description });
