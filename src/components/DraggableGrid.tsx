@@ -37,7 +37,6 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   };
   useEffect(() => {
     updateRowHeight();
-    console.log("updateRowHeight -- disableReorder:", disableReorder);
   }, [width, columns]);
   useEffect(() => {
     const handleResize = () => {

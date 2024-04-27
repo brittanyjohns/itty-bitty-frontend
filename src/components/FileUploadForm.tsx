@@ -55,7 +55,7 @@ const FileUploadForm: React.FC<FileUploadFormProps> = (
       result = await createImage(formData);
     }
 
-    if (result.error) {
+    if (!result.id) {
       console.error("Error:", result.error);
       return result;
     } else {
@@ -100,7 +100,7 @@ const FileUploadForm: React.FC<FileUploadFormProps> = (
         className="loading-icon"
         cssClass="loading-icon"
         isOpen={showLoading}
-        message={"Adding the image to your board..."}
+        message={"Uploading your image..."}
       />
       <IonInput
         value={label}
