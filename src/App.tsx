@@ -1,14 +1,5 @@
 import { Redirect, Route, useHistory } from "react-router-dom";
-import {
-  IonApp,
-  IonIcon,
-  IonLabel,
-  IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonTabs,
-  setupIonicReact,
-} from "@ionic/react";
+import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import Home from "./pages/Home";
 
@@ -53,12 +44,26 @@ import PredictiveIndex from "./pages/PredictiveIndex";
 import { AndroidFullScreen } from "@awesome-cordova-plugins/android-full-screen";
 import TeamsScreen from "./pages/TeamsScreen";
 import ViewTeamScreen from "./pages/ViewTeamScreen";
+import ViewLockedBoard from "./pages/ViewLockedBoard";
 
-setupIonicReact();
+setupIonicReact({
+  platform: {
+    /** The default `desktop` function returns false for devices with a touchscreen.
+     * This is not always wanted, so this function tests the User Agent instead.
+     **/
+    desktop: (win) => {
+      const isMobile =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          win.navigator.userAgent
+        );
+      return !isMobile;
+    },
+  },
+});
 
-AndroidFullScreen.isImmersiveModeSupported()
-  .then(() => AndroidFullScreen.immersiveMode())
-  .catch(console.warn);
+// AndroidFullScreen.isImmersiveModeSupported()
+//   .then(() => AndroidFullScreen.immersiveMode())
+//   .catch(console.warn);
 
 const App: React.FC = () => (
   <UserProvider>
@@ -73,6 +78,11 @@ const App: React.FC = () => (
           </Route>
           <Route path="/dashboard" component={Dashboard} exact={true} />
           <Route path="/boards/:id" component={ViewBoard} exact={true} />
+          <Route
+            path="/boards/:id/locked"
+            component={ViewLockedBoard}
+            exact={true}
+          />
           <Route path="/boards/new" component={NewBoard} exact={true} />
           <Route path="/scenarios/new" component={NewScenario} exact={true} />
           <Route

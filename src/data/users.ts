@@ -26,13 +26,17 @@ export interface User {
     settings?: UserSetting;
     created_at?: string;
     updated_at?: string;
+    platforms?: string[];
+    isDesktop?: boolean;
     errors?: string[];
 }
 export interface VoiceSetting {
-    name: string;
-    language: string;
-    speed: number;
-    pitch: number;
+    name?: string;
+    language?: string;
+    speed?: number;
+    pitch?: number;
+    rate?: number;
+    volume?: number;
 }
 
 export interface UserSetting {

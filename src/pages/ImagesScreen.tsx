@@ -84,7 +84,7 @@ const ImagesScreen: React.FC = () => {
     setShowLoading(true);
     const additionalImages = await getMoreImages(page, query);
     setImages(additionalImages);
-    setShowCreateBtn(additionalImages.length === 0 && query.length > 0);
+    setShowCreateBtn(additionalImages.length < 5 && query.length > 0);
     setShowLoading(false);
     return additionalImages;
   };
@@ -130,6 +130,7 @@ const ImagesScreen: React.FC = () => {
       setImages(allImages);
       setPageTitle("Image Gallery");
     }
+    clearInput();
   }, [segmentType]);
 
   const refresh = (e: CustomEvent) => {
@@ -178,6 +179,7 @@ const ImagesScreen: React.FC = () => {
               onIonInput={handleSearchInput}
               onIonClear={() => clearInput()}
               animated={true}
+              value={searchInput}
               placeholder="Search existing images"
             ></IonSearchbar>
           </IonToolbar>

@@ -16,6 +16,7 @@ import {
   IonSegmentButton,
   IonText,
   IonTextarea,
+  IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import { useParams } from "react-router";
@@ -119,22 +120,21 @@ const ViewImageScreen: React.FC = () => {
     }
     const label = imgToSet?.label ?? "";
     if (segmentType === "generate") {
-      setPageTitle(`Generate an Image for \n ${label}`);
+      setPageTitle(`Generate an Image`);
       uploadForm.current?.classList.add("hidden");
       generateForm.current?.classList.remove("hidden");
       imageGridWrapper.current?.classList.add("hidden");
       deleteImageWrapper.current?.classList.add("hidden");
     }
     if (segmentType === "upload") {
-      setPageTitle(`Upload an Image for ${label} `);
+      setPageTitle(`Upload an Image`);
       uploadForm.current?.classList.remove("hidden");
       generateForm.current?.classList.add("hidden");
       imageGridWrapper.current?.classList.add("hidden");
       deleteImageWrapper.current?.classList.add("hidden");
     }
     if (segmentType === "gallery") {
-      console.log("Label: ", label);
-      setPageTitle(`Images for ${label}`);
+      setPageTitle(`Current Images`);
       uploadForm.current?.classList.add("hidden");
       generateForm.current?.classList.add("hidden");
       imageGridWrapper.current?.classList.remove("hidden");
@@ -207,6 +207,9 @@ const ViewImageScreen: React.FC = () => {
           {image && <BoardDropdown imageId={image.id} />}
         </IonToolbar>
         <IonToolbar>
+          <IonTitle>{image?.label}</IonTitle>
+        </IonToolbar>
+        <IonToolbar>
           <IonSegment value={segmentType} onIonChange={handleSegmentChange}>
             <IonSegmentButton value="gallery">
               <IonLabel className="text-xl">
@@ -240,10 +243,11 @@ const ViewImageScreen: React.FC = () => {
                 id={image.id}
                 src={currentImage}
                 alt={image.label}
-                className="w-1/2 mx-auto"
+                className={`w-1/4 mx-auto ${
+                  image.bg_color || "bg-white"
+                } p-1 rounded-lg shadow-md`}
               />
             )}
-            {/* {image && !currentImage && <IonImg id={image.id} src={image.src} alt={image.label} className='w-1/2 mx-auto' />} */}
           </div>
         </div>
         <div className="mt-6 py-3 px-1 hidden text-center" ref={uploadForm}>
@@ -257,13 +261,8 @@ const ViewImageScreen: React.FC = () => {
             />
           )}
         </div>
-        <div className="mt-2 hidden" ref={generateForm}>
+        <div className="mt-6 hidden" ref={generateForm}>
           <IonList className="ion-padding" lines="none">
-            <IonItem className="my-2">
-              <IonText className="font-bold text-xl mt-2">
-                Generate an image with AI
-              </IonText>
-            </IonItem>
             <IonItem className="mt-2 border-2">
               <IonLoading
                 className="loading-icon"
@@ -299,7 +298,7 @@ const ViewImageScreen: React.FC = () => {
           </IonList>
         </div>
 
-        <div className="hidden text-center" ref={imageGridWrapper}>
+        <div className="mt-6 hidden text-center" ref={imageGridWrapper}>
           {image && image.docs && image.docs.length > 0 && (
             <div className="ion-padding">
               <IonLabel className="font-sans text-md">
@@ -310,16 +309,16 @@ const ViewImageScreen: React.FC = () => {
                   image.docs.map((doc, index) => (
                     <div
                       key={doc.id}
-                      className={`h-20 w-20${
+                      className={`h-20 w-20 ${
                         image.bg_color || "bg-white"
-                      }p-1 rounded-lg shadow-md`}
+                      } p-1 rounded-lg shadow-md`}
                     >
                       <IonImg
                         id={doc.id}
                         src={doc.src}
                         alt={doc.label}
                         onClick={handleDocClick}
-                        className="object-contain w-full h-full"
+                        className="object-contain bg-white"
                       />
                     </div>
                   ))}
