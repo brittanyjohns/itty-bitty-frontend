@@ -10,7 +10,7 @@ interface BoardListProps {
 }
 const BoardList = ({ boards }: BoardListProps) => {
   const [boardId, setBoardId] = useState<string>("");
-  const { currentUser, setCurrentUser } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const handleBoardClick = (board: Board) => {
     setBoardId(board.id as string);

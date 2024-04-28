@@ -26,11 +26,13 @@ import {
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
 import {
+  addCircleOutline,
   arrowBackCircleOutline,
   cloudUploadOutline,
   createOutline,
   imagesOutline,
   refreshCircleOutline,
+  refreshOutline,
   toggle,
 } from "ionicons/icons";
 import {
@@ -41,7 +43,7 @@ import {
   saveLayout,
 } from "../data/boards"; // Adjust imports based on actual functions
 import FileUploadForm from "../components/FileUploadForm";
-import { generateImage, getMoreImages } from "../data/images";
+import { createImage, generateImage, getMoreImages } from "../data/images";
 import { Image } from "../data/images";
 import BoardForm from "../components/BoardForm";
 import SelectImageGallery from "../components/SelectImageGallery";
@@ -50,6 +52,7 @@ import "./ViewBoard.css";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import Tabs from "../components/Tabs";
 import DraggableGrid from "../components/DraggableGrid";
+import { set } from "react-hook-form";
 
 interface SelectGalleryScreenProps {}
 const SelectGalleryScreen: React.FC = () => {
@@ -68,9 +71,10 @@ const SelectGalleryScreen: React.FC = () => {
   const history = useHistory();
   const [toastMessage, setToastMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState("Generating Image...");
+  const [loadingMessage, setLoadingMessage] = useState("Loading board");
   const { currentUser, setCurrentUser } = useCurrentUser();
   const [gridLayout, setGridLayout] = useState([]);
+  const [showCreateBtn, setShowCreateBtn] = useState(false);
   const initialImage = {
     id: "",
     src: "",
@@ -93,11 +97,13 @@ const SelectGalleryScreen: React.FC = () => {
   };
 
   const fetchBoard = async () => {
+    setShowLoading(true);
     const board = await getBoard(id); // Ensure getBoard is typed to return a Promise<Board>
     setBoard(board);
     toggleForms(segmentType);
     const remainingImgs = await getRemainingImages(board.id, 1, searchInput);
     setRemainingImages(remainingImgs);
+    setShowLoading(false);
     return board;
   };
 
@@ -107,6 +113,7 @@ const SelectGalleryScreen: React.FC = () => {
   ): Promise<Image[]> => {
     const additionalImages = await getMoreImages(page, query);
     setRemainingImages(additionalImages);
+    setShowCreateBtn(additionalImages.length < 5 && query.length > 0);
     return additionalImages;
   };
 
@@ -118,6 +125,7 @@ const SelectGalleryScreen: React.FC = () => {
   const loadPage = async () => {
     console.log("id", id);
     const boardToSet = await fetchBoard();
+    console.log("boardToSet", boardToSet);
     setBoard(boardToSet);
     toggleForms(segmentType);
   };
@@ -178,6 +186,7 @@ const SelectGalleryScreen: React.FC = () => {
     if (image.image_prompt) {
       formData.append("image[image_prompt]", image.image_prompt);
     }
+    setLoadingMessage("Generating image");
     setShowLoading(true);
     const updatedImage = await generateImage(formData); // Ensure generateImage returns a Promise<Image>
     if (!board?.id) {
@@ -232,6 +241,7 @@ const SelectGalleryScreen: React.FC = () => {
 
   const handleImageClick = (image: Image) => {
     setImage(image);
+    setLoadingMessage("Adding image to board");
     setShowLoading(true);
     async function addSelectedImageToBoard() {
       if (!board?.id) {
@@ -239,12 +249,31 @@ const SelectGalleryScreen: React.FC = () => {
         return;
       }
       const response = await addImageToBoard(board.id, image.id);
-      const message = `Image added to board: ${response["board"]["name"]}`;
-      setToastMessage(message);
+      let message = "";
+      if (response["board"]) {
+        message = `Image added to board: ${response["board"]["name"]}`;
+        setToastMessage(message);
+      } else {
+        message = `${response["error"]}`;
+        setToastMessage(message);
+      }
       setShowLoading(false);
       setIsOpen(true);
     }
     addSelectedImageToBoard();
+  };
+
+  const handleCreateImage = async (label: string) => {
+    console.log("Creating image for label", label);
+    setLoadingMessage("Creating image");
+    setShowLoading(true);
+    const formData = new FormData();
+    formData.append("image[label]", label);
+    const newImage = await createImage(formData);
+    setShowLoading(false);
+    if (newImage) {
+      history.push(`/images/${newImage.id}`);
+    }
   };
 
   return (
@@ -286,8 +315,9 @@ const SelectGalleryScreen: React.FC = () => {
       <IonContent className="ion-padding" scrollY={true}>
         <div className="ion-justify-content-center ion-align-items-center ion-text-center pt-1">
           <IonText className="font-bold text-2xl">
-            {board && board.name}
+            {board && board.name}{" "}
           </IonText>
+          <IonIcon icon={refreshOutline} onClick={fetchBoard} />
         </div>
 
         <div className="lg:px-12" ref={editForm}>
@@ -299,19 +329,18 @@ const SelectGalleryScreen: React.FC = () => {
           <div className="w-11/12 lg:w-1/2 mx-auto">
             {board && <BoardForm board={board} setBoard={setBoard} />}
           </div>
-          <div className="mt-3 px-8 lg:px-12">
+          <div className="mt-6 px-4 lg:px-12">
             {board && board.images && board.images.length > 0 && (
               <div className="">
                 <p className="text-center font-bold text-lg">
-                  There are currently {board.images.length} images in this
-                  board.
+                  This board currently has {board.images.length} images.
                 </p>
                 <p className="text-center font-bold text-md">
                   Drag and drop to rearrange the layout.
                 </p>
 
                 <IonButton
-                  className="mt-5 block w-5/6 mx-auto text-lg"
+                  className="mt-5 block w-5/6 mx-auto text-md"
                   onClick={handleSaveLayout}
                 >
                   Save Layout
@@ -321,6 +350,7 @@ const SelectGalleryScreen: React.FC = () => {
                   columns={board.number_of_columns}
                   onLayoutChange={(layout: any) => setGrid(layout)}
                   disableActionList={true}
+                  mute={true}
                 />
               </div>
             )}
@@ -383,7 +413,7 @@ const SelectGalleryScreen: React.FC = () => {
               </IonButton>
             </IonItem>
             <IonItem className="mt-2 font-mono text-center">
-              <IonText className="text-sm">
+              <IonText className="text-md">
                 This will generate an board based on the prompt you enter.
               </IonText>
             </IonItem>
@@ -401,6 +431,24 @@ const SelectGalleryScreen: React.FC = () => {
             className="mt-2"
             onIonChange={handleSearchInput}
           ></IonSearchbar>
+          {showCreateBtn && (
+            <IonList>
+              <IonItem slot="start" className="w-full">
+                <IonText>
+                  {" "}
+                  Create a new image for:
+                  <strong> {searchInput}</strong>.
+                </IonText>
+                <IonButton
+                  slot="end"
+                  size="small"
+                  onClick={() => handleCreateImage(searchInput)}
+                >
+                  <IonIcon slot="icon-only" icon={addCircleOutline} />
+                </IonButton>
+              </IonItem>
+            </IonList>
+          )}
           {remainingImages && (
             <SelectImageGallery
               boardId={board?.id}

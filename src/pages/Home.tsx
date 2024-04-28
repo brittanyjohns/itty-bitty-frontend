@@ -14,6 +14,8 @@ import MainMenu from "../components/MainMenu";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import Tabs from "../components/Tabs";
 import { useHistory } from "react-router";
+import { useEffect } from "react";
+
 const Home: React.FC = () => {
   const history = useHistory();
   const { currentUser, setCurrentUser } = useCurrentUser();
@@ -23,6 +25,11 @@ const Home: React.FC = () => {
       e.detail.complete();
     }, 3000);
   };
+
+  useEffect(() => {
+    const onDesktop = currentUser?.isDesktop;
+    console.log("platforms", onDesktop);
+  }, []);
 
   return (
     <>

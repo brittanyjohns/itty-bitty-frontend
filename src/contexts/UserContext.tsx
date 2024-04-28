@@ -8,6 +8,9 @@ import React, {
 } from "react";
 import { getCurrentUser, User } from "../data/users";
 
+import { getPlatforms } from "@ionic/react";
+export const platforms = getPlatforms();
+export const isDesktop = platforms.includes("desktop");
 // Define the shape of the context
 
 export interface UserContextType {
@@ -29,7 +32,13 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const fetchUser = async () => {
     // Assuming you have a function to fetch the current user
     const user = await getCurrentUser();
-    if (user) setCurrentUser(user);
+
+    if (user) {
+      user.platforms = platforms;
+      user.isDesktop = isDesktop;
+      setCurrentUser(user);
+      console.log("Current user", user);
+    }
     if (!user) {
       setCurrentUser(null);
       console.log("No user found");

@@ -5,12 +5,14 @@ import ActionList from "./ActionList"; // Import ActionList for local use
 import { removeImageFromBoard } from "../data/boards";
 import { useHistory } from "react-router";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 interface ImageGalleryItemProps {
   image: Image;
   board?: any;
   setShowIcon?: (show: boolean) => void;
   inputRef?: React.RefObject<HTMLInputElement>;
   disableActionList?: boolean;
+  mute?: boolean;
 }
 
 const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
@@ -19,10 +21,12 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   setShowIcon,
   inputRef,
   disableActionList,
+  mute,
 }) => {
   const [showActionList, setShowActionList] = useState<boolean>(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const history = useHistory();
+  const { currentUser } = useCurrentUser();
 
   const handleActionSelected = (action: string) => {
     if (action === "delete") {
@@ -49,32 +53,43 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       } else {
         history.push(`/images/${imageId}?boardId=${board.id}`);
       }
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.error("Error editing image: ", error);
       alert("Error editing image");
     }
   };
 
-  const handleButtonPress = () => {
-    if (disableActionList) {
-      return;
-    }
-    longPressTimer.current = setTimeout(() => {
-      setShowActionList(true);
-    }, 1000);
-  };
+  // const handleButtonPress = () => {
+  //   if (disableActionList) {
+  //     return;
+  //   }
+  //   setShowActionList(true);
+  //   // if (currentUser?.isDesktop) {
+  //   //   setShowActionList(true);
+  //   //   return;
+  //   // }
+  //   // longPressTimer.current = setTimeout(() => {
+  //   //   setShowActionList(true);
+  //   // }, 1000);
+  // };
 
-  const handleButtonRelease = () => {
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-    }
-    setTimeout(() => {
-      setShowActionList(false);
-    }, 3000);
-  };
+  // const handleButtonRelease = () => {
+  //   if (longPressTimer.current) {
+  //     clearTimeout(longPressTimer.current);
+  //   }
+  //   setTimeout(() => {
+  //     setShowActionList(false);
+  //   }, 3000);
+  // };
 
   const handleImageClick = (image: Image) => {
+    if (!disableActionList) {
+      setShowActionList(true);
+    }
+    if (mute) {
+      return;
+    }
     const audioSrc = image.audio;
     const label = image.label;
     if (inputRef?.current) {
@@ -115,24 +130,28 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   });
 
   const speak = async (text: string) => {
+    const language = currentUser?.settings?.voice?.language || "en-US";
+    const rate = currentUser?.settings?.voice?.rate || 1.0;
+    const pitch = currentUser?.settings?.voice?.pitch || 1.0;
+    const volume = currentUser?.settings?.voice?.volume || 1.0;
     await TextToSpeech.speak({
       text: text,
-      lang: "en-US",
-      rate: 1.0,
-      pitch: 1.0,
-      volume: 1.0,
+      lang: language,
+      rate: rate,
+      pitch: pitch,
+      volume: volume,
       category: "ambient",
     });
   };
 
   const defaultButtonOptions = [
     {
-      text: "Remove",
+      text: "Remove from board",
       role: "destructive",
       handler: () => handleActionSelected("delete"),
     },
     {
-      text: "Edit",
+      text: "Edit image",
       handler: () => handleActionSelected("edit"),
     },
     {
@@ -148,18 +167,6 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
         image.bg_color || "bg-white"
       } rounded-md shadow-md p-1 h-fit`}
       onClick={() => handleImageClick(image)}
-      onMouseDown={() => {
-        handleButtonPress();
-      }}
-      onMouseUp={() => {
-        handleButtonRelease();
-      }}
-      onTouchStart={() => {
-        handleButtonPress();
-      }}
-      onTouchEnd={() => {
-        handleButtonRelease();
-      }}
     >
       <IonImg
         src={image.src}
