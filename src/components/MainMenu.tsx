@@ -8,6 +8,7 @@ import {
   IonToolbar,
   useIonViewWillLeave,
   useIonViewWillEnter,
+  IonItem,
 } from "@ionic/react";
 import { MenuLink, getMenu } from "../data/menu";
 import MenuListItem from "./MainMenuListItem";
@@ -35,6 +36,7 @@ function MainMenu() {
       "teams",
       "predictive",
       "settings",
+      "home",
     ];
     const signedOutLinks = ["sign-in", "sign-up"];
 
@@ -71,6 +73,15 @@ function MainMenu() {
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
+          {currentUser && (
+            <div className="mb-5">
+              <p>Signed In As: </p>
+              <p className="mt-1 font-bold">{currentUser?.email ?? "Guest"}</p>
+              <p className="mt-1 text-xs">
+                {currentUser?.role ?? "free trial"}
+              </p>
+            </div>
+          )}
           <IonList>
             {filteredLinks.map((menuLink) => (
               <MenuListItem

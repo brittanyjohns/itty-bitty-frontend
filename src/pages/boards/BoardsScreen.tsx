@@ -4,7 +4,6 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonItem,
   IonLabel,
   IonMenuButton,
   IonPage,
@@ -28,13 +27,9 @@ import {
   albumsOutline,
   earthOutline,
   gridOutline,
-  imagesOutline,
   peopleCircleOutline,
-  walkOutline,
 } from "ionicons/icons";
 const BoardsScreen: React.FC = () => {
-  const { currentUser, setCurrentUser } = useCurrentUser();
-  const history = useHistory();
   const [boards, setBoards] = useState([]);
   const [presetBoards, setPresetBoards] = useState([]);
   const [userBoards, setUserBoards] = useState([]);
@@ -58,7 +53,7 @@ const BoardsScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchBoards();
+    // fetchBoards();
   }, []);
 
   const refresh = (e: CustomEvent) => {
@@ -72,8 +67,12 @@ const BoardsScreen: React.FC = () => {
   };
 
   useIonViewWillEnter(() => {
-    console.log("ionViewWillEnter event fired", segmentType);
+    fetchBoards();
+  });
+
+  useIonViewWillEnter(() => {
     hideMenu();
+    console.log("ionViewWillEnter event fired");
   });
 
   useEffect(() => {

@@ -5,15 +5,12 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonInput,
   IonItem,
   IonLabel,
   IonList,
   IonLoading,
   IonMenuButton,
   IonPage,
-  IonRefresher,
-  IonRefresherContent,
   IonSearchbar,
   IonSegment,
   IonSegmentButton,
@@ -33,14 +30,7 @@ import MainMenu from "../../components/MainMenu";
 import SelectImageGallery from "../../components/SelectImageGallery";
 import { useHistory } from "react-router";
 import Tabs from "../../components/Tabs";
-import {
-  addCircleOutline,
-  albumsOutline,
-  imagesOutline,
-  personOutline,
-  trashBinOutline,
-} from "ionicons/icons";
-import { set } from "react-hook-form";
+import { addCircleOutline, imagesOutline, personOutline } from "ionicons/icons";
 
 const ImagesScreen: React.FC = () => {
   const [images, setImages] = useState<Image[]>([]);
@@ -61,9 +51,6 @@ const ImagesScreen: React.FC = () => {
     setAllImages(fetchedImages);
     const fetchedUserImages = await getUserImages();
     setUserImages(fetchedUserImages);
-    console.log("Fetched images", fetchedImages);
-    console.log("Fetched user images", fetchedUserImages);
-    console.log("fetch images page:", page);
     setShowLoading(false);
   };
   useIonViewWillEnter(() => {

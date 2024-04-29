@@ -11,7 +11,7 @@ import { Board } from "../data/boards";
 interface DraggableGridProps {
   columns: number;
   images: any;
-  onLayoutChange: any;
+  onLayoutChange?: any;
   disableReorder?: boolean;
   board?: Board;
   setShowIcon?: any;

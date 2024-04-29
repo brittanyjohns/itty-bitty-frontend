@@ -1,6 +1,6 @@
 // SignOut.tsx
 
-import { IonButton, useIonViewWillEnter } from "@ionic/react";
+import { IonButton } from "@ionic/react";
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { isUserSignedIn, signOut } from "../../data/users";

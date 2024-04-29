@@ -58,10 +58,9 @@ const TeamsScreen: React.FC = () => {
     }, 3000);
   };
 
-  // useIonViewWillEnter(() => {
-  //   console.log("ionViewWillEnter event fired", segmentType);
-  //   hideMenu();
-  // });
+  useIonViewWillEnter(() => {
+    console.log("ionViewWillEnter event fired", segmentType);
+  });
 
   return (
     <>
