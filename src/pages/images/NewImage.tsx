@@ -8,12 +8,11 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-} from '@ionic/react';
-import FileUploadForm from '../components/FileUploadForm';
-import { arrowBackCircleOutline } from 'ionicons/icons';
+} from "@ionic/react";
+import FileUploadForm from "../../components/FileUploadForm";
+import { arrowBackCircleOutline } from "ionicons/icons";
 
 const NewImage: React.FC = (props: any) => {
-
   return (
     <>
       <IonPage id="new-image-page">
@@ -31,14 +30,18 @@ const NewImage: React.FC = (props: any) => {
             </IonButtons>
           </IonToolbar>
         </IonHeader>
-        <IonContent fullscreen className='ion-padding'>
+        <IonContent fullscreen className="ion-padding">
           <>
-            <FileUploadForm board={undefined} onCloseModal={undefined} showLabel={true} />
+            <FileUploadForm
+              board={undefined}
+              onCloseModal={undefined}
+              showLabel={true}
+            />
           </>
         </IonContent>
       </IonPage>
     </>
   );
-}
+};
 
 export default NewImage;

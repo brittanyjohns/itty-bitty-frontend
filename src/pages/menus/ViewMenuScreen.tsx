@@ -19,13 +19,13 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
-import { getMenu, Menu } from "../data/menus"; // Adjust imports based on actual functions
-import { markAsCurrent } from "../data/docs"; // Adjust imports based on actual functions
-import BoardDropdown from "../components/BoardDropdown";
-import FileUploadForm from "../components/FileUploadForm";
+import { getMenu, Menu } from "../../data/menus"; // Adjust imports based on actual functions
+import { markAsCurrent } from "../../data/docs"; // Adjust imports based on actual functions
+import BoardDropdown from "../../components/BoardDropdown";
+import FileUploadForm from "../../components/FileUploadForm";
 import { set } from "react-hook-form";
-import { Image } from "../data/images";
-import ImageGalleryItem from "../components/ImageGalleryItem";
+import { Image } from "../../data/images";
+import ImageGalleryItem from "../../components/ImageGalleryItem";
 interface ViewMenuScreenProps {
   id: string;
 }

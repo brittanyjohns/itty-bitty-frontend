@@ -28,11 +28,11 @@ import {
   getImages,
   getMoreImages,
   getUserImages,
-} from "../data/images";
-import MainMenu from "../components/MainMenu";
-import SelectImageGallery from "../components/SelectImageGallery";
+} from "../../data/images";
+import MainMenu from "../../components/MainMenu";
+import SelectImageGallery from "../../components/SelectImageGallery";
 import { useHistory } from "react-router";
-import Tabs from "../components/Tabs";
+import Tabs from "../../components/Tabs";
 import {
   addCircleOutline,
   albumsOutline,

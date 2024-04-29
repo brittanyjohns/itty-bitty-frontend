@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Board } from "../data/boards";
 import { IonList, IonButton, IonItem, IonText } from "@ionic/react";
 import BoardListItem from "./BoardListItem";
-import SignInScreen from "../pages/SignUpScreen";
+import SignInScreen from "../pages/auth/SignUpScreen";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 
 interface BoardListProps {

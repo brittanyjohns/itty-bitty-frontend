@@ -16,13 +16,13 @@ import {
   IonToolbar,
   useIonViewWillEnter,
 } from "@ionic/react";
-import TeamList from "../components/TeamList";
-import MainMenu, { hideMenu } from "../components/MainMenu";
-import { useCurrentUser } from "../hooks/useCurrentUser";
-import Tabs from "../components/Tabs";
+import TeamList from "../../components/TeamList";
+import MainMenu, { hideMenu } from "../../components/MainMenu";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import Tabs from "../../components/Tabs";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { getTeams } from "../data/teams";
+import { getTeams } from "../../data/teams";
 import {
   addCircleOutline,
   albumsOutline,

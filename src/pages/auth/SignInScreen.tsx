@@ -1,19 +1,30 @@
 // src/components/SignInScreen.tsx
-import React, { useEffect, useState } from 'react';
-import { IonPage, IonContent, IonInput, IonButton, IonButtons, IonHeader, IonMenuButton, IonTitle, IonToolbar, IonBackButton } from '@ionic/react';
-import { User, signIn } from '../data/users';
-import { useHistory } from 'react-router-dom';
-import MainMenu from '../components/MainMenu';
-import { useCurrentUser } from '../hooks/useCurrentUser';
+import React, { useEffect, useState } from "react";
+import {
+  IonPage,
+  IonContent,
+  IonInput,
+  IonButton,
+  IonButtons,
+  IonHeader,
+  IonMenuButton,
+  IonTitle,
+  IonToolbar,
+  IonBackButton,
+} from "@ionic/react";
+import { User, signIn } from "../../data/users";
+import { useHistory } from "react-router-dom";
+import MainMenu from "../../components/MainMenu";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 const SignInScreen: React.FC = () => {
   const history = useHistory();
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const { currentUser, setCurrentUser } = useCurrentUser();
 
   const handleSetPassword = (e: CustomEvent) => {
     setPassword(e.detail.value);
-  }
+  };
 
   const handleSignIn = async () => {
     const user: User = {
@@ -23,20 +34,20 @@ const SignInScreen: React.FC = () => {
 
     try {
       const response = await signIn(user); // Assuming signIn returns the token directly or within a response object
-      console.log('Sign In response', response);
+      console.log("Sign In response", response);
       if (response.token) {
-        localStorage.setItem('token', response.token); // Store the token
+        localStorage.setItem("token", response.token); // Store the token
         setCurrentUser(response.user);
-        history.push('/home'); // Redirect to /home
+        history.push("/home"); // Redirect to /home
         window.location.reload();
         return;
       } else {
         if (response.error) {
-          alert('Error:\n' + response.error);
+          alert("Error:\n" + response.error);
         }
       }
     } catch (error) {
-      alert('Error signing in: ' + error);
+      alert("Error signing in: " + error);
     }
   };
 
@@ -53,8 +64,7 @@ const SignInScreen: React.FC = () => {
             <IonTitle>Welcome to Itty Bitty Boards</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent className='ion-padding'>
-
+        <IonContent className="ion-padding">
           <div>
             <form className="">
               <div className="mb-4">

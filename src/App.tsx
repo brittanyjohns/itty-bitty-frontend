@@ -21,30 +21,31 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import ViewBoard from "./pages/ViewBoard";
-import NewBoard from "./pages/NewBoard";
-import NewImage from "./pages/NewImage";
-import SignUpScreen from "./pages/SignUpScreen";
-import SignInScreen from "./pages/SignInScreen";
+import ViewBoard from "./pages/boards/ViewBoard";
+import NewBoard from "./pages/boards/NewBoard";
+import NewImage from "./pages/images/NewImage";
+import SignUpScreen from "./pages/auth/SignUpScreen";
+import SignInScreen from "./pages/auth/SignInScreen";
 import Dashboard from "./pages/Dashboard";
-import ImagesScreen from "./pages/ImagesScreen";
-import EditImageScreen from "./pages/EditImageScreen";
-import SignOutScreen from "./pages/SignOutScreen";
-import NewMenu from "./pages/NewMenu";
-import BoardsScreen from "./pages/BoardsScreen";
+import ImagesScreen from "./pages/images/ImagesScreen";
+import EditImageScreen from "./pages/images/EditImageScreen";
+import SignOutScreen from "./pages/auth/SignOutScreen";
+import NewMenu from "./pages/menus/NewMenu";
+import BoardsScreen from "./pages/boards/BoardsScreen";
 import { UserProvider } from "./contexts/UserContext";
-import EditBoardScreen from "./pages/EditBoardScreen";
-import ViewImageScreen from "./pages/ViewImageScreen";
-import MenusScreen from "./pages/MenusScreen";
-import SelectGalleryScreen from "./pages/SelectGalleryScreen";
-import SettingsPage from "./pages/SettingsPage";
-import NewScenario from "./pages/NewScenario";
-import ViewMenuScreen from "./pages/ViewMenuScreen";
+import EditBoardScreen from "./pages/boards/EditBoardScreen";
+import ViewImageScreen from "./pages/images/ViewImageScreen";
+import MenusScreen from "./pages/menus/MenusScreen";
+import SelectGalleryScreen from "./pages/images/SelectGalleryScreen";
+import SettingsPage from "./pages/users/SettingsPage";
+import NewScenario from "./pages/scenarios/NewScenario";
+import ViewMenuScreen from "./pages/menus/ViewMenuScreen";
 import PredictiveIndex from "./pages/PredictiveIndex";
 import { AndroidFullScreen } from "@awesome-cordova-plugins/android-full-screen";
-import TeamsScreen from "./pages/TeamsScreen";
-import ViewTeamScreen from "./pages/ViewTeamScreen";
-import ViewLockedBoard from "./pages/ViewLockedBoard";
+import TeamsScreen from "./pages/teams/TeamsScreen";
+import ViewTeamScreen from "./pages/teams/ViewTeamScreen";
+import ViewLockedBoard from "./pages/boards/ViewLockedBoard";
+import NewTeamScreen from "./pages/teams/NewTeamScreen";
 
 setupIonicReact({
   platform: {
@@ -117,6 +118,7 @@ const App: React.FC = () => (
           <Route path="/menus" component={MenusScreen} exact={true} />
           <Route path="/teams" component={TeamsScreen} exact={true} />
           <Route path="/teams/:id" component={ViewTeamScreen} exact={true} />
+          <Route path="/teams/new" component={NewTeamScreen} exact={true} />
           <Route path="/settings" component={SettingsPage} exact={true} />
           <Route path={"/sign-up"}>
             <SignUpScreen />

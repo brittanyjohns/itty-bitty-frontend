@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Image, getImage, updateImage } from "../data/images";
+import { Image, getImage, updateImage } from "../../data/images";
 import {
   IonButton,
   IonButtons,
