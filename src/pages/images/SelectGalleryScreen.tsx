@@ -41,17 +41,16 @@ import {
   Board,
   getRemainingImages,
   saveLayout,
-} from "../data/boards"; // Adjust imports based on actual functions
-import FileUploadForm from "../components/FileUploadForm";
-import { createImage, generateImage, getMoreImages } from "../data/images";
-import { Image } from "../data/images";
-import BoardForm from "../components/BoardForm";
-import SelectImageGallery from "../components/SelectImageGallery";
-import ImageGalleryItem from "../components/ImageGalleryItem";
-import "./ViewBoard.css";
-import { useCurrentUser } from "../hooks/useCurrentUser";
-import Tabs from "../components/Tabs";
-import DraggableGrid from "../components/DraggableGrid";
+} from "../../data/boards"; // Adjust imports based on actual functions
+import FileUploadForm from "../../components/FileUploadForm";
+import { createImage, generateImage, getMoreImages } from "../../data/images";
+import { Image } from "../../data/images";
+import BoardForm from "../../components/BoardForm";
+import SelectImageGallery from "../../components/SelectImageGallery";
+import ImageGalleryItem from "../../components/ImageGalleryItem";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import Tabs from "../../components/Tabs";
+import DraggableGrid from "../../components/DraggableGrid";
 import { set } from "react-hook-form";
 
 interface SelectGalleryScreenProps {}

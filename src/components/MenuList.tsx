@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Menu, deleteMenu, getMenus } from "../data/menus";
 import { IonList, IonButton } from "@ionic/react";
 import MenuListItem from "./MenuListItem";
-import SignInScreen from "../pages/SignUpScreen";
+import SignInScreen from "../pages/auth/SignUpScreen";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 const MenuList = () => {
   const [menus, setMenus] = useState<Menu[]>([]);

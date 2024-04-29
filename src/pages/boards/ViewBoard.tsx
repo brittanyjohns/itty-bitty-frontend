@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Board, getBoard, saveLayout } from "../data/boards";
+import { Board, getBoard, saveLayout } from "../../data/boards";
 import {
   IonButton,
   IonButtons,
@@ -20,6 +20,7 @@ import {
 import {
   addCircleOutline,
   arrowBackCircleOutline,
+  documentLockOutline,
   playCircleOutline,
   trashBinOutline,
 } from "ionicons/icons";
@@ -28,12 +29,13 @@ import { useParams } from "react-router";
 import "./ViewBoard.css";
 import React from "react";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
-import FloatingWordsBtn from "../components/FloatingWordsBtn";
-import BoardGridDropdown from "../components/BoardGridDropdown";
-import { useCurrentUser } from "../hooks/useCurrentUser";
-import DraggableGrid from "../components/DraggableGrid";
+import FloatingWordsBtn from "../../components/FloatingWordsBtn";
+import BoardGridDropdown from "../../components/BoardGridDropdown";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import DraggableGrid from "../../components/DraggableGrid";
+import { set } from "react-hook-form";
 
-const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
+const ViewBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();
   const params = useParams<{ id: string }>();
   const inputRef = useRef<HTMLIonInputElement>(null);
@@ -45,6 +47,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const { currentUser } = useCurrentUser();
   const [gridLayout, setGrid] = useState<any>([]);
   const [numOfColumns, setNumOfColumns] = useState(4);
+  const [reorder, setReorder] = useState(true);
 
   const fetchBoard = async () => {
     const board = await getBoard(params.id);
@@ -95,6 +98,16 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
     setShowIcon(false);
   };
 
+  const shouldDisableActionList = () => {
+    if (currentUser?.role === "admin") {
+      return false;
+    }
+    if (board?.can_edit) {
+      return false;
+    }
+    return true;
+  };
+
   useIonViewDidLeave(() => {
     inputRef.current?.value && clearInput();
   });
@@ -118,51 +131,26 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton routerLink={`/boards/${board?.id}`}>
+            <IonButton routerLink="/boards">
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
           </IonButtons>
           {!showIcon && (
-            <IonItem slot="start" className="">
+            <IonItem slot="start" className="w-5/6">
               <h1 className="text-center text-lg font-bold">
                 {board?.name || "Board"}
               </h1>
             </IonItem>
           )}
-          <IonItem slot="start" className="pl-4 w-full">
-            <IonInput
-              placeholder="Click an image to begin speaking"
-              ref={inputRef}
-              readonly={true}
-              className="w-full text-xs text-justify"
-            ></IonInput>
-          </IonItem>
           <IonButtons slot="start">
-            {showIcon && (
-              <IonButton
-                size="small"
-                onClick={() => speak(inputRef.current?.value as string)}
-              >
-                <IonIcon
-                  slot="icon-only"
-                  className="tiny"
-                  icon={playCircleOutline}
-                  onClick={() => speak(inputRef.current?.value as string)}
-                ></IonIcon>
-              </IonButton>
-            )}
+            <IonButton routerLink={`/boards/${params.id}/locked`}>
+              <IonIcon icon={documentLockOutline} />
+            </IonButton>
           </IonButtons>
-          <IonButtons slot="end">
-            {showIcon && (
-              <IonButton size="small" onClick={() => clearInput()}>
-                <IonIcon
-                  slot="icon-only"
-                  className="tiny"
-                  icon={trashBinOutline}
-                  onClick={() => clearInput()}
-                ></IonIcon>
-              </IonButton>
-            )}
+          <IonButtons slot="end" className="mr-4">
+            <IonButton routerLink={`/boards/${params.id}/gallery`}>
+              <IonIcon icon={addCircleOutline} />
+            </IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
@@ -178,9 +166,10 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
             setShowIcon={setShowIcon}
             inputRef={inputRef}
             columns={numOfColumns}
-            disableActionList={true}
-            onLayoutChange={() => {}}
+            disableActionList={shouldDisableActionList()}
+            onLayoutChange={(layout: any) => setGridLayout(layout)}
             disableReorder={true}
+            mute={true}
           />
         )}
         {imageCount < 1 && (
@@ -202,4 +191,4 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   );
 };
 
-export default ViewLockedBoard;
+export default ViewBoard;

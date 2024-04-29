@@ -1,4 +1,4 @@
-import { Scenario, createScenario } from "../data/scenarios";
+import { Scenario, createScenario } from "../../data/scenarios";
 import {
   IonBackButton,
   IonButtons,
@@ -8,7 +8,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import NewScenarioForm from "../components/NewScenarioForm";
+import NewScenarioForm from "../../components/NewScenarioForm";
 import { useState } from "react";
 
 const NewScenario: React.FC = (props: any) => {

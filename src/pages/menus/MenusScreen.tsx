@@ -12,12 +12,12 @@ import {
   IonTitle,
   IonToolbar,
   useIonViewWillEnter,
-} from '@ionic/react';
-import MenuList from '../components/MenuList';
-import MainMenu, { hideMenu } from '../components/MainMenu';
-import { useCurrentUser } from '../hooks/useCurrentUser';
-import Tabs from '../components/Tabs';
-import { addCircleOutline } from 'ionicons/icons';
+} from "@ionic/react";
+import MenuList from "../../components/MenuList";
+import MainMenu, { hideMenu } from "../../components/MainMenu";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import Tabs from "../../components/Tabs";
+import { addCircleOutline } from "ionicons/icons";
 const MenusScreen: React.FC = () => {
   const { currentUser, setCurrentUser } = useCurrentUser();
 
@@ -31,7 +31,6 @@ const MenusScreen: React.FC = () => {
     hideMenu();
   });
 
-
   return (
     <>
       <MainMenu />
@@ -43,13 +42,13 @@ const MenusScreen: React.FC = () => {
             </IonButtons>
             <IonTitle>Menus</IonTitle>
             <IonButtons slot="end">
-              <IonButton routerLink="/menus/new" >
+              <IonButton routerLink="/menus/new">
                 <IonIcon icon={addCircleOutline} />
               </IonButton>
             </IonButtons>
           </IonToolbar>
         </IonHeader>
-        <IonContent className='ion-padding'>
+        <IonContent className="ion-padding">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>

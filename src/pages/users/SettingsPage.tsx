@@ -13,14 +13,14 @@ import {
   IonToast,
   IonToolbar,
 } from "@ionic/react";
-import MainMenu from "../components/MainMenu";
-import Tabs from "../components/Tabs";
-import { useCurrentUser } from "../hooks/useCurrentUser";
-import UserSettingsForm from "../components/UserSettingsForm";
-import { User, UserSetting, updateUserSettings } from "../data/users";
+import MainMenu from "../../components/MainMenu";
+import Tabs from "../../components/Tabs";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import UserSettingsForm from "../../components/UserSettingsForm";
+import { User, UserSetting, updateUserSettings } from "../../data/users";
 import { useState } from "react";
 import { set } from "react-hook-form";
-import UserForm from "../components/UserForm";
+import UserForm from "../../components/UserForm";
 import { useHistory } from "react-router";
 
 const SettingsPage: React.FC = () => {
@@ -31,16 +31,6 @@ const SettingsPage: React.FC = () => {
   const history = useHistory();
   const [toastMessage, setToastMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-
-  const loadUserSettings = () => {
-    async function loadUserSettings() {
-      const userSettings = currentUser?.settings;
-      if (userSettings) {
-        setUser(userSettings);
-      }
-    }
-    console.log("load user settings");
-  };
 
   const handleSubmit = (submittedFormData: FormData) => {
     console.log("handle submit: submittedFormData", submittedFormData);

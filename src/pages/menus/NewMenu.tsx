@@ -1,4 +1,4 @@
-import { createMenu } from "../data/menus";
+import { createMenu } from "../../data/menus";
 import Tesseract from "tesseract.js";
 
 import {
@@ -16,8 +16,8 @@ import {
 } from "@ionic/react";
 import { arrowBackCircleOutline } from "ionicons/icons";
 import { useState } from "react";
-import { useCurrentUser } from "../hooks/useCurrentUser";
-import Tabs from "../components/Tabs";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import Tabs from "../../components/Tabs";
 import { set } from "react-hook-form";
 
 type NewMenu = {

@@ -1,5 +1,5 @@
 import { Board } from './boards';
-import { BASE_URL, userHeaders } from './users';
+import { BASE_URL, User, userHeaders } from './users';
 
 export interface Team {
     id?: string;
@@ -8,7 +8,8 @@ export interface Team {
     created_by?: string;
     created_at?: string;
     boards?: Board[];
-    members?: string[];
+    members?: User[];
+    errors?: string[];
 }
 
 export const getTeams = () => {
@@ -29,16 +30,16 @@ export const getTeam = (id: number) => {
     return team;
 }
 
-export const createTeam = (formData: FormData) => {
-    for(var pair of formData.entries()) {
-        console.log("create Team Pair", pair[0]+', '+pair[1]);
-    }
+export const createTeam = (team: Team) => {
+    console.log("createTeam", team);
+    const formData = new FormData();
+    formData.append("team[name]", team.name);
     const newTeam = fetch(`${BASE_URL}teams`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body: formData,
+    body: formData,
     })
         .then(response => response.json())
         .then(data => data)
@@ -72,15 +73,14 @@ export const deleteTeam = (id: string) => {
     return result;
 }
 
-export async function addBoardListToTeam(id: string, payload: { word_list: string[] }): Promise<Team> {
+export async function inviteToTeam(id: string, email: string, role: string): Promise<Team> {
+    const payload = JSON.stringify({team_user: {email, role} })
     const requestInfo = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
+      method: "POST",
+      headers: userHeaders,
+      body: payload,
     };
-    const response = await fetch(`${BASE_URL}teams/${id}/add_word_list`, requestInfo);
+    const response = await fetch(`${BASE_URL}teams/${id}/invite`, requestInfo);
     const team: Team = await response.json();
     return team;
   }

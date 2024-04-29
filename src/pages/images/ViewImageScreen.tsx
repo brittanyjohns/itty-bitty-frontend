@@ -26,11 +26,11 @@ import {
   generateImage,
   deleteImage,
   removeDoc,
-} from "../data/images"; // Adjust imports based on actual functions
-import { markAsCurrent } from "../data/docs"; // Adjust imports based on actual functions
-import BoardDropdown from "../components/BoardDropdown";
-import FileUploadForm from "../components/FileUploadForm";
-import { useCurrentUser } from "../hooks/useCurrentUser";
+} from "../../data/images"; // Adjust imports based on actual functions
+import { markAsCurrent } from "../../data/docs"; // Adjust imports based on actual functions
+import BoardDropdown from "../../components/BoardDropdown";
+import FileUploadForm from "../../components/FileUploadForm";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import {
   cloudUploadOutline,
   gridOutline,
