@@ -52,7 +52,7 @@ const MainPageContent = () => {
     <div className="container p-4 bg-white bg-opacity-50 mx-auto shadow-lg">
       <div
         className="hero_main1 bg-cover bg-center min-h-48 md:min-h-96"
-        style={{ backgroundImage: "url('/public/images/hero_main1.webp')" }}
+        style={{ backgroundImage: "url('src/assets/images/hero_main1.webp')" }}
       >
         <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-50">
           <h1 className="text-2xl md:text-5xl font-bold text-white">
@@ -108,7 +108,9 @@ const MainPageContent = () => {
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2">
         <section className="row-span-1 py-8 bg-white">
           <div className="container mx-auto px-2">
-            <h2 className="text-4xl font-bold text-center  text-black">Features</h2>
+            <h2 className="text-4xl font-bold text-center  text-black">
+              Features
+            </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 mt-8">
               {features.map((feature, index) => (
                 <Link
@@ -117,7 +119,7 @@ const MainPageContent = () => {
                   className="bg-white rounded-lg shadow p-4 text-center"
                 >
                   <img
-                    src={`/public/images/feature_${index + 1}.webp`}
+                    src={`/src/assets/images/feature_${index + 1}.webp`}
                     alt={feature.title}
                     className="h-40 object-cover rounded-md mx-auto"
                   />
@@ -141,7 +143,7 @@ const MainPageContent = () => {
               {steps.map((step, index) => (
                 <div key={index} className="text-center">
                   <img
-                    src={`/public/icons/round_itty_bitty_logo_1.png`}
+                    src={`src/assets/icons/round_itty_bitty_logo_1.png`}
                     alt={`Step ${index + 1}`}
                     className="mx-auto h-20 w-20"
                   />
