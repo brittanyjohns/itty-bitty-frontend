@@ -45,7 +45,7 @@ const Home: React.FC = () => {
             </IonButtons>
             <img
               slot="start"
-              src="public/images/round_itty_bitty_logo_1.png"
+              src="/src/assets/images/round_itty_bitty_logo_1.png"
               className="h-10 w-10"
             />
             <IonTitle>SpeakAnyWay</IonTitle>
