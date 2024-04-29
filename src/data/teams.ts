@@ -118,3 +118,15 @@ export async function inviteToTeam(id: string, email: string, role: string): Pro
     const team: Team = await response.json();
     return team;
   }
+
+  export async function createTeamBoard(id: string, boardName: string): Promise<Team> {
+    const body = JSON.stringify({ board: { name: boardName } });
+    const requestInfo = {
+      method: "POST",
+      headers: userHeaders,
+      body: body,
+    };
+    const response = await fetch(`${BASE_URL}teams/${id}/create_board`, requestInfo);
+    const team: Team = await response.json();
+    return team;
+  }

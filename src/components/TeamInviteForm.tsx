@@ -33,8 +33,18 @@ const TeamInviteForm: React.FC<TeamInviteFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email || !role) {
+      alert("Please enter email and select a role");
+      return;
+    }
+    if (!email.includes("@")) {
+      alert("Please enter a valid email address");
+      return;
+    }
     console.log("email invite", email);
     onSave(email, role);
+    setEmail("");
+    setRole(null);
   };
 
   return (

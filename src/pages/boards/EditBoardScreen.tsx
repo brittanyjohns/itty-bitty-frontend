@@ -14,7 +14,7 @@ import {
 import { Board } from "../../data/boards";
 import { arrowBackCircleOutline } from "ionicons/icons";
 
-import { useHistory, useParams } from "react-router";
+import { useHistory } from "react-router";
 import "./ViewBoard.css";
 import React from "react";
 import BoardForm from "../../components/BoardForm";

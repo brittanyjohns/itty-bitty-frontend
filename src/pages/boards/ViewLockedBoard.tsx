@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Board, getBoard, saveLayout } from "../../data/boards";
+import { Board, getBoard } from "../../data/boards";
 import {
   IonButton,
   IonButtons,
@@ -18,7 +18,6 @@ import {
 } from "@ionic/react";
 
 import {
-  addCircleOutline,
   arrowBackCircleOutline,
   playCircleOutline,
   trashBinOutline,
@@ -122,19 +121,12 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
           </IonButtons>
-          {!showIcon && (
-            <IonItem slot="start" className="">
-              <h1 className="text-center text-lg font-bold">
-                {board?.name || "Board"}
-              </h1>
-            </IonItem>
-          )}
-          <IonItem slot="start" className="pl-4 w-full">
+          <IonItem slot="start" className="pl-2 w-full">
             <IonInput
               placeholder="Click an image to begin speaking"
               ref={inputRef}
               readonly={true}
-              className="w-full text-xs text-justify"
+              className="w-full text-sm text-justify"
             ></IonInput>
           </IonItem>
           <IonButtons slot="start">

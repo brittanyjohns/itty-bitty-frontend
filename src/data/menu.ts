@@ -18,8 +18,7 @@ import {
   sunny,
   sunnyOutline,
   settingsOutline,
-  people,
-  peopleCircle,
+  homeOutline,
   peopleCircleOutline,
 } from "ionicons/icons";
 import { set } from "react-hook-form";
@@ -93,6 +92,13 @@ const menuLinks: MenuLink[] = [
     slug: 'sign-out',
     icon: logOutOutline,
     id: 13
+  },
+  {
+    endpoint: '/home',
+    name: 'Home',
+    slug: 'home',
+    icon: homeOutline,
+    id: 14
   },
 ];
 

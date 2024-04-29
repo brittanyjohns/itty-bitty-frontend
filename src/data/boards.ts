@@ -179,3 +179,14 @@ export async function addImageListToBoard(id: string, payload: { word_list: stri
     console.log('removeImageFromBoard', board);
     return board;
   }
+
+  export async function addToTeam(id: string, team_id: string): Promise<any> {
+    const requestInfo = {
+      method: "PUT",
+      headers: userHeaders,
+      body: JSON.stringify({ team_id }),
+    };
+    const response = await fetch(`${BASE_URL}boards/${id}/add_to_team`, requestInfo);
+    const board: Board = await response.json();
+    return board;
+  }

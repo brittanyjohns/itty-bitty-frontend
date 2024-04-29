@@ -4,17 +4,14 @@ import {
   IonContent,
   IonInput,
   IonButton,
-  IonText,
   IonButtons,
   IonHeader,
-  IonMenuButton,
   IonTitle,
   IonToolbar,
   IonBackButton,
 } from "@ionic/react";
 import { NewUser, signUp } from "../../data/users";
 import { useHistory } from "react-router-dom";
-import MainMenu from "../../components/MainMenu";
 
 const SignInScreen: React.FC = () => {
   const history = useHistory();

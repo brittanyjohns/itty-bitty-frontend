@@ -5,7 +5,9 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonImg,
+  IonInput,
   IonItem,
   IonLabel,
   IonList,
@@ -19,7 +21,13 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
-import { deleteTeam, getTeam, inviteToTeam, Team } from "../../data/teams"; // Adjust imports based on actual functions
+import {
+  createTeamBoard,
+  deleteTeam,
+  getTeam,
+  inviteToTeam,
+  Team,
+} from "../../data/teams"; // Adjust imports based on actual functions
 import { markAsCurrent } from "../../data/docs"; // Adjust imports based on actual functions
 import BoardDropdown from "../../components/BoardDropdown";
 import FileUploadForm from "../../components/FileUploadForm";
@@ -28,6 +36,13 @@ import { Board } from "../../data/boards";
 import BoardList from "../../components/BoardList";
 import TeamInviteForm from "../../components/TeamInviteForm";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import {
+  albumsOutline,
+  gridOutline,
+  earthOutline,
+  peopleCircleOutline,
+  mailOutline,
+} from "ionicons/icons";
 interface ViewTeamScreenProps {
   id: string;
 }
@@ -39,8 +54,9 @@ const ViewTeamScreen: React.FC<ViewTeamScreenProps> = () => {
   const [showLoading, setShowLoading] = useState(false);
   const [segmentType, setSegmentType] = useState("teamTab");
   const teamTab = useRef<HTMLDivElement>(null);
-  const boardGrid = useRef<HTMLDivElement>(null);
+  const inviteTab = useRef<HTMLDivElement>(null);
   const [boards, setBoards] = useState<Board[]>([]);
+  const [boardName, setBoardName] = useState("");
   const history = useHistory();
   const { currentUser } = useCurrentUser();
 
@@ -68,6 +84,7 @@ const ViewTeamScreen: React.FC<ViewTeamScreenProps> = () => {
   const getData = async () => {
     const teamToSet = await fetchTeam();
     setTeam(teamToSet);
+    console.log("segmentType", segmentType);
     toggleForms(segmentType);
     if (teamToSet && teamToSet.current) {
       setCurrentTeam(teamToSet);
@@ -85,10 +102,17 @@ const ViewTeamScreen: React.FC<ViewTeamScreenProps> = () => {
     if (segmentType === "boardTab") {
       teamTab.current?.classList.add("hidden");
       boardTab.current?.classList.remove("hidden");
+      inviteTab.current?.classList.add("hidden");
     }
     if (segmentType === "teamTab") {
       teamTab.current?.classList.remove("hidden");
       boardTab.current?.classList.add("hidden");
+      inviteTab.current?.classList.add("hidden");
+    }
+    if (segmentType === "inviteTab") {
+      teamTab.current?.classList.add("hidden");
+      boardTab.current?.classList.add("hidden");
+      inviteTab.current?.classList.remove("hidden");
     }
   };
 
@@ -102,6 +126,32 @@ const ViewTeamScreen: React.FC<ViewTeamScreenProps> = () => {
     const newSegment = e.detail.value;
     setSegmentType(newSegment);
     toggleForms(newSegment);
+  };
+
+  const showDeleteBtn = () => {
+    if (
+      currentUser?.role === "admin" ||
+      team?.created_by === currentUser?.email
+    ) {
+      return (
+        <IonButton
+          expand="block"
+          color="danger"
+          onClick={handleDeleteTeam}
+          className="ion-margin-top"
+        >
+          Delete Team
+        </IonButton>
+      );
+    }
+  };
+
+  const handleCreateTeamBoard = async () => {
+    const newBoard = await createTeamBoard(id, boardName);
+    if (newBoard) {
+      console.log("newBoard", newBoard);
+      setBoardName("");
+    }
   };
 
   const handleDeleteTeam = async () => {
@@ -122,10 +172,35 @@ const ViewTeamScreen: React.FC<ViewTeamScreenProps> = () => {
           </IonButtons>
           <IonTitle>{team?.name}</IonTitle>
         </IonToolbar>
-        <IonToolbar>{/* placeholder for search for teams */}</IonToolbar>
+        <IonToolbar>
+          <IonSegment
+            value={segmentType}
+            onIonChange={handleSegmentChange}
+            className="w-full bg-inherit"
+          >
+            <IonSegmentButton value="teamTab">
+              <IonLabel className="text-xl">
+                <IonIcon
+                  icon={peopleCircleOutline}
+                  className="text-2xl mt-3 mb-2"
+                />
+              </IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton value="boardTab">
+              <IonLabel className="text-xl">
+                <IonIcon icon={gridOutline} />
+              </IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton value="inviteTab">
+              <IonLabel className="text-xl">
+                <IonIcon icon={mailOutline} className="text-2xl mt-3 mb-2" />
+              </IonLabel>
+            </IonSegmentButton>
+          </IonSegment>
+        </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding" scrollY={true}>
-        <div className="" ref={teamTab}>
+        <div className="hidden" ref={teamTab}>
           {team && (
             <div className="">
               <IonList>
@@ -145,27 +220,26 @@ const ViewTeamScreen: React.FC<ViewTeamScreenProps> = () => {
                   <IonLabel># of Team Boards</IonLabel>
                   <IonText>{team.boards?.length}</IonText>
                 </IonItem>
-                <IonItem>
-                  <IonLabel>Team Boards</IonLabel>
-                  {team.boards && <BoardList boards={team.boards} />}
-                </IonItem>
               </IonList>
-              <div className="ion-padding">
-                <TeamInviteForm onSave={handleInvite} onCancel={() => {}} />
-              </div>
-              {currentUser?.role === "admin" && (
-                <div className="ion-padding">
-                  <IonButton
-                    expand="block"
-                    color="danger"
-                    onClick={handleDeleteTeam}
-                  >
-                    Delete Team
-                  </IonButton>
-                </div>
-              )}
+              {showDeleteBtn()}
             </div>
           )}
+        </div>
+        <div className="hidden" ref={inviteTab}>
+          {team && (
+            <div className="">
+              <TeamInviteForm onSave={handleInvite} onCancel={() => {}} />
+            </div>
+          )}
+        </div>
+        <div className="hidden" ref={boardTab}>
+          {team && (
+            <div className="">
+              <IonLabel>Team Boards</IonLabel>
+              {team.boards && <BoardList boards={team.boards} />}
+            </div>
+          )}
+          {currentUser?.email}
         </div>
       </IonContent>
     </IonPage>
