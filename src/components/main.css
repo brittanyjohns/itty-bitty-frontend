@@ -61,6 +61,80 @@ ion-fab-button::part(native):active::after {
   padding: 0; /* Minimize padding to maximize space */
 }
 
+ion-input {
+  background-color: inherit;
+  color: #000;
+}
+
+[type="text"],
+[type="email"],
+[type="url"],
+[type="password"],
+[type="number"],
+[type="date"],
+[type="datetime-local"],
+[type="month"],
+[type="search"],
+[type="tel"],
+[type="time"],
+[type="week"],
+[multiple],
+textarea,
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: inherit;
+  border: none;
+  border-color: #000;
+  /* border-width: 1px; 
+  border-radius: 0px; */
+  padding-top: 0.75rem;
+  padding-right: 1rem;
+  padding-bottom: 0.75rem;
+  padding-left: 1rem;
+  font-size: 1rem;
+  min-height: 2.5rem;
+
+  line-height: 1.5rem;
+  --tw-shadow: 0 0 #0000;
+}
+
+.native-input.sc-ion-input-ios {
+  padding-left: 1rem;
+  padding-right: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-decoration: inherit;
+  text-indent: inherit;
+  text-overflow: inherit;
+  text-transform: inherit;
+  text-align: inherit;
+  white-space: inherit;
+  color: inherit;
+  display: inline-block;
+  position: relative;
+  -ms-flex: 1;
+  flex: 1;
+  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  z-index: 1;
+}
+
 .bg-img-red {
   background-color: #6b1818;
 }
@@ -105,5 +179,5 @@ ion-fab-button::part(native):active::after {
 }
 
 .bg-gray-400 {
-  background-color: #a4a5a4;
+  background-color: #969895;
 }
