@@ -18,6 +18,7 @@ interface DraggableGridProps {
   inputRef?: any;
   disableActionList?: boolean;
   mute?: boolean;
+  onPlayAudioList?: any;
 }
 const DraggableGrid: React.FC<DraggableGridProps> = ({
   images,
@@ -29,6 +30,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   inputRef,
   disableActionList,
   mute,
+  onPlayAudioList,
 }) => {
   const [width, setWidth] = useState(window.innerWidth);
   const [rowHeight, setRowHeight] = useState(180);
@@ -83,6 +85,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
             inputRef={inputRef}
             disableActionList={disableActionList}
             mute={mute}
+            onPlayAudioList={onPlayAudioList}
           />
         </div>
       ))}

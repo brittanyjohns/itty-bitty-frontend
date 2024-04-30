@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { IonImg, useIonViewDidLeave } from "@ionic/react";
 import { Image } from "../data/images";
 import ActionList from "./ActionList"; // Import ActionList for local use
@@ -13,6 +13,7 @@ interface ImageGalleryItemProps {
   inputRef?: React.RefObject<HTMLInputElement>;
   disableActionList?: boolean;
   mute?: boolean;
+  onPlayAudioList?: any;
 }
 
 const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
@@ -22,11 +23,12 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   inputRef,
   disableActionList,
   mute,
+  onPlayAudioList,
 }) => {
   const [showActionList, setShowActionList] = useState<boolean>(false);
-  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const history = useHistory();
   const { currentUser } = useCurrentUser();
+  const [audioList, setAudioList] = useState<string[]>([]);
 
   const handleActionSelected = (action: string) => {
     if (action === "delete") {
@@ -53,35 +55,11 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       } else {
         history.push(`/images/${imageId}?boardId=${board.id}`);
       }
-      // window.location.reload();
     } catch (error) {
       console.error("Error editing image: ", error);
       alert("Error editing image");
     }
   };
-
-  // const handleButtonPress = () => {
-  //   if (disableActionList) {
-  //     return;
-  //   }
-  //   setShowActionList(true);
-  //   // if (currentUser?.isDesktop) {
-  //   //   setShowActionList(true);
-  //   //   return;
-  //   // }
-  //   // longPressTimer.current = setTimeout(() => {
-  //   //   setShowActionList(true);
-  //   // }, 1000);
-  // };
-
-  // const handleButtonRelease = () => {
-  //   if (longPressTimer.current) {
-  //     clearTimeout(longPressTimer.current);
-  //   }
-  //   setTimeout(() => {
-  //     setShowActionList(false);
-  //   }, 3000);
-  // };
 
   const handleImageClick = (image: Image) => {
     if (!disableActionList) {
@@ -91,6 +69,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       return;
     }
     const audioSrc = image.audio;
+    onPlayAudioList(audioSrc);
     const label = image.label;
     if (inputRef?.current) {
       inputRef.current.value += ` ${label}`;
@@ -107,7 +86,9 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       speak(label);
       return;
     }
-    setAudioList([...audioList, audioSrc as string]);
+    setAudioList([...audioList, audioSrc]);
+    console.log("audioSrc: ", audioSrc);
+    console.log("audioList: ", audioList);
     const audio = new Audio(audioSrc);
 
     const promise = audio.play();
@@ -123,13 +104,13 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     }
   };
 
-  const [audioList, setAudioList] = useState<string[]>([]);
-
   useIonViewDidLeave(() => {
     setShowActionList(false);
   });
 
   const speak = async (text: string) => {
+    console.log("speak text: ", text);
+    console.log("audioList: ", audioList);
     const language = currentUser?.settings?.voice?.language || "en-US";
     const rate = currentUser?.settings?.voice?.rate || 1.0;
     const pitch = currentUser?.settings?.voice?.pitch || 1.0;

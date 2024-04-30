@@ -105,6 +105,29 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
     fetchData();
   }, []);
 
+  const [audioList, setAudioList] = useState<string[]>([]);
+
+  const handleUpdateAudioList = (audio: string) => {
+    console.log("Updating audio list: ", audioList);
+    console.log("Adding audio: ", audio);
+    setAudioList([...audioList, audio]);
+  };
+
+  const playAudioList = async () => {
+    for (let i = 0; i < audioList.length; i++) {
+      const audioSrc = audioList[i];
+      const audio = new Audio(audioSrc);
+      try {
+        await audio.play();
+        await new Promise((resolve) => (audio.onended = resolve));
+      } catch (error) {
+        console.log("Error playing audio:", error);
+        audio.muted = true;
+        audio.play();
+      }
+    }
+  };
+
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
       e.detail.complete();
@@ -131,10 +154,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
           </IonItem>
           <IonButtons slot="start">
             {showIcon && (
-              <IonButton
-                size="small"
-                onClick={() => speak(inputRef.current?.value as string)}
-              >
+              <IonButton size="small" onClick={playAudioList}>
                 <IonIcon
                   slot="icon-only"
                   className="tiny"
@@ -173,6 +193,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
             disableActionList={true}
             onLayoutChange={() => {}}
             disableReorder={true}
+            onPlayAudioList={handleUpdateAudioList}
           />
         )}
         {imageCount < 1 && (

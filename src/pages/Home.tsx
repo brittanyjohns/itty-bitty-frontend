@@ -18,6 +18,7 @@ import Tabs from "../components/Tabs";
 import { useHistory } from "react-router";
 import { useEffect } from "react";
 import MainPageContent from "./MainPageContent";
+import { getImageUrl } from "../data/utils";
 
 const Home: React.FC = () => {
   const history = useHistory();
@@ -45,7 +46,8 @@ const Home: React.FC = () => {
             </IonButtons>
             <img
               slot="start"
-              src="/src/assets/images/round_itty_bitty_logo_1.png"
+              // src="/src/assets/images/round_itty_bitty_logo_1.png"
+              src={getImageUrl("round_itty_bitty_logo_1", "png")}
               className="h-10 w-10"
             />
             <IonTitle>SpeakAnyWay</IonTitle>
