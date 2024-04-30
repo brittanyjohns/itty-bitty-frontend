@@ -1,22 +1,29 @@
 import React from "react";
+import { get } from "react-hook-form";
 import { Link } from "react-router-dom"; // Assuming React Router for navigation
+import { getIconUrl, getImageUrl } from "../data/utils";
 
 const MainPageContent = () => {
   const steps = [
     {
-      title: "Create a Board",
+      title: "Customize and Share Communication Boards",
       description:
-        "Upload your images or choose from our library to create personalized communication boards.",
+        "Create personalized communication boards by uploading your own images or selecting from our curated library. Collaborate and share boards with educators and therapists to foster a supportive community, ensuring a unified approach to development and learning.",
     },
     {
-      title: "Print or Use Digitally",
+      title: "Flexible Usage and Real-Time Sync",
       description:
-        "Print your board or use it digitally on a tablet or smartphone.",
+        "Use your custom boards digitally on any device or print them for physical interaction. Enjoy real-time synchronization across devices, allowing parents to update boards and settings instantly, which are reflected on the child's device immediately.",
     },
     {
-      title: "Communicate",
+      title: "Empower Through Interactive Communication",
       description:
-        "Use the board to communicate with your child, and watch their confidence grow.",
+        "Enhance your child's ability to express themselves with voice output and interactive touch features. Watch as SpeakAnyWay boosts their confidence and communication skills in an educational and engaging manner.",
+    },
+    {
+      title: "Parental Control and Accessibility",
+      description:
+        "Easily set up and manage your child’s account with full parental controls. Adjust board configurations or content from anywhere, ensuring your child has access to the most effective communication tools as their needs evolve.",
     },
   ];
 
@@ -52,7 +59,7 @@ const MainPageContent = () => {
     <div className="container p-4 bg-white bg-opacity-50 mx-auto shadow-lg">
       <div
         className="hero_main1 bg-cover bg-center min-h-48 md:min-h-96"
-        style={{ backgroundImage: "url('src/assets/images/hero_main1.webp')" }}
+        style={{ backgroundImage: `url(${getImageUrl("hero_main1", "webp")})` }}
       >
         <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-50">
           <h1 className="text-2xl md:text-5xl font-bold text-white">
@@ -119,7 +126,8 @@ const MainPageContent = () => {
                   className="bg-white rounded-lg shadow p-4 text-center"
                 >
                   <img
-                    src={`/src/assets/images/feature_${index + 1}.webp`}
+                    src={getImageUrl(`feature_${index + 1}`, "webp")}
+                    // src={`/src/assets/images/feature_${index + 1}.webp`}
                     alt={feature.title}
                     className="h-40 object-cover rounded-md mx-auto"
                   />
@@ -141,16 +149,17 @@ const MainPageContent = () => {
             </h2>
             <div className="grid md:grid-cols-3 gap-4">
               {steps.map((step, index) => (
-                <div key={index} className="text-center">
+                <div key={index} className="">
                   <img
-                    src={`src/assets/icons/round_itty_bitty_logo_1.png`}
+                    // src={`src/assets/icons/round_itty_bitty_logo_1.png`}
+                    src={getIconUrl(`round_itty_bitty_logo_1`, "png")}
                     alt={`Step ${index + 1}`}
                     className="mx-auto h-20 w-20"
                   />
-                  <h3 className="mt-4 font-semibold text-xl text-purple-600">
+                  <h3 className="mt-4 font-semibold text-xl text-purple-600 text-center">
                     Step {index + 1}: {step.title}
                   </h3>
-                  <p className="mt-2 text-md text-gray-600">
+                  <p className="mt-2 text-md text-gray-600 text-justify">
                     {step.description}
                   </p>
                 </div>
