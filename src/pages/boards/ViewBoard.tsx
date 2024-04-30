@@ -179,6 +179,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
           {currentUserTeams && (
             <AddToTeamForm
               onSubmit={handleAddToTeam}
+              toggleAddToTeam={toggleAddToTeam}
               currentUserTeams={currentUserTeams}
             />
           )}

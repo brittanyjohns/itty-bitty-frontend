@@ -239,7 +239,6 @@ const ViewTeamScreen: React.FC<ViewTeamScreenProps> = () => {
               {team.boards && <BoardList boards={team.boards} />}
             </div>
           )}
-          {currentUser?.email}
         </div>
       </IonContent>
     </IonPage>

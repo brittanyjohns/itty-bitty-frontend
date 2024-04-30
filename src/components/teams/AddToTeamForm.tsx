@@ -5,9 +5,11 @@ import { set } from "react-hook-form";
 interface AddToTeamFormProps {
   onSubmit: (teamId: string) => void;
   currentUserTeams: any[];
+  toggleAddToTeam: () => void;
 }
 
 const AddToTeamForm: React.FC<AddToTeamFormProps> = ({
+  toggleAddToTeam,
   onSubmit,
   currentUserTeams,
 }) => {
@@ -19,6 +21,7 @@ const AddToTeamForm: React.FC<AddToTeamFormProps> = ({
     }
     onSubmit(team);
     setTeam(undefined);
+    toggleAddToTeam();
   };
   return (
     <div className="mt-1">
