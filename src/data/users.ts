@@ -2,10 +2,11 @@
 // export const BASE_URL = 'localhost:4000/api/'; // For web development
 // ionic capacitor run android -l --host=192.168.254.1
 const API_URL = import.meta.env.VITE_API_URL;
+console.log('API URL:', API_URL);
 
 export const BASE_URL = API_URL ? API_URL + '/api/' : 'http://localhost:4000/api/'; // For web development
 
-console.log('API URL:', BASE_URL);
+console.log('BASE URL:', BASE_URL);
 export const userHeaders = {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${localStorage.getItem('token')}`
