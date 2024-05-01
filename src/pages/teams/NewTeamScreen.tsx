@@ -68,11 +68,13 @@ const NewTeamScreen: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen className="ion-padding">
-          <TeamForm
-            onCancel={handleCancel}
-            onSave={handleSubmit}
-            existingTeam={team}
-          />
+          <div className="w-1/3 mx-auto">
+            <TeamForm
+              onCancel={handleCancel}
+              onSave={handleSubmit}
+              existingTeam={team}
+            />
+          </div>
           <IonToast
             isOpen={isOpen}
             message={toastMessage}

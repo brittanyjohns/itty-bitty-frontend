@@ -14,6 +14,7 @@ import {
 import { SubmitHandler, useForm } from "react-hook-form";
 import { arrowBackCircleOutline } from "ionicons/icons";
 import React, { useEffect, useRef } from "react";
+import MainMenu from "../../components/MainMenu";
 
 const NewBoard: React.FC = (props: any) => {
   const {
@@ -48,52 +49,57 @@ const NewBoard: React.FC = (props: any) => {
   }, []);
 
   return (
-    <IonPage id="new-board-page">
-      <IonHeader translucent>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonButton routerLink="/boards">
-              <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
+    <>
+      <MainMenu />
+      <IonPage id="main-content">
+        <IonHeader translucent>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonButton routerLink="/boards">
+                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
+              </IonButton>
+            </IonButtons>
+            <IonTitle>New Board</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+
+        <IonContent fullscreen scrollY={true}>
+          <div className="w-1/2 mx-auto h-1/4 grid grid-rows-2 gap-8 mt-10">
+            <IonButton
+              className=""
+              expand="block"
+              onClick={handleCreateFromScratch}
+              ref={scratchBtnRef}
+            >
+              Create from scratch
             </IonButton>
-          </IonButtons>
-          <IonTitle>New Board</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+            <form
+              className="ion-padding hidden"
+              onSubmit={handleSubmit(onSubmit)}
+              ref={scratchFormRef}
+            >
+              <IonInput
+                aria-label="Name"
+                placeholder="Name"
+                defaultValue=""
+                {...register("name", { required: true })}
+              />
+              <IonButton className="" type="submit" expand="block">
+                Create
+              </IonButton>
+            </form>
 
-      <IonContent fullscreen scrollY={true}>
-        <IonButton
-          className=""
-          expand="block"
-          onClick={handleCreateFromScratch}
-          ref={scratchBtnRef}
-        >
-          Create from scratch
-        </IonButton>
-        <form
-          className="ion-padding hidden"
-          onSubmit={handleSubmit(onSubmit)}
-          ref={scratchFormRef}
-        >
-          <IonInput
-            aria-label="Name"
-            placeholder="Name"
-            defaultValue=""
-            {...register("name", { required: true })}
-          />
-          <IonButton className="" type="submit" expand="block">
-            Create
-          </IonButton>
-        </form>
-
-        <IonButton
-          routerLink="/scenarios/new"
-          expand="block"
-          ref={scenarioBtnRef}
-        >
-          Create from scenario
-        </IonButton>
-      </IonContent>
-    </IonPage>
+            <IonButton
+              routerLink="/scenarios/new"
+              expand="block"
+              ref={scenarioBtnRef}
+            >
+              Create from scenario
+            </IonButton>
+          </div>
+        </IonContent>
+      </IonPage>
+    </>
   );
 };
 

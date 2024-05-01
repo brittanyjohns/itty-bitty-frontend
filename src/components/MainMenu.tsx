@@ -9,10 +9,14 @@ import {
   useIonViewWillLeave,
   useIonViewWillEnter,
   IonItem,
+  IonIcon,
 } from "@ionic/react";
 import { MenuLink, getMenu } from "../data/menu";
 import MenuListItem from "./MainMenuListItem";
 import { useCurrentUser } from "../hooks/useCurrentUser";
+import SideMenu from "./SideMenu";
+import MainHeader from "../pages/MainHeader";
+import { homeOutline } from "ionicons/icons";
 
 export const hideMenu = () => {
   const menu = document.querySelector("ion-menu");
@@ -21,14 +25,22 @@ export const hideMenu = () => {
   }
 };
 
-function MainMenu() {
-  const { currentUser } = useCurrentUser();
+export const openMenu = () => {
+  const menu = document.querySelector("ion-menu");
+  if (menu) {
+    menu.open();
+  }
+};
+
+interface MainMenuProps {}
+const MainMenu: React.FC<MainMenuProps> = () => {
+  const { currentUser, isWideScreen } = useCurrentUser();
   const [menuLinks, setMenuLinks] = useState<MenuLink[]>([]);
   const [filteredLinks, setFilteredLinks] = useState<MenuLink[]>([]);
-
   // Function to filter links based on the current user's status
   const filterList = (links: MenuLink[]) => {
     const signedInLinks = [
+      "home",
       "sign-out",
       "boards",
       "images",
@@ -36,7 +48,6 @@ function MainMenu() {
       "teams",
       "predictive",
       "settings",
-      "home",
     ];
     const signedOutLinks = ["sign-in", "sign-up"];
 
@@ -52,6 +63,9 @@ function MainMenu() {
   useIonViewWillEnter(() => {
     const links = getMenu();
     setMenuLinks(links);
+    // if (isWideScreen) {
+    //   openMenu();
+    // }
   }, []);
 
   useEffect(() => {
@@ -66,36 +80,55 @@ function MainMenu() {
 
   return (
     <>
-      <IonMenu contentId="main-content" type="overlay">
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>Main Menu</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent className="ion-padding">
-          {currentUser && (
-            <div className="mb-5">
-              <p>Signed In As: </p>
-              <p className="mt-1 font-bold">{currentUser?.email ?? "Guest"}</p>
-              <p className="mt-1 text-xs">
-                {currentUser?.role ?? "free trial"}
-              </p>
-            </div>
-          )}
-          <IonList>
-            {filteredLinks.map((menuLink) => (
-              <MenuListItem
-                key={menuLink.id}
-                menuLink={menuLink}
-                icon={menuLink.icon}
-                closeMenu={hideMenu}
-              />
-            ))}
-          </IonList>
-        </IonContent>
-      </IonMenu>
+      {isWideScreen && (
+        <SideMenu filteredLinks={filteredLinks} currentUser={currentUser} />
+      )}
+      {!isWideScreen && (
+        <IonMenu
+          contentId="main-content"
+          side="start"
+          type="overlay"
+          swipeGesture={true}
+        >
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>Main Menu</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent className="ion-padding">
+            {currentUser && (
+              <IonItem
+                routerLink="/"
+                className="hover:cursor-pointer py-4"
+                lines="full"
+                detail={false}
+              >
+                <IonIcon icon={homeOutline} className="" />
+                <div className="ml-5 text-xs">
+                  <p className="mt-1 font-bold">
+                    {currentUser?.email ?? "Guest"}
+                  </p>
+                  <p className="mt-1 text-xs">
+                    {currentUser?.role ?? "free trial"}
+                  </p>
+                </div>
+              </IonItem>
+            )}
+            <IonList>
+              {filteredLinks.map((menuLink) => (
+                <MenuListItem
+                  key={menuLink.id}
+                  menuLink={menuLink}
+                  icon={menuLink.icon}
+                  closeMenu={hideMenu}
+                />
+              ))}
+            </IonList>
+          </IonContent>
+        </IonMenu>
+      )}
     </>
   );
-}
+};
 
 export default MainMenu;

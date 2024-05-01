@@ -23,11 +23,18 @@ import {
 } from "ionicons/icons";
 import { set } from "react-hook-form";
 const menuLinks: MenuLink[] = [
+  // {
+  //   endpoint: '/dashboard',
+  //   name: 'Dashboard',
+  //   slug: 'dashboard',
+  //   icon: appsOutline,
+  //   id: 0
+  // },
   {
-    endpoint: '/dashboard',
-    name: 'Dashboard',
-    slug: 'dashboard',
-    icon: appsOutline,
+    endpoint: '/home',
+    name: 'Home',
+    slug: 'home',
+    icon: homeOutline,
     id: 0
   },
   {
@@ -91,15 +98,9 @@ const menuLinks: MenuLink[] = [
     name: 'Sign Out',
     slug: 'sign-out',
     icon: logOutOutline,
-    id: 13
-  },
-  {
-    endpoint: '/home',
-    name: 'Home',
-    slug: 'home',
-    icon: homeOutline,
     id: 14
   },
+  
 ];
 
 export const getMenu = () => menuLinks;

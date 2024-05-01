@@ -43,6 +43,8 @@ import {
   peopleCircleOutline,
   mailOutline,
 } from "ionicons/icons";
+import MainMenu from "../../components/MainMenu";
+import MainHeader from "../MainHeader";
 interface ViewTeamScreenProps {
   id: string;
 }
@@ -58,7 +60,7 @@ const ViewTeamScreen: React.FC<ViewTeamScreenProps> = () => {
   const [boards, setBoards] = useState<Board[]>([]);
   const [boardName, setBoardName] = useState("");
   const history = useHistory();
-  const { currentUser } = useCurrentUser();
+  const { currentUser, isWideScreen } = useCurrentUser();
 
   const fetchTeam = async () => {
     const teamToSet = await getTeam(Number(id));
@@ -164,84 +166,88 @@ const ViewTeamScreen: React.FC<ViewTeamScreenProps> = () => {
   };
 
   return (
-    <IonPage id="view-team-page">
-      <IonHeader translucent>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/teams" />
-          </IonButtons>
-          <IonTitle>{team?.name}</IonTitle>
-        </IonToolbar>
-        <IonToolbar>
-          <IonSegment
-            value={segmentType}
-            onIonChange={handleSegmentChange}
-            className="w-full bg-inherit"
-          >
-            <IonSegmentButton value="teamTab">
-              <IonLabel className="text-xl">
-                <IonIcon
-                  icon={peopleCircleOutline}
-                  className="text-2xl mt-3 mb-2"
-                />
-              </IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="boardTab">
-              <IonLabel className="text-xl">
-                <IonIcon icon={gridOutline} />
-              </IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="inviteTab">
-              <IonLabel className="text-xl">
-                <IonIcon icon={mailOutline} className="text-2xl mt-3 mb-2" />
-              </IonLabel>
-            </IonSegmentButton>
-          </IonSegment>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding" scrollY={true}>
-        <div className="hidden" ref={teamTab}>
-          {team && (
-            <div className="">
-              <IonList>
-                <IonItem>
-                  <IonLabel>Team Name</IonLabel>
-                  <IonText>{team.name}</IonText>
-                </IonItem>
-                <IonItem>
-                  <IonLabel>Team Members</IonLabel>
-                  <IonText>
-                    {team.members?.map((member, index) => (
-                      <div key={index}>{member.name}</div>
-                    ))}
-                  </IonText>
-                </IonItem>
-                <IonItem>
-                  <IonLabel># of Team Boards</IonLabel>
-                  <IonText>{team.boards?.length}</IonText>
-                </IonItem>
-              </IonList>
-              {showDeleteBtn()}
-            </div>
-          )}
-        </div>
-        <div className="hidden" ref={inviteTab}>
-          {team && (
-            <div className="">
-              <TeamInviteForm onSave={handleInvite} onCancel={() => {}} />
-            </div>
-          )}
-        </div>
-        <div className="hidden" ref={boardTab}>
-          {team && (
-            <div className="">
-              <IonLabel>Team Boards</IonLabel>
-              {team.boards && <BoardList boards={team.boards} />}
-            </div>
-          )}
-        </div>
-      </IonContent>
-    </IonPage>
+    <>
+      <MainMenu />
+      <IonPage id="main-content">
+        {!isWideScreen && <MainHeader />}
+        <IonHeader translucent>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonBackButton defaultHref="/teams" />
+            </IonButtons>
+            <IonTitle>{team?.name}</IonTitle>
+          </IonToolbar>
+          <IonToolbar>
+            <IonSegment
+              value={segmentType}
+              onIonChange={handleSegmentChange}
+              className="w-full bg-inherit"
+            >
+              <IonSegmentButton value="teamTab">
+                <IonLabel className="text-xl">
+                  <IonIcon
+                    icon={peopleCircleOutline}
+                    className="text-2xl mt-3 mb-2"
+                  />
+                </IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="boardTab">
+                <IonLabel className="text-xl">
+                  <IonIcon icon={gridOutline} />
+                </IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="inviteTab">
+                <IonLabel className="text-xl">
+                  <IonIcon icon={mailOutline} className="text-2xl mt-3 mb-2" />
+                </IonLabel>
+              </IonSegmentButton>
+            </IonSegment>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent className="ion-padding" scrollY={true}>
+          <div className="hidden" ref={teamTab}>
+            {team && (
+              <div className="">
+                <IonList>
+                  <IonItem>
+                    <IonLabel>Team Name</IonLabel>
+                    <IonText>{team.name}</IonText>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Team Members</IonLabel>
+                    <IonText>
+                      {team.members?.map((member, index) => (
+                        <div key={index}>{member.name}</div>
+                      ))}
+                    </IonText>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel># of Team Boards</IonLabel>
+                    <IonText>{team.boards?.length}</IonText>
+                  </IonItem>
+                </IonList>
+                {showDeleteBtn()}
+              </div>
+            )}
+          </div>
+          <div className="hidden" ref={inviteTab}>
+            {team && (
+              <div className="">
+                <TeamInviteForm onSave={handleInvite} onCancel={() => {}} />
+              </div>
+            )}
+          </div>
+          <div className="hidden" ref={boardTab}>
+            {team && (
+              <div className="">
+                <IonLabel>Team Boards</IonLabel>
+                {team.boards && <BoardList boards={team.boards} />}
+              </div>
+            )}
+          </div>
+        </IonContent>
+      </IonPage>
+    </>
   );
 };
 

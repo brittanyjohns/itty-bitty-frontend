@@ -26,6 +26,9 @@ import FileUploadForm from "../../components/FileUploadForm";
 import { set } from "react-hook-form";
 import { Image } from "../../data/images";
 import ImageGalleryItem from "../../components/ImageGalleryItem";
+import MainMenu from "../../components/MainMenu";
+import MainHeader from "../MainHeader";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 interface ViewMenuScreenProps {
   id: string;
 }
@@ -40,6 +43,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
   const boardGrid = useRef<HTMLDivElement>(null);
   const [images, setImages] = useState<Image[]>([]);
   const history = useHistory();
+  const { isWideScreen } = useCurrentUser();
 
   const fetchMenu = async () => {
     const menuToSet = await getMenu(Number(id));
@@ -86,48 +90,53 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
   };
 
   return (
-    <IonPage id="view-menu-page">
-      <IonHeader translucent>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/menus" />
-          </IonButtons>
-          <IonTitle>{menu?.name}</IonTitle>
-        </IonToolbar>
-        <IonToolbar>
-          <IonSegment value={segmentType} onIonChange={handleSegmentChange}>
-            <IonSegmentButton value="menuTab">
-              <IonLabel>Menu</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="boardTab">
-              <IonLabel>Board</IonLabel>
-            </IonSegmentButton>
-          </IonSegment>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding" scrollY={true}>
-        <div className="hidden" ref={menuTab}>
-          {menu && menu.displayImage && (
-            <div className="">
-              <IonImg src={menu.displayImage} alt={menu.name} />
-            </div>
-          )}
-        </div>
-        <div className="hidden" ref={boardTab}>
-          <IonList>
-            <IonItem>
-              <IonLabel position="stacked">Name</IonLabel>
-              <IonText>{menu?.name}</IonText>
-            </IonItem>
-            <IonItem>
-              <IonButton routerLink={`/boards/${menu?.boardId}`}>
-                View Board
-              </IonButton>
-            </IonItem>
-          </IonList>
-        </div>
-      </IonContent>
-    </IonPage>
+    <>
+      <MainMenu />
+
+      <IonPage id="main-content">
+        {!isWideScreen && <MainHeader />}
+        <IonHeader translucent>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonBackButton defaultHref="/menus" />
+            </IonButtons>
+            <IonTitle>{menu?.name}</IonTitle>
+          </IonToolbar>
+          <IonToolbar>
+            <IonSegment value={segmentType} onIonChange={handleSegmentChange}>
+              <IonSegmentButton value="menuTab">
+                <IonLabel>Menu</IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="boardTab">
+                <IonLabel>Board</IonLabel>
+              </IonSegmentButton>
+            </IonSegment>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent className="ion-padding" scrollY={true}>
+          <div className="hidden" ref={menuTab}>
+            {menu && menu.displayImage && (
+              <div className="">
+                <IonImg src={menu.displayImage} alt={menu.name} />
+              </div>
+            )}
+          </div>
+          <div className="hidden" ref={boardTab}>
+            <IonList>
+              <IonItem>
+                <IonLabel position="stacked">Name</IonLabel>
+                <IonText>{menu?.name}</IonText>
+              </IonItem>
+              <IonItem>
+                <IonButton routerLink={`/boards/${menu?.boardId}`}>
+                  View Board
+                </IonButton>
+              </IonItem>
+            </IonList>
+          </div>
+        </IonContent>
+      </IonPage>
+    </>
   );
 };
 

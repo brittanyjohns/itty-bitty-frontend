@@ -32,6 +32,8 @@ import DraggableGrid from "../../components/DraggableGrid";
 import { Team } from "../../data/teams";
 import AddToTeamForm from "../../components/teams/AddToTeamForm";
 import Tabs from "../../components/Tabs";
+import MainMenu from "../../components/MainMenu";
+import MainHeader from "../MainHeader";
 
 const ViewBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();
@@ -43,7 +45,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
   const [showEdit, setShowEdit] = useState(false);
   const [imageCount, setImageCount] = useState(0);
   const [gridSize, setGridSize] = useState(4);
-  const { currentUser } = useCurrentUser();
+  const { currentUser, isWideScreen } = useCurrentUser();
   const [gridLayout, setGrid] = useState<any>([]);
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [currentUserTeams, setCurrentUserTeams] = useState<Team[]>();
@@ -134,87 +136,92 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
   };
 
   return (
-    <IonPage id="view-board-page">
-      <IonHeader translucent>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonButton routerLink="/boards">
-              <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
-            </IonButton>
-          </IonButtons>
-          {!showIcon && (
-            <IonItem slot="start" className="w-5/6">
-              <h1 className="text-center text-lg font-bold">
-                {board?.name || "Board"}
-              </h1>
-            </IonItem>
-          )}
-          {showEdit && (
-            <IonButtons slot="start">
-              <IonButton onClick={toggleAddToTeam}>
-                <IonIcon icon={shareOutline} />
-              </IonButton>
-            </IonButtons>
-          )}
-          <IonButtons slot="start">
-            <IonButton routerLink={`/boards/${params.id}/locked`}>
-              <IonIcon icon={documentLockOutline} />
-            </IonButton>
-          </IonButtons>
-          {showEdit && (
-            <IonButtons slot="end" className="mr-4">
-              <IonButton routerLink={`/boards/${params.id}/gallery`}>
-                <IonIcon icon={addCircleOutline} />
-              </IonButton>
-            </IonButtons>
-          )}
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen scrollY={true}>
-        <IonRefresher slot="fixed" onIonRefresh={refresh}>
-          <IonRefresherContent></IonRefresherContent>
-        </IonRefresher>
-        <IonLoading message="Please wait..." isOpen={showLoading} />
-        <div ref={addToTeamRef} className="p-4 hidden">
-          {currentUserTeams && (
-            <AddToTeamForm
-              onSubmit={handleAddToTeam}
-              toggleAddToTeam={toggleAddToTeam}
-              currentUserTeams={currentUserTeams}
-            />
-          )}
-        </div>
+    <>
+      <MainMenu />
 
-        {board && (
-          <DraggableGrid
-            images={board.images}
-            board={board}
-            setShowIcon={setShowIcon}
-            inputRef={inputRef}
-            columns={numOfColumns}
-            disableActionList={shouldDisableActionList()}
-            // onLayoutChange={(layout: any) => setGridLayout(layout)}
-            disableReorder={true}
-            mute={true}
-          />
-        )}
-        {imageCount < 1 && (
-          <div className="text-center pt-32">
-            <p>No images found</p>
+      <IonPage id="main-content">
+        {!isWideScreen && <MainHeader />}
+        <IonHeader translucent>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonButton routerLink="/boards">
+                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
+              </IonButton>
+            </IonButtons>
+            {!showIcon && (
+              <IonItem slot="start" className="w-5/6">
+                <h1 className="text-center text-lg font-bold">
+                  {board?.name || "Board"}
+                </h1>
+              </IonItem>
+            )}
+            {showEdit && (
+              <IonButtons slot="start">
+                <IonButton onClick={toggleAddToTeam}>
+                  <IonIcon icon={shareOutline} />
+                </IonButton>
+              </IonButtons>
+            )}
+            <IonButtons slot="start">
+              <IonButton routerLink={`/boards/${params.id}/locked`}>
+                <IonIcon icon={documentLockOutline} />
+              </IonButton>
+            </IonButtons>
+            {showEdit && (
+              <IonButtons slot="end" className="mr-4">
+                <IonButton routerLink={`/boards/${params.id}/gallery`}>
+                  <IonIcon icon={addCircleOutline} />
+                </IonButton>
+              </IonButtons>
+            )}
+          </IonToolbar>
+        </IonHeader>
+        <IonContent fullscreen scrollY={true}>
+          <IonRefresher slot="fixed" onIonRefresh={refresh}>
+            <IonRefresherContent></IonRefresherContent>
+          </IonRefresher>
+          <IonLoading message="Please wait..." isOpen={showLoading} />
+          <div ref={addToTeamRef} className="p-4 hidden">
+            {currentUserTeams && (
+              <AddToTeamForm
+                onSubmit={handleAddToTeam}
+                toggleAddToTeam={toggleAddToTeam}
+                currentUserTeams={currentUserTeams}
+              />
+            )}
           </div>
-        )}
-        {board?.parent_type === "Menu" && imageCount < 1 && (
-          <div className="text-center pt-32">
-            <IonLoading
-              message="Please wait while we load your board..."
-              isOpen={showLoading}
+
+          {board && (
+            <DraggableGrid
+              images={board.images}
+              board={board}
+              setShowIcon={setShowIcon}
+              inputRef={inputRef}
+              columns={numOfColumns}
+              disableActionList={shouldDisableActionList()}
+              // onLayoutChange={(layout: any) => setGridLayout(layout)}
+              disableReorder={true}
+              mute={true}
             />
-          </div>
-        )}
-        <FloatingWordsBtn inputRef={inputRef} words={board?.floating_words} />
-      </IonContent>
-      <Tabs />
-    </IonPage>
+          )}
+          {imageCount < 1 && (
+            <div className="text-center pt-32">
+              <p>No images found</p>
+            </div>
+          )}
+          {board?.parent_type === "Menu" && imageCount < 1 && (
+            <div className="text-center pt-32">
+              <IonLoading
+                message="Please wait while we load your board..."
+                isOpen={showLoading}
+              />
+            </div>
+          )}
+          <FloatingWordsBtn inputRef={inputRef} words={board?.floating_words} />
+        </IonContent>
+        <Tabs />
+      </IonPage>
+    </>
   );
 };
 
