@@ -52,6 +52,8 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/Tabs";
 import DraggableGrid from "../../components/DraggableGrid";
 import { set } from "react-hook-form";
+import MainHeader from "../MainHeader";
+import MainMenu from "../../components/MainMenu";
 
 interface SelectGalleryScreenProps {}
 const SelectGalleryScreen: React.FC = () => {
@@ -71,7 +73,7 @@ const SelectGalleryScreen: React.FC = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("Loading board");
-  const { currentUser, setCurrentUser } = useCurrentUser();
+  const { currentUser, isWideScreen } = useCurrentUser();
   const [gridLayout, setGridLayout] = useState([]);
   const [showCreateBtn, setShowCreateBtn] = useState(false);
   const initialImage = {
@@ -276,197 +278,201 @@ const SelectGalleryScreen: React.FC = () => {
   };
 
   return (
-    <IonPage id="view-board-page">
-      <IonHeader translucent>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonButton routerLink={`/boards/${board?.id}`}>
-              <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
-            </IonButton>
-          </IonButtons>
-          {board && <IonTitle>{board.name}</IonTitle>}
-        </IonToolbar>
-        <IonToolbar>
-          <IonSegment value={segmentType} onIonChange={handleSegmentChange}>
-            <IonSegmentButton value="edit">
-              <IonLabel className="text-xl">
-                <IonIcon icon={createOutline} />
-              </IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="gallery">
-              <IonLabel className="text-xl">
-                <IonIcon icon={imagesOutline} />
-              </IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="upload">
-              <IonLabel className="text-xl">
-                <IonIcon icon={cloudUploadOutline} />
-              </IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="generate">
-              <IonLabel className="text-xl">
-                <IonIcon icon={refreshCircleOutline} />
-              </IonLabel>
-            </IonSegmentButton>
-          </IonSegment>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding" scrollY={true}>
-        <div className="ion-justify-content-center ion-align-items-center ion-text-center pt-1">
-          <IonText className="font-bold text-2xl">
-            {board && board.name}{" "}
-          </IonText>
-          <IonIcon icon={refreshOutline} onClick={fetchBoard} />
-        </div>
-
-        <div className="lg:px-12" ref={editForm}>
-          <div className="mb-2">
-            <IonText className="text-sm text-gray-500">
-              Voice: {board?.voice}
-            </IonText>
-          </div>
-          <div className="w-11/12 lg:w-1/2 mx-auto">
-            {board && <BoardForm board={board} setBoard={setBoard} />}
-          </div>
-          <div className="mt-6 px-4 lg:px-12">
-            {board && board.images && board.images.length > 0 && (
-              <div className="">
-                <p className="text-center font-bold text-lg">
-                  This board currently has {board.images.length} images.
-                </p>
-                <p className="text-center font-bold text-md">
-                  Drag and drop to rearrange the layout.
-                </p>
-
-                <IonButton
-                  className="mt-5 block w-5/6 mx-auto text-md"
-                  onClick={handleSaveLayout}
-                >
-                  Save Layout
-                </IonButton>
-                <DraggableGrid
-                  images={board.images}
-                  columns={board.number_of_columns}
-                  onLayoutChange={(layout: any) => setGrid(layout)}
-                  disableActionList={true}
-                  mute={true}
-                />
-              </div>
-            )}
-            {board && board.images && board.images.length < 1 && (
-              <div className="text-center">
-                <p>No images found</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="mt-6 py-3 px-1 hidden text-center" ref={uploadForm}>
-          <IonText className="text-lg">Upload your own image</IonText>
-          {board && (
-            <FileUploadForm
-              board={board}
-              onCloseModal={undefined}
-              showLabel={true}
-              existingLabel={image?.label}
-            />
-          )}
-        </div>
-        <div className="mt-2 hidden" ref={generateForm}>
-          <IonList className="" lines="none">
-            <IonItem className="my-2">
-              <IonText className="font-bold text-xl mt-2">
-                Generate an board with AI
-              </IonText>
-            </IonItem>
-
-            <IonItem className="mt-2 border-2">
-              {board && (
-                <IonInput
-                  className=""
-                  aria-label="label"
-                  value={image?.label}
-                  placeholder="Enter label"
-                  onIonInput={handleLabelInput}
-                ></IonInput>
-              )}
-            </IonItem>
-            <IonItem className="mt-2 border-2">
-              <IonLoading
-                className="loading-icon"
-                cssClass="loading-icon"
-                isOpen={showLoading}
-                message={loadingMessage}
-              />
-              {board && (
-                <IonTextarea
-                  className=""
-                  placeholder="Enter prompt"
-                  onIonInput={handleImagePromptInput}
-                ></IonTextarea>
-              )}
-            </IonItem>
-            <IonItem className="mt-2">
-              <IonButton className="w-full text-lg" onClick={handleGenerate}>
-                Generate Image
+    <>
+      <MainMenu />
+      <IonPage id="main-content">
+        {!isWideScreen && <MainHeader />}
+        <IonHeader translucent>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonButton routerLink={`/boards/${board?.id}`}>
+                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
               </IonButton>
-            </IonItem>
-            <IonItem className="mt-2 font-mono text-center">
-              <IonText className="text-md">
-                This will generate an board based on the prompt you enter.
-              </IonText>
-            </IonItem>
-            <IonItem className="mt-2 font-mono text-center text-red-400">
-              <IonText className="ml-6"> It will cost 1 credit.</IonText>
-            </IonItem>
-          </IonList>
-        </div>
+            </IonButtons>
+            {board && <IonTitle>{board.name}</IonTitle>}
+          </IonToolbar>
+          <IonToolbar>
+            <IonSegment value={segmentType} onIonChange={handleSegmentChange}>
+              <IonSegmentButton value="edit">
+                <IonLabel className="text-xl">
+                  <IonIcon icon={createOutline} />
+                </IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="gallery">
+                <IonLabel className="text-xl">
+                  <IonIcon icon={imagesOutline} />
+                </IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="upload">
+                <IonLabel className="text-xl">
+                  <IonIcon icon={cloudUploadOutline} />
+                </IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="generate">
+                <IonLabel className="text-xl">
+                  <IonIcon icon={refreshCircleOutline} />
+                </IonLabel>
+              </IonSegmentButton>
+            </IonSegment>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent className="ion-padding" scrollY={true}>
+          <div className="ion-justify-content-center ion-align-items-center ion-text-center pt-1">
+            <IonText className="font-bold text-2xl">
+              {board && board.name}{" "}
+            </IonText>
+            <IonIcon icon={refreshOutline} onClick={fetchBoard} />
+          </div>
 
-        <div className="hidden" ref={imageGalleryWrapper}>
-          <IonLabel className="font-sans text-sm">
-            Search for images - Click to add to board
-          </IonLabel>
-          <IonSearchbar
-            className="mt-2"
-            onIonChange={handleSearchInput}
-          ></IonSearchbar>
-          {showCreateBtn && (
-            <IonList>
-              <IonItem slot="start" className="w-full">
-                <IonText>
-                  {" "}
-                  Create a new image for:
-                  <strong> {searchInput}</strong>.
+          <div className="lg:px-12" ref={editForm}>
+            <div className="mb-2">
+              <IonText className="text-sm text-gray-500">
+                Voice: {board?.voice}
+              </IonText>
+            </div>
+            <div className="w-11/12 lg:w-1/2 mx-auto">
+              {board && <BoardForm board={board} setBoard={setBoard} />}
+            </div>
+            <div className="mt-6 px-4 lg:px-12">
+              {board && board.images && board.images.length > 0 && (
+                <div className="">
+                  <p className="text-center font-bold text-lg">
+                    This board currently has {board.images.length} images.
+                  </p>
+                  <p className="text-center font-bold text-md">
+                    Drag and drop to rearrange the layout.
+                  </p>
+
+                  <IonButton
+                    className="mt-5 block w-5/6 mx-auto text-md"
+                    onClick={handleSaveLayout}
+                  >
+                    Save Layout
+                  </IonButton>
+                  <DraggableGrid
+                    images={board.images}
+                    columns={board.number_of_columns}
+                    onLayoutChange={(layout: any) => setGrid(layout)}
+                    disableActionList={true}
+                    mute={true}
+                  />
+                </div>
+              )}
+              {board && board.images && board.images.length < 1 && (
+                <div className="text-center">
+                  <p>No images found</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-6 py-3 px-1 hidden text-center" ref={uploadForm}>
+            <IonText className="text-lg">Upload your own image</IonText>
+            {board && (
+              <FileUploadForm
+                board={board}
+                onCloseModal={undefined}
+                showLabel={true}
+                existingLabel={image?.label}
+              />
+            )}
+          </div>
+          <div className="mt-2 hidden" ref={generateForm}>
+            <IonList className="" lines="none">
+              <IonItem className="my-2">
+                <IonText className="font-bold text-xl mt-2">
+                  Generate an board with AI
                 </IonText>
-                <IonButton
-                  slot="end"
-                  size="small"
-                  onClick={() => handleCreateImage(searchInput)}
-                >
-                  <IonIcon slot="icon-only" icon={addCircleOutline} />
+              </IonItem>
+
+              <IonItem className="mt-2 border-2">
+                {board && (
+                  <IonInput
+                    className=""
+                    aria-label="label"
+                    value={image?.label}
+                    placeholder="Enter label"
+                    onIonInput={handleLabelInput}
+                  ></IonInput>
+                )}
+              </IonItem>
+              <IonItem className="mt-2 border-2">
+                <IonLoading
+                  className="loading-icon"
+                  cssClass="loading-icon"
+                  isOpen={showLoading}
+                  message={loadingMessage}
+                />
+                {board && (
+                  <IonTextarea
+                    className=""
+                    placeholder="Enter prompt"
+                    onIonInput={handleImagePromptInput}
+                  ></IonTextarea>
+                )}
+              </IonItem>
+              <IonItem className="mt-2">
+                <IonButton className="w-full text-lg" onClick={handleGenerate}>
+                  Generate Image
                 </IonButton>
               </IonItem>
+              <IonItem className="mt-2 font-mono text-center">
+                <IonText className="text-md">
+                  This will generate an board based on the prompt you enter.
+                </IonText>
+              </IonItem>
+              <IonItem className="mt-2 font-mono text-center text-red-400">
+                <IonText className="ml-6"> It will cost 1 credit.</IonText>
+              </IonItem>
             </IonList>
-          )}
-          {remainingImages && (
-            <SelectImageGallery
-              boardId={board?.id}
-              onImageClick={handleImageClick}
-              onLoadMoreImages={handleGetMoreImages}
-              searchInput={searchInput}
-              images={remainingImages}
-            />
-          )}
-        </div>
-        <IonToast
-          isOpen={isOpen}
-          message={toastMessage}
-          onDidDismiss={() => setIsOpen(false)}
-          duration={2000}
-        ></IonToast>
-      </IonContent>
-      <Tabs />
-    </IonPage>
+          </div>
+
+          <div className="hidden" ref={imageGalleryWrapper}>
+            <IonLabel className="font-sans text-sm">
+              Search for images - Click to add to board
+            </IonLabel>
+            <IonSearchbar
+              className="mt-2"
+              onIonChange={handleSearchInput}
+            ></IonSearchbar>
+            {showCreateBtn && (
+              <IonList>
+                <IonItem slot="start" className="w-full">
+                  <IonText>
+                    {" "}
+                    Create a new image for:
+                    <strong> {searchInput}</strong>.
+                  </IonText>
+                  <IonButton
+                    slot="end"
+                    size="small"
+                    onClick={() => handleCreateImage(searchInput)}
+                  >
+                    <IonIcon slot="icon-only" icon={addCircleOutline} />
+                  </IonButton>
+                </IonItem>
+              </IonList>
+            )}
+            {remainingImages && (
+              <SelectImageGallery
+                boardId={board?.id}
+                onImageClick={handleImageClick}
+                onLoadMoreImages={handleGetMoreImages}
+                searchInput={searchInput}
+                images={remainingImages}
+              />
+            )}
+          </div>
+          <IonToast
+            isOpen={isOpen}
+            message={toastMessage}
+            onDidDismiss={() => setIsOpen(false)}
+            duration={2000}
+          ></IonToast>
+        </IonContent>
+        <Tabs />
+      </IonPage>
+    </>
   );
 };
 

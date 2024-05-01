@@ -19,11 +19,13 @@ import { useHistory } from "react-router";
 import { useEffect } from "react";
 import MainPageContent from "./MainPageContent";
 import { getImageUrl } from "../data/utils";
+import { useMediaQuery } from "react-responsive";
+import SideMenu from "../components/SideMenu";
+import MainHeader from "./MainHeader";
 
 const Home: React.FC = () => {
   const history = useHistory();
-  const { currentUser, setCurrentUser } = useCurrentUser();
-
+  const { currentUser, isDesktop, platforms, isWideScreen } = useCurrentUser();
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
       e.detail.complete();
@@ -31,35 +33,23 @@ const Home: React.FC = () => {
   };
 
   useEffect(() => {
-    const onDesktop = currentUser?.isDesktop;
-    console.log("platforms", onDesktop);
+    console.log("isDesktop", isDesktop);
+    console.log("isWideScreen", isWideScreen);
   }, []);
 
   return (
     <>
       <MainMenu />
+
       <IonPage id="main-content">
-        <IonHeader>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonMenuButton></IonMenuButton>
-            </IonButtons>
-            <img
-              slot="start"
-              // src="/src/assets/images/round_itty_bitty_logo_1.png"
-              src={getImageUrl("round_itty_bitty_logo_1", "png")}
-              className="h-10 w-10"
-            />
-            <IonTitle>SpeakAnyWay</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+        {!isWideScreen && <MainHeader />}
         <IonContent className="ion-padding text-justified" scrollY={true}>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <MainPageContent />
         </IonContent>
-        {currentUser && <Tabs />}
+        {currentUser && !isWideScreen && <Tabs />}
       </IonPage>
     </>
   );

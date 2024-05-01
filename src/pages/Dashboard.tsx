@@ -8,11 +8,12 @@ import {
   IonRefresherContent,
   IonTitle,
   IonToolbar,
-} from '@ionic/react';
-import MainMenu from '../components/MainMenu';
-import Tabs from '../components/Tabs';
+} from "@ionic/react";
+import MainMenu from "../components/MainMenu";
+import Tabs from "../components/Tabs";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 const Dashboard: React.FC = () => {
-
+  const { isWideScreen } = useCurrentUser();
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
@@ -27,18 +28,16 @@ const Dashboard: React.FC = () => {
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
-              <IonMenuButton></IonMenuButton>
+              {!isWideScreen && <IonMenuButton></IonMenuButton>}
             </IonButtons>
-            <IonTitle>Welcome to Itty Bitty Boards</IonTitle>
+            <IonTitle>Dashboard</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <IonContent fullscreen>
-            <IonTitle>Home</IonTitle>e
-          </IonContent>
+          <IonContent fullscreen></IonContent>
         </IonContent>
       </IonPage>
       <Tabs />

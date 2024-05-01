@@ -9,13 +9,15 @@ import React, {
 import { getCurrentUser, User } from "../data/users";
 
 import { getPlatforms } from "@ionic/react";
-export const platforms = getPlatforms();
-export const isDesktop = platforms.includes("desktop");
+import { useMediaQuery } from "react-responsive";
 // Define the shape of the context
 
 export interface UserContextType {
   currentUser: User | null;
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
+  isDesktop: boolean;
+  isWideScreen: boolean;
+  platforms: string[];
 }
 
 // Create the context with an initial undefined value
@@ -29,13 +31,14 @@ interface UserProviderProps {
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const isWideScreen = useMediaQuery({ query: "(min-width: 768px)" });
+  const platforms = getPlatforms();
+  const isDesktop = platforms.includes("desktop");
   const fetchUser = async () => {
     // Assuming you have a function to fetch the current user
     const user = await getCurrentUser();
 
     if (user) {
-      user.platforms = platforms;
-      user.isDesktop = isDesktop;
       setCurrentUser(user);
       console.log("Current user", user);
     }
@@ -51,7 +54,15 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+    <UserContext.Provider
+      value={{
+        currentUser,
+        setCurrentUser,
+        isDesktop,
+        isWideScreen,
+        platforms,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

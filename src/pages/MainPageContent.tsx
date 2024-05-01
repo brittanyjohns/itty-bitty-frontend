@@ -65,7 +65,7 @@ const MainPageContent = () => {
           <h1 className="text-2xl md:text-5xl font-bold text-white">
             Empower Your Child's Communication
           </h1>
-          <p className="mt-4 text-sm md:text-lg text-white">
+          <p className="mt-4 text-sm md:text-xl text-white">
             Discover the simplicity of SpeakAnyWay.
           </p>
         </div>
@@ -142,12 +142,12 @@ const MainPageContent = () => {
             </div>
           </div>
         </section>
-        <section className="col-span-1 py-3 bg-white">
+        <section className="col-span-1 p-4 bg-white">
           <div className="container mx-auto px-2">
             <h2 className="text-4xl font-bold text-center mb-4 text-black">
               How It Works
             </h2>
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {steps.map((step, index) => (
                 <div key={index} className="">
                   <img
