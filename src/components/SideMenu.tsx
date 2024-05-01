@@ -17,7 +17,12 @@ import {
 import { MenuLink, getMenu } from "../data/menu";
 import MenuListItem from "./MainMenuListItem";
 import { getImageUrl } from "../data/utils";
-import { arrowDownCircleOutline, homeOutline } from "ionicons/icons";
+import {
+  arrowDownCircleOutline,
+  homeOutline,
+  person,
+  personCircleOutline,
+} from "ionicons/icons";
 import { useHistory } from "react-router";
 
 interface SideMenuProps {
@@ -44,28 +49,23 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
     <>
       {" "}
       <IonToolbar>
-        <img
-          slot="start"
-          src={getImageUrl("round_itty_bitty_logo_1", "png")}
-          className="h-10 w-10 ml-2"
-        />
-        <IonTitle>SpeakAnyWay</IonTitle>
-      </IonToolbar>
-      <IonList className="h-full">
-        {/* <IonItem
+        <IonItem
           routerLink="/"
-          className="hover:cursor-pointer py-4"
+          className="hover:cursor-pointer"
           lines="full"
           detail={false}
         >
-          <IonIcon icon={homeOutline} className="" />
-          <div className="ml-5 text-xs">
-            <p className="mt-1 font-bold">{currentUser?.email ?? "Guest"}</p>
-            <p className="mt-1 text-xs">{currentUser?.role ?? "free trial"}</p>
-          </div>
-        </IonItem> */}
+          <img
+            slot="start"
+            src={getImageUrl("round_itty_bitty_logo_1", "png")}
+            className="h-10 w-10"
+          />
+          <IonTitle>SpeakAnyWay</IonTitle>
+        </IonItem>
+      </IonToolbar>
+      <IonList className="h-full">
         <IonItem
-          // slot="header"
+          slot="header"
           onClick={toggleAccordion}
           className="hover:cursor-pointer text-wrap"
           detail={true}
@@ -77,7 +77,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
           <IonAccordion value="second">
             <div className="ion-padding" slot="content">
               <IonIcon
-                icon={homeOutline}
+                icon={personCircleOutline}
                 className=""
                 onClick={() => {
                   history.push("/");
