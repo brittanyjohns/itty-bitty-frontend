@@ -1,4 +1,4 @@
-import { Image, PredictiveImage } from './images';
+import { Image } from './images';
 import { BASE_URL, userHeaders } from './users';
 
 export interface Board {
