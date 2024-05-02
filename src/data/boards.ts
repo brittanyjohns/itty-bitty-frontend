@@ -22,7 +22,7 @@ export interface PredictiveBoard {
     name: string;
     description: string;
     number_of_columns: number;
-    images: PredictiveImage[];
+    images: Image[];
 }
 
 export const getBoards = () => {
