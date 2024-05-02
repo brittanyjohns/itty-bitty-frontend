@@ -111,6 +111,11 @@ const App: React.FC = () => (
           <Route path="/images" component={ImagesScreen} exact={true} />
 
           <Route path="/predictive" component={PredictiveIndex} exact={true} />
+          <Route
+            path="/predictive/:id"
+            component={PredictiveIndex}
+            exact={true}
+          />
 
           <Route path="/menus/:id" component={ViewMenuScreen} exact={true} />
           <Route path="/menus/new" component={NewMenu} exact={true} />

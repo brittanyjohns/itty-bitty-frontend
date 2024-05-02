@@ -19,13 +19,16 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import {
   getImage,
   Image,
   generateImage,
   deleteImage,
   removeDoc,
+  setNextWords,
+  create_symbol,
+  getPredictiveImages,
 } from "../../data/images"; // Adjust imports based on actual functions
 import { markAsCurrent } from "../../data/docs"; // Adjust imports based on actual functions
 import BoardDropdown from "../../components/BoardDropdown";
@@ -41,9 +44,11 @@ import {
 import { set } from "react-hook-form";
 import MainMenu from "../../components/MainMenu";
 import MainHeader from "../MainHeader";
+import PredictiveImagesScreen from "../PredictiveIndex";
 
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const history = useHistory();
   const [image, setImage] = useState<Image | null>(null);
   const [currentImage, setCurrentImage] = useState<string | null>("");
   const imageGrid = useRef<HTMLDivElement>(null);
@@ -56,6 +61,8 @@ const ViewImageScreen: React.FC = () => {
   const [pageTitle, setPageTitle] = useState("");
   const { currentUser, isWideScreen } = useCurrentUser();
   const [boardId, setBoardId] = useState<string | null>(null);
+  const [nextImageWords, setNextImageWords] = useState<string[]>([]);
+
   const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
     if (
       currentUser &&
@@ -71,6 +78,7 @@ const ViewImageScreen: React.FC = () => {
   const fetchImage = async () => {
     const img = await getImage(id);
     setImage(img);
+    setNextImageWords(img.next_words);
     return img;
   };
 
@@ -194,6 +202,26 @@ const ViewImageScreen: React.FC = () => {
     const newSegment = e.detail.value;
     setSegmentType(newSegment);
     toggleForms(newSegment);
+  };
+
+  const handleNextWords = async () => {
+    if (!image) return;
+    const result = await setNextWords(image.id);
+    if (result["next_words"]) {
+      history.push(`/predictive/${image.id}`);
+      // alert("Next words set successfully.");
+      // const predictiveImgs = await getPredictiveImages(image.id);
+      // setPredictiveImages(predictiveImgs);
+      // window.location.reload();
+    } else {
+      alert("Error setting next words.\n" + result["message"]);
+    }
+  };
+
+  const createSymbol = async () => {
+    if (!image) return;
+    const result = await create_symbol(image.id);
+    console.log("Symbol result: ", result);
   };
 
   return (
@@ -334,6 +362,52 @@ const ViewImageScreen: React.FC = () => {
             )}
             {image && image.docs && image.docs.length < 1 && (
               <div className="text-center"></div>
+            )}
+            {currentUser?.role === "admin" && (
+              <div className="mt-10">
+                <IonButtons className="flex justify-between">
+                  <IonButton
+                    onClick={handleNextWords}
+                    className="text-sm font-mono"
+                    slot="start"
+                  >
+                    Set Next Words
+                  </IonButton>
+                  <IonButton
+                    routerLink={`/predictive/${image?.id}`}
+                    className="text-sm font-mono"
+                  >
+                    View Predictive
+                  </IonButton>
+                  <IonButton
+                    onClick={createSymbol}
+                    className="text-sm font-mono"
+                    slot="end"
+                  >
+                    Create Symbol
+                  </IonButton>
+                </IonButtons>
+                <div className="text-sm font-mono w-full">
+                  {image?.next_words && image.next_words.length > 0 && (
+                    <div className="mt-2">
+                      <IonText className="text-md">Next Words:</IonText>
+                      <div className="flex flex-wrap">
+                        {image.next_words.map((word, index) => (
+                          <div
+                            key={index}
+                            className="bg-gray-200 m-1 p-1 rounded-md text-black"
+                          >
+                            <IonText className="text-sm">{word}</IonText>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {image?.next_words?.length == 0 && (
+                    <p className="text-md">No next words set.</p>
+                  )}
+                </div>
+              </div>
             )}
           </div>
           <div className="hidden text-center p-4" ref={deleteImageWrapper}>

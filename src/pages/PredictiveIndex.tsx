@@ -15,9 +15,9 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { PredictiveImage, getPredictiveImages } from "../data/images";
+import { Image, getPredictiveImages } from "../data/images";
 import MainMenu from "../components/MainMenu";
-import { useHistory } from "react-router";
+import { useHistory, useParams } from "react-router";
 import Tabs from "../components/Tabs";
 import {
   addCircleOutline,
@@ -32,8 +32,9 @@ import PredictiveImageGallery from "../components/PredictiveImageGallery";
 import { speak } from "../hoarder/TextToSpeech";
 import FloatingWordsBtn from "../components/FloatingWordsBtn";
 
-const ImagesScreen: React.FC = () => {
-  const [initialImages, setImages] = useState<PredictiveImage[]>([]);
+const PredictiveImagesScreen: React.FC = () => {
+  const startingImageId = useParams<{ id: string }>().id;
+  const [initialImages, setImages] = useState<Image[]>([]);
   const history = useHistory();
   const [boardId, setBoardId] = useState("");
   const inputRef = useRef<HTMLIonInputElement>(null);
@@ -44,7 +45,7 @@ const ImagesScreen: React.FC = () => {
     setImages(imgs);
   };
 
-  const handleImageSpeak = (image: PredictiveImage) => {
+  const handleImageSpeak = (image: Image) => {
     const audioSrc = image.audio;
     const label = image.label;
     if (inputRef.current) {
@@ -84,6 +85,11 @@ const ImagesScreen: React.FC = () => {
     fetchFirstBoard();
   };
 
+  const setStartingImages = async (startingImageId: string) => {
+    const imgs = await getPredictiveImages(startingImageId);
+    setImages(imgs);
+  };
+
   useEffect(() => {
     // const fetchFirstBoard = async () => {
     //   const board = await getInitialImages();
@@ -91,8 +97,11 @@ const ImagesScreen: React.FC = () => {
     //   const imgs = board;
     //   setImages(imgs);
     // };
-
-    fetchFirstBoard();
+    if (startingImageId) {
+      setStartingImages(startingImageId);
+    } else {
+      fetchFirstBoard();
+    }
   }, []);
 
   const refresh = (e: CustomEvent) => {
@@ -167,4 +176,4 @@ const ImagesScreen: React.FC = () => {
   );
 };
 
-export default ImagesScreen;
+export default PredictiveImagesScreen;

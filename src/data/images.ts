@@ -21,6 +21,9 @@ import { BASE_URL } from "./users";
     text_color?: string;
     position?: number;
     layout?: DraggableGridLayout[];
+    next_board_id?: string;
+    nextImageSrcs?: string[];
+    next_words?: string[]
   }
 
   export interface DraggableGridLayout {
@@ -31,22 +34,22 @@ import { BASE_URL } from "./users";
     h: number;
   };
 
-  export interface PredictiveImage {
-    id: string;
-    src: string;
-    label: string;
-    next_board_id: string;
-    nextImageSrcs: string[];
-    next_words: string[]
-    image_prompt?: string;
-    audio?: string;
-    docs?: ImageDoc[];
-    display_doc?: ImageDoc;
-    bg_color: string;
-  }
+  // export interface Image {
+  //   id: string;
+  //   src: string;
+  //   label: string;
+  //   next_board_id: string;
+  //   nextImageSrcs: string[];
+  //   next_words: string[]
+  //   image_prompt?: string;
+  //   audio?: string;
+  //   docs?: ImageDoc[];
+  //   display_doc?: ImageDoc;
+  //   bg_color: string;
+  // }
 
   export interface PredictiveImageGalleryProps {
-    predictiveImages: PredictiveImage[];
+    predictiveImages: Image[];
     boardId: string;
     onImageClick: any;
   }
@@ -159,13 +162,13 @@ export async function getUserImages(): Promise<Image[]> {
   const images: Image[] = await response.json();
   return images;
 }
-export async function getPredictiveImages(boardId: string): Promise<PredictiveImage[]> {
+export async function getPredictiveImages(boardId: string): Promise<Image[]> {
   console.log('getPredictiveImages boardId', boardId);
   if (!boardId) {
     return [];
   }
   const response = await fetch(`${BASE_URL}boards/${boardId}/predictive_images`, { headers: userHeaders });
-  const images: PredictiveImage[] = await response.json();
+  const images: Image[] = await response.json();
   return images;
 }
 
@@ -190,9 +193,9 @@ export async function generateImage(formData: FormData): Promise<Image> {
   return image;
 }
 
-export async function getPredictiveImagesByIds(ids: string[]): Promise<PredictiveImage[]> {
+export async function getPredictiveImagesByIds(ids: string[]): Promise<Image[]> {
   const response = await fetch(`${BASE_URL}images/predictive?ids=${ids.join(',')}`, { headers: userHeaders });
-  const images: PredictiveImage[] = await response.json();
+  const images: Image[] = await response.json();
   return images;
 }
 
@@ -208,6 +211,22 @@ export async function removeDoc(imageId: string, docId: string|undefined): Promi
   const response = await fetch(`${BASE_URL}images/${imageId}/hide_doc`, {
     headers: userHeaders,
     body: JSON.stringify({ doc_id: docId }),
+    method: 'POST',
+  });
+  return response.json();
+}
+
+export async function setNextWords(imageId: string): Promise<any> {
+  const response = await fetch(`${BASE_URL}images/${imageId}/set_next_words`, {
+    headers: userHeaders,
+    method: 'POST',
+  });
+  return response.json();
+}
+
+export async function create_symbol(imageId: string): Promise<any> {
+  const response = await fetch(`${BASE_URL}images/${imageId}/create_symbol`, {
+    headers: userHeaders,
     method: 'POST',
   });
   return response.json();
