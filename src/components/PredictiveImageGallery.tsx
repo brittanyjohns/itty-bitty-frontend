@@ -1,22 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import ImageComponent from "./ImageComponent";
-import { PredictiveImage, getPredictiveImages } from "../data/images";
+import { Image, getPredictiveImages } from "../data/images";
 import { get } from "react-hook-form";
 // import { TextToSpeech } from "@capacitor-community/text-to-speech";
 
 interface PredictiveImageGalleryProps {
-  initialImages: PredictiveImage[];
-  onImageSpeak: (image: PredictiveImage) => void;
+  initialImages: Image[];
+  onImageSpeak: (image: Image) => void;
 }
 
 const PredictiveImageGallery: React.FC<PredictiveImageGalleryProps> = ({
   initialImages,
   onImageSpeak: handleImageSpeak,
 }) => {
-  const [currentImages, setCurrentImages] =
-    useState<PredictiveImage[]>(initialImages);
+  const [currentImages, setCurrentImages] = useState<Image[]>(initialImages);
 
-  const handleImageClick = async (image: PredictiveImage) => {
+  const handleImageClick = async (image: Image) => {
     handleImageSpeak(image);
     const newImages = await getPredictiveImages(image.id);
     const allImages = [...newImages, ...currentImages];
@@ -27,7 +26,7 @@ const PredictiveImageGallery: React.FC<PredictiveImageGalleryProps> = ({
 
     const imagesToSet = uniqueImages.filter(
       (image) => image !== undefined
-    ) as PredictiveImage[];
+    ) as Image[];
 
     setCurrentImages(imagesToSet);
   };
