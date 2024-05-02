@@ -125,7 +125,7 @@ const PredictiveImagesScreen: React.FC = () => {
                 placeholder="Predictive Images - BETA"
                 ref={inputRef}
                 readonly={true}
-                className="w-full text-xs text-justify bg-inherit"
+                className="w-full text-md md:text-lg lg:text-xl text-justify bg-inherit"
               ></IonInput>
             </IonItem>
             <IonButtons slot="start">
@@ -155,9 +155,6 @@ const PredictiveImagesScreen: React.FC = () => {
                 </IonButton>
               )}
             </IonButtons>
-          </IonToolbar>
-          <IonToolbar>
-            <IonTitle>Predictive Images</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
