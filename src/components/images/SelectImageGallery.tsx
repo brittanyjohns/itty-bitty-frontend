@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Image, SelectImageGalleryProps } from "../data/images";
+import { Image, SelectImageGalleryProps } from "../../data/images";
 import {
   IonImg,
   IonButton,
@@ -8,7 +8,7 @@ import {
   IonActionSheet,
 } from "@ionic/react";
 import { useHistory } from "react-router";
-import { addImageToBoard, getUserBoards } from "../data/boards";
+import { addImageToBoard, getUserBoards } from "../../data/boards";
 
 const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
   images,

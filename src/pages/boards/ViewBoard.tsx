@@ -26,13 +26,13 @@ import {
 import { useHistory, useParams } from "react-router";
 import "./ViewBoard.css";
 import React from "react";
-import FloatingWordsBtn from "../../components/FloatingWordsBtn";
+import FloatingWordsBtn from "../../components/utils/FloatingWordsBtn";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import DraggableGrid from "../../components/DraggableGrid";
+import DraggableGrid from "../../components/images/DraggableGrid";
 import { Team } from "../../data/teams";
 import AddToTeamForm from "../../components/teams/AddToTeamForm";
-import Tabs from "../../components/Tabs";
-import MainMenu from "../../components/MainMenu";
+import Tabs from "../../components/utils/Tabs";
+import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
 
 const ViewBoard: React.FC<any> = ({ boardId }) => {

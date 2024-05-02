@@ -11,10 +11,10 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import TeamList from "../../components/TeamList";
-import MainMenu from "../../components/MainMenu";
+import TeamList from "../../components/teams/TeamList";
+import MainMenu from "../../components/main_menu/MainMenu";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import Tabs from "../../components/Tabs";
+import Tabs from "../../components/utils/Tabs";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { getTeams } from "../../data/teams";

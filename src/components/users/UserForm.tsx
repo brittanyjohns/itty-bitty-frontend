@@ -11,7 +11,7 @@ import {
 } from "@ionic/react";
 import { language } from "ionicons/icons";
 import { set } from "react-hook-form";
-import { User } from "../data/users";
+import { User } from "../../data/users";
 
 interface UsersFormProps {
   onNameChange: any;

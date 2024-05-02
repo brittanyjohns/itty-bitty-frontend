@@ -31,8 +31,8 @@ import {
   getPredictiveImages,
 } from "../../data/images"; // Adjust imports based on actual functions
 import { markAsCurrent } from "../../data/docs"; // Adjust imports based on actual functions
-import BoardDropdown from "../../components/BoardDropdown";
-import FileUploadForm from "../../components/FileUploadForm";
+import BoardDropdown from "../../components/boards/BoardDropdown";
+import FileUploadForm from "../../components/images/FileUploadForm";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import {
   cloudUploadOutline,
@@ -42,7 +42,7 @@ import {
   trashBinOutline,
 } from "ionicons/icons";
 import { set } from "react-hook-form";
-import MainMenu from "../../components/MainMenu";
+import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
 import PredictiveImagesScreen from "../PredictiveIndex";
 

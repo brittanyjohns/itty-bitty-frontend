@@ -15,10 +15,10 @@ import {
   IonToolbar,
   useIonViewWillEnter,
 } from "@ionic/react";
-import BoardList from "../../components/BoardList";
-import MainMenu, { hideMenu } from "../../components/MainMenu";
+import BoardList from "../../components/boards/BoardList";
+import MainMenu, { hideMenu } from "../../components/main_menu/MainMenu";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import Tabs from "../../components/Tabs";
+import Tabs from "../../components/utils/Tabs";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { getBoards } from "../../data/boards";

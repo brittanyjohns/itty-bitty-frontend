@@ -13,14 +13,14 @@ import {
   IonToast,
   IonToolbar,
 } from "@ionic/react";
-import MainMenu from "../../components/MainMenu";
-import Tabs from "../../components/Tabs";
+import MainMenu from "../../components/main_menu/MainMenu";
+import Tabs from "../../components/utils/Tabs";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import UserSettingsForm from "../../components/UserSettingsForm";
+import UserSettingsForm from "../../components/users/UserSettingsForm";
 import { User, UserSetting, updateUserSettings } from "../../data/users";
 import { useState } from "react";
 import { set } from "react-hook-form";
-import UserForm from "../../components/UserForm";
+import UserForm from "../../components/users/UserForm";
 import { useHistory } from "react-router";
 
 const SettingsPage: React.FC = () => {

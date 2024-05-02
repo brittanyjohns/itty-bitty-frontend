@@ -11,11 +11,11 @@ import {
   IonItem,
   IonIcon,
 } from "@ionic/react";
-import { MenuLink, getMenu } from "../data/menu";
+import { MenuLink, getMenu } from "../../data/menu";
 import MenuListItem from "./MainMenuListItem";
-import { useCurrentUser } from "../hooks/useCurrentUser";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import SideMenu from "./SideMenu";
-import MainHeader from "../pages/MainHeader";
+import MainHeader from "../../pages/MainHeader";
 import { homeOutline } from "ionicons/icons";
 
 export const hideMenu = () => {

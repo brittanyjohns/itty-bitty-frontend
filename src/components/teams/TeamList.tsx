@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Team } from "../data/teams";
+import { Team } from "../../data/teams";
 import { IonList, IonButton, IonItem, IonText } from "@ionic/react";
 import TeamListItem from "./TeamListItem";
-import { useCurrentUser } from "../hooks/useCurrentUser";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 interface TeamListProps {
   teams: Team[];

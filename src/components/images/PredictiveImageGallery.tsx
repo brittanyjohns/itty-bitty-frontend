@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import ImageComponent from "./ImageComponent";
-import { Image, getPredictiveImages } from "../data/images";
+import { Image, getPredictiveImages } from "../../data/images";
 import { get } from "react-hook-form";
 // import { TextToSpeech } from "@capacitor-community/text-to-speech";
 

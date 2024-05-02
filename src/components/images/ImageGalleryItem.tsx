@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { IonImg, useIonViewDidLeave } from "@ionic/react";
-import { Image } from "../data/images";
-import ActionList from "./ActionList"; // Import ActionList for local use
-import { removeImageFromBoard } from "../data/boards";
+import { Image } from "../../data/images";
+import ActionList from "../utils/ActionList"; // Import ActionList for local use
+import { removeImageFromBoard } from "../../data/boards";
 import { useHistory } from "react-router";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
-import { useCurrentUser } from "../hooks/useCurrentUser";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 interface ImageGalleryItemProps {
   image: Image;
   board?: any;

@@ -13,14 +13,14 @@ import {
   IonToast,
   IonToolbar,
 } from "@ionic/react";
-import MainMenu from "../../components/MainMenu";
-import Tabs from "../../components/Tabs";
+import MainMenu from "../../components/main_menu/MainMenu";
+import Tabs from "../../components/utils/Tabs";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import TeamForm from "../../components/TeamForm";
+import TeamForm from "../../components/teams/TeamForm";
 import { Team, createTeam } from "../../data/teams";
 import { useState } from "react";
 import { set } from "react-hook-form";
-import UserForm from "../../components/UserForm";
+import UserForm from "../../components/users/UserForm";
 import { useHistory } from "react-router";
 
 const NewTeamScreen: React.FC = () => {

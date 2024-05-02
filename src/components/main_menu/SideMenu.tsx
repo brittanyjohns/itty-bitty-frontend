@@ -14,9 +14,9 @@ import {
   IonAccordion,
   IonAccordionGroup,
 } from "@ionic/react";
-import { MenuLink, getMenu } from "../data/menu";
+import { MenuLink, getMenu } from "../../data/menu";
 import MenuListItem from "./MainMenuListItem";
-import { getImageUrl } from "../data/utils";
+import { getImageUrl } from "../../data/utils";
 import {
   arrowDownCircleOutline,
   homeOutline,

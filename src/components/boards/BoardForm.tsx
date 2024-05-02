@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { updateBoard } from "../data/boards";
+import { updateBoard } from "../../data/boards";
 import {
   IonButton,
   IonButtons,
@@ -9,11 +9,11 @@ import {
   IonSelect,
   IonSelectOption,
 } from "@ionic/react";
-import { Board } from "../data/boards";
+import { Board } from "../../data/boards";
 
 import { useHistory } from "react-router";
 import React from "react";
-import { useCurrentUser } from "../hooks/useCurrentUser";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 interface BoardFormProps {
   board: Board;
   setBoard: (board: Board) => void;

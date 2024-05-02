@@ -16,9 +16,9 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { Image, getPredictiveImages } from "../data/images";
-import MainMenu from "../components/MainMenu";
+import MainMenu from "../components/main_menu/MainMenu";
 import { useHistory, useParams } from "react-router";
-import Tabs from "../components/Tabs";
+import Tabs from "../components/utils/Tabs";
 import {
   addCircleOutline,
   arrowBackCircleOutline,
@@ -28,9 +28,9 @@ import {
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
 
 import { getInitialImages } from "../data/boards";
-import PredictiveImageGallery from "../components/PredictiveImageGallery";
+import PredictiveImageGallery from "../components/images/PredictiveImageGallery";
 import { speak } from "../hoarder/TextToSpeech";
-import FloatingWordsBtn from "../components/FloatingWordsBtn";
+import FloatingWordsBtn from "../components/utils/FloatingWordsBtn";
 
 const PredictiveImagesScreen: React.FC = () => {
   const startingImageId = useParams<{ id: string }>().id;

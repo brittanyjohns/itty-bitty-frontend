@@ -9,7 +9,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import FileUploadForm from "../../components/FileUploadForm";
+import FileUploadForm from "../../components/images/FileUploadForm";
 import { arrowBackCircleOutline } from "ionicons/icons";
 
 const NewImage: React.FC = (props: any) => {

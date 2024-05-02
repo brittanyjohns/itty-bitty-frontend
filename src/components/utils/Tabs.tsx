@@ -14,7 +14,7 @@ import {
   albumsOutline,
   peopleCircleOutline,
 } from "ionicons/icons";
-import { useCurrentUser } from "../hooks/useCurrentUser";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 const Tabs: React.FC = () => {
   const { isWideScreen } = useCurrentUser();

@@ -14,7 +14,7 @@ import {
 import { SubmitHandler, useForm } from "react-hook-form";
 import { arrowBackCircleOutline } from "ionicons/icons";
 import React, { useEffect, useRef } from "react";
-import MainMenu from "../../components/MainMenu";
+import MainMenu from "../../components/main_menu/MainMenu";
 
 const NewBoard: React.FC = (props: any) => {
   const {
