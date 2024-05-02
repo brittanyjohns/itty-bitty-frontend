@@ -8,7 +8,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import NewScenarioForm from "../../components/NewScenarioForm";
+import NewScenarioForm from "../../components/scenarios/NewScenarioForm";
 import { useState } from "react";
 
 const NewScenario: React.FC = (props: any) => {

@@ -11,7 +11,7 @@ import {
 } from "@ionic/react";
 import { language } from "ionicons/icons";
 import { set } from "react-hook-form";
-import { Team } from "../data/teams";
+import { Team } from "../../data/teams";
 
 interface TeamInviteFormProps {
   onSave: any;

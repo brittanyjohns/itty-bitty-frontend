@@ -1,5 +1,5 @@
 import { IonItem, IonLabel, IonNote } from "@ionic/react";
-import { Menu } from "../data/menus";
+import { Menu } from "../../data/menus";
 import "./MenuListItem.css";
 
 interface MenuListItemProps {

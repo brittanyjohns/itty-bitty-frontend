@@ -42,18 +42,18 @@ import {
   getRemainingImages,
   saveLayout,
 } from "../../data/boards"; // Adjust imports based on actual functions
-import FileUploadForm from "../../components/FileUploadForm";
+import FileUploadForm from "../../components/images/FileUploadForm";
 import { createImage, generateImage, getMoreImages } from "../../data/images";
 import { Image } from "../../data/images";
-import BoardForm from "../../components/BoardForm";
-import SelectImageGallery from "../../components/SelectImageGallery";
-import ImageGalleryItem from "../../components/ImageGalleryItem";
+import BoardForm from "../../components/boards/BoardForm";
+import SelectImageGallery from "../../components/images/SelectImageGallery";
+import ImageGalleryItem from "../../components/images/ImageGalleryItem";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import Tabs from "../../components/Tabs";
-import DraggableGrid from "../../components/DraggableGrid";
+import Tabs from "../../components/utils/Tabs";
+import DraggableGrid from "../../components/images/DraggableGrid";
 import { set } from "react-hook-form";
 import MainHeader from "../MainHeader";
-import MainMenu from "../../components/MainMenu";
+import MainMenu from "../../components/main_menu/MainMenu";
 
 interface SelectGalleryScreenProps {}
 const SelectGalleryScreen: React.FC = () => {

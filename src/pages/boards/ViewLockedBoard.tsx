@@ -27,10 +27,10 @@ import { useParams } from "react-router";
 import "./ViewBoard.css";
 import React from "react";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
-import FloatingWordsBtn from "../../components/FloatingWordsBtn";
-import BoardGridDropdown from "../../components/BoardGridDropdown";
+import FloatingWordsBtn from "../../components/utils/FloatingWordsBtn";
+import BoardGridDropdown from "../../components/boards/BoardGridDropdown";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import DraggableGrid from "../../components/DraggableGrid";
+import DraggableGrid from "../../components/images/DraggableGrid";
 
 const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();

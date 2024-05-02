@@ -1,5 +1,5 @@
 import { IonIcon, IonItem, IonLabel } from "@ionic/react";
-import { MenuLink } from "../data/menu";
+import { MenuLink } from "../../data/menu";
 import "./MenuListItem.css";
 import { useHistory } from "react-router";
 import { ComponentProps, useRef, useState } from "react";

@@ -17,7 +17,7 @@ import { arrowBackCircleOutline } from "ionicons/icons";
 import { useHistory } from "react-router";
 import "./ViewBoard.css";
 import React from "react";
-import BoardForm from "../../components/BoardForm";
+import BoardForm from "../../components/boards/BoardForm";
 
 const EditBoardScreen: React.FC<any> = () => {
   const [board, setBoard] = useState<Board>({

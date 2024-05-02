@@ -1,8 +1,8 @@
 import { IonActionSheet, IonItem, IonLabel, IonText } from "@ionic/react";
-import { Board, deleteBoard } from "../data/boards";
+import { Board, deleteBoard } from "../../data/boards";
 import "./BoardListItem.css";
 import { useEffect, useRef, useState } from "react";
-import ActionList from "./ActionList";
+import ActionList from "../utils/ActionList";
 import { useHistory } from "react-router";
 
 interface BoardListItemProps {

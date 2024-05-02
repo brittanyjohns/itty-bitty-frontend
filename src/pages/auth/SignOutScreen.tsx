@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { isUserSignedIn, signOut } from "../../data/users";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import MainMenu from "../../components/MainMenu";
+import MainMenu from "../../components/main_menu/MainMenu";
 
 const SignOutScreen: React.FC = () => {
   const history = useHistory();

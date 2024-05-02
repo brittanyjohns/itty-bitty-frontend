@@ -6,9 +6,9 @@ import {
   useIonViewWillEnter,
   IonLoading,
 } from "@ionic/react";
-import { createImage } from "../data/images";
+import { createImage } from "../../data/images";
 import { useHistory } from "react-router";
-import { Board } from "../data/boards";
+import { Board } from "../../data/boards";
 interface FileUploadFormProps {
   board: Board | undefined;
   onCloseModal: any;

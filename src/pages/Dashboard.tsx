@@ -9,8 +9,8 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import MainMenu from "../components/MainMenu";
-import Tabs from "../components/Tabs";
+import MainMenu from "../components/main_menu/MainMenu";
+import Tabs from "../components/utils/Tabs";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 const Dashboard: React.FC = () => {
   const { isWideScreen } = useCurrentUser();

@@ -29,12 +29,12 @@ import {
   Team,
 } from "../../data/teams"; // Adjust imports based on actual functions
 import { markAsCurrent } from "../../data/docs"; // Adjust imports based on actual functions
-import BoardDropdown from "../../components/BoardDropdown";
-import FileUploadForm from "../../components/FileUploadForm";
+import BoardDropdown from "../../components/boards/BoardDropdown";
+import FileUploadForm from "../../components/images/FileUploadForm";
 import { set } from "react-hook-form";
 import { Board } from "../../data/boards";
-import BoardList from "../../components/BoardList";
-import TeamInviteForm from "../../components/TeamInviteForm";
+import BoardList from "../../components/boards/BoardList";
+import TeamInviteForm from "../../components/teams/TeamInviteForm";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import {
   albumsOutline,
@@ -43,7 +43,7 @@ import {
   peopleCircleOutline,
   mailOutline,
 } from "ionicons/icons";
-import MainMenu from "../../components/MainMenu";
+import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
 interface ViewTeamScreenProps {
   id: string;

@@ -10,7 +10,7 @@ import {
 } from "@ionic/react";
 import { language } from "ionicons/icons";
 import { set } from "react-hook-form";
-import { UserSetting } from "../data/users";
+import { UserSetting } from "../../data/users";
 
 interface UserSettingsFormProps {
   onSave: any;

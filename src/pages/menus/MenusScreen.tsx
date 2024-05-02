@@ -13,10 +13,10 @@ import {
   IonToolbar,
   useIonViewWillEnter,
 } from "@ionic/react";
-import MenuList from "../../components/MenuList";
-import MainMenu, { hideMenu } from "../../components/MainMenu";
+import MenuList from "../../components/menus/MenuList";
+import MainMenu, { hideMenu } from "../../components/main_menu/MainMenu";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import Tabs from "../../components/Tabs";
+import Tabs from "../../components/utils/Tabs";
 import { addCircleOutline } from "ionicons/icons";
 const MenusScreen: React.FC = () => {
   const { currentUser, setCurrentUser } = useCurrentUser();

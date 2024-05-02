@@ -17,7 +17,7 @@ import {
 import { arrowBackCircleOutline } from "ionicons/icons";
 import { useState } from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import Tabs from "../../components/Tabs";
+import Tabs from "../../components/utils/Tabs";
 import { set } from "react-hook-form";
 
 type NewMenu = {

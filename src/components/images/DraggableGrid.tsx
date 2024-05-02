@@ -7,7 +7,7 @@ import "./main.css";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import ImageGalleryItem from "./ImageGalleryItem";
-import { Board } from "../data/boards";
+import { Board } from "../../data/boards";
 interface DraggableGridProps {
   columns: number;
   images: any;

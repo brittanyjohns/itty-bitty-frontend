@@ -6,7 +6,7 @@ import {
   IonSelectOption,
   IonToast,
 } from "@ionic/react";
-import { addImageToBoard, getBoards } from "../data/boards";
+import { addImageToBoard, getBoards } from "../../data/boards";
 
 interface BoardDropdownProps {
   imageId: string;

@@ -1,6 +1,6 @@
 import { IonIcon, IonItem, IonLabel, IonNote } from "@ionic/react";
-import { Team } from "../data/teams";
-import { useCurrentUser } from "../hooks/useCurrentUser";
+import { Team } from "../../data/teams";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { starOutline } from "ionicons/icons";
 
 interface TeamListItemProps {
