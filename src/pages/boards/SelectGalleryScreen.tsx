@@ -289,9 +289,6 @@ const SelectGalleryScreen: React.FC = () => {
                 <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
               </IonButton>
             </IonButtons>
-            {board && <IonTitle>{board.name}</IonTitle>}
-          </IonToolbar>
-          <IonToolbar>
             <IonSegment value={segmentType} onIonChange={handleSegmentChange}>
               <IonSegmentButton value="edit">
                 <IonLabel className="text-xl">

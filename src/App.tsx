@@ -36,11 +36,11 @@ import { UserProvider } from "./contexts/UserContext";
 import EditBoardScreen from "./pages/boards/EditBoardScreen";
 import ViewImageScreen from "./pages/images/ViewImageScreen";
 import MenusScreen from "./pages/menus/MenusScreen";
-import SelectGalleryScreen from "./pages/images/SelectGalleryScreen";
+import SelectGalleryScreen from "./pages/boards/SelectGalleryScreen";
 import SettingsPage from "./pages/users/SettingsPage";
 import NewScenario from "./pages/scenarios/NewScenario";
 import ViewMenuScreen from "./pages/menus/ViewMenuScreen";
-import PredictiveIndex from "./pages/PredictiveIndex";
+import PredictiveIndex from "./pages/predictive/PredictiveIndex";
 import { AndroidFullScreen } from "@awesome-cordova-plugins/android-full-screen";
 import TeamsScreen from "./pages/teams/TeamsScreen";
 import ViewTeamScreen from "./pages/teams/ViewTeamScreen";
@@ -110,7 +110,7 @@ const App: React.FC = () => (
           <Route path="/images/add" component={NewImage} exact={true} />
           <Route path="/images" component={ImagesScreen} exact={true} />
 
-          <Route path="/predictive" component={PredictiveIndex} exact={true} />
+          <Route path=" /predictive" component={PredictiveIndex} exact={true} />
           <Route
             path="/predictive/:id"
             component={PredictiveIndex}

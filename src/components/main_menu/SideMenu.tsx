@@ -58,12 +58,12 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
           <img
             slot="start"
             src={getImageUrl("round_itty_bitty_logo_1", "png")}
-            className="h-10 w-10"
+            className="h-10 w-10 mx-auto"
           />
-          <IonTitle>SpeakAnyWay</IonTitle>
+          <IonTitle className="text-2xl text-black">SpeakAnyWay</IonTitle>
         </IonItem>
       </IonToolbar>
-      <IonList className="h-full">
+      <IonList className="h-full ">
         <IonItem
           slot="header"
           onClick={toggleAccordion}

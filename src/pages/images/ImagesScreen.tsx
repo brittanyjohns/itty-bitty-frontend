@@ -58,11 +58,6 @@ const ImagesScreen: React.FC = () => {
     fetchImages();
   }, []);
 
-  // const showCreateBtn = (imgs: Image[]): boolean => {
-  //   const result = imgs.length === 0 && searchInput.length > 0;
-  //   return result;
-  // };
-
   const handleGetMoreImages = async (
     page: number,
     query: string
@@ -96,7 +91,6 @@ const ImagesScreen: React.FC = () => {
   };
 
   const handleCreateImage = async (label: string) => {
-    console.log("Creating image for label", label);
     setLoadingMessage("Creating image");
     setShowLoading(true);
     const formData = new FormData();
@@ -132,17 +126,6 @@ const ImagesScreen: React.FC = () => {
       <IonPage id="main-content">
         <IonHeader>
           <IonToolbar>
-            <IonButtons slot="start">
-              <IonMenuButton></IonMenuButton>
-            </IonButtons>
-            <IonTitle>{pageTitle}</IonTitle>
-            <IonButtons slot="end">
-              <IonButton routerLink="/images/add">
-                <IonIcon icon={addCircleOutline} />
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
-          <IonToolbar>
             <IonSegment
               value={segmentType}
               onIonChange={handleSegmentChange}
@@ -159,6 +142,11 @@ const ImagesScreen: React.FC = () => {
                 </IonLabel>
               </IonSegmentButton>
             </IonSegment>
+            <IonButtons slot="end">
+              <IonButton routerLink="/images/add">
+                <IonIcon icon={addCircleOutline} />
+              </IonButton>
+            </IonButtons>
           </IonToolbar>
           <IonToolbar>
             <IonSearchbar

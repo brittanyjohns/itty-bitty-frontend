@@ -19,14 +19,13 @@ import {
   globe,
 } from "ionicons/icons";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
-import "./main.css";
+import "./../main.css";
 interface FloatingWordsBtnProps {
   inputRef: React.RefObject<HTMLIonInputElement>;
   words?: string[];
 }
 function FloatingWordsBtn({ inputRef, words }: FloatingWordsBtnProps) {
   const say = async (text: string) => {
-    console.log("Saying:", text);
     if (inputRef.current) {
       inputRef.current.value += ` ${text}`;
     }

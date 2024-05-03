@@ -3,7 +3,7 @@ import { Image, ImageGalleryProps } from "../../data/images";
 import { IonImg } from "@ionic/react";
 
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
-import "./main.css";
+import "./../main.css";
 import { useHistory } from "react-router";
 import ActionList from "../utils/ActionList";
 import { removeImageFromBoard } from "../../data/boards";
