@@ -13,6 +13,7 @@ interface DraggableGridProps {
   images: any;
   onLayoutChange?: any;
   disableReorder?: boolean;
+  enableResize?: boolean;
   board?: Board;
   setShowIcon?: any;
   inputRef?: any;
@@ -25,6 +26,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   onLayoutChange,
   columns,
   disableReorder,
+  enableResize,
   board,
   setShowIcon,
   inputRef,
@@ -64,13 +66,14 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
       width={width}
       rowHeight={rowHeight}
       onLayoutChange={onLayoutChange}
+      margin={[5, 5]}
     >
       {images.map((img: any, index: number) => (
         <div
           key={img.layout.i}
           data-grid={{
             ...img.layout,
-            isResizable: false,
+            isResizable: enableResize,
             isBounded: true,
             allowOverlap: false,
             static: disableReorder,

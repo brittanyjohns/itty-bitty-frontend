@@ -141,8 +141,47 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
 
       <IonPage id="main-content">
         {!isWideScreen && <MainHeader />}
-        <IonHeader translucent>
-          <IonToolbar>
+        {/* <IonHeader translucent> */}
+        {/* <IonToolbar>
+            <IonButtons slot="start">
+              <IonButton routerLink="/boards">
+                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
+              </IonButton>
+            </IonButtons>
+            {!showIcon && (
+              <IonItem slot="start" className="w-5/6">
+                <h1 className="text-center text-lg font-bold">
+                  {board?.name || "Board"}
+                </h1>
+              </IonItem>
+            )}
+            {showEdit && (
+              <IonButtons slot="start">
+                <IonButton onClick={toggleAddToTeam}>
+                  <IonIcon icon={shareOutline} />
+                </IonButton>
+              </IonButtons>
+            )}
+            <IonButtons slot="start">
+              <IonButton routerLink={`/boards/${params.id}/locked`}>
+                <IonIcon icon={documentLockOutline} />
+              </IonButton>
+            </IonButtons>
+            {showEdit && (
+              <IonButtons slot="end" className="mr-4">
+                <IonButton routerLink={`/boards/${params.id}/gallery`}>
+                  <IonIcon icon={addCircleOutline} />
+                </IonButton>
+              </IonButtons>
+            )}
+          </IonToolbar> */}
+        {/* </IonHeader> */}
+        <IonContent fullscreen scrollY={true}>
+          <IonRefresher slot="fixed" onIonRefresh={refresh}>
+            <IonRefresherContent></IonRefresherContent>
+          </IonRefresher>
+          <IonLoading message="Please wait..." isOpen={showLoading} />
+          <IonToolbar className="mb-6">
             <IonButtons slot="start">
               <IonButton routerLink="/boards">
                 <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
@@ -175,12 +214,6 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
               </IonButtons>
             )}
           </IonToolbar>
-        </IonHeader>
-        <IonContent fullscreen scrollY={true}>
-          <IonRefresher slot="fixed" onIonRefresh={refresh}>
-            <IonRefresherContent></IonRefresherContent>
-          </IonRefresher>
-          <IonLoading message="Please wait..." isOpen={showLoading} />
           <div ref={addToTeamRef} className="p-4 hidden">
             {currentUserTeams && (
               <AddToTeamForm

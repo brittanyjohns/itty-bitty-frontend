@@ -27,6 +27,7 @@ import {
 import { useHistory, useParams } from "react-router";
 import {
   addCircleOutline,
+  appsOutline,
   arrowBackCircleOutline,
   cloudUploadOutline,
   createOutline,
@@ -41,6 +42,7 @@ import {
   Board,
   getRemainingImages,
   saveLayout,
+  rearrangeImages,
 } from "../../data/boards"; // Adjust imports based on actual functions
 import FileUploadForm from "../../components/images/FileUploadForm";
 import { createImage, generateImage, getMoreImages } from "../../data/images";
@@ -76,6 +78,7 @@ const SelectGalleryScreen: React.FC = () => {
   const { currentUser, isWideScreen } = useCurrentUser();
   const [gridLayout, setGridLayout] = useState([]);
   const [showCreateBtn, setShowCreateBtn] = useState(false);
+  const [numberOfColumns, setNumberOfColumns] = useState(4); // Default number of columns
   const initialImage = {
     id: "",
     src: "",
@@ -97,15 +100,30 @@ const SelectGalleryScreen: React.FC = () => {
     return false;
   };
 
-  const fetchBoard = async () => {
+  const handleRearrangeImages = async () => {
     setShowLoading(true);
+    const updatedBoard = await rearrangeImages(id);
+    setBoard(updatedBoard);
+    setShowLoading(false);
+    history.push(`/boards/${board?.id}`);
+    window.location.reload();
+  };
+
+  const fetchBoard = async () => {
+    // setShowLoading(true);
     const board = await getBoard(id); // Ensure getBoard is typed to return a Promise<Board>
     setBoard(board);
-    toggleForms(segmentType);
-    const remainingImgs = await getRemainingImages(board.id, 1, searchInput);
-    setRemainingImages(remainingImgs);
-    setShowLoading(false);
+    setNumberOfColumns(board.number_of_columns);
+    // toggleForms(segmentType);
+    // const remainingImgs = await getRemainingImages(board.id, 1, searchInput);
+    // setRemainingImages(remainingImgs);
+    // setShowLoading(false);
     return board;
+  };
+
+  const fetchRemaining = async (id: string, page: number) => {
+    const remainingImgs = await getRemainingImages(id, page, searchInput);
+    setRemainingImages(remainingImgs);
   };
 
   const handleGetMoreImages = async (
@@ -123,16 +141,20 @@ const SelectGalleryScreen: React.FC = () => {
     setSearchInput(query);
     setPage(1); // Reset to first page on new search
   };
+
   const loadPage = async () => {
     console.log("id", id);
+    setShowLoading(true);
     const boardToSet = await fetchBoard();
+    fetchRemaining(boardToSet.id, 1);
     console.log("boardToSet", boardToSet);
-    setBoard(boardToSet);
+    // setBoard(boardToSet);
     toggleForms(segmentType);
+    setShowLoading(false);
   };
 
   useIonViewWillEnter(() => {
-    toggleForms("edit");
+    // toggleForms("edit");
     setSearchInput("");
     setPage(1);
   });
@@ -238,6 +260,7 @@ const SelectGalleryScreen: React.FC = () => {
     setToastMessage(message);
     setIsOpen(true);
     setBoard(updatedBoard);
+    history.push(`/boards/${board?.id}`);
   };
 
   const handleImageClick = (image: Image) => {
@@ -262,6 +285,7 @@ const SelectGalleryScreen: React.FC = () => {
       setIsOpen(true);
     }
     addSelectedImageToBoard();
+    handleRearrangeImages();
   };
 
   const handleCreateImage = async (label: string) => {
@@ -273,7 +297,8 @@ const SelectGalleryScreen: React.FC = () => {
     const newImage = await createImage(formData);
     setShowLoading(false);
     if (newImage) {
-      history.push(`/images/${newImage.id}`);
+      // history.push(`/images/${newImage.id}`);
+      handleImageClick(newImage);
     }
   };
 
@@ -282,7 +307,8 @@ const SelectGalleryScreen: React.FC = () => {
       <MainMenu />
       <IonPage id="main-content">
         {!isWideScreen && <MainHeader />}
-        <IonHeader translucent>
+        <IonHeader translucent></IonHeader>
+        <IonContent className="ion-padding" scrollY={true}>
           <IonToolbar>
             <IonButtons slot="start">
               <IonButton routerLink={`/boards/${board?.id}`}>
@@ -312,13 +338,12 @@ const SelectGalleryScreen: React.FC = () => {
               </IonSegmentButton>
             </IonSegment>
           </IonToolbar>
-        </IonHeader>
-        <IonContent className="ion-padding" scrollY={true}>
           <div className="ion-justify-content-center ion-align-items-center ion-text-center pt-1">
             <IonText className="font-bold text-2xl">
               {board && board.name}{" "}
             </IonText>
             <IonIcon icon={refreshOutline} onClick={fetchBoard} />
+            <IonIcon icon={appsOutline} onClick={handleRearrangeImages} />
           </div>
 
           <div className="lg:px-12" ref={editForm}>
@@ -328,7 +353,13 @@ const SelectGalleryScreen: React.FC = () => {
               </IonText>
             </div>
             <div className="w-11/12 lg:w-1/2 mx-auto">
-              {board && <BoardForm board={board} setBoard={setBoard} />}
+              {board && (
+                <BoardForm
+                  board={board}
+                  setBoard={setBoard}
+                  onSubmit={loadPage}
+                />
+              )}
             </div>
             <div className="mt-6 px-4 lg:px-12">
               {board && board.images && board.images.length > 0 && (
@@ -341,17 +372,18 @@ const SelectGalleryScreen: React.FC = () => {
                   </p>
 
                   <IonButton
-                    className="mt-5 block w-5/6 mx-auto text-md"
+                    className="my-5 block w-5/6 mx-auto text-md"
                     onClick={handleSaveLayout}
                   >
                     Save Layout
                   </IonButton>
                   <DraggableGrid
                     images={board.images}
-                    columns={board.number_of_columns}
+                    columns={numberOfColumns}
                     onLayoutChange={(layout: any) => setGrid(layout)}
                     disableActionList={true}
                     mute={true}
+                    enableResize={true}
                   />
                 </div>
               )}
