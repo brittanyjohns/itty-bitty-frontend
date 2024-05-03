@@ -19,7 +19,9 @@ import {
 import {
   addCircleOutline,
   arrowBackCircleOutline,
+  createOutline,
   documentLockOutline,
+  pencilOutline,
   shareOutline,
 } from "ionicons/icons";
 
@@ -137,32 +139,54 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
 
   return (
     <>
-      <MainMenu />
-
       <IonPage id="main-content">
-        {!isWideScreen && <MainHeader />}
-        {/* <IonHeader translucent> */}
-        {/* <IonToolbar>
-            <IonButtons slot="start">
-              <IonButton routerLink="/boards">
-                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
-              </IonButton>
-            </IonButtons>
+        <IonHeader>
+          <IonToolbar>
             {!showIcon && (
-              <IonItem slot="start" className="w-5/6">
-                <h1 className="text-center text-lg font-bold">
-                  {board?.name || "Board"}
-                </h1>
-              </IonItem>
+              <h1 className="text-center text-lg font-bold">
+                {board?.name || "Board"}
+              </h1>
             )}
             {showEdit && (
-              <IonButtons slot="start">
+              <IonButtons slot="end">
                 <IonButton onClick={toggleAddToTeam}>
                   <IonIcon icon={shareOutline} />
                 </IonButton>
               </IonButtons>
             )}
-            <IonButtons slot="start">
+            <IonButtons slot="end">
+              <IonButton routerLink={`/boards/${params.id}/locked`}>
+                <IonIcon icon={documentLockOutline} />
+              </IonButton>
+            </IonButtons>
+            {showEdit && (
+              <IonButtons slot="end">
+                <IonButton routerLink={`/boards/${params.id}/gallery`}>
+                  <IonIcon icon={createOutline} />
+                </IonButton>
+              </IonButtons>
+            )}
+          </IonToolbar>
+        </IonHeader>
+        <IonContent fullscreen scrollY={true}>
+          <IonRefresher slot="fixed" onIonRefresh={refresh}>
+            <IonRefresherContent></IonRefresherContent>
+          </IonRefresher>
+          <IonLoading message="Please wait..." isOpen={showLoading} />
+          {/* <IonToolbar className="mb-6">
+            {!showIcon && (
+              <h1 className="text-center text-lg font-bold">
+                {board?.name || "Board"}
+              </h1>
+            )}
+            {showEdit && (
+              <IonButtons slot="end">
+                <IonButton onClick={toggleAddToTeam}>
+                  <IonIcon icon={shareOutline} />
+                </IonButton>
+              </IonButtons>
+            )}
+            <IonButtons slot="end">
               <IonButton routerLink={`/boards/${params.id}/locked`}>
                 <IonIcon icon={documentLockOutline} />
               </IonButton>
@@ -175,45 +199,6 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
               </IonButtons>
             )}
           </IonToolbar> */}
-        {/* </IonHeader> */}
-        <IonContent fullscreen scrollY={true}>
-          <IonRefresher slot="fixed" onIonRefresh={refresh}>
-            <IonRefresherContent></IonRefresherContent>
-          </IonRefresher>
-          <IonLoading message="Please wait..." isOpen={showLoading} />
-          <IonToolbar className="mb-6">
-            <IonButtons slot="start">
-              <IonButton routerLink="/boards">
-                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
-              </IonButton>
-            </IonButtons>
-            {!showIcon && (
-              <IonItem slot="start" className="w-5/6">
-                <h1 className="text-center text-lg font-bold">
-                  {board?.name || "Board"}
-                </h1>
-              </IonItem>
-            )}
-            {showEdit && (
-              <IonButtons slot="start">
-                <IonButton onClick={toggleAddToTeam}>
-                  <IonIcon icon={shareOutline} />
-                </IonButton>
-              </IonButtons>
-            )}
-            <IonButtons slot="start">
-              <IonButton routerLink={`/boards/${params.id}/locked`}>
-                <IonIcon icon={documentLockOutline} />
-              </IonButton>
-            </IonButtons>
-            {showEdit && (
-              <IonButtons slot="end" className="mr-4">
-                <IonButton routerLink={`/boards/${params.id}/gallery`}>
-                  <IonIcon icon={addCircleOutline} />
-                </IonButton>
-              </IonButtons>
-            )}
-          </IonToolbar>
           <div ref={addToTeamRef} className="p-4 hidden">
             {currentUserTeams && (
               <AddToTeamForm
@@ -232,7 +217,6 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
               inputRef={inputRef}
               columns={numOfColumns}
               disableActionList={shouldDisableActionList()}
-              // onLayoutChange={(layout: any) => setGridLayout(layout)}
               disableReorder={true}
               mute={true}
             />

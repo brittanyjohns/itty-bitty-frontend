@@ -24,10 +24,6 @@ const NewImage: React.FC = (props: any) => {
               </IonButton>
             </IonButtons>
             <IonTitle>New Image</IonTitle>
-
-            <IonButtons slot="end">
-              <IonMenuButton></IonMenuButton>
-            </IonButtons>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen className="ion-padding">

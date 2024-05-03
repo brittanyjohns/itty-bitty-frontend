@@ -125,6 +125,22 @@ const ImagesScreen: React.FC = () => {
       <MainMenu />
       <IonPage id="main-content">
         <IonHeader>
+          {/* <IonToolbar>
+            <IonSegment
+              value={segmentType}
+              onIonChange={handleSegmentChange}
+              className="w-full"
+            >
+              <IonSegmentButton value="all" className="p-1">
+                <IonIcon icon={imagesOutline} />
+                <IonLabel className="text-md">Gallery</IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="user" className="p-1">
+                <IonIcon icon={personOutline} />
+                <IonLabel className="text-md">My Images</IonLabel>
+              </IonSegmentButton>
+            </IonSegment>
+          </IonToolbar> */}
           <IonToolbar>
             <IonSegment
               value={segmentType}
@@ -132,14 +148,12 @@ const ImagesScreen: React.FC = () => {
               className="w-full bg-inherit"
             >
               <IonSegmentButton value="all">
-                <IonLabel className="text-xl">
-                  <IonIcon icon={imagesOutline} />
-                </IonLabel>
+                <IonLabel className="text-md lg:text-lg">Gallery</IonLabel>
+                <IonIcon icon={imagesOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="user">
-                <IonLabel className="text-xl">
-                  <IonIcon icon={personOutline} />
-                </IonLabel>
+                <IonLabel className="text-md lg:text-lg">Your Images</IonLabel>
+                <IonIcon icon={personOutline} />
               </IonSegmentButton>
             </IonSegment>
             <IonButtons slot="end">
@@ -148,21 +162,19 @@ const ImagesScreen: React.FC = () => {
               </IonButton>
             </IonButtons>
           </IonToolbar>
+        </IonHeader>
+        <IonContent>
           <IonToolbar>
             <IonSearchbar
               debounce={1000}
               onIonInput={handleSearchInput}
               onIonClear={() => clearInput()}
               animated={true}
+              className="mt-4"
               value={searchInput}
               placeholder="Search existing images"
             ></IonSearchbar>
           </IonToolbar>
-        </IonHeader>
-        <IonContent>
-          {/* <IonRefresher slot="fixed" onIonRefresh={refresh}>
-            <IonRefresherContent></IonRefresherContent>
-          </IonRefresher> */}
           {showCreateBtn && (
             <IonList>
               <IonItem slot="start" className="w-full">

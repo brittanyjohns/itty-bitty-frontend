@@ -110,7 +110,7 @@ const App: React.FC = () => (
           <Route path="/images/add" component={NewImage} exact={true} />
           <Route path="/images" component={ImagesScreen} exact={true} />
 
-          <Route path=" /predictive" component={PredictiveIndex} exact={true} />
+          <Route path="/predictive" component={PredictiveIndex} exact={true} />
           <Route
             path="/predictive/:id"
             component={PredictiveIndex}

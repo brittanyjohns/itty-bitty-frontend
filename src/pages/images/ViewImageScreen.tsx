@@ -161,8 +161,10 @@ const ViewImageScreen: React.FC = () => {
 
   const handleDocClick = async (e: React.MouseEvent<HTMLIonImgElement>) => {
     const target = e.target as HTMLImageElement;
-    await markAsCurrent(target.id); // Ensure markAsCurrent returns a Promise
+    const currentImg = await markAsCurrent(target.id); // Ensure markAsCurrent returns a Promise
+    console.log("Current Image: ", currentImg);
     const imgToSet = await fetchImage();
+    console.log("Image to set: ", imgToSet);
     setImage(imgToSet);
     setCurrentImage(imgToSet?.display_doc?.src ?? imgToSet.src);
   };
@@ -230,15 +232,6 @@ const ViewImageScreen: React.FC = () => {
       <IonPage id="main-content">
         {!isWideScreen && <MainHeader />}
         <IonHeader translucent>
-          <IonToolbar>
-            <IonButtons slot="start">
-              {boardId && <IonBackButton defaultHref={`/boards/${boardId}`} />}
-              {!boardId && (
-                <IonBackButton defaultHref="/images" /> // Adjust route based on actual route}
-              )}
-            </IonButtons>
-            {image && <BoardDropdown imageId={image.id} />}
-          </IonToolbar>
           <IonToolbar>
             <IonTitle>{image?.label}</IonTitle>
           </IonToolbar>
@@ -360,8 +353,10 @@ const ViewImageScreen: React.FC = () => {
                 </div>
               </div>
             )}
-            {image && image.docs && image.docs.length < 1 && (
-              <div className="text-center"></div>
+            {image && (
+              <div className="mt-3 w-11/12 mx-auto">
+                <BoardDropdown imageId={image.id} />
+              </div>
             )}
             {currentUser?.role === "admin" && (
               <div className="mt-10">
