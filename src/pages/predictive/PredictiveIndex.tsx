@@ -105,7 +105,8 @@ const PredictiveImagesScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu />
+      {/* <MainMenu /> */}
+      <h1 className="text-2xl text-center">Predictive Images</h1>
       <IonPage id="main-content">
         <IonHeader>
           <IonToolbar>

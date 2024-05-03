@@ -1,133 +1,95 @@
 // Import necessary components and hooks
 import React, { useEffect, useState } from "react";
-import {
-  IonInput,
-  IonButton,
-  useIonViewWillEnter,
-  IonLoading,
-} from "@ionic/react";
+import { IonInput, IonButton, IonLoading, IonIcon } from "@ionic/react";
 import { createImage } from "../../data/images";
 import { useHistory } from "react-router";
 import { Board } from "../../data/boards";
+import { camera } from "ionicons/icons";
+// import "./FileUploadForm.css"; // Assuming you have an external CSS file
+
 interface FileUploadFormProps {
   board: Board | undefined;
   onCloseModal: any;
   showLabel: boolean;
   existingLabel?: string;
 }
-const FileUploadForm: React.FC<FileUploadFormProps> = (
-  props: FileUploadFormProps
-) => {
-  const [label, setLabel] = useState<string>("");
-  const history = useHistory();
-  const [shouldDisable, setShouldDisable] = useState<boolean>(false);
-  const [hideLabel, setHideLabel] = useState<boolean>(false);
+
+const FileUploadForm: React.FC<FileUploadFormProps> = ({
+  board,
+  onCloseModal,
+  showLabel,
+  existingLabel,
+}) => {
+  const [label, setLabel] = useState(existingLabel || "");
+  const [shouldDisable, setShouldDisable] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
-
-  // State for the file
+  const hideLabel = showLabel ? false : true;
   const [file, setFile] = useState<File | null>(null);
+  const history = useHistory();
 
-  const uploadPhoto = (fileSumbitEvent: React.FormEvent<Element>) => {
-    fileSumbitEvent.preventDefault();
+  useEffect(() => {
+    setShouldDisable(existingLabel ? false : true);
+  }, [existingLabel]);
 
+  const uploadPhoto = async (event: React.FormEvent) => {
+    event.preventDefault();
     if (!label) return;
     setShouldDisable(true);
-
-    // Create a form data object using the FormData API
-    let formData = new FormData();
+    const formData = new FormData();
     if (file) {
       formData.append("image[docs][image]", file);
     }
     formData.append("image[label]", label);
-    // Send the form data to the server
-    saveImage(formData);
-  };
+    if (board?.id) {
+      formData.append("board[id]", board.id);
+    }
 
-  const saveImage = async (formData: FormData) => {
-    let result;
     setShowLoading(true);
-    if (props.board) {
-      if (props.board && props.board.id) {
-        formData.append("board[id]", props.board.id);
-      }
-      result = await createImage(formData, props.board.id);
-    } else {
-      result = await createImage(formData);
-    }
+    const result = await createImage(formData, board?.id);
+    setShowLoading(false);
 
-    if (!result.id) {
-      console.error("Error:", result.error);
-      return result;
-    } else {
-      if (props.board) {
-        history.push(`/boards/${props.board.id}`);
-      } else {
-        history.push(`/images/${result.id}`);
-      }
-      if (props.onCloseModal) props.onCloseModal();
+    if (result && result.id) {
+      onCloseModal();
+      history.push(board ? `/boards/${board.id}` : `/images/${result.id}`);
       window.location.reload();
+    } else {
+      console.error("Error:", result.error);
     }
   };
 
-  const onFileChange = (ev: any) => {
-    const newFile = ev.target.files[0];
-    if (!newFile) return;
+  const onFileChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    const newFile = ev.target.files ? ev.target.files[0] : null;
     setFile(newFile);
   };
 
-  const handleLabelChange = (event: CustomEvent) => {
-    setLabel(event.detail.value);
-  };
-
-  useIonViewWillEnter(() => {
-    setHideLabel(!props.showLabel);
-    if (props.existingLabel) {
-      setLabel(props.existingLabel);
-      setShouldDisable(false);
-    }
-  });
-  useEffect(() => {
-    if (props.existingLabel) {
-      setLabel(props.existingLabel);
-      setHideLabel(true);
-      setShouldDisable(false);
-    }
-  }, []);
-
   return (
-    <form onSubmit={uploadPhoto} encType="multipart/form-data" className="p-2">
-      <IonLoading
-        className="loading-icon"
-        cssClass="loading-icon"
-        isOpen={showLoading}
-        message={"Uploading your image..."}
-      />
-      <IonInput
-        value={label}
-        label="Label"
-        labelPlacement="floating"
-        onIonChange={handleLabelChange} // Changed from onIonInput to onIonChange
-        type="text"
-        aria-label="Label"
-        placeholder="Enter new image label"
-        className={`rounded-md ${hideLabel ? "hidden" : ""} text-black`} // Simplified conditional class application
-        required={!hideLabel}
-      />
-      <div className="flex items-center">
-        {" "}
-        {/* Add this wrapper */}
-        <input
-          type="file"
-          onChange={(ev) => onFileChange(ev)}
-          className="bg-inherit w-full p-4 rounded-md"
+    <form
+      onSubmit={uploadPhoto}
+      encType="multipart/form-data"
+      className="upload-form"
+    >
+      <IonLoading isOpen={showLoading} message={"Uploading your image..."} />
+      {!hideLabel && (
+        <IonInput
+          value={label}
+          onIonChange={(e) => setLabel(e.detail.value!)}
+          type="text"
+          labelPlacement="floating"
+          label="Image Label"
+          placeholder="Enter new image label"
           required
         />
-        <IonButton
-          type="submit"
-          disabled={shouldDisable}
-          className="flex-shrink-0"
-        >
-          {props.showLabel ? "Save" : "Upload"}
+      )}
+      <div className="upload-section">
+        <input
+          type="file"
+          onChange={onFileChange}
+          className="file-input"
+          required
+        />
+        <IonButton expand="block" type="submit" disabled={shouldDisable}>
+          <IonIcon slot="start" icon={camera} />
+          {showLabel ? "Save Image" : "Upload Image"}
         </IonButton>
       </div>
     </form>

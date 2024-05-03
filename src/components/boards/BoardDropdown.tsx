@@ -36,13 +36,27 @@ const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId }) => {
     setShowLoading(true);
     async function addSelectedImageToBoard() {
       const response = await addImageToBoard(boardId, imageId);
-      const message = `Image added to board: ${response["board"]["name"]}`;
-      setToastMessage(message);
-      setShowLoading(false);
-      setIsOpen(true);
-      setBoardId(null);
+      if (!response) {
+        console.error("Error adding image to board");
+        return;
+      }
+      if (response["error"]) {
+        const message = `${response["error"]}`;
+        setToastMessage(message);
+        setShowLoading(false);
+        setIsOpen(true);
+        return;
+      }
+      if (response["board"]) {
+        const message = `Image added to board: ${response["board"]["name"]}`;
+        setToastMessage(message);
+        setShowLoading(false);
+        setIsOpen(true);
+        setBoardId(null);
+      }
     }
     addSelectedImageToBoard();
+    selectRef.current!.value = null;
   };
 
   useEffect(() => {

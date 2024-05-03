@@ -26,14 +26,14 @@ const BoardGrid = ({ boards }: BoardGridProps) => {
   return (
     <div className="ion-padding">
       <div
-        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2"
+        className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-2"
         ref={gridRef}
       >
         {boards &&
           boards.map((board, i) => (
             <div
               id={board.id}
-              className="rounded-md flex relative w-full cursor-pointer text-center p-4 border hover:bg-slate-200"
+              className="rounded-md flex relative p-1"
               onClick={() => handleBoardClick(board)}
               key={board.id}
             >

@@ -79,10 +79,10 @@ const BoardListItem: React.FC<BoardListItemProps> = ({ board }) => {
   return (
     <>
       <div
-        className="cursor-pointer rounded-md"
+        className="cursor-pointer rounded-md w-full text-center p-4 border hover:bg-slate-200"
         onClick={() => handleBoardClick(board)}
-        onTouchStart={handleButtonPress}
-        onTouchEnd={handleButtonRelease}
+        // onTouchStart={handleButtonPress}
+        // onTouchEnd={handleButtonRelease}
       >
         <IonText className="text-xl">
           {board.name.length > 50
