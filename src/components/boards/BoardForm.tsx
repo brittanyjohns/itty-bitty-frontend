@@ -8,6 +8,7 @@ import {
   IonList,
   IonSelect,
   IonSelectOption,
+  IonToast,
 } from "@ionic/react";
 import { Board } from "../../data/boards";
 
@@ -18,11 +19,13 @@ interface BoardFormProps {
   board: Board;
   setBoard: (board: Board) => void;
   onGridSizeChange?: any;
+  onSubmit?: any;
 }
 const BoardForm: React.FC<BoardFormProps> = ({
   board,
   setBoard,
   onGridSizeChange,
+  onSubmit,
 }) => {
   const modal = useRef<HTMLIonModalElement>(null);
   const inputRef = useRef<HTMLIonInputElement>(null);
@@ -31,6 +34,8 @@ const BoardForm: React.FC<BoardFormProps> = ({
   const [gridSize, setGridSize] = React.useState<number>(
     board.number_of_columns
   );
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [toastMessage, setToastMessage] = React.useState("");
 
   const handleGridSizeChange = (event: CustomEvent) => {
     setGridSize(event.detail.value);
@@ -56,7 +61,7 @@ const BoardForm: React.FC<BoardFormProps> = ({
 
     const savedBoard = await updateBoard(updatingBoard);
     setBoard(savedBoard);
-    history.push(`/boards/${board?.id}`);
+    window.location.reload();
   };
 
   const handleReset = () => {
@@ -76,7 +81,8 @@ const BoardForm: React.FC<BoardFormProps> = ({
   };
 
   const gridSizeOptions = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+    22, 23, 24,
   ];
 
   return (
@@ -117,6 +123,12 @@ const BoardForm: React.FC<BoardFormProps> = ({
           </IonButtons>
         </IonItem>
       </IonList>
+      <IonToast
+        isOpen={isOpen}
+        message={toastMessage}
+        onDidDismiss={() => setIsOpen(false)}
+        duration={2000}
+      ></IonToast>
     </div>
   );
 };

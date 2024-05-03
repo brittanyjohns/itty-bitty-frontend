@@ -29,6 +29,7 @@ import {
   gridOutline,
   peopleCircleOutline,
 } from "ionicons/icons";
+import BoardGrid from "../../components/boards/BoardGrid";
 const BoardsScreen: React.FC = () => {
   const [boards, setBoards] = useState([]);
   const [presetBoards, setPresetBoards] = useState([]);
@@ -126,7 +127,8 @@ const BoardsScreen: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <h2 className="mb-3 text-2xl font-bold">{pageTitle}</h2>
-          <BoardList boards={boards} />
+          {/* <BoardList boards={boards} /> */}
+          <BoardGrid boards={boards} />
         </IonContent>
         <Tabs />
       </IonPage>

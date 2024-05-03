@@ -60,6 +60,18 @@ export const saveLayout = (id: string, layout: any) => {
     return updatedBoard;
 }
 
+export const rearrangeImages = (id: string) => {
+    const updatedBoard = fetch(`${BASE_URL}boards/${id}/rearrange_images`, {
+        method: 'POST',
+        headers: userHeaders,
+    })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => console.error('Error updating board: ', error));
+
+    return updatedBoard;
+}
+
 export const getUserBoards = () => {
     const boards = fetch(`${BASE_URL}boards/user_boards`, { headers: userHeaders }) // `localhostboards
         .then(response => response.json())

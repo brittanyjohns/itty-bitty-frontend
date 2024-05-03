@@ -146,7 +146,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     <div
       className={`relative cursor-pointer ${
         image.bg_color || "bg-white"
-      } rounded-md shadow-md p-1 h-fit`}
+      } rounded-md shadow-md p-1 h-full`}
       onClick={() => handleImageClick(image)}
     >
       <IonImg
