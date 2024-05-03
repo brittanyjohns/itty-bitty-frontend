@@ -24,6 +24,7 @@ import { BASE_URL } from "./users";
     next_board_id?: string;
     nextImageSrcs?: string[];
     next_words?: string[]
+    no_next?: boolean;
   }
 
   export interface DraggableGridLayout {

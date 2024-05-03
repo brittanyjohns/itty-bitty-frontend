@@ -1,9 +1,7 @@
 import { IonIcon, IonItem, IonLabel } from "@ionic/react";
 import { MenuLink } from "../../data/menu";
-import "./MenuListItem.css";
 import { useHistory } from "react-router";
-import { ComponentProps, useRef, useState } from "react";
-import { set } from "react-hook-form";
+import { useRef, useState } from "react";
 
 interface MainMenuListItemProps {
   menuLink: MenuLink;
@@ -22,8 +20,6 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
 
   const handleClick =
     (slug: string | undefined, endpoint: string | undefined) => () => {
-      console.log("MenuListItem - handleClick", endpoint);
-      console.log("itemRef", itemRef.current);
       if (itemRef.current && slug) {
         itemRef.current.style.backgroundColor = "red";
         setActive(slug);

@@ -44,7 +44,7 @@ import {
 import { set } from "react-hook-form";
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
-import PredictiveImagesScreen from "../PredictiveIndex";
+import PredictiveImagesScreen from "../predictive/PredictiveIndex";
 
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -366,13 +366,15 @@ const ViewImageScreen: React.FC = () => {
             {currentUser?.role === "admin" && (
               <div className="mt-10">
                 <IonButtons className="flex justify-between">
-                  <IonButton
-                    onClick={handleNextWords}
-                    className="text-sm font-mono"
-                    slot="start"
-                  >
-                    Set Next Words
-                  </IonButton>
+                  {!image?.no_next && (
+                    <IonButton
+                      onClick={handleNextWords}
+                      className="text-sm font-mono"
+                      slot="start"
+                    >
+                      Set Next Words
+                    </IonButton>
+                  )}
                   <IonButton
                     routerLink={`/predictive/${image?.id}`}
                     className="text-sm font-mono"
@@ -403,7 +405,7 @@ const ViewImageScreen: React.FC = () => {
                       </div>
                     </div>
                   )}
-                  {image?.next_words?.length == 0 && (
+                  {!image?.no_next && image?.next_words?.length == 0 && (
                     <p className="text-md">No next words set.</p>
                   )}
                 </div>

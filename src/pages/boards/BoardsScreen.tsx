@@ -47,7 +47,7 @@ const BoardsScreen: React.FC = () => {
     setUserBoards(fetchedBoards["boards"]);
     setScenarioBoards(fetchedBoards["scenarios"]);
     setPresetBoards(fetchedBoards["predefined_boards"]);
-    setSharedBoards(fetchedBoards["shared_boards"]);
+    // setSharedBoards(fetchedBoards["shared_boards"]);
     console.log("Fetched boards", fetchedBoards);
     setBoards(fetchedBoards["boards"]);
   };
@@ -84,32 +84,13 @@ const BoardsScreen: React.FC = () => {
       setBoards(presetBoards);
       setPageTitle("Preset Boards");
     }
-    if (segmentType === "scenario") {
-      setBoards(scenarioBoards);
-      setPageTitle("Scenario Boards");
-    }
-    if (segmentType === "shared") {
-      setBoards(sharedBoards);
-      setPageTitle("Shared Boards");
-    }
   }, [segmentType]);
 
   return (
     <>
       <MainMenu />
       <IonPage id="main-content">
-        <IonHeader>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonMenuButton></IonMenuButton>
-            </IonButtons>
-            <IonTitle>Boards</IonTitle>
-            <IonButtons slot="end">
-              <IonButton routerLink="/boards/new">
-                <IonIcon icon={addCircleOutline} />
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
+        <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
             <IonSegment
               value={segmentType}
@@ -117,29 +98,27 @@ const BoardsScreen: React.FC = () => {
               className="w-full bg-inherit"
             >
               <IonSegmentButton value="user">
-                <IonLabel className="text-xl">
-                  <IonIcon icon={albumsOutline} />
-                </IonLabel>
+                <IonLabel className="text-md lg:text-lg">Your Boards</IonLabel>
+                <IonIcon icon={albumsOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="preset">
-                <IonLabel className="text-xl">
-                  <IonIcon icon={gridOutline} />
+                <IonLabel className="text-md lg:text-lg">
+                  Preset Boards
                 </IonLabel>
+                <IonIcon icon={gridOutline} />
               </IonSegmentButton>
-              <IonSegmentButton value="scenario">
-                <IonLabel className="text-xl">
-                  <IonIcon icon={earthOutline} className="text-2xl mt-3 mb-2" />
+              {/* <IonSegmentButton value="scenario">
+                <IonLabel className="text-md lg:text-lg">
+                  Scenario Boards
                 </IonLabel>
-              </IonSegmentButton>
-              <IonSegmentButton value="shared">
-                <IonLabel className="text-xl">
-                  <IonIcon
-                    icon={peopleCircleOutline}
-                    className="text-2xl mt-3 mb-2"
-                  />
-                </IonLabel>
-              </IonSegmentButton>
+                <IonIcon icon={earthOutline} className="text-2xl mt-3 mb-2" />
+              </IonSegmentButton> */}
             </IonSegment>
+            <IonButtons slot="end">
+              <IonButton routerLink="/boards/new">
+                <IonIcon icon={addCircleOutline} />
+              </IonButton>
+            </IonButtons>
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">

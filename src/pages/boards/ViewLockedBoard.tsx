@@ -31,6 +31,7 @@ import FloatingWordsBtn from "../../components/utils/FloatingWordsBtn";
 import BoardGridDropdown from "../../components/boards/BoardGridDropdown";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import DraggableGrid from "../../components/images/DraggableGrid";
+import { playAudioList } from "../../data/utils";
 
 const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();
@@ -113,19 +114,9 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
     setAudioList([...audioList, audio]);
   };
 
-  const playAudioList = async () => {
-    for (let i = 0; i < audioList.length; i++) {
-      const audioSrc = audioList[i];
-      const audio = new Audio(audioSrc);
-      try {
-        await audio.play();
-        await new Promise((resolve) => (audio.onended = resolve));
-      } catch (error) {
-        console.log("Error playing audio:", error);
-        audio.muted = true;
-        audio.play();
-      }
-    }
+  const handlePlayAudioList = async () => {
+    console.log("Playing audio list: ", audioList);
+    await playAudioList(audioList);
   };
 
   const refresh = (e: CustomEvent) => {
@@ -154,7 +145,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
           </IonItem>
           <IonButtons slot="start">
             {showIcon && (
-              <IonButton size="small" onClick={playAudioList}>
+              <IonButton size="small" onClick={handlePlayAudioList}>
                 <IonIcon
                   slot="icon-only"
                   className="tiny"

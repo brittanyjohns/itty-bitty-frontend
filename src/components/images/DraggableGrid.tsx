@@ -3,7 +3,7 @@ import GridLayout, { WidthProvider } from "react-grid-layout";
 const ResponsiveGridLayout = WidthProvider(GridLayout);
 import React, { useEffect, useState } from "react";
 
-import "./main.css";
+import "./../main.css";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import ImageGalleryItem from "./ImageGalleryItem";
