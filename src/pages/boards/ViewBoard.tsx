@@ -139,6 +139,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
 
   return (
     <>
+      <MainMenu />
       <IonPage id="main-content">
         <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
