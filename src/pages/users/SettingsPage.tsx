@@ -73,7 +73,7 @@ const SettingsPage: React.FC = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        <IonHeader>
+        <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
             <IonButtons slot="start">
               <IonMenuButton></IonMenuButton>

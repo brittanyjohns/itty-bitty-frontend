@@ -1,7 +1,7 @@
 import { IonIcon, IonItem, IonLabel, IonNote } from "@ionic/react";
 import { Team } from "../../data/teams";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { starOutline } from "ionicons/icons";
+import { personOutline, starOutline } from "ionicons/icons";
 
 interface TeamListItemProps {
   team: Team;
@@ -12,7 +12,7 @@ const TeamListItem: React.FC<TeamListItemProps> = ({ team }) => {
   const { currentUser } = useCurrentUser();
   const ownerIcon =
     team.created_by === currentUser?.email ? (
-      <IonIcon icon={starOutline} />
+      <IonIcon icon={personOutline} />
     ) : null;
   return (
     <IonItem
@@ -21,8 +21,9 @@ const TeamListItem: React.FC<TeamListItemProps> = ({ team }) => {
       lines="none"
       className="p-4 w-full"
     >
-      <IonLabel>{team.name}</IonLabel>
       <IonNote slot="start">{ownerIcon}</IonNote>
+
+      <IonLabel>{team.name}</IonLabel>
     </IonItem>
   );
 };

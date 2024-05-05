@@ -95,7 +95,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
 
       <IonPage id="main-content">
         {!isWideScreen && <MainHeader />}
-        <IonHeader translucent>
+        <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
             <IonButtons slot="start">
               <IonBackButton defaultHref="/menus" />

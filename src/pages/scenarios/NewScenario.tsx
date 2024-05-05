@@ -32,8 +32,8 @@ const NewScenario: React.FC = (props: any) => {
     }
   };
   return (
-    <IonPage id="new-scenario-page">
-      <IonHeader translucent>
+    <IonPage id="main-content">
+      <IonHeader className="bg-inherit shadow-none">
         <IonToolbar>
           <IonButtons slot="start">
             <IonBackButton defaultHref="/boards" />

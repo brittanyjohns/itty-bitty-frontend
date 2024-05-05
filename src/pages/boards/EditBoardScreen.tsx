@@ -60,7 +60,7 @@ const EditBoardScreen: React.FC<any> = () => {
 
   return (
     <IonPage id="edit-board-page">
-      <IonHeader translucent>
+      <IonHeader className="bg-inherit shadow-none">
         <IonToolbar>
           <IonButtons slot="start" className="mr-4">
             <IonButton routerLink={`/boards/${board?.id}`}>

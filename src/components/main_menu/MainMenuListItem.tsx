@@ -16,6 +16,7 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
 }) => {
   const history = useHistory();
   const itemRef = useRef<HTMLIonItemElement>(null);
+  const iconsRef = useRef<HTMLIonIconElement>(null);
   const [active, setActive] = useState<string | null>(null);
 
   const handleClick =
@@ -34,12 +35,12 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
     <IonItem
       key={menuLink.id}
       onClick={handleClick(menuLink.slug, menuLink.endpoint)}
-      className="hover:cursor-pointer active:bg-gray-200"
+      className="hover:cursor-pointer active:bg-gray-400"
       lines="full"
       detail={false}
       ref={itemRef}
     >
-      <IonIcon icon={menuLink.icon} className="" />
+      <IonIcon icon={menuLink.icon} ref={iconsRef} />
       <IonLabel className="text-xl ml-8">
         <h2>{menuLink.name}</h2>
       </IonLabel>

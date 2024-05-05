@@ -57,8 +57,8 @@ const EditImageScreen: React.FC = (props: any) => {
   };
 
   return (
-    <IonPage id="new-image-page">
-      <IonHeader translucent>
+    <>
+      <IonHeader className="bg-inherit shadow-none">
         <IonToolbar>
           <IonButtons slot="start">
             <IonButton routerLink={`/images/${image.id}`}>
@@ -73,22 +73,20 @@ const EditImageScreen: React.FC = (props: any) => {
 
       <IonContent fullscreen scrollY={true}>
         <IonText>Editing {image.label}</IonText>
-        <>
-          <form className="ion-padding" onSubmit={handleSubmit(onSubmit)}>
-            <IonInput
-              value={image.label}
-              aria-label="label"
-              placeholder="Enter new image label"
-              defaultValue=""
-              {...register("label", { required: true })}
-            />
-            <IonButton className="ion-margin-top" type="submit" expand="block">
-              Save
-            </IonButton>
-          </form>
-        </>
+        <form className="ion-padding" onSubmit={handleSubmit(onSubmit)}>
+          <IonInput
+            value={image.label}
+            aria-label="label"
+            placeholder="Enter new image label"
+            defaultValue=""
+            {...register("label", { required: true })}
+          />
+          <IonButton className="ion-margin-top" type="submit" expand="block">
+            Save
+          </IonButton>
+        </form>
       </IonContent>
-    </IonPage>
+    </>
   );
 };
 

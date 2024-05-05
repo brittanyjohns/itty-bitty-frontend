@@ -56,7 +56,7 @@ const SignInScreen: React.FC = () => {
   return (
     <>
       <IonPage>
-        <IonHeader>
+        <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
             <IonButtons slot="start">
               <IonBackButton defaultHref="/home"></IonBackButton>

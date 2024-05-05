@@ -167,10 +167,8 @@ const ViewTeamScreen: React.FC<ViewTeamScreenProps> = () => {
 
   return (
     <>
-      <MainMenu />
       <IonPage id="main-content">
-        {!isWideScreen && <MainHeader />}
-        <IonHeader translucent>
+        <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
             <IonButtons slot="start">
               <IonBackButton defaultHref="/teams" />

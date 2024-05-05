@@ -33,9 +33,8 @@ const MenusScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu />
       <IonPage id="main-content">
-        <IonHeader>
+        <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
             <IonButtons slot="start">
               <IonMenuButton></IonMenuButton>
@@ -52,7 +51,7 @@ const MenusScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <IonItem>
+          <IonItem lines="none">
             <MenuList />
           </IonItem>
         </IonContent>

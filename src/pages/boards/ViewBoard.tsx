@@ -140,7 +140,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
   return (
     <>
       <IonPage id="main-content">
-        <IonHeader>
+        <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
             {!showIcon && (
               <h1 className="text-center text-lg font-bold">

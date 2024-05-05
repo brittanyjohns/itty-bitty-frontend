@@ -124,23 +124,7 @@ const ImagesScreen: React.FC = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        <IonHeader>
-          {/* <IonToolbar>
-            <IonSegment
-              value={segmentType}
-              onIonChange={handleSegmentChange}
-              className="w-full"
-            >
-              <IonSegmentButton value="all" className="p-1">
-                <IonIcon icon={imagesOutline} />
-                <IonLabel className="text-md">Gallery</IonLabel>
-              </IonSegmentButton>
-              <IonSegmentButton value="user" className="p-1">
-                <IonIcon icon={personOutline} />
-                <IonLabel className="text-md">My Images</IonLabel>
-              </IonSegmentButton>
-            </IonSegment>
-          </IonToolbar> */}
+        <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
             <IonSegment
               value={segmentType}
