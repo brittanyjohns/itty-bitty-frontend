@@ -83,7 +83,6 @@ const userHeaders = {
 };
 export const getImages = () => {
   const userToken = localStorage.getItem('token');
-  console.log('userToken', userToken);
     const images = fetch(`${BASE_URL}images`, { headers: userHeaders })
         .then(response => response.json())
         .then(data => data)
