@@ -75,7 +75,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
         </IonItem>
         <IonAccordionGroup ref={accordionGroup}>
           <IonAccordion value="second">
-            <div className="ion-padding" slot="content">
+            <div className="pl-5 ion-padding text-black text-lg" slot="content">
               <IonIcon
                 icon={personCircleOutline}
                 className=""
@@ -92,7 +92,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
                 }}
               ></IonLabel>
               <IonLabel
-                className="ml-2 hover:cursor-pointer"
+                className="ml-2 hover:cursor-pointer text-black"
                 onClick={() => {
                   history.push("/dashboard");
                   setIsOpen(false);
@@ -102,6 +102,10 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
                 <p className="mt-1 text-xs">
                   <span className="font-bold"> Plan type:</span>{" "}
                   {currentUser?.role ?? "free trial"}
+                </p>
+                <p className="mt-1 text-xs">
+                  <span className="font-bold"> Tokens:</span>{" "}
+                  {currentUser?.tokens ?? 0}
                 </p>
               </IonLabel>
             </div>
