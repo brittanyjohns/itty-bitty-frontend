@@ -5,6 +5,7 @@ import {
   IonHeader,
   IonIcon,
   IonItem,
+  IonLabel,
   IonMenuButton,
   IonPage,
   IonRefresher,
@@ -35,14 +36,12 @@ const MenusScreen: React.FC = () => {
     <>
       <IonPage id="main-content">
         <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonMenuButton></IonMenuButton>
-            </IonButtons>
+          <IonToolbar className="p-2">
             <IonTitle>Menus</IonTitle>
-            <IonButtons slot="end">
-              <IonButton routerLink="/menus/new">
-                <IonIcon icon={addCircleOutline} />
+            <IonButtons className="mr-4" slot="end">
+              <IonButton routerLink="/menus/new" className="text-wrap mx-auto">
+                <IonLabel className="mr-2 text-md lg:text-lg">New</IonLabel>
+                <IonIcon icon={addCircleOutline} className="block text-xl" />
               </IonButton>
             </IonButtons>
           </IonToolbar>

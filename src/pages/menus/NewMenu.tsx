@@ -140,7 +140,7 @@ const NewMenu: React.FC = (props: any) => {
           message="Please wait while we analyze your menu..."
           isOpen={showLoading}
         />
-        <div className="ion-padding">
+        <div className="ion-padding w-full md:w-3/4 lg:w-1/2 mx-auto">
           <form
             className="ion-padding"
             onSubmit={uploadPhoto}
@@ -157,7 +157,7 @@ const NewMenu: React.FC = (props: any) => {
 
             <IonItem lines="none" className="ion-margin-bottom">
               <input
-                className="bg-inherit w-full p-4 border rounded-md"
+                className="bg-inherit w-full p-4 rounded-md"
                 type="file"
                 onChange={(ev) => onFileChange(ev)}
               />
