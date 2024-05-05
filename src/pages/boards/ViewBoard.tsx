@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Board, addToTeam, getBoard } from "../../data/boards";
+import { Board, addToTeam, deleteBoard, getBoard } from "../../data/boards";
 import {
   IonButton,
   IonButtons,
@@ -7,6 +7,7 @@ import {
   IonHeader,
   IonIcon,
   IonItem,
+  IonLabel,
   IonLoading,
   IonPage,
   IonRefresher,
@@ -36,6 +37,7 @@ import AddToTeamForm from "../../components/teams/AddToTeamForm";
 import Tabs from "../../components/utils/Tabs";
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
+import ConfirmDeleteAlert from "../../components/utils/ConfirmDeleteAlert";
 
 const ViewBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();
@@ -137,18 +139,30 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
     }, 3000);
   };
 
+  const removeBoard = async (boardId: string) => {
+    try {
+      console.log("Removing board: ", boardId);
+      // Implement delete board logic
+      deleteBoard(boardId);
+      window.location.href = "/boards";
+    } catch (error) {
+      console.error("Error removing board: ", error);
+      alert("Error removing board");
+    }
+  };
+
   return (
     <>
       <MainMenu />
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
+        <IonHeader className="bg-inherit shadow-none text-xl">
           <IonToolbar>
             {!showIcon && (
               <h1 className="text-center text-lg font-bold">
                 {board?.name || "Board"}
               </h1>
             )}
-            {showEdit && (
+            {/* {showEdit && (
               <IonButtons slot="end">
                 <IonButton onClick={toggleAddToTeam}>
                   <IonIcon icon={shareOutline} />
@@ -166,7 +180,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
                   <IonIcon icon={createOutline} />
                 </IonButton>
               </IonButtons>
-            )}
+            )} */}
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen scrollY={true}>
@@ -210,6 +224,38 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
             )}
           </div>
 
+          <div className="flex justify-center items-center px-4">
+            <IonButtons slot="end">
+              {showEdit && (
+                <IonButton onClick={toggleAddToTeam} className="mr-4">
+                  <IonIcon icon={shareOutline} className="mx-2" />
+                  <IonLabel>Share</IonLabel>
+                </IonButton>
+              )}
+              <IonButton
+                routerLink={`/boards/${params.id}/locked`}
+                className="mr-4"
+              >
+                <IonIcon icon={documentLockOutline} className="mx-2" />
+                <IonLabel>Lock</IonLabel>
+              </IonButton>
+              {showEdit && (
+                <IonButton
+                  routerLink={`/boards/${params.id}/gallery`}
+                  className="mr-4"
+                >
+                  <IonIcon icon={createOutline} className="mx-2" />
+                  <IonLabel>Edit</IonLabel>
+                </IonButton>
+              )}
+            </IonButtons>
+          </div>
+          <div className="flex justify-end items-center px-4">
+            {showEdit && (
+              <ConfirmDeleteAlert onConfirm={() => removeBoard(params.id)} />
+            )}
+          </div>
+
           {board && (
             <DraggableGrid
               images={board.images}
@@ -235,7 +281,6 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
               />
             </div>
           )}
-          <FloatingWordsBtn inputRef={inputRef} words={board?.floating_words} />
         </IonContent>
         <Tabs />
       </IonPage>
