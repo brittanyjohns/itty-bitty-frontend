@@ -45,6 +45,7 @@ import {
 } from "ionicons/icons";
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
+import BoardGrid from "../../components/boards/BoardGrid";
 interface ViewTeamScreenProps {
   id: string;
 }
@@ -239,7 +240,7 @@ const ViewTeamScreen: React.FC<ViewTeamScreenProps> = () => {
             {team && (
               <div className="">
                 <IonLabel>Team Boards</IonLabel>
-                {team.boards && <BoardList boards={team.boards} />}
+                {team.boards && <BoardGrid boards={team.boards} />}
               </div>
             )}
           </div>

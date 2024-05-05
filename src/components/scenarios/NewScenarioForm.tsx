@@ -115,90 +115,88 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({
   };
 
   return (
-    <div className="ion-padding">
-      <form onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-4">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold mb-2">Scenario</h2>
+    <form onSubmit={handleSubmit}>
+      <div className="flex flex-col gap-2">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-2">Scenario</h2>
 
-            <p className="text-md my-2">
-              Enter the scenario you'd like to create a board for.
-            </p>
-            <IonInput
-              value={boardName}
-              onIonInput={(e) => handleBoardName(e.detail.value!)}
-              placeholder="Ex: 'First day at a new job'"
-              className="border rounded md:w-1/2 lg:w-1/2 mx-auto"
-            />
+          <p className="text-md my-2">
+            Enter the scenario you'd like to create a board for.
+          </p>
+          <IonInput
+            value={boardName}
+            onIonInput={(e) => handleBoardName(e.detail.value!)}
+            placeholder="Ex: 'First day at a new job'"
+            className="border rounded md:w-3/4 lg:w-1/2 mx-auto"
+          />
 
-            <p className="text-sm my-2">
-              Be as descriptive as possible to get the best results.
-            </p>
-            <IonTextarea
-              value={promptText}
-              onIonInput={(e) => handlePromptInput(e.detail.value!)}
-              placeholder="Ex: 'You are the new employee at a tech company.'"
-              className="border rounded md:w-1/2 lg:w-1/2 mx-auto"
-            />
-          </div>
-          <div className="grid grid-cols-1 gap-4 md:w-3/4 lg:w-1/2 mx-auto">
+          <p className="text-sm my-2">
+            Be as descriptive as possible to get the best results.
+          </p>
+          <IonTextarea
+            value={promptText}
+            onIonInput={(e) => handlePromptInput(e.detail.value!)}
+            placeholder="Ex: 'You are the new employee at a tech company.'"
+            className="border rounded md:w-1/2 lg:w-1/2 mx-auto"
+          />
+        </div>
+        <div className="grid grid-cols-1 gap-4 md:w-3/4 lg:w-1/2 mx-auto">
+          <IonSelect
+            label="Age of person"
+            value={ageRange}
+            onIonChange={(e) => setAgeRange(e.detail.value)}
+            placeholder="Select Age Range"
+            className=""
+          >
+            {ageRangeList.map((range, index) => (
+              <IonSelectOption key={index} value={range}>
+                {range}
+              </IonSelectOption>
+            ))}
+          </IonSelect>
+
+          <IonSelect
+            label="Number of Images"
+            value={numberOfImages}
+            onIonChange={(e) => handleNumberSelection(e.detail.value)}
+            className=""
+          >
+            {imageOptions.map((option) => (
+              <IonSelectOption key={option} value={option}>
+                {option}
+              </IonSelectOption>
+            ))}
+          </IonSelect>
+          <div>
             <IonSelect
-              label="Age of person"
-              value={ageRange}
-              onIonChange={(e) => setAgeRange(e.detail.value)}
-              placeholder="Select Age Range"
+              label="Token Limit"
+              value={tokenLimit}
+              onIonChange={(e) => setTokenLimit(parseInt(e.detail.value, 10))}
               className=""
             >
-              {ageRangeList.map((range, index) => (
-                <IonSelectOption key={index} value={range}>
-                  {range}
-                </IonSelectOption>
-              ))}
-            </IonSelect>
-
-            <IonSelect
-              label="Number of Images"
-              value={numberOfImages}
-              onIonChange={(e) => handleNumberSelection(e.detail.value)}
-              className=""
-            >
-              {imageOptions.map((option) => (
+              {tokenOptions.map((option) => (
                 <IonSelectOption key={option} value={option}>
                   {option}
                 </IonSelectOption>
               ))}
             </IonSelect>
-            <div>
-              <IonSelect
-                label="Token Limit"
-                value={tokenLimit}
-                onIonChange={(e) => setTokenLimit(parseInt(e.detail.value, 10))}
-                className=""
-              >
-                {tokenOptions.map((option) => (
-                  <IonSelectOption key={option} value={option}>
-                    {option}
-                  </IonSelectOption>
-                ))}
-              </IonSelect>
-              <p className="text-sm text-red-500 my-2 text-center">
-                Note: Setting the token limit to 0 will disable AI image
-                generation.<br></br> Placeholder images will be used instead.
-              </p>
-            </div>
+            <p className="text-sm text-red-500 my-2 text-center">
+              Note: Setting the token limit to 0 will disable AI image
+              generation.<br></br> Placeholder images will be used instead.
+            </p>
           </div>
         </div>
+      </div>
 
-        <div className="flex justify-between mt-4 mx-auto lg:w-1/2">
-          <IonButton color="medium" onClick={onCancel}>
-            Cancel
-          </IonButton>
-          <IonButton type="submit" color="primary">
-            Save
-          </IonButton>
-        </div>
-      </form>
-    </div>
+      <div className="flex justify-between mt-4 mx-auto lg:w-1/2">
+        <IonButton color="medium" onClick={onCancel}>
+          Cancel
+        </IonButton>
+        <IonButton type="submit" color="primary">
+          Save
+        </IonButton>
+      </div>
+    </form>
   );
 };
 

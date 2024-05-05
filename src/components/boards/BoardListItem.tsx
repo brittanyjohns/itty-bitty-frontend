@@ -1,4 +1,11 @@
-import { IonActionSheet, IonItem, IonLabel, IonText } from "@ionic/react";
+import {
+  IonActionSheet,
+  IonButton,
+  IonButtons,
+  IonItem,
+  IonLabel,
+  IonText,
+} from "@ionic/react";
 import { Board, deleteBoard } from "../../data/boards";
 import "./BoardListItem.css";
 import { useEffect, useRef, useState } from "react";
@@ -88,9 +95,9 @@ const BoardListItem: React.FC<BoardListItemProps> = ({
     <>
       <IonItem
         className="w-full py-3"
-        onClick={() => handleBoardClick(board)}
-        onTouchStart={handleButtonPress}
-        onTouchEnd={handleButtonRelease}
+        // onClick={() => handleBoardClick(board)}
+        // onTouchStart={handleButtonPress}
+        // onTouchEnd={handleButtonRelease}
         detail={false}
         lines="none"
       >
@@ -101,7 +108,7 @@ const BoardListItem: React.FC<BoardListItemProps> = ({
         </IonText>
       </IonItem>
 
-      {!board?.predefined && (
+      {/* {!board?.predefined && (
         <IonActionSheet
           isOpen={showActionList}
           onDidDismiss={onClose}
@@ -118,7 +125,7 @@ const BoardListItem: React.FC<BoardListItemProps> = ({
             },
           ]}
         />
-      )}
+      )} */}
     </>
   );
 };

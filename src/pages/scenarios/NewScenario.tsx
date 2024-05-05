@@ -10,6 +10,7 @@ import {
 } from "@ionic/react";
 import NewScenarioForm from "../../components/scenarios/NewScenarioForm";
 import { useState } from "react";
+import MainMenu from "../../components/main_menu/MainMenu";
 
 const NewScenario: React.FC = (props: any) => {
   const [numOfImages, setNumOfImages] = useState(12); // [1]
@@ -32,23 +33,26 @@ const NewScenario: React.FC = (props: any) => {
     }
   };
   return (
-    <IonPage id="main-content">
-      <IonHeader className="bg-inherit shadow-none">
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/boards" />
-          </IonButtons>
-          <IonTitle>New Scenario</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen scrollY={true}>
-        <NewScenarioForm
-          onSave={onSubmit}
-          onCancel={() => props.history.push("/boards")}
-          scenario={initialScenario}
-        />
-      </IonContent>
-    </IonPage>
+    <>
+      <MainMenu />
+      <IonPage id="main-content">
+        <IonHeader className="bg-inherit shadow-none">
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonBackButton defaultHref="/boards" />
+            </IonButtons>
+            <IonTitle>New Scenario</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent fullscreen scrollY={true}>
+          <NewScenarioForm
+            onSave={onSubmit}
+            onCancel={() => props.history.push("/boards")}
+            scenario={initialScenario}
+          />
+        </IonContent>
+      </IonPage>
+    </>
   );
 };
 
