@@ -4,39 +4,59 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonMenuButton,
   IonPage,
   IonTitle,
   IonToolbar,
+  IonLoading,
 } from "@ionic/react";
-import FileUploadForm from "../../components/images/FileUploadForm";
+import ImageCropper from "../../components/images/ImageCropper";
+import { createImage } from "../../data/images";
+import { useState } from "react";
+import { useHistory } from "react-router";
 import { arrowBackCircleOutline } from "ionicons/icons";
 
-const NewImage: React.FC = (props: any) => {
+const NewImage: React.FC = () => {
+  const history = useHistory();
+  const [showLoading, setShowLoading] = useState<boolean>(false);
+
+  const handleFormSubmit = async (data: {
+    label: string;
+    croppedImage: string;
+  }) => {
+    setShowLoading(true);
+    const formData = new FormData();
+    formData.append("image[docs][image]", data.croppedImage);
+    formData.append("image[label]", data.label);
+
+    const result = await createImage(formData);
+    setShowLoading(false);
+
+    if (result && result.id) {
+      history.replace("/images"); // Use history to navigate
+    } else {
+      console.error("Error:", result.error);
+    }
+  };
+
   return (
-    <>
-      <IonPage id="new-image-page">
-        <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonButton routerLink="/images">
-                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
-              </IonButton>
-            </IonButtons>
-            <IonTitle>New Image</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent fullscreen className="ion-padding">
-          <div className="w-full md:w-1/2 lg:w-1/2 mx-auto">
-            <FileUploadForm
-              board={undefined}
-              onCloseModal={undefined}
-              showLabel={true}
-            />
-          </div>
-        </IonContent>
-      </IonPage>
-    </>
+    <IonPage id="new-image-page">
+      <IonHeader className="bg-inherit shadow-none">
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonButton onClick={() => history.goBack()}>
+              <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
+            </IonButton>
+          </IonButtons>
+          <IonTitle>New Image</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent fullscreen className="ion-padding">
+        <div className="w-full md:w-1/2 lg:w-1/2 mx-auto">
+          <ImageCropper onSubmit={handleFormSubmit} />
+        </div>
+        <IonLoading isOpen={showLoading} message="Uploading..." />
+      </IonContent>
+    </IonPage>
   );
 };
 
