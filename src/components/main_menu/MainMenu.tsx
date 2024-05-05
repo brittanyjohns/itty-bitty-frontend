@@ -90,7 +90,7 @@ const MainMenu: React.FC<MainMenuProps> = () => {
           type="overlay"
           swipeGesture={true}
         >
-          <IonHeader>
+          <IonHeader className="bg-inherit shadow-none">
             <IonToolbar>
               <IonTitle>Main Menu</IonTitle>
             </IonToolbar>

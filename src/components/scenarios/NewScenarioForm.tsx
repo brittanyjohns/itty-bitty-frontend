@@ -115,7 +115,7 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({
   };
 
   return (
-    <div className="p-4 lg:px-10">
+    <div className="ion-padding">
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4">
           <div className="text-center">
@@ -141,9 +141,9 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({
               className="border rounded md:w-1/2 lg:w-1/2 mx-auto"
             />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:w-3/4 lg:w-1/2 mx-auto">
+          <div className="grid grid-cols-1 gap-4 md:w-3/4 lg:w-1/2 mx-auto">
             <IonSelect
-              label="Age of person in scenario"
+              label="Age of person"
               value={ageRange}
               onIonChange={(e) => setAgeRange(e.detail.value)}
               placeholder="Select Age Range"

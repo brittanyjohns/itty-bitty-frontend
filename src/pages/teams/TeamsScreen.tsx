@@ -49,7 +49,7 @@ const TeamsScreen: React.FC = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        <IonHeader>
+        <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
             <IonButtons slot="start">
               <IonMenuButton></IonMenuButton>
@@ -66,7 +66,6 @@ const TeamsScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <h2 className="mb-3 text-2xl font-bold">{pageTitle}</h2>
           <TeamList teams={teams} />
         </IonContent>
         <Tabs />

@@ -52,7 +52,7 @@ const NewBoard: React.FC = (props: any) => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        <IonHeader translucent>
+        <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
             <IonButtons slot="start">
               <IonButton routerLink="/boards">

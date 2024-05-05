@@ -16,7 +16,7 @@ const NewImage: React.FC = (props: any) => {
   return (
     <>
       <IonPage id="new-image-page">
-        <IonHeader translucent>
+        <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
             <IonButtons slot="start">
               <IonButton routerLink="/images">
@@ -27,13 +27,13 @@ const NewImage: React.FC = (props: any) => {
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen className="ion-padding">
-          <>
+          <div className="w-full md:w-1/2 lg:w-1/2 mx-auto">
             <FileUploadForm
               board={undefined}
               onCloseModal={undefined}
               showLabel={true}
             />
-          </>
+          </div>
         </IonContent>
       </IonPage>
     </>

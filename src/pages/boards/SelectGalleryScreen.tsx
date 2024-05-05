@@ -289,7 +289,6 @@ const SelectGalleryScreen: React.FC = () => {
   };
 
   const handleCreateImage = async (label: string) => {
-    console.log("Creating image for label", label);
     setLoadingMessage("Creating image");
     setShowLoading(true);
     const formData = new FormData();
@@ -306,9 +305,7 @@ const SelectGalleryScreen: React.FC = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        {!isWideScreen && <MainHeader />}
-        <IonHeader translucent></IonHeader>
-        <IonContent className="ion-padding" scrollY={true}>
+        <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
             <IonButtons slot="start">
               <IonButton routerLink={`/boards/${board?.id}`}>
@@ -338,6 +335,8 @@ const SelectGalleryScreen: React.FC = () => {
               </IonSegmentButton>
             </IonSegment>
           </IonToolbar>
+        </IonHeader>
+        <IonContent className="ion-padding" scrollY={true}>
           <div className="ion-justify-content-center ion-align-items-center ion-text-center pt-1">
             <IonText className="font-bold text-2xl">
               {board && board.name}{" "}

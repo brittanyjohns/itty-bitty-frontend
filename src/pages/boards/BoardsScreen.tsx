@@ -4,6 +4,7 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
+  IonItem,
   IonLabel,
   IonMenuButton,
   IonPage,
@@ -96,7 +97,7 @@ const BoardsScreen: React.FC = () => {
             <IonSegment
               value={segmentType}
               onIonChange={handleSegmentChange}
-              className="w-full bg-inherit"
+              className="bg-inherit"
             >
               <IonSegmentButton value="user">
                 <IonLabel className="text-md lg:text-lg">Your Boards</IonLabel>
@@ -108,16 +109,11 @@ const BoardsScreen: React.FC = () => {
                 </IonLabel>
                 <IonIcon icon={gridOutline} />
               </IonSegmentButton>
-              {/* <IonSegmentButton value="scenario">
-                <IonLabel className="text-md lg:text-lg">
-                  Scenario Boards
-                </IonLabel>
-                <IonIcon icon={earthOutline} className="text-2xl mt-3 mb-2" />
-              </IonSegmentButton> */}
             </IonSegment>
-            <IonButtons slot="end">
-              <IonButton routerLink="/boards/new">
-                <IonIcon icon={addCircleOutline} />
+            <IonButtons className="mr-4" slot="end">
+              <IonButton routerLink="/boards/new" className="text-wrap mx-auto">
+                <IonLabel className="mr-2 text-md lg:text-lg">New</IonLabel>
+                <IonIcon icon={addCircleOutline} className="block text-xl" />
               </IonButton>
             </IonButtons>
           </IonToolbar>
@@ -126,8 +122,6 @@ const BoardsScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <h2 className="mb-3 text-2xl font-bold">{pageTitle}</h2>
-          {/* <BoardList boards={boards} /> */}
           <BoardGrid boards={boards} />
         </IonContent>
         <Tabs />

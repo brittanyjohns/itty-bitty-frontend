@@ -231,7 +231,7 @@ const ViewImageScreen: React.FC = () => {
       <MainMenu />
       <IonPage id="main-content">
         {!isWideScreen && <MainHeader />}
-        <IonHeader translucent>
+        <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
             <IonTitle>{image?.label}</IonTitle>
           </IonToolbar>

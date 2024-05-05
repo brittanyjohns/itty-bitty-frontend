@@ -124,7 +124,7 @@ const NewMenu: React.FC = (props: any) => {
 
   return (
     <IonPage id="new-menu-page">
-      <IonHeader translucent>
+      <IonHeader className="bg-inherit shadow-none">
         <IonToolbar>
           <IonButtons slot="start">
             <IonButton routerLink="/menus">

@@ -11,7 +11,7 @@ import { useCurrentUser } from "../hooks/useCurrentUser";
 const MainHeader: React.FC = () => {
   const { isWideScreen } = useCurrentUser();
   return (
-    <IonHeader>
+    <IonHeader className="bg-inherit shadow-none">
       <IonToolbar>
         {!isWideScreen && (
           <>
