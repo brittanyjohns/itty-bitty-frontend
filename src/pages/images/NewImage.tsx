@@ -14,6 +14,7 @@ import { createImage } from "../../data/images";
 import { useState } from "react";
 import { useHistory } from "react-router";
 import { arrowBackCircleOutline } from "ionicons/icons";
+import MainMenu from "../../components/main_menu/MainMenu";
 
 const NewImage: React.FC = () => {
   const history = useHistory();
@@ -39,24 +40,27 @@ const NewImage: React.FC = () => {
   };
 
   return (
-    <IonPage id="new-image-page">
-      <IonHeader className="bg-inherit shadow-none">
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonButton onClick={() => history.goBack()}>
-              <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
-            </IonButton>
-          </IonButtons>
-          <IonTitle>New Image</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen className="ion-padding">
-        <div className="w-full md:w-1/2 lg:w-1/2 mx-auto">
-          <ImageCropper onSubmit={handleFormSubmit} />
-        </div>
-        <IonLoading isOpen={showLoading} message="Uploading..." />
-      </IonContent>
-    </IonPage>
+    <>
+      <MainMenu />
+      <IonPage id="main-content">
+        <IonHeader className="bg-inherit shadow-none">
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonButton onClick={() => history.goBack()}>
+                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
+              </IonButton>
+            </IonButtons>
+            <IonTitle>New Image</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent fullscreen className="ion-padding">
+          <div className="w-full md:w-1/2 lg:w-1/2 mx-auto">
+            <ImageCropper onSubmit={handleFormSubmit} />
+          </div>
+          <IonLoading isOpen={showLoading} message="Uploading..." />
+        </IonContent>
+      </IonPage>
+    </>
   );
 };
 
