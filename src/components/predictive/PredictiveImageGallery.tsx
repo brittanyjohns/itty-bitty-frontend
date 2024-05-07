@@ -34,7 +34,7 @@ const PredictiveImageGallery: React.FC<PredictiveImageGalleryProps> = ({
   }, [initialImages]);
 
   return (
-    <div className="grid grid-cols-4 gap-2">
+    <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-1">
       {currentImages.map((image, index) => (
         <div
           key={`${image.id}-${index}`}

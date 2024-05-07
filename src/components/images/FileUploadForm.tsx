@@ -21,20 +21,20 @@ const FileUploadForm: React.FC<FileUploadFormProps> = ({
   existingLabel,
 }) => {
   const [label, setLabel] = useState(existingLabel || "");
-  const [shouldDisable, setShouldDisable] = useState(false);
+  // const [shouldDisable, setShouldDisable] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const hideLabel = showLabel ? false : true;
   const [file, setFile] = useState<File | null>(null);
   const history = useHistory();
 
-  useEffect(() => {
-    setShouldDisable(existingLabel ? false : true);
-  }, [existingLabel]);
+  // useEffect(() => {
+  //   setShouldDisable(existingLabel ? false : true);
+  // }, [existingLabel]);
 
   const uploadPhoto = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!label) return;
-    setShouldDisable(true);
+    // setShouldDisable(true);
     const formData = new FormData();
     if (file) {
       formData.append("image[docs][image]", file);
@@ -87,7 +87,7 @@ const FileUploadForm: React.FC<FileUploadFormProps> = ({
           className="file-input"
           required
         />
-        <IonButton expand="block" type="submit" disabled={shouldDisable}>
+        <IonButton expand="block" type="submit">
           <IonIcon slot="start" icon={camera} />
           {showLabel ? "Save Image" : "Upload Image"}
         </IonButton>

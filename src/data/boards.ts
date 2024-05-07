@@ -99,14 +99,23 @@ export const getInitialImages = () => {
     return board;
 }
 
-export const createBoard = (board: Board) => {
+export const createBoard = (board: Board, word_list?: string[]) => {
+    const payload = {
+        board: {
+            name: board.name,
+            description: board.description || '',
+            number_of_columns: board.number_of_columns,
+        },
+        word_list,
+    }
+    console.log('createBoard', payload);
     const newBoard = fetch(`${BASE_URL}boards`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify(board),
+        body: JSON.stringify(payload),
     })
         .then(response => response.json())
         .then(data => data)
