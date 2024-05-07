@@ -108,7 +108,6 @@ export const createBoard = (board: Board, word_list?: string[]) => {
         },
         word_list,
     }
-    console.log('createBoard', payload);
     const newBoard = fetch(`${BASE_URL}boards`, {
         method: 'POST',
         headers: {
@@ -125,11 +124,6 @@ export const createBoard = (board: Board, word_list?: string[]) => {
 }
 
 export const updateBoard = (board: Board) => {
-    console.log('updateBoard', board);
-    // const formData = new FormData();
-    // formData.append('board[name]', board.name);
-    // formData.append('board[description]', board.description || '');
-    // formData.append('board[number_of_columns]', board.number_of_columns.toString());
     const updatedBoard = fetch(`${BASE_URL}boards/${board.id}`, {
         method: 'PUT',
         headers: userHeaders,
@@ -211,3 +205,24 @@ export async function addImageListToBoard(id: string, payload: { word_list: stri
     const board: Board = await response.json();
     return board;
   }
+
+    export async function removeFromTeam(id: string, team_id: string): Promise<any> {
+        const requestInfo = {
+        method: "PUT",
+        headers: userHeaders,
+        body: JSON.stringify({ team_id }),
+        };
+        const response = await fetch(`${BASE_URL}boards/${id}/remove_from_team`, requestInfo);
+        const board: Board = await response.json();
+        return board;
+    }
+
+    export async function cloneBoard(id: string): Promise<Board> {
+        const requestInfo = {
+        method: "POST",
+        headers: userHeaders,
+        };
+        const response = await fetch(`${BASE_URL}boards/${id}/clone`, requestInfo);
+        const board: Board = await response.json();
+        return board;
+    }

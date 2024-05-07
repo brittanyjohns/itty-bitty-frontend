@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { Board, addToTeam, deleteBoard, getBoard } from "../../data/boards";
+import {
+  Board,
+  addToTeam,
+  cloneBoard,
+  deleteBoard,
+  getBoard,
+  rearrangeImages,
+} from "../../data/boards";
 import {
   IonButton,
   IonButtons,
@@ -20,6 +27,7 @@ import {
 import {
   addCircleOutline,
   arrowBackCircleOutline,
+  copyOutline,
   createOutline,
   documentLockOutline,
   pencilOutline,
@@ -136,14 +144,33 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
     setTimeout(() => {
       e.detail.complete();
       fetchBoard();
-    }, 3000);
+    }, 5000);
   };
 
-  const removeBoard = async (boardId: string) => {
+  const handleClone = async () => {
     try {
+      console.log("Cloning board: ", params.id);
+      // Implement clone board logic
+      const clonedBoard = await cloneBoard(params.id);
+      console.log("Cloned board: ", clonedBoard);
+      if (clonedBoard && clonedBoard.id) {
+        const updatedBoard = await rearrangeImages(clonedBoard.id);
+        setBoard(updatedBoard);
+      }
+      console.log("Updated board: ", board);
+      window.location.href = `/boards/${clonedBoard.id}`;
+    } catch (error) {
+      console.error("Error cloning board: ", error);
+      alert("Error cloning board");
+    }
+  };
+
+  const removeBoard = async () => {
+    try {
+      const boardId = params.id;
       console.log("Removing board: ", boardId);
       // Implement delete board logic
-      deleteBoard(boardId);
+      await deleteBoard(boardId);
       window.location.href = "/boards";
     } catch (error) {
       console.error("Error removing board: ", error);
@@ -239,6 +266,10 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
                 <IonIcon icon={documentLockOutline} className="mx-2" />
                 <IonLabel>Lock</IonLabel>
               </IonButton>
+              <IonButton onClick={handleClone} className="mr-4">
+                <IonIcon icon={copyOutline} className="mx-2" />
+                <IonLabel>Clone</IonLabel>
+              </IonButton>
               {showEdit && (
                 <IonButton
                   routerLink={`/boards/${params.id}/gallery`}
@@ -251,9 +282,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
             </IonButtons>
           </div>
           <div className="flex justify-end items-center px-4">
-            {showEdit && (
-              <ConfirmDeleteAlert onConfirm={() => removeBoard(params.id)} />
-            )}
+            {showEdit && <ConfirmDeleteAlert onConfirm={removeBoard} />}
           </div>
 
           {board && (
