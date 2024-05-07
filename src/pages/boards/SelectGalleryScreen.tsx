@@ -314,24 +314,20 @@ const SelectGalleryScreen: React.FC = () => {
             </IonButtons>
             <IonSegment value={segmentType} onIonChange={handleSegmentChange}>
               <IonSegmentButton value="edit">
-                <IonLabel className="text-xl">
-                  <IonIcon icon={createOutline} />
-                </IonLabel>
+                <IonLabel className="text-lg">Edit</IonLabel>
+                <IonIcon icon={createOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="gallery">
-                <IonLabel className="text-xl">
-                  <IonIcon icon={imagesOutline} />
-                </IonLabel>
+                <IonLabel className="text-lg">Gallery</IonLabel>
+                <IonIcon icon={imagesOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="upload">
-                <IonLabel className="text-xl">
-                  <IonIcon icon={cloudUploadOutline} />
-                </IonLabel>
+                <IonLabel className="text-lg">Upload</IonLabel>
+                <IonIcon icon={cloudUploadOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="generate">
-                <IonLabel className="text-xl">
-                  <IonIcon icon={refreshCircleOutline} />
-                </IonLabel>
+                <IonLabel className="text-lg">Generate</IonLabel>
+                <IonIcon icon={refreshCircleOutline} />
               </IonSegmentButton>
             </IonSegment>
           </IonToolbar>
@@ -342,7 +338,6 @@ const SelectGalleryScreen: React.FC = () => {
               {board && board.name}{" "}
             </IonText>
             <IonIcon icon={refreshOutline} onClick={fetchBoard} />
-            <IonIcon icon={appsOutline} onClick={handleRearrangeImages} />
           </div>
 
           <div className="lg:px-12" ref={editForm}>
@@ -376,6 +371,13 @@ const SelectGalleryScreen: React.FC = () => {
                   >
                     Save Layout
                   </IonButton>
+                  <IonLabel
+                    className="text-sm text-gray-500"
+                    onClick={handleRearrangeImages}
+                  >
+                    Reset layout
+                    <IonIcon icon={appsOutline} />
+                  </IonLabel>
                   <DraggableGrid
                     images={board.images}
                     columns={numberOfColumns}

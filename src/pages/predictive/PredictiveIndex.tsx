@@ -22,6 +22,7 @@ import Tabs from "../../components/utils/Tabs";
 import {
   addCircleOutline,
   arrowBackCircleOutline,
+  images,
   playCircleOutline,
   trashBinOutline,
 } from "ionicons/icons";
@@ -105,7 +106,7 @@ const PredictiveImagesScreen: React.FC = () => {
 
   return (
     <>
-      {/* <MainMenu /> */}
+      <MainMenu />
       <h1 className="text-2xl text-center">Predictive Images</h1>
       <IonPage id="main-content">
         <IonHeader className="bg-inherit shadow-none">
@@ -160,7 +161,7 @@ const PredictiveImagesScreen: React.FC = () => {
             initialImages={initialImages}
             onImageSpeak={handleImageSpeak}
           />
-          <FloatingWordsBtn inputRef={inputRef} />
+          {/* <FloatingWordsBtn inputRef={inputRef} /> */}
         </IonContent>
         <Tabs />
       </IonPage>
