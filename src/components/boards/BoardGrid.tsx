@@ -26,7 +26,7 @@ const BoardGrid = ({ boards }: BoardGridProps) => {
   return (
     <div className="ion-padding">
       <div
-        className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-2"
+        className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2"
         ref={gridRef}
       >
         {boards &&
