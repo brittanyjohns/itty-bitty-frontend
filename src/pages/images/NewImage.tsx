@@ -10,7 +10,7 @@ import {
   IonLoading,
 } from "@ionic/react";
 import ImageCropper from "../../components/images/ImageCropper";
-import { createImage } from "../../data/images";
+import { createImage, cropImage } from "../../data/images";
 import { useState } from "react";
 import { useHistory } from "react-router";
 import { arrowBackCircleOutline } from "ionicons/icons";
@@ -25,11 +25,19 @@ const NewImage: React.FC = () => {
     croppedImage: string;
   }) => {
     setShowLoading(true);
+    console.log("data:", data);
     const formData = new FormData();
-    formData.append("image[docs][image]", data.croppedImage);
+    const strippedImage = data.croppedImage.replace(
+      /^data:image\/[a-z]+;base64,/,
+      ""
+    );
+
+    console.log("strippedImage:", strippedImage);
+
+    formData.append("cropped_image", strippedImage);
     formData.append("image[label]", data.label);
 
-    const result = await createImage(formData);
+    const result = await cropImage(formData);
     setShowLoading(false);
 
     if (result && result.id) {

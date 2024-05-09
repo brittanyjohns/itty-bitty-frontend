@@ -9,6 +9,7 @@ interface ImageCropperProps {
 const ImageCropper: React.FC<ImageCropperProps> = ({ onSubmit }) => {
   const imageElementRef = useRef<HTMLImageElement>(null);
   const [imageSrc, setImageSrc] = useState<string>("");
+  const [file, setFile] = useState<File | null>(null);
   const [cropper, setCropper] = useState<Cropper>();
   const [label, setLabel] = useState<string>("");
 
@@ -18,6 +19,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ onSubmit }) => {
       reader.onload = (event: ProgressEvent<FileReader>) => {
         setImageSrc(event.target!.result as string);
       };
+      setFile(e.target.files[0]);
       reader.readAsDataURL(e.target.files[0]);
     }
   };
@@ -40,6 +42,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ onSubmit }) => {
     event.preventDefault();
     if (cropper) {
       const croppedImage = cropper.getCroppedCanvas().toDataURL();
+
       onSubmit({ label, croppedImage });
     }
   };
