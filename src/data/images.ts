@@ -137,6 +137,19 @@ export const getImage = (id: string) => {
     return image;
 }
 
+export const cropImage = (formData: FormData) => {
+    const img = fetch(`${BASE_URL}images/crop`, {
+        headers: createHeaders,
+        method: 'POST',
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => console.error('Error cropping image: ', error));
+
+    return img;
+}
+
 export const updateImage = (formData: FormData) => {
     const img = fetch(`${BASE_URL}images/${formData.get('image[id]')}`, {
         headers: createHeaders,
