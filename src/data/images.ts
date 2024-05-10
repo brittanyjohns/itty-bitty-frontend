@@ -134,6 +134,10 @@ export const getImage = (id: string) => {
 }
 
 export const cropImage = (formData: FormData) => {
+  const imageId = formData.get('image[id]');
+  console.log('cropImage imageId', imageId);
+  const label = formData.get('image[label]');
+  console.log('cropImage label', label);
     const img = fetch(`${BASE_URL}images/crop`, {
         headers: createHeaders,
         method: 'POST',
@@ -212,6 +216,15 @@ export async function deleteImage(id: string): Promise<any> {
   const response = await fetch(`${BASE_URL}images/${id}`, {
     headers: userHeaders,
     method: 'DELETE',
+  });
+  return response.json();
+}
+
+export async function addDoc(imageId: string, formData: FormData): Promise<any> {
+  const response = await fetch(`${BASE_URL}images/${imageId}/add_doc`, {
+    headers: createHeaders,
+    method: 'POST',
+    body: formData,
   });
   return response.json();
 }

@@ -34,7 +34,6 @@ import {
   imagesOutline,
   refreshCircleOutline,
   refreshOutline,
-  toggle,
 } from "ionicons/icons";
 import {
   getBoard,
@@ -44,18 +43,15 @@ import {
   saveLayout,
   rearrangeImages,
 } from "../../data/boards"; // Adjust imports based on actual functions
-import FileUploadForm from "../../components/images/FileUploadForm";
 import { createImage, generateImage, getMoreImages } from "../../data/images";
 import { Image } from "../../data/images";
 import BoardForm from "../../components/boards/BoardForm";
 import SelectImageGallery from "../../components/images/SelectImageGallery";
-import ImageGalleryItem from "../../components/images/ImageGalleryItem";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/utils/Tabs";
 import DraggableGrid from "../../components/images/DraggableGrid";
-import { set } from "react-hook-form";
-import MainHeader from "../MainHeader";
 import MainMenu from "../../components/main_menu/MainMenu";
+import ImageCropper from "../../components/images/ImageCropper";
 
 interface SelectGalleryScreenProps {}
 const SelectGalleryScreen: React.FC = () => {
@@ -143,12 +139,9 @@ const SelectGalleryScreen: React.FC = () => {
   };
 
   const loadPage = async () => {
-    console.log("id", id);
     setShowLoading(true);
     const boardToSet = await fetchBoard();
     fetchRemaining(boardToSet.id, 1);
-    console.log("boardToSet", boardToSet);
-    // setBoard(boardToSet);
     toggleForms(segmentType);
     setShowLoading(false);
   };
@@ -192,7 +185,6 @@ const SelectGalleryScreen: React.FC = () => {
   };
 
   const handleGenerate = async () => {
-    console.log("Generate Image", image);
     if (!checkCurrentUserTokens()) {
       alert(
         "Sorry, you do not have enough tokens to generate an image. Please purchase more tokens to continue."
@@ -246,7 +238,6 @@ const SelectGalleryScreen: React.FC = () => {
   };
 
   const setGrid = (layout: any) => {
-    console.log("layout", layout);
     setGridLayout(layout);
   };
 
@@ -397,12 +388,11 @@ const SelectGalleryScreen: React.FC = () => {
 
           <div className="mt-6 py-3 px-1 hidden text-center" ref={uploadForm}>
             <IonText className="text-lg">Upload your own image</IonText>
-            {board && (
-              <FileUploadForm
-                board={board}
-                onCloseModal={undefined}
-                showLabel={true}
-                existingLabel={image?.label}
+            {board && image && (
+              <ImageCropper
+                existingId={image.id}
+                boardId={board.id}
+                existingLabel={image.label}
               />
             )}
           </div>
