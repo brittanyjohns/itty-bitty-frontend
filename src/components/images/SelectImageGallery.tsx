@@ -21,7 +21,6 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
   const [page, setPage] = useState(1);
   const [showActionList, setShowActionList] = useState(false);
   const [selectedImage, setSelectedImage] = useState<Image | null>(null);
-  const [disableActionList, setDisableActionList] = useState(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const [userBoards, setUserBoards] = useState([]);
   const history = useHistory();
@@ -51,41 +50,37 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
   }, [images]);
 
   const handleOnImageClick = (event: any, image: Image) => {
-    console.log("Event: ", event);
-    console.log("Image clicked", image, selectedImage);
-    if (showActionList) {
-      console.log("Action list is open, not handling click");
-      return;
-    }
+    // console.log("Event: ", event);
+    // console.log("Image clicked", image, selectedImage);
+    // if (showActionList) {
+    //   console.log("Action list is open, not handling click");
+    //   return;
+    // }
     onImageClick(image);
   };
 
-  const handleButtonPress = (image: Image) => {
-    if (selectedImage === null) {
-      console.log("No selected image, setting selected image", image);
-      setSelectedImage(image);
-    } else {
-      console.log("Selected image: ", selectedImage);
-    }
-    if (disableActionList) {
-      console.log("Action list disabled");
-      return;
-    }
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-    }
-    longPressTimer.current = setTimeout(() => {
-      console.log("Long press detected", image.id, selectedImage);
-      setSelectedImage(image);
-      setShowActionList(true);
-    }, 1000);
-  };
+  // const handleButtonPress = (image: Image) => {
+  //   if (selectedImage === null) {
+  //     console.log("No selected image, setting selected image", image);
+  //     setSelectedImage(image);
+  //   } else {
+  //     console.log("Selected image: ", selectedImage);
+  //   }
+  //   if (longPressTimer.current) {
+  //     clearTimeout(longPressTimer.current);
+  //   }
+  //   longPressTimer.current = setTimeout(() => {
+  //     console.log("Long press detected", image.id, selectedImage);
+  //     setSelectedImage(image);
+  //     setShowActionList(true);
+  //   }, 1000);
+  // };
 
-  const handleButtonRelease = () => {
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-    }
-  };
+  // const handleButtonRelease = () => {
+  //   if (longPressTimer.current) {
+  //     clearTimeout(longPressTimer.current);
+  //   }
+  // };
 
   const handleActionSelected = async (
     action: string,
@@ -99,7 +94,8 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
       }
       const result = await addImageToBoard(selectedBoardId, imageId);
       console.log("Image added to board: ", result);
-      history.push(`/boards/${selectedBoardId}/gallery`);
+      alert("Image added to board");
+      // history.push(`/boards/${selectedBoardId}/gallery`);
     } else {
       console.log("Unknown action: ", action);
     }
@@ -152,8 +148,8 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
                   image.bg_color || "bg-white"
                 } rounded-sm`}
                 onClick={(event) => handleOnImageClick(event, image)}
-                onTouchStart={() => handleButtonPress(image)}
-                onTouchEnd={handleButtonRelease}
+                // onTouchStart={() => handleButtonPress(image)}
+                // onTouchEnd={handleButtonRelease}
                 key={image.id}
                 id={`image_${image.id}`}
               >
