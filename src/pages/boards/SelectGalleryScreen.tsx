@@ -42,6 +42,7 @@ import {
   getRemainingImages,
   saveLayout,
   rearrangeImages,
+  deleteBoard,
 } from "../../data/boards"; // Adjust imports based on actual functions
 import { createImage, generateImage, getMoreImages } from "../../data/images";
 import { Image } from "../../data/images";
@@ -52,6 +53,7 @@ import Tabs from "../../components/utils/Tabs";
 import DraggableGrid from "../../components/images/DraggableGrid";
 import MainMenu from "../../components/main_menu/MainMenu";
 import ImageCropper from "../../components/images/ImageCropper";
+import ConfirmDeleteAlert from "../../components/utils/ConfirmDeleteAlert";
 
 interface SelectGalleryScreenProps {}
 const SelectGalleryScreen: React.FC = () => {
@@ -75,6 +77,9 @@ const SelectGalleryScreen: React.FC = () => {
   const [gridLayout, setGridLayout] = useState([]);
   const [showCreateBtn, setShowCreateBtn] = useState(false);
   const [numberOfColumns, setNumberOfColumns] = useState(4); // Default number of columns
+  const [showEdit, setShowEdit] = useState(false);
+  const params = useParams<{ id: string }>();
+
   const initialImage = {
     id: "",
     src: "",
@@ -94,6 +99,19 @@ const SelectGalleryScreen: React.FC = () => {
       return true;
     }
     return false;
+  };
+
+  const removeBoard = async () => {
+    try {
+      const boardId = params.id;
+      console.log("Removing board: ", boardId);
+      // Implement delete board logic
+      await deleteBoard(boardId);
+      window.location.href = "/boards";
+    } catch (error) {
+      console.error("Error removing board: ", error);
+      alert("Error removing board");
+    }
   };
 
   const handleRearrangeImages = async () => {
@@ -143,6 +161,8 @@ const SelectGalleryScreen: React.FC = () => {
     const boardToSet = await fetchBoard();
     fetchRemaining(boardToSet.id, 1);
     toggleForms(segmentType);
+    const userCanEdit = boardToSet.can_edit || currentUser?.role === "admin";
+    setShowEdit(userCanEdit);
     setShowLoading(false);
   };
 
@@ -382,6 +402,14 @@ const SelectGalleryScreen: React.FC = () => {
                 <div className="text-center">
                   <p>No images found</p>
                 </div>
+              )}
+            </div>
+            <div className="flex justify-end items-center px-4">
+              {showEdit && (
+                <ConfirmDeleteAlert
+                  onConfirm={removeBoard}
+                  onCanceled={() => {}}
+                />
               )}
             </div>
           </div>

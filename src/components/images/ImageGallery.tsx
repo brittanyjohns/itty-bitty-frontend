@@ -11,7 +11,6 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   setShowIcon,
   inputRef,
   gridSize,
-  disableActionList,
 }) => {
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -72,7 +71,6 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
             board={board}
             setShowIcon={setShowIcon}
             inputRef={inputRef}
-            disableActionList={disableActionList}
           />
         ))}
       </div>

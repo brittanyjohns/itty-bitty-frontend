@@ -140,32 +140,15 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
 
   const handleClone = async () => {
     try {
-      console.log("Cloning board: ", params.id);
-      // Implement clone board logic
       const clonedBoard = await cloneBoard(params.id);
-      console.log("Cloned board: ", clonedBoard);
       if (clonedBoard && clonedBoard.id) {
         const updatedBoard = await rearrangeImages(clonedBoard.id);
         setBoard(updatedBoard);
       }
-      console.log("Updated board: ", board);
       window.location.href = `/boards/${clonedBoard.id}`;
     } catch (error) {
       console.error("Error cloning board: ", error);
       alert("Error cloning board");
-    }
-  };
-
-  const removeBoard = async () => {
-    try {
-      const boardId = params.id;
-      console.log("Removing board: ", boardId);
-      // Implement delete board logic
-      await deleteBoard(boardId);
-      window.location.href = "/boards";
-    } catch (error) {
-      console.error("Error removing board: ", error);
-      alert("Error removing board");
     }
   };
 
@@ -227,14 +210,6 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
                 </IonButton>
               )}
             </IonButtons>
-          </div>
-          <div className="flex justify-end items-center px-4">
-            {showEdit && (
-              <ConfirmDeleteAlert
-                onConfirm={removeBoard}
-                onCanceled={() => {}}
-              />
-            )}
           </div>
 
           {board && (
