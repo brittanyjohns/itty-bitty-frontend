@@ -1,7 +1,7 @@
 import { IonAlert, IonButton } from "@ionic/react";
 interface ConfirmDeleteAlertProps {
   onConfirm: () => void;
-  onCanceled?: () => void;
+  onCanceled: () => void;
 }
 const ConfirmDeleteAlert: React.FC<ConfirmDeleteAlertProps> = ({
   onConfirm,
@@ -18,8 +18,7 @@ const ConfirmDeleteAlert: React.FC<ConfirmDeleteAlertProps> = ({
             text: "Cancel",
             role: "cancel",
             handler: () => {
-              console.log("Alert canceled");
-              onCanceled && onCanceled();
+              onCanceled();
             },
           },
           {

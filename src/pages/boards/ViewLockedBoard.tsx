@@ -32,6 +32,8 @@ import BoardGridDropdown from "../../components/boards/BoardGridDropdown";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import DraggableGrid from "../../components/images/DraggableGrid";
 import { playAudioList } from "../../data/utils";
+import { Image } from "../../data/images";
+import { clickWord } from "../../data/audits";
 
 const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();
@@ -45,6 +47,9 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const { currentUser } = useCurrentUser();
   const [gridLayout, setGrid] = useState<any>([]);
   const [numOfColumns, setNumOfColumns] = useState(4);
+  const [previousLabel, setPreviousLabel] = useState<string | undefined>(
+    undefined
+  );
 
   const fetchBoard = async () => {
     const board = await getBoard(params.id);
@@ -72,9 +77,20 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
     }
   };
 
-  const setGridLayout = (layout: any) => {
-    console.log("Setting grid layout: ", layout);
-    setGrid(layout);
+  const handleImageClick = async (image: Image) => {
+    const text = image.label;
+    if (previousLabel === text) {
+      console.log("Same label clicked", text);
+    } else {
+      const payload = {
+        word: text,
+        previousWord: previousLabel,
+        timestamp: new Date().toISOString(),
+        boardId: board?.id,
+      };
+      clickWord(payload);
+      setPreviousLabel(text);
+    }
   };
 
   const speak = async (text: string) => {
@@ -93,6 +109,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
       inputRef.current.value = "";
     }
     setShowIcon(false);
+    setPreviousLabel(undefined);
   };
 
   useIonViewDidLeave(() => {
@@ -109,13 +126,10 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const [audioList, setAudioList] = useState<string[]>([]);
 
   const handleUpdateAudioList = (audio: string) => {
-    console.log("Updating audio list: ", audioList);
-    console.log("Adding audio: ", audio);
     setAudioList([...audioList, audio]);
   };
 
   const handlePlayAudioList = async () => {
-    console.log("Playing audio list: ", audioList);
     await playAudioList(audioList);
   };
 
@@ -181,10 +195,10 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
             setShowIcon={setShowIcon}
             inputRef={inputRef}
             columns={numOfColumns}
-            disableActionList={true}
             onLayoutChange={() => {}}
             disableReorder={true}
             onPlayAudioList={handleUpdateAudioList}
+            onImageClick={handleImageClick}
           />
         )}
         {imageCount < 1 && (

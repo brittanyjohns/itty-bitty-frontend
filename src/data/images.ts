@@ -25,6 +25,7 @@ import { BASE_URL } from "./users";
     nextImageSrcs?: string[];
     next_words?: string[]
     no_next?: boolean;
+    user_next_words?: string[];
   }
 
   export interface DraggableGridLayout {
@@ -62,12 +63,7 @@ import { BASE_URL } from "./users";
     setShowIcon: any;
     inputRef: any;
     gridSize?: number;
-    disableActionList?: boolean;
   }
-  // (boardId, {
-  //           query: query,
-  //           page: page
-  //       });
 
   export interface SelectImageGalleryProps {
     boardId?: string;
