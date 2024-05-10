@@ -28,23 +28,20 @@ import {
   removeDoc,
   setNextWords,
   create_symbol,
-  getPredictiveImages,
 } from "../../data/images"; // Adjust imports based on actual functions
 import { markAsCurrent } from "../../data/docs"; // Adjust imports based on actual functions
 import BoardDropdown from "../../components/boards/BoardDropdown";
-import FileUploadForm from "../../components/images/FileUploadForm";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import {
   cloudUploadOutline,
   gridOutline,
   refreshCircleOutline,
-  remove,
   trashBinOutline,
 } from "ionicons/icons";
 import { set } from "react-hook-form";
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
-import PredictiveImagesScreen from "../predictive/PredictiveIndex";
+import ImageCropper from "../../components/images/ImageCropper";
 
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -281,10 +278,9 @@ const ViewImageScreen: React.FC = () => {
           <div className="mt-6 py-3 px-1 hidden text-center" ref={uploadForm}>
             <IonText className="text-lg">Upload your own image</IonText>
             {image && (
-              <FileUploadForm
-                board={undefined}
-                onCloseModal={undefined}
-                showLabel={false}
+              <ImageCropper
+                existingId={image.id}
+                boardId={boardId}
                 existingLabel={image.label}
               />
             )}

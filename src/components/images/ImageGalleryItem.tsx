@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { IonAlert, IonIcon, IonImg, useIonViewDidLeave } from "@ionic/react";
 import { Image } from "../../data/images";
 import { removeImageFromBoard } from "../../data/boards";
@@ -27,6 +27,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   onImageClick,
 }) => {
   const { currentUser } = useCurrentUser();
+  const imgRef = useRef<HTMLDivElement>(null);
   const [audioList, setAudioList] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const history = useHistory();
@@ -44,7 +45,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   const removeImage = async () => {
     try {
       await removeImageFromBoard(board.id, image.id);
-      window.location.reload();
+      imgRef.current?.remove();
     } catch (error) {
       console.error("Error removing image: ", error);
       alert("Error removing image");
@@ -116,15 +117,16 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
 
   return (
     <div
+      ref={imgRef}
       className={`relative cursor-pointer ${
         image.bg_color || "bg-white"
       } rounded-md shadow-md p-0 h-full`}
-      onClick={() => handleImageClick(image)}
     >
       <IonImg
         src={image.src}
         alt={image.label}
         className="ion-img-contain mx-auto"
+        onClick={() => handleImageClick(image)}
       />
       <span className="bg-white bg-opacity-80 w-full font-medium text-sm md:text-md lg:text-md text-black absolute bottom-0 left-0 p-1 pl-2 rounded-sm">
         {image.label.length > 15

@@ -28,23 +28,10 @@ import {
   inviteToTeam,
   Team,
 } from "../../data/teams"; // Adjust imports based on actual functions
-import { markAsCurrent } from "../../data/docs"; // Adjust imports based on actual functions
-import BoardDropdown from "../../components/boards/BoardDropdown";
-import FileUploadForm from "../../components/images/FileUploadForm";
-import { set } from "react-hook-form";
 import { Board } from "../../data/boards";
-import BoardList from "../../components/boards/BoardList";
 import TeamInviteForm from "../../components/teams/TeamInviteForm";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import {
-  albumsOutline,
-  gridOutline,
-  earthOutline,
-  peopleCircleOutline,
-  mailOutline,
-} from "ionicons/icons";
-import MainMenu from "../../components/main_menu/MainMenu";
-import MainHeader from "../MainHeader";
+import { gridOutline, peopleCircleOutline, mailOutline } from "ionicons/icons";
 import BoardGrid from "../../components/boards/BoardGrid";
 interface ViewTeamScreenProps {
   id: string;
@@ -54,7 +41,6 @@ const ViewTeamScreen: React.FC<ViewTeamScreenProps> = () => {
   const [team, setTeam] = useState<Team | null>(null);
   const [currentTeam, setCurrentTeam] = useState<string | null>("");
   const boardTab = useRef<HTMLDivElement>(null);
-  const [showLoading, setShowLoading] = useState(false);
   const [segmentType, setSegmentType] = useState("teamTab");
   const teamTab = useRef<HTMLDivElement>(null);
   const inviteTab = useRef<HTMLDivElement>(null);
@@ -94,7 +80,6 @@ const ViewTeamScreen: React.FC<ViewTeamScreenProps> = () => {
     } else {
       setCurrentTeam(null);
     }
-    setShowLoading(false);
   };
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 // Import necessary components and hooks
 import React, { useEffect, useState } from "react";
 import { IonInput, IonButton, IonLoading, IonIcon } from "@ionic/react";
-import { createImage } from "../../data/images";
+import { addDoc, createImage } from "../../data/images";
 import { useHistory } from "react-router";
 import { Board } from "../../data/boards";
 import { camera } from "ionicons/icons";
@@ -12,6 +12,7 @@ interface FileUploadFormProps {
   onCloseModal: any;
   showLabel: boolean;
   existingLabel?: string;
+  existingId?: string;
 }
 
 const FileUploadForm: React.FC<FileUploadFormProps> = ({
@@ -19,6 +20,7 @@ const FileUploadForm: React.FC<FileUploadFormProps> = ({
   onCloseModal,
   showLabel,
   existingLabel,
+  existingId,
 }) => {
   const [label, setLabel] = useState(existingLabel || "");
   // const [shouldDisable, setShouldDisable] = useState(false);
@@ -45,7 +47,15 @@ const FileUploadForm: React.FC<FileUploadFormProps> = ({
     }
 
     setShowLoading(true);
-    const result = await createImage(formData, board?.id);
+    let result;
+    if (existingId) {
+      formData.append("image[id]", existingId);
+      console.log("Existing ID:", existingId);
+      result = await addDoc(existingId, formData);
+    } else {
+      result = await createImage(formData, board?.id);
+    }
+    console.log("Result:", result);
     setShowLoading(false);
 
     if (result && result.id) {

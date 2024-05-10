@@ -20,12 +20,7 @@ import {
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
 import { getMenu, Menu } from "../../data/menus"; // Adjust imports based on actual functions
-import { markAsCurrent } from "../../data/docs"; // Adjust imports based on actual functions
-import BoardDropdown from "../../components/boards/BoardDropdown";
-import FileUploadForm from "../../components/images/FileUploadForm";
-import { set } from "react-hook-form";
 import { Image } from "../../data/images";
-import ImageGalleryItem from "../../components/images/ImageGalleryItem";
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
@@ -37,7 +32,6 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
   const [menu, setMenu] = useState<Menu | null>(null);
   const [currentMenu, setCurrentMenu] = useState<string | null>("");
   const boardTab = useRef<HTMLDivElement>(null);
-  const [showLoading, setShowLoading] = useState(false);
   const [segmentType, setSegmentType] = useState("menuTab");
   const menuTab = useRef<HTMLDivElement>(null);
   const boardGrid = useRef<HTMLDivElement>(null);

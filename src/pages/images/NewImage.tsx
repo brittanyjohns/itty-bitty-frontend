@@ -20,32 +20,32 @@ const NewImage: React.FC = () => {
   const history = useHistory();
   const [showLoading, setShowLoading] = useState<boolean>(false);
 
-  const handleFormSubmit = async (data: {
-    label: string;
-    croppedImage: string;
-  }) => {
-    setShowLoading(true);
-    console.log("data:", data);
-    const formData = new FormData();
-    const strippedImage = data.croppedImage.replace(
-      /^data:image\/[a-z]+;base64,/,
-      ""
-    );
+  // const handleFormSubmit = async (data: {
+  //   label: string;
+  //   croppedImage: string;
+  //   fileExtension: string;
+  // }) => {
+  //   setShowLoading(true);
+  //   const formData = new FormData();
+  //   const strippedImage = data.croppedImage.replace(
+  //     /^data:image\/[a-z]+;base64,/,
+  //     ""
+  //   );
 
-    console.log("strippedImage:", strippedImage);
+  //   formData.append("cropped_image", strippedImage);
+  //   formData.append("image[label]", data.label);
+  //   formData.append("file_extension", data.fileExtension);
 
-    formData.append("cropped_image", strippedImage);
-    formData.append("image[label]", data.label);
+  //   const result = await cropImage(formData);
+  //   setShowLoading(false);
 
-    const result = await cropImage(formData);
-    setShowLoading(false);
-
-    if (result && result.id) {
-      history.replace("/images"); // Use history to navigate
-    } else {
-      console.error("Error:", result.error);
-    }
-  };
+  //   if (result && result.id) {
+  //     history.replace(`/images/${result.id}`);
+  //   } else {
+  //     console.error("Error:", result.error);
+  //     alert("An error occurred. Please try again.");
+  //   }
+  // };
 
   return (
     <>
@@ -63,9 +63,8 @@ const NewImage: React.FC = () => {
         </IonHeader>
         <IonContent fullscreen className="ion-padding">
           <div className="w-full md:w-1/2 lg:w-1/2 mx-auto">
-            <ImageCropper onSubmit={handleFormSubmit} />
+            <ImageCropper />
           </div>
-          <IonLoading isOpen={showLoading} message="Uploading..." />
         </IonContent>
       </IonPage>
     </>
