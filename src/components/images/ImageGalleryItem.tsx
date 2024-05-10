@@ -1,19 +1,20 @@
-import React, { useState, useRef, useEffect } from "react";
-import { IonImg, useIonViewDidLeave } from "@ionic/react";
+import React, { useState } from "react";
+import { IonAlert, IonIcon, IonImg, useIonViewDidLeave } from "@ionic/react";
 import { Image } from "../../data/images";
-import ActionList from "../utils/ActionList"; // Import ActionList for local use
 import { removeImageFromBoard } from "../../data/boards";
-import { useHistory } from "react-router";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { trashBinOutline } from "ionicons/icons";
+import { useHistory } from "react-router";
+
 interface ImageGalleryItemProps {
   image: Image;
   board?: any;
   setShowIcon?: (show: boolean) => void;
   inputRef?: React.RefObject<HTMLInputElement>;
-  disableActionList?: boolean;
   mute?: boolean;
   onPlayAudioList?: any;
+  onImageClick?: any;
 }
 
 const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
@@ -21,26 +22,28 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   board,
   setShowIcon,
   inputRef,
-  disableActionList,
   mute,
   onPlayAudioList,
+  onImageClick,
 }) => {
-  const [showActionList, setShowActionList] = useState<boolean>(false);
-  const history = useHistory();
   const { currentUser } = useCurrentUser();
   const [audioList, setAudioList] = useState<string[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const history = useHistory();
 
-  const handleActionSelected = (action: string) => {
-    if (action === "delete") {
-      removeImage(image.id, board.id);
-    } else if (action === "edit") {
-      editImage(image.id);
+  const showRemoveBtn = () => {
+    if (currentUser?.role === "admin") {
+      return true;
     }
+    if (board?.can_edit === true) {
+      return true;
+    }
+    return false;
   };
 
-  const removeImage = async (imageId: string, boardId: string) => {
+  const removeImage = async () => {
     try {
-      await removeImageFromBoard(boardId, imageId);
+      await removeImageFromBoard(board.id, image.id);
       window.location.reload();
     } catch (error) {
       console.error("Error removing image: ", error);
@@ -48,24 +51,17 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     }
   };
 
-  const editImage = (imageId: string) => {
-    try {
-      if (!board) {
-        history.push(`/images/${imageId}`);
-      } else {
-        history.push(`/images/${imageId}?boardId=${board.id}`);
-      }
-    } catch (error) {
-      console.error("Error editing image: ", error);
-      alert("Error editing image");
-    }
-  };
-
   const handleImageClick = (image: Image) => {
-    if (!disableActionList) {
-      setShowActionList(true);
+    if (onImageClick) {
+      onImageClick(image);
     }
+
     if (mute) {
+      if (board?.can_edit === true) {
+        history.push(`/images/${image.id}?boardId=${board.id}`);
+        return;
+      }
+      history.push(`/images/${image.id}`);
       return;
     }
     const audioSrc = image.audio;
@@ -87,8 +83,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       return;
     }
     setAudioList([...audioList, audioSrc]);
-    console.log("audioSrc: ", audioSrc);
-    console.log("audioList: ", audioList);
+
     const audio = new Audio(audioSrc);
 
     const promise = audio.play();
@@ -104,13 +99,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     }
   };
 
-  useIonViewDidLeave(() => {
-    setShowActionList(false);
-  });
-
   const speak = async (text: string) => {
-    console.log("speak text: ", text);
-    console.log("audioList: ", audioList);
     const language = currentUser?.settings?.voice?.language || "en-US";
     const rate = currentUser?.settings?.voice?.rate || 1.0;
     const pitch = currentUser?.settings?.voice?.pitch || 1.0;
@@ -125,28 +114,11 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     });
   };
 
-  const defaultButtonOptions = [
-    {
-      text: "Remove from board",
-      role: "destructive",
-      handler: () => handleActionSelected("delete"),
-    },
-    {
-      text: "Edit image",
-      handler: () => handleActionSelected("edit"),
-    },
-    {
-      text: "Cancel",
-      role: "cancel",
-      handler: () => setShowActionList(false),
-    },
-  ];
-
   return (
     <div
       className={`relative cursor-pointer ${
         image.bg_color || "bg-white"
-      } rounded-md shadow-md p-1 h-full`}
+      } rounded-md shadow-md p-0 h-full`}
       onClick={() => handleImageClick(image)}
     >
       <IonImg
@@ -160,14 +132,37 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
           : image.label}
       </span>
       {image.audio && <audio src={image.audio} />}
-      {!disableActionList && (
-        <ActionList
-          isOpen={showActionList}
-          onClose={() => setShowActionList(false)}
-          onActionSelected={handleActionSelected}
-          buttonOptions={defaultButtonOptions}
+      {showRemoveBtn() && (
+        <IonIcon
+          slot="icon-only"
+          icon={trashBinOutline}
+          size="small"
+          onClick={() => setIsOpen(true)}
+          className="absolute bottom-0 right-0 p-1 pr-2"
         />
       )}
+      <IonAlert
+        isOpen={isOpen}
+        header="Remove Image"
+        message="Are you sure you want to remove this image?"
+        buttons={[
+          {
+            text: "Cancel",
+            role: "cancel",
+            handler: () => {
+              setIsOpen(false);
+            },
+          },
+          {
+            text: "OK",
+            role: "confirm",
+            handler: () => {
+              removeImage();
+            },
+          },
+        ]}
+        onDidDismiss={() => setIsOpen(false)}
+      ></IonAlert>
     </div>
   );
 };

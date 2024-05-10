@@ -382,7 +382,6 @@ const SelectGalleryScreen: React.FC = () => {
                     images={board.images}
                     columns={numberOfColumns}
                     onLayoutChange={(layout: any) => setGrid(layout)}
-                    disableActionList={true}
                     mute={true}
                     enableResize={true}
                   />

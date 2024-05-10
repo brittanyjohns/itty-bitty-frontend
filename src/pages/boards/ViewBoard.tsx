@@ -82,6 +82,8 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
 
     if (!board) {
       console.error("Error fetching board");
+      setShowLoading(false);
+      alert("Error fetching board");
       return;
     } else {
       const imgCount = board?.images?.length;
@@ -111,17 +113,6 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
     }
     setShowIcon(false);
   };
-
-  const shouldDisableActionList = () => {
-    if (currentUser?.role === "admin") {
-      return false;
-    }
-    if (board?.can_edit) {
-      return false;
-    }
-    return true;
-  };
-
   const toggleAddToTeam = () => {
     addToTeamRef.current?.classList.toggle("hidden");
   };
@@ -189,25 +180,6 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
                 {board?.name || "Board"}
               </h1>
             )}
-            {/* {showEdit && (
-              <IonButtons slot="end">
-                <IonButton onClick={toggleAddToTeam}>
-                  <IonIcon icon={shareOutline} />
-                </IonButton>
-              </IonButtons>
-            )}
-            <IonButtons slot="end">
-              <IonButton routerLink={`/boards/${params.id}/locked`}>
-                <IonIcon icon={documentLockOutline} />
-              </IonButton>
-            </IonButtons>
-            {showEdit && (
-              <IonButtons slot="end">
-                <IonButton routerLink={`/boards/${params.id}/gallery`}>
-                  <IonIcon icon={createOutline} />
-                </IonButton>
-              </IonButtons>
-            )} */}
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen scrollY={true}>
@@ -215,42 +187,17 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <IonLoading message="Please wait..." isOpen={showLoading} />
-          {/* <IonToolbar className="mb-6">
-            {!showIcon && (
-              <h1 className="text-center text-lg font-bold">
-                {board?.name || "Board"}
-              </h1>
-            )}
-            {showEdit && (
-              <IonButtons slot="end">
-                <IonButton onClick={toggleAddToTeam}>
-                  <IonIcon icon={shareOutline} />
-                </IonButton>
-              </IonButtons>
-            )}
-            <IonButtons slot="end">
-              <IonButton routerLink={`/boards/${params.id}/locked`}>
-                <IonIcon icon={documentLockOutline} />
-              </IonButton>
-            </IonButtons>
-            {showEdit && (
-              <IonButtons slot="end" className="mr-4">
-                <IonButton routerLink={`/boards/${params.id}/gallery`}>
-                  <IonIcon icon={addCircleOutline} />
-                </IonButton>
-              </IonButtons>
-            )}
-          </IonToolbar> */}
-          <div ref={addToTeamRef} className="p-4 hidden">
-            {currentUserTeams && (
-              <AddToTeamForm
-                onSubmit={handleAddToTeam}
-                toggleAddToTeam={toggleAddToTeam}
-                currentUserTeams={currentUserTeams}
-              />
-            )}
+          <div className="flex justify-center items-center">
+            <div ref={addToTeamRef} className="p-4 hidden">
+              {currentUserTeams && (
+                <AddToTeamForm
+                  onSubmit={handleAddToTeam}
+                  toggleAddToTeam={toggleAddToTeam}
+                  currentUserTeams={currentUserTeams}
+                />
+              )}
+            </div>
           </div>
-
           <div className="flex justify-center items-center px-4">
             <IonButtons slot="end">
               {showEdit && (
@@ -282,7 +229,12 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
             </IonButtons>
           </div>
           <div className="flex justify-end items-center px-4">
-            {showEdit && <ConfirmDeleteAlert onConfirm={removeBoard} />}
+            {showEdit && (
+              <ConfirmDeleteAlert
+                onConfirm={removeBoard}
+                onCanceled={() => {}}
+              />
+            )}
           </div>
 
           {board && (
@@ -292,7 +244,6 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
               setShowIcon={setShowIcon}
               inputRef={inputRef}
               columns={numOfColumns}
-              disableActionList={shouldDisableActionList()}
               disableReorder={true}
               mute={true}
             />

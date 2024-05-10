@@ -24,6 +24,7 @@ import {
   arrowBackCircleOutline,
   images,
   playCircleOutline,
+  text,
   trashBinOutline,
 } from "ionicons/icons";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
@@ -32,6 +33,8 @@ import { getInitialImages } from "../../data/boards";
 import PredictiveImageGallery from "../../components/predictive/PredictiveImageGallery";
 import { speak } from "../../hoarder/TextToSpeech";
 import FloatingWordsBtn from "../../components/utils/FloatingWordsBtn";
+import { set } from "react-hook-form";
+import { clickWord } from "../../data/audits";
 
 const PredictiveImagesScreen: React.FC = () => {
   const startingImageId = useParams<{ id: string }>().id;
@@ -40,15 +43,40 @@ const PredictiveImagesScreen: React.FC = () => {
   const [boardId, setBoardId] = useState("");
   const inputRef = useRef<HTMLIonInputElement>(null);
   const [showIcon, setShowIcon] = useState(false);
+  const [currentWord, setCurrentWord] = useState("");
+  const [previousLabel, setPreviousLabel] = useState<string | undefined>(
+    undefined
+  );
 
   const fetchFirstBoard = async () => {
     const imgs = await getInitialImages();
     setImages(imgs);
   };
 
+  const handleClickWord = async (image: Image) => {
+    const text = image.label;
+    if (previousLabel === text) {
+      console.log("Same label clicked", text);
+      return;
+    } else {
+      const payload = {
+        word: text,
+        previousWord: previousLabel,
+        timestamp: new Date().toISOString(),
+      };
+      clickWord(payload);
+      setPreviousLabel(text);
+      console.log("New label clicked", text);
+    }
+  };
+
   const handleImageSpeak = (image: Image) => {
+    handleClickWord(image);
     const audioSrc = image.audio;
     const label = image.label;
+    // setCurrentWord(label);
+    console.log("label:", label);
+    console.log("word:", currentWord);
     if (inputRef.current) {
       inputRef.current.value += ` ${label}`;
     }
@@ -83,6 +111,7 @@ const PredictiveImagesScreen: React.FC = () => {
       inputRef.current.value = "";
     }
     setShowIcon(false);
+    setPreviousLabel(undefined);
     fetchFirstBoard();
   };
 
