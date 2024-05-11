@@ -15,6 +15,8 @@ interface ImageGalleryItemProps {
   mute?: boolean;
   onPlayAudioList?: any;
   onImageClick?: any;
+  viewOnClick?: boolean;
+  showRemoveBtn?: boolean;
 }
 
 const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
@@ -25,22 +27,14 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   mute,
   onPlayAudioList,
   onImageClick,
+  viewOnClick,
+  showRemoveBtn,
 }) => {
   const { currentUser } = useCurrentUser();
   const imgRef = useRef<HTMLDivElement>(null);
   const [audioList, setAudioList] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const history = useHistory();
-
-  const showRemoveBtn = () => {
-    if (currentUser?.role === "admin") {
-      return true;
-    }
-    if (board?.can_edit === true) {
-      return true;
-    }
-    return false;
-  };
 
   const removeImage = async () => {
     try {
@@ -58,11 +52,14 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     }
 
     if (mute) {
-      if (board?.can_edit === true) {
-        history.push(`/images/${image.id}?boardId=${board.id}`);
+      if (viewOnClick) {
+        if (board?.can_edit === true) {
+          history.push(`/images/${image.id}?boardId=${board.id}`);
+          return;
+        }
+        history.push(`/images/${image.id}`);
         return;
       }
-      history.push(`/images/${image.id}`);
       return;
     }
     const audioSrc = image.audio;
@@ -134,7 +131,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
           : image.label}
       </span>
       {image.audio && <audio src={image.audio} />}
-      {showRemoveBtn() && (
+      {showRemoveBtn && (
         <IonIcon
           slot="icon-only"
           icon={trashBinOutline}

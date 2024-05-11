@@ -221,6 +221,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
               columns={numOfColumns}
               disableReorder={true}
               mute={true}
+              viewOnClick={true}
             />
           )}
           {imageCount < 1 && (
