@@ -20,6 +20,8 @@ interface DraggableGridProps {
   mute?: boolean;
   onPlayAudioList?: any;
   onImageClick?: any;
+  viewOnClick?: boolean;
+  showRemoveBtn?: boolean;
 }
 const DraggableGrid: React.FC<DraggableGridProps> = ({
   images,
@@ -33,6 +35,8 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   mute,
   onPlayAudioList,
   onImageClick,
+  viewOnClick,
+  showRemoveBtn,
 }) => {
   const [width, setWidth] = useState(window.innerWidth);
   const [rowHeight, setRowHeight] = useState(180);
@@ -89,6 +93,8 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
             mute={mute}
             onPlayAudioList={onPlayAudioList}
             onImageClick={onImageClick}
+            viewOnClick={viewOnClick}
+            showRemoveBtn={showRemoveBtn}
           />
         </div>
       ))}

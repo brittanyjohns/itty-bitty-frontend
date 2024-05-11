@@ -199,6 +199,8 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
             disableReorder={true}
             onPlayAudioList={handleUpdateAudioList}
             onImageClick={handleImageClick}
+            viewOnClick={false}
+            showRemoveBtn={false}
           />
         )}
         {imageCount < 1 && (

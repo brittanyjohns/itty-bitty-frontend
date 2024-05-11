@@ -395,6 +395,7 @@ const SelectGalleryScreen: React.FC = () => {
                     onLayoutChange={(layout: any) => setGrid(layout)}
                     mute={true}
                     enableResize={true}
+                    viewOnClick={false}
                   />
                 </div>
               )}
