@@ -396,6 +396,7 @@ const SelectGalleryScreen: React.FC = () => {
                     mute={true}
                     enableResize={true}
                     viewOnClick={false}
+                    showRemoveBtn={false}
                   />
                 </div>
               )}
