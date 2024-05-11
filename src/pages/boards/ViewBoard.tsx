@@ -222,6 +222,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
               disableReorder={true}
               mute={true}
               viewOnClick={true}
+              showRemoveBtn={true}
             />
           )}
           {imageCount < 1 && (
