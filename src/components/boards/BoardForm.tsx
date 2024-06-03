@@ -10,11 +10,9 @@ import {
   IonSelectOption,
   IonToast,
 } from "@ionic/react";
-import { Board } from "../../data/boards";
-
+import { Board } from "../../data/boards"; 
 import { useHistory } from "react-router";
 import React from "react";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
 interface BoardFormProps {
   board: Board;
   setBoard: (board: Board) => void;
@@ -24,13 +22,8 @@ interface BoardFormProps {
 const BoardForm: React.FC<BoardFormProps> = ({
   board,
   setBoard,
-  onGridSizeChange,
-  onSubmit,
 }) => {
-  const modal = useRef<HTMLIonModalElement>(null);
-  const inputRef = useRef<HTMLIonInputElement>(null);
   const history = useHistory();
-  const { currentUser } = useCurrentUser();
   const [gridSize, setGridSize] = React.useState<number>(
     board.number_of_columns
   );

@@ -3,7 +3,6 @@ import {
   Board,
   addToTeam,
   cloneBoard,
-  deleteBoard,
   getBoard,
   rearrangeImages,
 } from "../../data/boards";
@@ -13,7 +12,6 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonItem,
   IonLabel,
   IonLoading,
   IonPage,
@@ -25,29 +23,23 @@ import {
 } from "@ionic/react";
 
 import {
-  addCircleOutline,
-  arrowBackCircleOutline,
   copyOutline,
   createOutline,
   documentLockOutline,
-  pencilOutline,
   shareOutline,
 } from "ionicons/icons";
 
 import { useHistory, useParams } from "react-router";
 import "./ViewBoard.css";
 import React from "react";
-import FloatingWordsBtn from "../../components/utils/FloatingWordsBtn";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import DraggableGrid from "../../components/images/DraggableGrid";
 import { Team } from "../../data/teams";
 import AddToTeamForm from "../../components/teams/AddToTeamForm";
 import Tabs from "../../components/utils/Tabs";
 import MainMenu from "../../components/main_menu/MainMenu";
-import MainHeader from "../MainHeader";
-import ConfirmDeleteAlert from "../../components/utils/ConfirmDeleteAlert";
 
-const ViewBoard: React.FC<any> = ({ boardId }) => {
+const ViewBoard: React.FC<any> = () => {
   const [board, setBoard] = useState<Board>();
   const params = useParams<{ id: string }>();
   const inputRef = useRef<HTMLIonInputElement>(null);
@@ -56,13 +48,9 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
   const [showLoading, setShowLoading] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
   const [imageCount, setImageCount] = useState(0);
-  const [gridSize, setGridSize] = useState(4);
-  const { currentUser, isWideScreen } = useCurrentUser();
-  const [gridLayout, setGrid] = useState<any>([]);
+  const { currentUser } = useCurrentUser();
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [currentUserTeams, setCurrentUserTeams] = useState<Team[]>();
-  const [reorder, setReorder] = useState(true);
-  const [selectedTeamId, setSelectedTeamId] = useState<string | undefined>();
   const history = useHistory();
 
   const handleAddToTeam = async (teamId: string) => {
@@ -96,7 +84,6 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
 
       setBoard(board);
       setNumOfColumns(board.number_of_columns);
-      setGridSize(board.number_of_columns);
 
       if (board?.status === "pending") {
         setShowLoading(true);
@@ -165,7 +152,7 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
             )}
           </IonToolbar>
         </IonHeader>
-        <IonContent fullscreen scrollY={true}>
+        <IonContent scrollY={true}>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
@@ -238,8 +225,9 @@ const ViewBoard: React.FC<any> = ({ boardId }) => {
               />
             </div>
           )}
+                  <Tabs />
+
         </IonContent>
-        <Tabs />
       </IonPage>
     </>
   );

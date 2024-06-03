@@ -119,19 +119,14 @@ const SelectGalleryScreen: React.FC = () => {
     const updatedBoard = await rearrangeImages(id);
     setBoard(updatedBoard);
     setShowLoading(false);
-    history.push(`/boards/${board?.id}`);
+    // history.push(`/boards/${board?.id}`);
     window.location.reload();
   };
 
   const fetchBoard = async () => {
-    // setShowLoading(true);
     const board = await getBoard(id); // Ensure getBoard is typed to return a Promise<Board>
     setBoard(board);
     setNumberOfColumns(board.number_of_columns);
-    // toggleForms(segmentType);
-    // const remainingImgs = await getRemainingImages(board.id, 1, searchInput);
-    // setRemainingImages(remainingImgs);
-    // setShowLoading(false);
     return board;
   };
 
@@ -167,7 +162,6 @@ const SelectGalleryScreen: React.FC = () => {
   };
 
   useIonViewWillEnter(() => {
-    // toggleForms("edit");
     setSearchInput("");
     setPage(1);
   });

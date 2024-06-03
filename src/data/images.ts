@@ -26,6 +26,7 @@ import { BASE_URL } from "./users";
     next_words?: string[]
     no_next?: boolean;
     user_next_words?: string[];
+    is_placeholder?: boolean;
   }
 
   export interface DraggableGridLayout {

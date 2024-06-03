@@ -141,7 +141,7 @@ const ViewImageScreen: React.FC = () => {
       deleteImageWrapper.current?.classList.add("hidden");
     }
     if (segmentType === "gallery") {
-      setPageTitle(`Current Images`);
+      setPageTitle(`Gallery for ${label}`);
       uploadForm.current?.classList.add("hidden");
       generateForm.current?.classList.add("hidden");
       imageGridWrapper.current?.classList.remove("hidden");

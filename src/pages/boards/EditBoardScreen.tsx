@@ -26,11 +26,9 @@ const EditBoardScreen: React.FC<any> = () => {
     number_of_columns: 0,
     images: [],
   });
-  const [isOpen, setIsOpen] = useState(false);
   const modal = useRef<HTMLIonModalElement>(null);
   const [remainingImages, setRemainingImages] = useState<Image[]>(); // State for the remaining images
   const inputRef = useRef<HTMLIonInputElement>(null);
-  const [showIcon, setShowIcon] = useState(false);
   const history = useHistory();
 
   const fetchBoard = async () => {
@@ -49,9 +47,6 @@ const EditBoardScreen: React.FC<any> = () => {
     history.push(`/boards/${board?.id}/gallery`);
   };
 
-  const gridSizeOptions = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
-  ];
 
   useEffect(() => {
     fetchBoard();

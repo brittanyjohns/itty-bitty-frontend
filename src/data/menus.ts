@@ -20,6 +20,18 @@ export const getMenus = () => {
     return menus;
 }
 
+export const rerunMenuJob = (id: string) => {
+    const updatedMenu = fetch(`${BASE_URL}menus/${id}/rerun`, {
+        method: 'POST',
+        headers: userHeaders,
+    })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => console.error('Error rerunning menu: ', error));
+
+    return updatedMenu;
+}
+
 export const getMenu = (id: number) => {
     const menu = fetch(`${BASE_URL}menus/${id}`, { headers: userHeaders }) // `localhostmenus
         .then(response => response.json())
