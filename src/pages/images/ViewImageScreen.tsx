@@ -160,7 +160,8 @@ const ViewImageScreen: React.FC = () => {
     const target = e.target as HTMLImageElement;
     const currentImg = await markAsCurrent(target.id); // Ensure markAsCurrent returns a Promise
     console.log("Current Image: ", currentImg);
-    const imgToSet = await fetchImage();
+    // const imgToSet = await fetchImage();
+    const imgToSet = currentImg;
     console.log("Image to set: ", imgToSet);
     setImage(imgToSet);
     setCurrentImage(imgToSet?.display_doc?.src ?? imgToSet.src);
