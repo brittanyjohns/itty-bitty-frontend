@@ -46,6 +46,7 @@ import TeamsScreen from "./pages/teams/TeamsScreen";
 import ViewTeamScreen from "./pages/teams/ViewTeamScreen";
 import ViewLockedBoard from "./pages/boards/ViewLockedBoard";
 import NewTeamScreen from "./pages/teams/NewTeamScreen";
+import Demo from "./pages/Demo";
 
 setupIonicReact({
   platform: {
@@ -78,6 +79,8 @@ const App: React.FC = () => (
             <Home />
           </Route>
           <Route path="/dashboard" component={Dashboard} exact={true} />
+          <Route path="/demo" component={Demo} exact={true} />
+          <Route path="/faq" component={Dashboard} exact={true} />
           <Route path="/boards/:id" component={ViewBoard} exact={true} />
           <Route
             path="/boards/:id/locked"

@@ -50,37 +50,8 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
   }, [images]);
 
   const handleOnImageClick = (event: any, image: Image) => {
-    // console.log("Event: ", event);
-    // console.log("Image clicked", image, selectedImage);
-    // if (showActionList) {
-    //   console.log("Action list is open, not handling click");
-    //   return;
-    // }
     onImageClick(image);
   };
-
-  // const handleButtonPress = (image: Image) => {
-  //   if (selectedImage === null) {
-  //     console.log("No selected image, setting selected image", image);
-  //     setSelectedImage(image);
-  //   } else {
-  //     console.log("Selected image: ", selectedImage);
-  //   }
-  //   if (longPressTimer.current) {
-  //     clearTimeout(longPressTimer.current);
-  //   }
-  //   longPressTimer.current = setTimeout(() => {
-  //     console.log("Long press detected", image.id, selectedImage);
-  //     setSelectedImage(image);
-  //     setShowActionList(true);
-  //   }, 1000);
-  // };
-
-  // const handleButtonRelease = () => {
-  //   if (longPressTimer.current) {
-  //     clearTimeout(longPressTimer.current);
-  //   }
-  // };
 
   const handleActionSelected = async (
     action: string,
@@ -95,7 +66,6 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
       const result = await addImageToBoard(selectedBoardId, imageId);
       console.log("Image added to board: ", result);
       alert("Image added to board");
-      // history.push(`/boards/${selectedBoardId}/gallery`);
     } else {
       console.log("Unknown action: ", action);
     }

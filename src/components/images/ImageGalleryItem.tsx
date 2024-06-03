@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { IonAlert, IonIcon, IonImg, useIonViewDidLeave } from "@ionic/react";
+import { IonAlert, IonIcon, IonImg, useIonViewDidLeave, useIonViewWillEnter } from "@ionic/react";
 import { Image } from "../../data/images";
 import { removeImageFromBoard } from "../../data/boards";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
@@ -112,12 +112,16 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     });
   };
 
+  useIonViewWillEnter(() => {
+    console.log("ImageGalleryItem ionViewWillEnter", image);
+  }, []);
+
   return (
     <div
       ref={imgRef}
       className={`relative cursor-pointer ${
         image.bg_color || "bg-white"
-      } rounded-md shadow-md p-0 h-full`}
+      } rounded-md shadow-md p-0 `}
     >
       <IonImg
         src={image.src}
@@ -125,11 +129,13 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
         className="ion-img-contain mx-auto"
         onClick={() => handleImageClick(image)}
       />
+      {!image.is_placeholder && (
       <span className="bg-white bg-opacity-80 w-full font-medium text-sm md:text-md lg:text-md text-black absolute bottom-0 left-0 p-1 pl-2 rounded-sm">
         {image.label.length > 15
           ? `${image.label.substring(0, 12)}...`
           : image.label}
       </span>
+      )}
       {image.audio && <audio src={image.audio} />}
       {showRemoveBtn && (
         <IonIcon
@@ -137,6 +143,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
           icon={trashBinOutline}
           size="small"
           onClick={() => setIsOpen(true)}
+          color="danger"
           className="absolute bottom-0 right-0 p-1 pr-2"
         />
       )}

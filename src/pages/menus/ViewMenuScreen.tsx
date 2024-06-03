@@ -19,7 +19,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
-import { getMenu, Menu } from "../../data/menus"; // Adjust imports based on actual functions
+import { getMenu, Menu, rerunMenuJob } from "../../data/menus"; // Adjust imports based on actual functions
 import { Image } from "../../data/images";
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
@@ -77,6 +77,21 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
     history.push(`/images/${id}`);
   };
 
+  const handleRerun = async () => {
+    if (!menu) {
+      console.error("No menu found");
+      return;
+    }
+    const result = await rerunMenuJob(menu.id as string);
+    console.log("Menu rerun result", result);
+    if (result.status === "success") {
+      alert("Menu rerun successfully");
+    } else {
+      alert("Menu rerun failed");
+    }
+    // setMenu(updatedMenu);
+  }
+
   const handleSegmentChange = (e: CustomEvent) => {
     const newSegment = e.detail.value;
     setSegmentType(newSegment);
@@ -114,6 +129,19 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
                 <IonImg src={menu.displayImage} alt={menu.name} />
               </div>
             )}
+            <IonList>
+              <IonItem>
+                <IonLabel position="stacked">Name</IonLabel>
+                <IonText>{menu?.name}</IonText>
+              </IonItem>
+              <IonItem>
+                <IonLabel position="stacked">Description</IonLabel>
+                <IonTextarea>{menu?.description}</IonTextarea>
+              </IonItem>
+              <IonItem>
+                <IonButton onClick={handleRerun}>Rerun</IonButton>
+              </IonItem>
+            </IonList>
           </div>
           <div className="hidden" ref={boardTab}>
             <IonList>
