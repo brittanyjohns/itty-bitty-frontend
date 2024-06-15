@@ -57,22 +57,6 @@ const BoardForm: React.FC<BoardFormProps> = ({
     window.location.reload();
   };
 
-  const handleReset = () => {
-    if (!board) {
-      console.error("No board found");
-      return;
-    }
-    async function updateChangedBoard() {
-      const updatedBoard = await updateBoard({
-        ...board,
-        number_of_columns: 0,
-      });
-      setBoard(updatedBoard);
-    }
-    updateChangedBoard();
-    history.push(`/boards/${board?.id}`);
-  };
-
   const gridSizeOptions = [
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
     22, 23, 24,

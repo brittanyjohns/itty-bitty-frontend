@@ -7,7 +7,8 @@ export interface Board {
     description?: string;
     predefined?: boolean;
     parent_type?: string;
-    displayImage?: string;
+    display_image_url?: string;
+    display_image_id?: string;
     number_of_columns: number;
     images?: Image[];
     error?: string;

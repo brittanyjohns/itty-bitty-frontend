@@ -7,7 +7,8 @@ import "./../main.css";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import ImageGalleryItem from "./ImageGalleryItem";
-import { Board } from "../../data/boards";
+import { Board, updateBoard } from "../../data/boards";
+import { Image } from "../../data/images";
 interface DraggableGridProps {
   columns: number;
   images: any;
@@ -48,6 +49,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   useEffect(() => {
     updateRowHeight();
   }, [width, columns]);
+
   useEffect(() => {
     const handleResize = () => {
       const currentWidth = window.innerWidth;
@@ -63,6 +65,19 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const handleSetDisplayImage = async (image: Image) => {
+    if (board) {
+      console.log("Setting display image: ", image);
+      const updatingBoard: Board = { ...board, display_image_id: image.id };
+
+    const savedBoard = await updateBoard(updatingBoard);
+    console.log("Saved board: ", savedBoard);
+    window.location.reload();
+    // alert("Response: " + savedBoard);
+    // setBoard(savedBoard);
+    }
+  };
   return (
     <ResponsiveGridLayout
       className="layout"
@@ -95,6 +110,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
             onImageClick={onImageClick}
             viewOnClick={viewOnClick}
             showRemoveBtn={showRemoveBtn}
+            onSetDisplayImage={handleSetDisplayImage}
           />
         </div>
       ))}
