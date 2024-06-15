@@ -18,6 +18,7 @@ import {
   IonTextarea,
   IonTitle,
   IonToolbar,
+  useIonViewWillEnter,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
 import {
@@ -42,6 +43,7 @@ import { set } from "react-hook-form";
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
 import ImageCropper from "../../components/images/ImageCropper";
+import { Board, getBoards } from "../../data/boards";
 
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -59,6 +61,7 @@ const ViewImageScreen: React.FC = () => {
   const { currentUser, isWideScreen } = useCurrentUser();
   const [boardId, setBoardId] = useState<string | null>(null);
   const [nextImageWords, setNextImageWords] = useState<string[]>([]);
+  const [boards, setBoards] = useState<Board[]>([]);
 
   const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
     if (
@@ -86,10 +89,42 @@ const ViewImageScreen: React.FC = () => {
     setShowHardDelete(currentUser?.role === "admin");
     setBoardId(boardId);
     getData();
+    console.log("Image: ", image);
+    console.log("Boards: ", boards);
   }, []);
+
+  useIonViewWillEnter(() => {
+    console.log("View Image Screen");
+     async function fetchData() {
+      const img = await fetchImage();
+      const allBoards = await getBoards();
+      const filteredBoards = allBoards['boards'].filter((board: Board) => {
+        return image?.user_image_boards?.find((userBoard: Board) => userBoard.id !== board.id);
+      } );
+      setBoards(filteredBoards);
+      setImage(img);
+      toggleForms(segmentType, img);
+      if (img.display_doc && img.display_doc.src) {
+        setCurrentImage(img.display_doc.src);
+      } else {
+        setCurrentImage(img.src);
+      } 
+    }
+
+    fetchData();
+  } );
 
   const getData = async () => {
     const imgToSet = await fetchImage();
+    console.log("Image to set: ", imgToSet);
+    const allBoards = await getBoards();
+    console.log("All Boards: ", allBoards);
+    const filteredBoards = allBoards['boards'].filter((board: Board) => {
+      return image?.user_image_boards?.find((userBoard: Board) => userBoard.id !== board.id);
+    } );
+
+    setBoards(filteredBoards);
+
     setImage(imgToSet);
     toggleForms(segmentType, imgToSet);
     if (imgToSet.display_doc && imgToSet.display_doc.src) {
@@ -190,7 +225,7 @@ const ViewImageScreen: React.FC = () => {
       setTimeout(() => {
         setShowLoading(false);
         window.location.reload();
-      }, 10000);
+      }, 15000);
     }
   };
 
@@ -222,6 +257,19 @@ const ViewImageScreen: React.FC = () => {
     if (!image) return;
     const result = await create_symbol(image.id);
     console.log("Symbol result: ", result);
+  };
+
+  const userBoardList = () => { 
+    console.log("Image: ", image);
+    if (image?.user_image_boards) {
+      console.log("User Image Boards: ", image.user_image_boards);
+      return image?.user_image_boards.map((board) => (
+        <IonItem key={board.id} routerLink={`/boards/${board.id}`}>
+          {board.name}
+        </IonItem>
+      ));
+    }
+    return null;
   };
 
   return (
@@ -287,20 +335,21 @@ const ViewImageScreen: React.FC = () => {
             )}
           </div>
           <div className="mt-6 hidden" ref={generateForm}>
-            <IonList className="ion-padding" lines="none">
+            <IonList className="ion-padding w-1/2 mx-auto" lines="none">
               <IonItem className="mt-2 border-2">
                 <IonLoading
                   className="loading-icon"
                   cssClass="loading-icon"
                   isOpen={showLoading}
                   message={
-                    "Generating image... Please wait a moment & check back."
+                    "Generating image... Please wait. This may take a few seconds."
                   }
                 />
                 {image && (
                   <IonTextarea
                     className=""
                     placeholder="Enter prompt"
+                    value={image.image_prompt}
                     onIonInput={(e) =>
                       setImage({ ...image, image_prompt: e.detail.value! })
                     }
@@ -311,14 +360,17 @@ const ViewImageScreen: React.FC = () => {
                 <IonButton className="w-full text-lg" onClick={onGenerateClick}>
                   Generate Image
                 </IonButton>
+                
               </IonItem>
-              <IonItem className="mt-2 font-mono text-center">
-                <IonText className="text-sm">
+              <IonItem className="mt-2 font-mono">
+              <p className="text-sm text-center">
                   This will generate an image based on the prompt you enter.
-                </IonText>
+              </p>
               </IonItem>
-              <IonItem className="mt-2 font-mono text-center text-red-400">
-                <IonText className="ml-6"> It will cost 1 credit.</IonText>
+              <IonItem className="mt-2 font-mono">
+              <p className="text-sm text-center">
+                  This will cost you 1 token.
+              </p>
               </IonItem>
             </IonList>
           </div>
@@ -350,9 +402,14 @@ const ViewImageScreen: React.FC = () => {
                 </div>
               </div>
             )}
-            {image && (
-              <div className="mt-3 w-11/12 mx-auto">
-                <BoardDropdown imageId={image.id} />
+            {image && boards && (
+              <div className="mt-3 w-2/3 md:w-1/3 mx-auto">
+                {boards && boards.length > 0 && (
+                  <BoardDropdown imageId={image.id} boards={boards} />
+                )}
+                <IonText className="text-md">This image is on the following boards:</IonText>
+                {userBoardList()}
+
               </div>
             )}
             {currentUser?.role === "admin" && (
@@ -381,6 +438,14 @@ const ViewImageScreen: React.FC = () => {
                     Create Symbol
                   </IonButton>
                 </IonButtons>
+                <div className="text-sm font-mono w-full">
+                  {image?.image_prompt && (
+                    <div className="mt-2">
+                      <IonText className="text-md">Prompt:</IonText>
+                      <p className="text-md">{image.image_prompt}</p>
+                    </div>
+                  )}
+                </div>
                 <div className="text-sm font-mono w-full">
                   {image?.next_words && image.next_words.length > 0 && (
                     <div className="mt-2">

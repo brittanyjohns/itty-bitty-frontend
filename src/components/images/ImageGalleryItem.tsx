@@ -1,10 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IonAlert, IonIcon, IonImg, useIonViewDidLeave, useIonViewWillEnter } from "@ionic/react";
 import { Image } from "../../data/images";
-import { removeImageFromBoard } from "../../data/boards";
+import { Board, removeImageFromBoard, updateBoard } from "../../data/boards";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { trashBinOutline } from "ionicons/icons";
+import { starOutline, starSharp, trashBinOutline } from "ionicons/icons";
 import { useHistory } from "react-router";
 
 interface ImageGalleryItemProps {
@@ -17,6 +17,7 @@ interface ImageGalleryItemProps {
   onImageClick?: any;
   viewOnClick?: boolean;
   showRemoveBtn?: boolean;
+  onSetDisplayImage?: any;
 }
 
 const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
@@ -29,6 +30,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   onImageClick,
   viewOnClick,
   showRemoveBtn,
+  onSetDisplayImage,
 }) => {
   const { currentUser } = useCurrentUser();
   const imgRef = useRef<HTMLDivElement>(null);
@@ -82,6 +84,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     }
     setAudioList([...audioList, audioSrc]);
 
+    console.log("Playing audio: ", audioSrc)
     const audio = new Audio(audioSrc);
 
     const promise = audio.play();
@@ -91,11 +94,13 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
         .catch((error) => {
           console.log("Autoplay was prevented", error);
           // Autoplay was prevented.
-          audio.muted = true;
-          audio.play();
+          // audio.muted = true;
+          // audio.play();
+          speak(label);
+
         });
     }
-  };
+  }; 
 
   const speak = async (text: string) => {
     const language = currentUser?.settings?.voice?.language || "en-US";
@@ -111,6 +116,28 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       category: "ambient",
     });
   };
+
+  const imageStarIcon = (image: Image) => {
+    console.log("imageStarIcon", image, board);
+    if (board?.display_image_id === image.id) {
+      return ( starSharp )
+    } else {
+      return ( starOutline )
+    }
+  }
+
+  // const onSetDisplayImage = async (image: Image) => {
+  //   if (board) {
+  //     console.log("Setting display image: ", image);
+  //     const updatingBoard: Board = { ...board, display_image_id: image.id };
+
+  //   const savedBoard = await updateBoard(updatingBoard);
+  //   console.log("Saved board: ", savedBoard);
+  //   window.location.reload();
+  //   // alert("Response: " + savedBoard);
+  //   // setBoard(savedBoard);
+  //   }
+  // };
 
   useIonViewWillEnter(() => {
     console.log("ImageGalleryItem ionViewWillEnter", image);
@@ -145,6 +172,16 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
           onClick={() => setIsOpen(true)}
           color="danger"
           className="absolute bottom-0 right-0 p-1 pr-2"
+        />
+      )}
+      {showRemoveBtn && (
+        <IonIcon
+          slot="icon-only"
+          icon={imageStarIcon(image)}
+          size="small"
+          onClick={() => onSetDisplayImage(image)}
+          color="secondary"
+          className="absolute top-0 right-0 p-1 pr-2"
         />
       )}
       <IonAlert

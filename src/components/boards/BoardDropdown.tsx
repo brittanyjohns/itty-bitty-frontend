@@ -6,29 +6,32 @@ import {
   IonSelectOption,
   IonToast,
 } from "@ionic/react";
-import { addImageToBoard, getBoards } from "../../data/boards";
+import { Board, addImageToBoard, getBoards } from "../../data/boards";
+import { useHistory } from "react-router";
 
 interface BoardDropdownProps {
   imageId: string;
+  boards: Board[];
 }
 
-const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId }) => {
-  const [boards, setBoards] = useState([]);
+const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId, boards }) => {
+  // const [boards, setBoards] = useState([]);
   const [boardId, setBoardId] = useState(null);
   const [showLoading, setShowLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const selectRef = React.useRef<HTMLIonSelectElement>(null);
+  const history = useHistory();
 
-  const fetchBoards = async () => {
-    const allBoards = await getBoards();
-    if (!allBoards) {
-      console.error("Error fetching boards");
-      return;
-    }
-    const boards = allBoards["boards"];
-    setBoards(boards);
-  };
+  // const fetchBoards = async () => {
+  //   const allBoards = await getBoards();
+  //   if (!allBoards) {
+  //     console.error("Error fetching boards");
+  //     return;
+  //   }
+  //   const boards = allBoards["boards"];
+  //   setBoards(boards);
+  // };
 
   const handleSelectChange = (e: CustomEvent) => {
     const boardId = e.detail.value;
@@ -52,7 +55,8 @@ const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId }) => {
         setToastMessage(message);
         setShowLoading(false);
         setIsOpen(true);
-        setBoardId(null);
+        setBoardId(response["board"]["id"]);
+        history.push(`/boards/${response["board"]["id"]}`);
       }
     }
     addSelectedImageToBoard();
@@ -60,7 +64,7 @@ const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId }) => {
   };
 
   useEffect(() => {
-    fetchBoards();
+    console.log("boards", boards);
   }, []);
 
   return (

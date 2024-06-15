@@ -8,7 +8,7 @@ import {
   IonLabel,
   IonLoading,
 } from "@ionic/react";
-import { cropImage } from "../../data/images";
+import { createImage, cropImage, findOrCreateImage } from "../../data/images";
 import { useHistory } from "react-router";
 
 interface ImageCropperProps {
@@ -75,11 +75,21 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
     }
   }, [imageSrc]);
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    console.log("Submitting form", event);
     if (cropper) {
       const croppedImage = cropper.getCroppedCanvas().toDataURL();
       handleFormSubmit({ croppedImage, fileExtension });
+    } else {
+      if (label) {
+        const formData = new FormData();
+        formData.append("image[label]", label);
+        
+        const result = await findOrCreateImage(formData, false);
+        console.log("Result:", result);
+
+      }
     }
   };
 
@@ -145,7 +155,6 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
             type="file"
             accept="image/*"
             onChange={onFileChange}
-            required
           />
         </IonCard>
         {imageSrc && (

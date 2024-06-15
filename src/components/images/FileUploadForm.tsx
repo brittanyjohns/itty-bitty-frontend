@@ -95,7 +95,6 @@ const FileUploadForm: React.FC<FileUploadFormProps> = ({
           type="file"
           onChange={onFileChange}
           className="file-input"
-          required
         />
         <IonButton expand="block" type="submit">
           <IonIcon slot="start" icon={camera} />
