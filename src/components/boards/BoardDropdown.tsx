@@ -78,7 +78,7 @@ const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId, boards }) => {
           ref={selectRef}
         >
           {boards &&
-            boards.map((board: { id: any; name: any }) => (
+            boards.map((board: { id?: any; name: any }) => (
               <IonSelectOption key={board.id} value={board.id}>
                 {board.name}
               </IonSelectOption>
