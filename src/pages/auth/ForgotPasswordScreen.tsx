@@ -8,7 +8,7 @@ import {
   IonAlert,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
-import { User, forgotPassword, signIn } from "../../data/users";
+import { forgotPassword } from "../../data/users";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
