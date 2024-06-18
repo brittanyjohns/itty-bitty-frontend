@@ -67,9 +67,9 @@ const SignInScreen: React.FC = () => {
         <div className="container p-4 bg-white bg-opacity-50 mx-auto shadow-lg">
             <div
               className="hero_main1 bg-cover bg-center  min-h-screen"
-              style={{ backgroundImage: `url(${getImageUrl("hero_main1", "webp")})` }}
+              style={{ backgroundImage: `url(${getImageUrl("feature_1", "webp")})` }}
             >
-              <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-50">
+              <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-70">
                 <h1 className="text-2xl md:text-5xl font-bold text-white">
                   Empower Your Child's Communication
                 </h1>

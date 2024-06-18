@@ -61,9 +61,9 @@ const SignInScreen: React.FC = () => {
         <div className="container p-4 bg-white bg-opacity-50 mx-auto shadow-lg">
             <div
               className="hero_main1 bg-cover bg-center  min-h-screen"
-              style={{ backgroundImage: `url(${getImageUrl("hero_main1", "webp")})` }}
+              style={{ backgroundImage: `url(${getImageUrl("feature_2", "webp")})` }}
             >
-              <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-50">
+              <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-70">
                 <h1 className="text-2xl md:text-5xl font-bold text-white">
                   Empower Your Child's Communication
                 </h1>
@@ -71,7 +71,7 @@ const SignInScreen: React.FC = () => {
                   Discover the simplicity of SpeakAnyWay.
                 </p>
               </div>
-              <div className="max-w-md mx-auto bg-white bg-opacity-90 p-8 rounded-lg shadow-xl mt-20">
+              <div className="max-w-md mx-auto bg-white bg-opacity-95 p-8 rounded-lg shadow-xl mt-20">
               <h1 className="text-2xl font-bold text-center mb-3">Sign In</h1>
                 <form onSubmit={(e) => e.preventDefault()}>
                   <IonItem lines="full" className="mb-4">
