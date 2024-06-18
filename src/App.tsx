@@ -47,6 +47,8 @@ import ViewTeamScreen from "./pages/teams/ViewTeamScreen";
 import ViewLockedBoard from "./pages/boards/ViewLockedBoard";
 import NewTeamScreen from "./pages/teams/NewTeamScreen";
 import Demo from "./pages/Demo";
+import { forgotPassword } from "./data/users";
+import ForgotPasswordScreen from "./pages/auth/ForgotPasswordScreen";
 
 setupIonicReact({
   platform: {
@@ -134,6 +136,7 @@ const App: React.FC = () => (
           </Route>
           <Route path={"/sign-in"} component={SignInScreen} exact={true} />
           <Route path="/sign-out" component={SignOutScreen} exact={true} />
+          <Route path="/forgot-password" component={ForgotPasswordScreen} exact={true} />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>

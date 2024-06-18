@@ -7,9 +7,11 @@ import {
 } from "@ionic/react";
 import { getImageUrl } from "../data/utils";
 import { useCurrentUser } from "../hooks/useCurrentUser";
+import { useHistory } from "react-router";
 
 const MainHeader: React.FC = () => {
   const { isWideScreen } = useCurrentUser();
+  const history = useHistory();
   return (
     <IonHeader className="bg-inherit shadow-none">
       <IonToolbar>
@@ -24,7 +26,8 @@ const MainHeader: React.FC = () => {
               src={getImageUrl("round_itty_bitty_logo_1", "png")}
               className="h-10 w-10"
             />
-            <IonTitle>SpeakAnyWay</IonTitle>
+            <IonTitle className="text-left" onClick={() => history.push("/")}>
+              SpeakAnyWay</IonTitle>
           </>
         )}
       </IonToolbar>
