@@ -4,12 +4,6 @@ import {
   IonContent,
   IonInput,
   IonButton,
-  IonButtons,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonBackButton,
-  IonLabel,
   IonItem,
   IonAlert,
 } from "@ionic/react";
@@ -20,7 +14,7 @@ import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
 import { getImageUrl } from "../../data/utils";
 
-const SignInScreen: React.FC = () => {
+const ForgotPasswordScreen: React.FC = () => {
   const history = useHistory();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -72,7 +66,7 @@ const SignInScreen: React.FC = () => {
                 </p>
               </div>
               <div className="max-w-md mx-auto bg-white bg-opacity-90 p-8 rounded-lg shadow-xl mt-20">
-              <h1 className="text-2xl font-bold text-center mb-3">Sign In</h1>
+                <h1 className="text-2xl font-bold text-center mb-3">Forgot Password</h1>
                 <form onSubmit={(e) => e.preventDefault()}>
                   <IonItem lines="full" className="mb-4">
                     <IonInput
@@ -84,27 +78,8 @@ const SignInScreen: React.FC = () => {
                       clearInput
                     />
                   </IonItem>
-                  <IonItem lines="full">
-                    <IonInput
-                      label="Password"
-                      labelPlacement="stacked"
-                      type="password"
-                      value={password}
-                      placeholder="Enter your password"
-                      onIonChange={(e) => setPassword(e.detail.value!)}
-                      clearInput
-                    />
-                  </IonItem>
                   <IonButton expand="block" className="mt-6" onClick={handleSignIn}>
-                    Sign In
-                  </IonButton>
-                  <IonButton
-                    expand="block"
-                    fill="clear"
-                    color="medium"
-                    onClick={handleForgotPassword}
-                  >
-                    Forgot Password?
+                    Reset Password
                   </IonButton>
                 </form>
                 <IonAlert
@@ -125,4 +100,4 @@ const SignInScreen: React.FC = () => {
   );
 };
 
-export default SignInScreen;
+export default ForgotPasswordScreen;

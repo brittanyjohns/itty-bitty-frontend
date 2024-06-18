@@ -15,8 +15,9 @@ import { MenuLink, getMenu } from "../../data/menu";
 import MenuListItem from "./MainMenuListItem";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import SideMenu from "./SideMenu";
-import MainHeader from "../../pages/MainHeader";
 import { homeOutline } from "ionicons/icons";
+import { getImageUrl } from "../../data/utils";
+import { useHistory } from "react-router";
 
 export const hideMenu = () => {
   const menu = document.querySelector("ion-menu");
@@ -37,6 +38,7 @@ const MainMenu: React.FC<MainMenuProps> = () => {
   const { currentUser, isWideScreen } = useCurrentUser();
   const [menuLinks, setMenuLinks] = useState<MenuLink[]>([]);
   const [filteredLinks, setFilteredLinks] = useState<MenuLink[]>([]);
+  const history = useHistory();
   // Function to filter links based on the current user's status
   const filterList = (links: MenuLink[]) => {
     const signedInLinks = [
@@ -49,7 +51,7 @@ const MainMenu: React.FC<MainMenuProps> = () => {
       "predictive",
       "settings",
     ];
-    const signedOutLinks = ["sign-in", "sign-up"];
+    const signedOutLinks = ["sign-in", "sign-up", "forgot-password", "home"];
 
     return links.filter((link) => {
       if (currentUser) {
@@ -62,6 +64,7 @@ const MainMenu: React.FC<MainMenuProps> = () => {
 
   useIonViewWillEnter(() => {
     const links = getMenu();
+    console.log("Menu links", links);
     setMenuLinks(links);
     // if (isWideScreen) {
     //   openMenu();
@@ -91,9 +94,16 @@ const MainMenu: React.FC<MainMenuProps> = () => {
           swipeGesture={true}
         >
           <IonHeader className="bg-inherit shadow-none">
-            <IonToolbar>
-              <IonTitle>Main Menu</IonTitle>
-            </IonToolbar>
+            <IonToolbar>            
+          <img
+              slot="start"
+              // src="/src/assets/images/round_itty_bitty_logo_1.png"
+              src={getImageUrl("round_itty_bitty_logo_1", "png")}
+              className=" ml-2 h-10 w-10 mt-1"
+            />
+            <IonTitle className="text-left" onClick={() => history.push("/")}>
+              SpeakAnyWay</IonTitle>
+              </IonToolbar>
           </IonHeader>
           <IonContent className="ion-padding">
             {currentUser && (

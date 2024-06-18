@@ -92,6 +92,21 @@ export const signOut = () => {
     return response;
 }
 
+export const forgotPassword = (email: string) => {
+    const response = fetch(`${BASE_URL}v1/forgot_password`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+    })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => console.error('Error resetting password: ', error));
+
+    return response;
+}
+
 export const isUserSignedIn = () => {
     const token = localStorage.getItem('token')
     return token != null;
