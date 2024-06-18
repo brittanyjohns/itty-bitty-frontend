@@ -8,7 +8,7 @@ import {
   IonAlert,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
-import { User, signIn } from "../../data/users";
+import { User, forgotPassword, signIn } from "../../data/users";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
@@ -16,18 +16,21 @@ import { getImageUrl } from "../../data/utils";
 
 const ForgotPasswordScreen: React.FC = () => {
   const history = useHistory();
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string | undefined>(undefined);
   const [showAlert, setShowAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { setCurrentUser, isWideScreen } = useCurrentUser();
 
 
-  const handleSignIn = async () => {
-    const user: User = { email, password };
+  const handleForgotPassword = async () => {
+    if (!email) {
+      setErrorMessage("Please enter your email");
+      setShowAlert(true);
+      return;
+    }
     try {
-      const response = await signIn(user);
-      console.log("Sign In response", response);
+      const response = await forgotPassword(email);
+      console.log("Forgot pasword response", response);
       if (response.token) {
         localStorage.setItem("token", response.token);
         setCurrentUser(response.user);
@@ -42,10 +45,6 @@ const ForgotPasswordScreen: React.FC = () => {
       setShowAlert(true);
     }
   };
-
-  const handleForgotPassword = () => {
-    history.push("/forgot-password");
-  }
 
   return (
     <>
@@ -76,9 +75,10 @@ const ForgotPasswordScreen: React.FC = () => {
                       placeholder="Enter your email"
                       onIonChange={(e) => setEmail(e.detail.value!)}
                       clearInput
+                      required
                     />
                   </IonItem>
-                  <IonButton expand="block" className="mt-6" onClick={handleSignIn}>
+                  <IonButton expand="block" className="mt-6" onClick={handleForgotPassword}>
                     Reset Password
                   </IonButton>
                 </form>
