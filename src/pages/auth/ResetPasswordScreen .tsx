@@ -6,6 +6,7 @@ import {
   IonButton,
   IonItem,
   IonAlert,
+  IonToast,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router-dom";
 import { resetPassword } from "../../data/users";
@@ -21,6 +22,8 @@ const ResetPasswordScreen: React.FC = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { setCurrentUser, isWideScreen } = useCurrentUser();
+  const [isOpen, setIsOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   const handleResetPassword = async () => {
     if (!password) {
@@ -41,11 +44,10 @@ const ResetPasswordScreen: React.FC = () => {
       }
       const response = await resetPassword(resetPasswordToken, password, passwordConfirmation);
       console.log("Reset pasword response", response);
-      if (response.token) {
-        localStorage.setItem("token", response.token);
-        setCurrentUser(response.user);
-        history.push("/home");
-        window.location.reload();
+      if (response.message) {
+        setToastMessage(response.message);
+        setIsOpen(true);
+        history.push("/sign-in");
       } else if (response.error) {
         setErrorMessage(response.error);
         setShowAlert(true);
@@ -115,9 +117,12 @@ const ResetPasswordScreen: React.FC = () => {
               </div>
           </div>
         </div>    
-      <IonContent className="ion-padding">
-        
-      </IonContent>
+        <IonToast
+          isOpen={isOpen}
+          message={toastMessage}
+          onDidDismiss={() => setIsOpen(false)}
+          duration={2000}
+        ></IonToast>
     </IonPage>
   </>
   );
