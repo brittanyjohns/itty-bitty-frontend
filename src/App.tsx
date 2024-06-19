@@ -49,6 +49,7 @@ import NewTeamScreen from "./pages/teams/NewTeamScreen";
 import Demo from "./pages/Demo";
 import { forgotPassword } from "./data/users";
 import ForgotPasswordScreen from "./pages/auth/ForgotPasswordScreen";
+import ResetPasswordScreen from "./pages/auth/ResetPasswordScreen ";
 
 setupIonicReact({
   platform: {
@@ -80,6 +81,9 @@ const App: React.FC = () => (
           <Route path="/home" exact={true}>
             <Home />
           </Route>
+          {/* <Route path="/users/password/edit/:reset_password_token" component={ResetPasswordScreen} exact={true} /> */}
+          <Route path="/users/password/edit/" component={ResetPasswordScreen} exact={true} />
+
           <Route path="/dashboard" component={Dashboard} exact={true} />
           <Route path="/demo" component={Demo} exact={true} />
           <Route path="/faq" component={Dashboard} exact={true} />
