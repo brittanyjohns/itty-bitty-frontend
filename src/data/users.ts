@@ -107,6 +107,21 @@ export const forgotPassword = (email: string) => {
     return response;
 }
 
+export const resetPassword = (reset_password_token: string, password: string, password_confirmation: string) => {
+    const response = fetch(`${BASE_URL}v1/reset_password`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ reset_password_token, password, password_confirmation }),
+    })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => console.error('Error resetting password: ', error));
+
+    return response;
+}
+
 export const isUserSignedIn = () => {
     const token = localStorage.getItem('token')
     return token != null;
