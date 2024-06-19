@@ -82,7 +82,7 @@ const App: React.FC = () => (
             <Home />
           </Route>
           {/* <Route path="/users/password/edit/:reset_password_token" component={ResetPasswordScreen} exact={true} /> */}
-          <Route path="/users/password/edit/" component={ResetPasswordScreen} exact={true} />
+          <Route path="/reset_password/" component={ResetPasswordScreen} exact={true} />
 
           <Route path="/dashboard" component={Dashboard} exact={true} />
           <Route path="/demo" component={Demo} exact={true} />
