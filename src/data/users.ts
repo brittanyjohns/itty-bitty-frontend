@@ -108,6 +108,7 @@ export const forgotPassword = (email: string) => {
 }
 
 export const resetPassword = (reset_password_token: string, password: string, password_confirmation: string) => {
+    console.log('resetPassword', reset_password_token)
     const response = fetch(`${BASE_URL}v1/reset_password`, {
         method: 'POST',
         headers: {

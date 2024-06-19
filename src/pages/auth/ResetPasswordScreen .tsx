@@ -22,9 +22,6 @@ const ResetPasswordScreen: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const { setCurrentUser, isWideScreen } = useCurrentUser();
 
-  const [resetPasswordToken, setResetPasswordToken] = useState<string>("");
-
-
   const handleResetPassword = async () => {
     if (!password) {
       setErrorMessage("Please enter your password");
@@ -32,6 +29,16 @@ const ResetPasswordScreen: React.FC = () => {
       return;
     }
     try {
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      console.log("URL Params", urlParams);
+      const resetPasswordToken = urlParams.get("reset_password_token");
+      console.log("Reset password token", resetPasswordToken);
+      if (!resetPasswordToken) {
+        setErrorMessage("Invalid reset password token");
+        setShowAlert(true);
+        return;
+      }
       const response = await resetPassword(resetPasswordToken, password, passwordConfirmation);
       console.log("Reset pasword response", response);
       if (response.token) {
@@ -48,14 +55,6 @@ const ResetPasswordScreen: React.FC = () => {
       setShowAlert(true);
     }
   };
-
-  useEffect(() => {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const reset_password_token = urlParams.get("reset_password_token");
-    console.log("Reset password token", reset_password_token);
-    setResetPasswordToken(resetPasswordToken);
-  } , []);
 
   return (
     <>
@@ -87,6 +86,7 @@ const ResetPasswordScreen: React.FC = () => {
                       onIonChange={(e) => setPassword(e.detail.value!)}
                       clearInput
                       required
+                      type="password"
                     />
                   </IonItem>
                   <IonItem lines="full" className="mb-4">
@@ -98,6 +98,7 @@ const ResetPasswordScreen: React.FC = () => {
                       onIonChange={(e) => setPasswordConfirmation(e.detail.value!)}
                       clearInput
                       required
+                      type="password"
                     />
                   </IonItem>
                   <IonButton expand="block" className="mt-6" onClick={handleResetPassword}>
