@@ -35,7 +35,7 @@ const EditImageScreen: React.FC = (props: any) => {
   const onSubmit: SubmitHandler<Image> = (data) => {
     const formData = new FormData();
     formData.append("image[label]", data.label);
-    formData.append("image[src]", image.src);
+    formData.append("image[src]", image.src || "");
     formData.append("image[id]", image.id);
 
     updateImage(formData);
