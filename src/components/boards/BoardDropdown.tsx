@@ -52,11 +52,6 @@ const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId, boards }) => {
     addSelectedImageToBoard();
     selectRef.current!.value = null;
   };
-
-  useEffect(() => {
-    console.log("Board Dropdown: Boards", boards);
-  }, []);
-
   return (
     <IonList>
       <IonItem lines="none">

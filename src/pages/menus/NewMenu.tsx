@@ -15,9 +15,10 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { arrowBackCircleOutline } from "ionicons/icons";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/utils/Tabs";
+import ImagePasteHandler from "../../components/utils/ImagePasteHandler";
 
 type NewMenu = {
   name: string;
@@ -33,6 +34,8 @@ const NewMenu: React.FC = (props: any) => {
   const [showLoading, setShowLoading] = useState<boolean>(false);
 
   const { currentUser } = useCurrentUser();
+  const imageElementRef = useRef<HTMLImageElement>(null);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
 
   const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
     if (
@@ -97,28 +100,52 @@ const NewMenu: React.FC = (props: any) => {
   };
 
   const onFileChange = (event: any) => {
-    let description = "";
 
     event.preventDefault();
     console.log("File: ", event.target.files[0]);
     let file = event.target.files[0];
-    // register("file", { value: file, required: true });
+
+    console.log("File: ", file);
+    handleFile(file);
+    console.log("Image source: ", imageSrc);
+    return menu;
+  };
+
+  const handlePaste = (file: File) => {
+    console.log("Pasted: ", file);
+
+    handleFile(file);
+    const fileField = document.querySelector('#file_field') as HTMLImageElement;
+    console.log('fileField', fileField);
+    if (fileField) {
+      fileField.hidden = true;
+
+      // fileField.src = URL.createObjectURL(file);
+    }
+  }
+
+  const handleFile = (file: File) => {
     let reader = new FileReader();
 
-    reader.onload = (event: any) => {
+    reader.onload = (event: ProgressEvent<FileReader>) => {
+      const dataUrl = event.target?.result as string;
+      
       setShowLoading(true);
 
-      Tesseract.recognize(event.target.result, "eng", {
+      Tesseract.recognize(dataUrl, "eng", {
         // logger: (m) => console.log(m),
       }).then(({ data: { text } }) => {
-        description = text;
-        setMenus({ ...menu, file: file, description: description });
+        setMenus({ ...menu, file: file, description: text });
+        if (imageElementRef.current) {
+          imageElementRef.current.src = dataUrl;
+        }
+        console.log("Data URL: ", dataUrl);
+        // setImageSrc(dataUrl);
         setShowLoading(false);
       });
     };
     reader.readAsArrayBuffer(file);
-    return menu;
-  };
+  }
 
   return (
     <IonPage id="new-menu-page">
@@ -157,13 +184,34 @@ const NewMenu: React.FC = (props: any) => {
               <input
                 className="bg-inherit w-full p-4 rounded-md"
                 type="file"
+                id="file_field"
                 onChange={(ev) => onFileChange(ev)}
               />
             </IonItem>
-
-            <IonButton className="ion-margin-top" type="submit" expand="block">
+            <ImagePasteHandler setFile={handlePaste} />
+            
+            <IonButtons className="ion-margin-top">
+            <IonButton 
+            className="ion-margin-top" 
+            type="submit" 
+            expand="block"
+            color={"secondary"}
+            fill="outline"
+            slot="start"
+            >
               Create
             </IonButton>
+            <IonButton
+             onClick={() => window.location.reload()}
+             expand="block"
+             color={"danger"}
+             fill="outline"
+             slot="end"
+             >
+              Cancel
+            </IonButton>
+          </IonButtons>
+
           </form>
         </div>
         <Tabs />
