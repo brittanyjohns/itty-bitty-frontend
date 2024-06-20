@@ -50,6 +50,7 @@ const SignInScreen: React.FC = () => {
       } else {
         localStorage.setItem("token", response.token); // Store the token
         history.push("/boards");
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error signing up: ", error);
