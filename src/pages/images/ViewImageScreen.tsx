@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-  IonBackButton,
   IonButton,
   IonButtons,
   IonContent,
@@ -18,7 +17,6 @@ import {
   IonTextarea,
   IonTitle,
   IonToolbar,
-  useIonViewWillEnter,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
 import {
@@ -39,7 +37,6 @@ import {
   refreshCircleOutline,
   trashBinOutline,
 } from "ionicons/icons";
-import { get, set } from "react-hook-form";
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
 import ImageCropper from "../../components/images/ImageCropper";
