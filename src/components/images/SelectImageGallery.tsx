@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Image, SelectImageGalleryProps } from "../../data/images";
 import {
   IonImg,
@@ -9,6 +9,8 @@ import {
 } from "@ionic/react";
 import { useHistory } from "react-router";
 import { addImageToBoard, getUserBoards } from "../../data/boards";
+import { image } from "ionicons/icons";
+import { generatePlaceholderImage } from "../../data/utils";
 
 const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
   images,
@@ -22,6 +24,7 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
   const [showActionList, setShowActionList] = useState(false);
   const [selectedImage, setSelectedImage] = useState<Image | null>(null);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
+  // const placeholderUrl = useMemo(() => generatePlaceholderImage(image.label), [image.label]);
   const [userBoards, setUserBoards] = useState([]);
   const history = useHistory();
   const fetchImages = async () => {
@@ -123,8 +126,9 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
                 key={image.id}
                 id={`image_${image.id}`}
               >
+                
                 <IonImg
-                  src={image.src}
+                  src={image.src || generatePlaceholderImage(image.label)}
                   alt={image.label}
                   className="absolute object-contain w-full h-full top-0 left-0"
                 />

@@ -10,7 +10,7 @@ import { BASE_URL } from "./users";
   
   export interface Image {
     id: string;
-    src: string;
+    src: string | null;
     label: string;
     image_prompt?: string;
     audio?: string;

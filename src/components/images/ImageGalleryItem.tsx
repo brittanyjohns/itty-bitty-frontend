@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { IonAlert, IonIcon, IonImg, useIonViewDidLeave, useIonViewWillEnter } from "@ionic/react";
 import { Image } from "../../data/images";
 import { Board, removeImageFromBoard, updateBoard } from "../../data/boards";
@@ -6,6 +6,7 @@ import { TextToSpeech } from "@capacitor-community/text-to-speech";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { starOutline, starSharp, trashBinOutline } from "ionicons/icons";
 import { useHistory } from "react-router";
+import { generatePlaceholderImage } from "../../data/utils";
 
 interface ImageGalleryItemProps {
   image: Image;
@@ -36,6 +37,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   const imgRef = useRef<HTMLDivElement>(null);
   const [audioList, setAudioList] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const placeholderUrl = useMemo(() => generatePlaceholderImage(image.label), [image.label]);
   const history = useHistory();
 
   const removeImage = async () => {
@@ -92,10 +94,6 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       promise
         .then(() => {})
         .catch((error) => {
-          console.log("Autoplay was prevented", error);
-          // Autoplay was prevented.
-          // audio.muted = true;
-          // audio.play();
           speak(label);
 
         });
@@ -118,31 +116,12 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   };
 
   const imageStarIcon = (image: Image) => {
-    console.log("imageStarIcon", image, board);
     if (board?.display_image_id === image.id) {
       return ( starSharp )
     } else {
       return ( starOutline )
     }
   }
-
-  // const onSetDisplayImage = async (image: Image) => {
-  //   if (board) {
-  //     console.log("Setting display image: ", image);
-  //     const updatingBoard: Board = { ...board, display_image_id: image.id };
-
-  //   const savedBoard = await updateBoard(updatingBoard);
-  //   console.log("Saved board: ", savedBoard);
-  //   window.location.reload();
-  //   // alert("Response: " + savedBoard);
-  //   // setBoard(savedBoard);
-  //   }
-  // };
-
-  useIonViewWillEnter(() => {
-    console.log("ImageGalleryItem ionViewWillEnter", image);
-  }, []);
-
   return (
     <div
       ref={imgRef}
@@ -151,7 +130,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       } rounded-md shadow-md p-0 `}
     >
       <IonImg
-        src={image.src}
+        src={image.src || placeholderUrl}
         alt={image.label}
         className="ion-img-contain mx-auto"
         onClick={() => handleImageClick(image)}

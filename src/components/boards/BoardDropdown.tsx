@@ -23,16 +23,6 @@ const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId, boards }) => {
   const selectRef = React.useRef<HTMLIonSelectElement>(null);
   const history = useHistory();
 
-  // const fetchBoards = async () => {
-  //   const allBoards = await getBoards();
-  //   if (!allBoards) {
-  //     console.error("Error fetching boards");
-  //     return;
-  //   }
-  //   const boards = allBoards["boards"];
-  //   setBoards(boards);
-  // };
-
   const handleSelectChange = (e: CustomEvent) => {
     const boardId = e.detail.value;
     setBoardId(boardId);
@@ -64,7 +54,7 @@ const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId, boards }) => {
   };
 
   useEffect(() => {
-    console.log("boards", boards);
+    console.log("Board Dropdown: Boards", boards);
   }, []);
 
   return (

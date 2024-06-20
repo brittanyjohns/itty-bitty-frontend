@@ -171,7 +171,7 @@ const BaseImageGallery: React.FC<ImageGalleryProps> = ({
           >
             <IonImg
               id={image.id}
-              src={image.src}
+              src={image.src || placeholderUrl}
               alt={image.label}
               className="absolute ion-img-cover w-full h-full top-0 left-0"
             />
