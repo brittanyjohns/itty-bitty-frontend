@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import { Image, ImageGalleryProps } from "../../data/images";
 import { IonImg } from "@ionic/react";
 
@@ -7,6 +7,8 @@ import "./../main.css";
 import { useHistory } from "react-router";
 import ActionList from "../utils/ActionList";
 import { removeImageFromBoard } from "../../data/boards";
+import { image } from "ionicons/icons";
+import { generatePlaceholderImage } from "../../data/utils";
 const BaseImageGallery: React.FC<ImageGalleryProps> = ({
   images,
   board,
@@ -21,6 +23,7 @@ const BaseImageGallery: React.FC<ImageGalleryProps> = ({
   const [showActionList, setShowActionList] = useState<boolean>(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
+
 
   const resizeGrid = () => {
     const imagesCount = images.length;
@@ -171,7 +174,7 @@ const BaseImageGallery: React.FC<ImageGalleryProps> = ({
           >
             <IonImg
               id={image.id}
-              src={image.src || placeholderUrl}
+              src={image.src || `https://via.placeholder.com/150x150`}
               alt={image.label}
               className="absolute ion-img-cover w-full h-full top-0 left-0"
             />
