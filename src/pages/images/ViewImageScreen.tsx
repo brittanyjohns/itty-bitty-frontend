@@ -76,7 +76,6 @@ const ViewImageScreen: React.FC = () => {
     return false;
   };
   const [showHardDelete, setShowHardDelete] = useState(false);
-  const [url, setUrl] = useState("");
 
   const fetchImage = async () => {
     const img = await getImage(id);
@@ -97,16 +96,10 @@ const ViewImageScreen: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    getData();
-  }, []);
-
   const getData = async () => {
     const imgToSet = await fetchImage();
-    console.log("Image to set: ", imgToSet);
     const allBoards = await getBoards();
     setBoards(allBoards['boards']);
-    console.log("All Boards: ", allBoards);
     const newFilteredBoards = allBoards['boards'].filter((board: Board) => {
       return image?.user_image_boards?.find((userBoard: Board) => userBoard.id !== board.id);
     } );
@@ -131,9 +124,9 @@ const ViewImageScreen: React.FC = () => {
   const handleDeleteImage = async () => {
     if (!image) return;
     const result = await deleteImage(image.id);
-    if (result["status"] === "success") {
-      alert("Image deleted successfully.");
-      window.location.href = "/images";
+    console.log("Delete Image Result: ", result);
+    if (result["status"] === "ok") {
+      history.push("/images");
     } else {
       alert("Error deleting image..\n" + result["message"]);
     }
@@ -142,9 +135,8 @@ const ViewImageScreen: React.FC = () => {
   const handleRemoveCurrentDoc = async () => {
     if (!image) return;
     const result = await removeDoc(image.id, image.display_doc?.id);
-    if (result["status"] === "success") {
-      alert("Display image removed successfully.");
-      window.location.reload();
+    if (result["status"] === "ok") {
+      getData();
     } else {
       alert("Error removing display image.\n" + result["message"]);
     }
@@ -188,9 +180,7 @@ const ViewImageScreen: React.FC = () => {
   const handleDocClick = async (e: React.MouseEvent<HTMLIonImgElement>) => {
     const target = e.target as HTMLImageElement;
     const currentImg = await markAsCurrent(target.id); // Ensure markAsCurrent returns a Promise
-    // const imgToSet = await fetchImage();
     const imgToSet = currentImg;
-    console.log("Image to set: ", imgToSet);
     setImage(imgToSet);
     setCurrentImage(imgToSet?.display_doc?.src ?? imgToSet.src);
   };
@@ -210,10 +200,6 @@ const ViewImageScreen: React.FC = () => {
     formData.append("image[image_prompt]", image.image_prompt ?? "");
     setShowLoading(true);
     const updatedImage = await generateImage(formData); // Ensure generateImage returns a Promise<Image>
-    // setImage(updatedImage);
-    // fetchImage(); // Re-fetch image data to update state
-    // setShowLoading(false);
-    console.log("Updated Image: ", updatedImage);
     if (updatedImage) {
       setTimeout(() => {
         setShowLoading(false);
@@ -237,10 +223,6 @@ const ViewImageScreen: React.FC = () => {
     const result = await setNextWords(image.id);
     if (result["next_words"]) {
       history.push(`/predictive/${image.id}`);
-      // alert("Next words set successfully.");
-      // const predictiveImgs = await getPredictiveImages(image.id);
-      // setPredictiveImages(predictiveImgs);
-      // window.location.reload();
     } else {
       alert("Error setting next words.\n" + result["message"]);
     }
@@ -249,19 +231,6 @@ const ViewImageScreen: React.FC = () => {
   const createSymbol = async () => {
     if (!image) return;
     const result = await create_symbol(image.id);
-    console.log("Symbol result: ", result);
-  };
-
-  const userBoardList = () => { 
-    if (image?.user_image_boards) {
-      console.log("User Image Boards: ", image.user_image_boards);
-      return image?.user_image_boards.map((board) => (
-        <IonItem key={board.id} routerLink={`/boards/${board.id}`}>
-          {board.name}
-        </IonItem>
-      ));
-    }
-    return null;
   };
 
   return (
@@ -290,7 +259,7 @@ const ViewImageScreen: React.FC = () => {
                   <IonIcon icon={refreshCircleOutline} />
                 </IonLabel>
               </IonSegmentButton>
-              {image && image.display_doc?.id && showHardDelete && (
+              {showHardDelete && (
                 <IonSegmentButton value="delete">
                   <IonLabel className="text-xl">
                     <IonIcon icon={trashBinOutline} />
@@ -396,18 +365,20 @@ const ViewImageScreen: React.FC = () => {
             )}
             
             {image && boards && (
-              <div className="mt-3 w-2/3 md:w-1/3 mx-auto">
-                {boards && boards.length > 0 && (
-                  <BoardDropdown imageId={image.id} boards={boards} />
-                )}
-                <IonText className="text-md">This image is on the following boards:</IonText>
-                {image?.user_image_boards?.map((board) => (
-                  <IonItem key={board.id} routerLink={`/boards/${board.id}`}>
-                    {board.name}
-                  </IonItem>  
-                ))}
-
-
+              <div className="mt-6 flex justify-center">
+                <div className="mx-auto p-1">
+                  {boards && boards.length > 0 && (
+                    <BoardDropdown imageId={image.id} boards={boards} />
+                  )}
+                </div>
+                <div className="mx-auto">
+                  <IonText className="text-md">This image is on the following boards:</IonText>
+                  {image?.user_image_boards?.map((board) => (
+                    <IonItem key={board.id} routerLink={`/boards/${board.id}`} detail={true}  className="text-sm font-mono">
+                      {board.name}
+                    </IonItem>  
+                  ))}
+                </div>
               </div>
             )}
             {currentUser?.role === "admin" && (

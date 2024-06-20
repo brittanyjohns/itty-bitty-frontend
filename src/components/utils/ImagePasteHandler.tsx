@@ -20,6 +20,7 @@ const ImagePasteHandler: React.FC<ImagePasteHandlerProps> = ({ setFile }) => {
             if (!blob) return;
 
             const imageEle = document.getElementById('preview') as HTMLImageElement;
+            imageEle.style.display = 'block';
             if (imageEle) {
                 imageEle.src = URL.createObjectURL(blob);
             }
@@ -28,16 +29,13 @@ const ImagePasteHandler: React.FC<ImagePasteHandlerProps> = ({ setFile }) => {
             console.log('file', file);
             const container = new DataTransfer();
             container.items.add(file);
-            const fileInput = document.querySelector('#file_input') as HTMLInputElement;
             const fileField = document.querySelector('#file_field') as HTMLImageElement;
-            console.log('fileInput', fileInput);
             console.log('fileField', fileField);
-            if (fileInput) {
-                fileInput.files = container.files;
-            }
+
             if (fileField) {
                 fileField.src = URL.createObjectURL(file);
             }
+            console.log('fileField.src', fileField.src);
             setFile(file);
         };
 
@@ -49,9 +47,9 @@ const ImagePasteHandler: React.FC<ImagePasteHandlerProps> = ({ setFile }) => {
     }, []);
 
     return (
-        <div>
+        <div className='w-full md:w-1/2 lg:w-1/2 mx-auto'>
             {/* <input type="file" id="file_input" style={{ display: 'none' }} /> */}
-            {/* <img id="preview" alt="Preview" /> */}
+            <img id="preview" alt="Preview" style={{ display: 'none' }} />
         </div>
     );
 };
