@@ -41,7 +41,6 @@ import SettingsPage from "./pages/users/SettingsPage";
 import NewScenario from "./pages/scenarios/NewScenario";
 import ViewMenuScreen from "./pages/menus/ViewMenuScreen";
 import PredictiveIndex from "./pages/predictive/PredictiveIndex";
-import { AndroidFullScreen } from "@awesome-cordova-plugins/android-full-screen";
 import TeamsScreen from "./pages/teams/TeamsScreen";
 import ViewTeamScreen from "./pages/teams/ViewTeamScreen";
 import ViewLockedBoard from "./pages/boards/ViewLockedBoard";
