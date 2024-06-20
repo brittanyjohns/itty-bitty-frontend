@@ -39,11 +39,12 @@ import {
   refreshCircleOutline,
   trashBinOutline,
 } from "ionicons/icons";
-import { set } from "react-hook-form";
+import { get, set } from "react-hook-form";
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
 import ImageCropper from "../../components/images/ImageCropper";
 import { Board, getBoards } from "../../data/boards";
+import { generatePlaceholderImage } from "../../data/utils";
 
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -62,6 +63,7 @@ const ViewImageScreen: React.FC = () => {
   const [boardId, setBoardId] = useState<string | null>(null);
   const [nextImageWords, setNextImageWords] = useState<string[]>([]);
   const [boards, setBoards] = useState<Board[]>([]);
+  const [filteredBoards, setFilteredBoards] = useState<Board[]>([]);
 
   const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
     if (
@@ -74,6 +76,7 @@ const ViewImageScreen: React.FC = () => {
     return false;
   };
   const [showHardDelete, setShowHardDelete] = useState(false);
+  const [url, setUrl] = useState("");
 
   const fetchImage = async () => {
     const img = await getImage(id);
@@ -89,49 +92,40 @@ const ViewImageScreen: React.FC = () => {
     setShowHardDelete(currentUser?.role === "admin");
     setBoardId(boardId);
     getData();
-    console.log("Image: ", image);
-    console.log("Boards: ", boards);
+    if(image && image.src) {
+      setCurrentImage(image.src);
+    }
   }, []);
 
-  useIonViewWillEnter(() => {
-    console.log("View Image Screen");
-     async function fetchData() {
-      const img = await fetchImage();
-      const allBoards = await getBoards();
-      const filteredBoards = allBoards['boards'].filter((board: Board) => {
-        return image?.user_image_boards?.find((userBoard: Board) => userBoard.id !== board.id);
-      } );
-      setBoards(filteredBoards);
-      setImage(img);
-      toggleForms(segmentType, img);
-      if (img.display_doc && img.display_doc.src) {
-        setCurrentImage(img.display_doc.src);
-      } else {
-        setCurrentImage(img.src);
-      } 
-    }
-
-    fetchData();
-  } );
+  useEffect(() => {
+    getData();
+  }, []);
 
   const getData = async () => {
     const imgToSet = await fetchImage();
     console.log("Image to set: ", imgToSet);
     const allBoards = await getBoards();
+    setBoards(allBoards['boards']);
     console.log("All Boards: ", allBoards);
-    const filteredBoards = allBoards['boards'].filter((board: Board) => {
+    const newFilteredBoards = allBoards['boards'].filter((board: Board) => {
       return image?.user_image_boards?.find((userBoard: Board) => userBoard.id !== board.id);
     } );
-
-    setBoards(filteredBoards);
-
+    if (newFilteredBoards) {
+      setFilteredBoards(newFilteredBoards);
+    } else {
+      console.log("No boards found!");
+      setBoards(allBoards['boards'])
+    }
     setImage(imgToSet);
     toggleForms(segmentType, imgToSet);
     if (imgToSet.display_doc && imgToSet.display_doc.src) {
       setCurrentImage(imgToSet.display_doc.src);
-    } else {
+    } else if (imgToSet.src) {
       setCurrentImage(imgToSet.src);
-    }
+    } else {
+      const imgURl = generatePlaceholderImage(imgToSet.label)
+        setCurrentImage(imgURl);
+    } 
   };
 
   const handleDeleteImage = async () => {
@@ -194,7 +188,6 @@ const ViewImageScreen: React.FC = () => {
   const handleDocClick = async (e: React.MouseEvent<HTMLIonImgElement>) => {
     const target = e.target as HTMLImageElement;
     const currentImg = await markAsCurrent(target.id); // Ensure markAsCurrent returns a Promise
-    console.log("Current Image: ", currentImg);
     // const imgToSet = await fetchImage();
     const imgToSet = currentImg;
     console.log("Image to set: ", imgToSet);
@@ -260,7 +253,6 @@ const ViewImageScreen: React.FC = () => {
   };
 
   const userBoardList = () => { 
-    console.log("Image: ", image);
     if (image?.user_image_boards) {
       console.log("User Image Boards: ", image.user_image_boards);
       return image?.user_image_boards.map((board) => (
@@ -402,13 +394,19 @@ const ViewImageScreen: React.FC = () => {
                 </div>
               </div>
             )}
+            
             {image && boards && (
               <div className="mt-3 w-2/3 md:w-1/3 mx-auto">
                 {boards && boards.length > 0 && (
                   <BoardDropdown imageId={image.id} boards={boards} />
                 )}
                 <IonText className="text-md">This image is on the following boards:</IonText>
-                {userBoardList()}
+                {image?.user_image_boards?.map((board) => (
+                  <IonItem key={board.id} routerLink={`/boards/${board.id}`}>
+                    {board.name}
+                  </IonItem>  
+                ))}
+
 
               </div>
             )}

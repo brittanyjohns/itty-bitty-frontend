@@ -64,7 +64,6 @@ const MainMenu: React.FC<MainMenuProps> = () => {
 
   useIonViewWillEnter(() => {
     const links = getMenu();
-    console.log("Menu links", links);
     setMenuLinks(links);
     // if (isWideScreen) {
     //   openMenu();

@@ -3,13 +3,17 @@ import Cropper from "cropperjs";
 import "cropperjs/dist/cropper.css";
 import {
   IonButton,
+  IonButtons,
   IonCard,
   IonInput,
   IonLabel,
   IonLoading,
+  useIonViewWillEnter,
+  useIonViewWillLeave,
 } from "@ionic/react";
 import { createImage, cropImage, findOrCreateImage } from "../../data/images";
 import { useHistory } from "react-router";
+import ImagePasteHandler from "../utils/ImagePasteHandler";
 
 interface ImageCropperProps {
   // onSubmit: (data: {
@@ -27,7 +31,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
   existingLabel,
 }) => {
   const imageElementRef = useRef<HTMLImageElement>(null);
-  const [imageSrc, setImageSrc] = useState<string>("");
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
   const history = useHistory();
   const [showLoading, setShowLoading] = useState<boolean>(false);
   const [imageDimensions, setImageDimensions] = useState({
@@ -61,6 +65,32 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
     }
   };
 
+  const handlePastedFile = (file: File) => {
+    const fileExtension = file.name.split(".").pop() || "";
+    setFileExtension(fileExtension);
+    const reader = new FileReader();
+
+    reader.onload = (event: ProgressEvent<FileReader>) => {
+      const dataUrl = event.target!.result as string;
+      setImageSrc(dataUrl);
+
+      // Create an image to measure dimensions
+      const img = new Image();
+      img.onload = () => {
+        setImageDimensions({ width: img.width, height: img.height });
+      };
+      img.src = dataUrl;
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  const handleCancel = () => {
+    setImageSrc(null);
+    setLabel("");
+    
+  }
+
   useEffect(() => {
     if (imageSrc && imageElementRef.current) {
       const cropperInstance = new Cropper(imageElementRef.current, {
@@ -77,7 +107,6 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Submitting form", event);
     if (cropper) {
       const croppedImage = cropper.getCroppedCanvas().toDataURL();
       handleFormSubmit({ croppedImage, fileExtension });
@@ -87,7 +116,6 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
         formData.append("image[label]", label);
         
         const result = await findOrCreateImage(formData, false);
-        console.log("Result:", result);
 
       }
     }
@@ -129,12 +157,16 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
       alert("An error occurred. Please try again.");
     }
   };
-
-  useEffect(() => {
-    if (existingLabel) {
-      setLabel(existingLabel);
+  
+  useIonViewWillLeave(() => {
+    imageElementRef.current?.removeAttribute("src");
+    if (imageSrc) {
+      setImageSrc(null);
     }
-  }, []);
+    if (label) {
+      setLabel("");
+    }
+  } );
 
   return (
     <div className="w-full md:w-1/2 lg:w-1/2 mx-auto">
@@ -153,10 +185,12 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
 
           <input
             type="file"
+            id="file_field"
             accept="image/*"
             onChange={onFileChange}
           />
         </IonCard>
+        <ImagePasteHandler setFile={handlePastedFile} />
         {imageSrc && (
           <>
             <img
@@ -166,18 +200,28 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
               style={{ display: "none" }}
             />
             <div className="mt-4">
-              <p className="text-center">Crop your image</p>
+              <p className="text-center">Select the area to crop</p>
             </div>
           </>
         )}
+        <IonButtons>
         <IonButton
           type="submit"
           className="mt-4"
-          color="primary"
+          color="secondary"
           expand="block"
         >
           Submit
         </IonButton>
+        <IonButton
+          onClick={handleCancel}
+          className="mt-4"
+          color="danger"
+          expand="block"  
+        >
+          Cancel
+        </IonButton>
+        </IonButtons>
       </form>
       <IonLoading isOpen={showLoading} message="Uploading..." />
     </div>

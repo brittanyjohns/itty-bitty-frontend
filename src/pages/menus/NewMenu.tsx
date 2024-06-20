@@ -18,7 +18,6 @@ import { arrowBackCircleOutline } from "ionicons/icons";
 import { useState } from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/utils/Tabs";
-import { set } from "react-hook-form";
 
 type NewMenu = {
   name: string;
@@ -33,7 +32,7 @@ const NewMenu: React.FC = (props: any) => {
   });
   const [showLoading, setShowLoading] = useState<boolean>(false);
 
-  const { currentUser, setCurrentUser } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
     if (
@@ -70,7 +69,6 @@ const NewMenu: React.FC = (props: any) => {
       data.append("menu[docs][image]", file);
     }
     saveMenu(data);
-    // props.history.push('/home');
   };
 
   const saveMenu = async (formData: FormData) => {
