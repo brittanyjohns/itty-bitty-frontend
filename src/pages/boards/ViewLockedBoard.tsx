@@ -108,6 +108,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
     if (inputRef.current) {
       inputRef.current.value = "";
     }
+    setAudioList([]);
     setShowIcon(false);
     setPreviousLabel(undefined);
   };
@@ -164,7 +165,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
                   slot="icon-only"
                   className="tiny"
                   icon={playCircleOutline}
-                  onClick={() => speak(inputRef.current?.value as string)}
+                  // onClick={() => speak(inputRef.current?.value as string)}
                 ></IonIcon>
               </IonButton>
             )}
