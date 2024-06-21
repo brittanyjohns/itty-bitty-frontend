@@ -11,7 +11,7 @@ interface BoardListItemProps {
   inputRef?: React.RefObject<HTMLInputElement>;
 }
 
-const BoardListItem: React.FC<BoardListItemProps> = ({ board }) => {
+const BoardGridItem: React.FC<BoardListItemProps> = ({ board }) => {
   const [boardDetails, setBoardDetails] = useState(board);
   const [showActionList, setShowActionList] = useState(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
@@ -66,4 +66,4 @@ const BoardListItem: React.FC<BoardListItemProps> = ({ board }) => {
   );
 };
 
-export default BoardListItem;
+export default BoardGridItem;

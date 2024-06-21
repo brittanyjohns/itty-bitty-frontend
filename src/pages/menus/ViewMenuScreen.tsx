@@ -24,12 +24,15 @@ import { Image } from "../../data/images";
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import BoardView from "../../components/boards/BoardView";
+import { Team } from "../../data/teams";
 interface ViewMenuScreenProps {
   id: string;
 }
 const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
   const { id } = useParams<{ id: string }>();
   const [menu, setMenu] = useState<Menu | null>(null);
+  const [board, setBoard] = useState<any | null>(null);
   const [currentMenu, setCurrentMenu] = useState<string | null>("");
   const boardTab = useRef<HTMLDivElement>(null);
   const [segmentType, setSegmentType] = useState("menuTab");
@@ -38,10 +41,17 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
   const [images, setImages] = useState<Image[]>([]);
   const history = useHistory();
   const { isWideScreen } = useCurrentUser();
+  const [showIcon, setShowIcon] = useState(false);
+  const [showLoading, setShowLoading] = useState(true);
+  const [showEdit, setShowEdit] = useState(false);
+  const { currentUser } = useCurrentUser();
+  const [numOfColumns, setNumOfColumns] = useState(4);
+  const [currentUserTeams, setCurrentUserTeams] = useState<Team[]>();
 
   const fetchMenu = async () => {
     const menuToSet = await getMenu(Number(id));
     setMenu(menuToSet);
+    setBoard(menuToSet.board);
     setImages(menuToSet.images);
     return menuToSet;
   };
@@ -69,12 +79,6 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
       menuTab.current?.classList.remove("hidden");
       boardTab.current?.classList.add("hidden");
     }
-  };
-
-  const handleDocClick = async (e: React.MouseEvent) => {
-    const target = e.target as HTMLMenuElement;
-    const id = target.id;
-    history.push(`/images/${id}`);
   };
 
   const handleRerun = async () => {
@@ -144,17 +148,16 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
             </IonList>
           </div>
           <div className="hidden" ref={boardTab}>
-            <IonList>
-              <IonItem>
-                <IonLabel position="stacked">Name</IonLabel>
-                <IonText>{menu?.name}</IonText>
-              </IonItem>
-              <IonItem>
-                <IonButton routerLink={`/boards/${menu?.boardId}`}>
-                  View Board
-                </IonButton>
-              </IonItem>
-            </IonList>
+          <BoardView 
+            board={board} 
+            showEdit={showEdit}
+            currentUserTeams={currentUserTeams}
+            // handleAddToTeam={handleAddToTeam}
+            // toggleAddToTeam={toggleAddToTeam}
+            // handleClone={handleClone}
+            setShowIcon={setShowIcon}
+            numOfColumns={numOfColumns}
+          />
           </div>
         </IonContent>
       </IonPage>
