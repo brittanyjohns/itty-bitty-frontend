@@ -51,7 +51,7 @@ const BoardGridItem: React.FC<BoardListItemProps> = ({ board }) => {
         // onTouchEnd={handleButtonRelease}
       >
         <IonImg
-        src={board.display_image_url}
+        src={board.display_image_url || ""}
         alt={board.name}
         className="ion-img-contain mx-auto"
       />
