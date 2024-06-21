@@ -69,6 +69,7 @@ import {Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
 import CheckoutForm from "./components/stripe/CheckoutForm";
 import { STRIPE_PUBLIC_KEY, STRIPE_PRIVATE_KEY } from "./data/users";
+import PricingPage from "./pages/PricingPage";
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -149,6 +150,7 @@ const App: React.FC = () => (
           <Route path={"/sign-in"} component={SignInScreen} exact={true} />
           <Route path="/sign-out" component={SignOutScreen} exact={true} />
           <Route path="/forgot-password" component={ForgotPasswordScreen} exact={true} />
+          <Route path="/pricing" component={PricingPage} exact />
         </IonRouterOutlet>
       </IonReactRouter>
       {/* <Elements stripe={stripePromise} options={options}>

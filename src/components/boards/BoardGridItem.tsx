@@ -45,10 +45,8 @@ const BoardGridItem: React.FC<BoardListItemProps> = ({ board }) => {
   return (
     <>
       <div
-        className="cursor-pointer rounded-md w-full text-center p-4 border hover:bg-slate-200"
+        className="cursor-pointer rounded-md w-full text-center p-1 border hover:bg-slate-200"
         onClick={() => handleBoardClick(board)}
-        // onTouchStart={handleButtonPress}
-        // onTouchEnd={handleButtonRelease}
       >
         <IonImg
         src={board.display_image_url || ""}

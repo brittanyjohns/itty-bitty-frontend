@@ -134,17 +134,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
               </div>
             )}
             <IonList>
-              <IonItem>
-                <IonLabel position="stacked">Name</IonLabel>
-                <IonText>{menu?.name}</IonText>
-              </IonItem>
-              <IonItem>
-                <IonLabel position="stacked">Description</IonLabel>
-                <IonTextarea>{menu?.description}</IonTextarea>
-              </IonItem>
-              <IonItem>
-                <IonButton onClick={handleRerun}>Rerun</IonButton>
-              </IonItem>
+              {currentUser && currentUser.role === "admin" && (<IonButton onClick={handleRerun}>Rerun</IonButton>) }
             </IonList>
           </div>
           <div className="hidden" ref={boardTab}>
@@ -152,9 +142,6 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
             board={board} 
             showEdit={showEdit}
             currentUserTeams={currentUserTeams}
-            // handleAddToTeam={handleAddToTeam}
-            // toggleAddToTeam={toggleAddToTeam}
-            // handleClone={handleClone}
             setShowIcon={setShowIcon}
             numOfColumns={numOfColumns}
           />
