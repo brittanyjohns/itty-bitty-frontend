@@ -12,6 +12,7 @@ import {
 import MainMenu from "../components/main_menu/MainMenu";
 import Tabs from "../components/utils/Tabs";
 import { useCurrentUser } from "../hooks/useCurrentUser";
+import  CheckoutForm from "../components/stripe/CheckoutForm";
 const Dashboard: React.FC = () => {
   const { isWideScreen } = useCurrentUser();
 
@@ -37,7 +38,15 @@ const Dashboard: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <IonContent fullscreen></IonContent>
+          <div className="p-4">
+            <h1 className="text-2xl">Welcome to your dashboard</h1>
+            <p>
+              This is a protected page. You can only view this page if you are
+              logged in.
+            </p>  
+          </div>
+          <CheckoutForm />
+
         </IonContent>
       </IonPage>
       <Tabs />

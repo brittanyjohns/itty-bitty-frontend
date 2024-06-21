@@ -69,7 +69,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   const handleSetDisplayImage = async (image: Image) => {
     if (board) {
       console.log("Setting display image: ", image);
-      const updatingBoard: Board = { ...board, display_image_id: image.id };
+      const updatingBoard: Board = { ...board, display_image_url: image.src };
 
     const savedBoard = await updateBoard(updatingBoard);
     console.log("Saved board: ", savedBoard);

@@ -116,7 +116,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   };
 
   const imageStarIcon = (image: Image) => {
-    if (board?.display_image_id === image.id) {
+    if (board?.display_image_url === image.src) {
       return ( starSharp )
     } else {
       return ( starOutline )

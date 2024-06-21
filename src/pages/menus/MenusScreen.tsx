@@ -19,8 +19,11 @@ import MainMenu, { hideMenu } from "../../components/main_menu/MainMenu";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/utils/Tabs";
 import { addCircleOutline } from "ionicons/icons";
+import MenuGrid from "../../components/menus/MenuGrid";
+import { useEffect, useState } from "react";
+import { Menu, getMenus } from "../../data/menus";
 const MenusScreen: React.FC = () => {
-  const { currentUser, setCurrentUser } = useCurrentUser();
+  const [menus, setMenus] = useState<Menu[]>([]);
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
@@ -28,9 +31,21 @@ const MenusScreen: React.FC = () => {
     }, 3000);
   };
 
-  useIonViewWillEnter(() => {
-    hideMenu();
-  });
+
+  const fetchMenus = async () => {
+    const allMenus = await getMenus();
+    if (!allMenus) {
+      console.error("Error fetching menus");
+      return;
+    }
+    console.log("allMenus", allMenus);
+    const menus = allMenus;
+    setMenus(menus);
+  };
+
+  useEffect(() => {
+    fetchMenus();
+  }, []);
 
   return (
     <>
@@ -51,9 +66,7 @@ const MenusScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <IonItem lines="none">
-            <MenuList />
-          </IonItem>
+            <MenuGrid menus={menus} />
         </IonContent>
         <Tabs />
       </IonPage>

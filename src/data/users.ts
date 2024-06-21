@@ -8,8 +8,9 @@ const API_URL = import.meta.env.VITE_API_URL;
 console.log('API URL:', API_URL);
 
 export const BASE_URL = API_URL ? API_URL + '/api/' : 'http://localhost:4000/api/'; // For web development
+export const STRIPE_PUBLIC_KEY = import.meta.env.VITE_STRIPE_PUBLIC_KEY;
+export const STRIPE_PRIVATE_KEY = import.meta.env.VITE_STRIPE_PRIVATE_KEY;
 
-console.log('BASE URL:', BASE_URL);
 export const userHeaders = {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${localStorage.getItem('token')}`

@@ -1,3 +1,4 @@
+import { Board } from './boards';
 import { Image } from './images';
 import { BASE_URL, userHeaders } from './users';
 
@@ -9,6 +10,7 @@ export interface Menu {
     displayImage?: string;
     images?: Image[];
     boardId?: string;
+    board: Board;
 }
 
 export const getMenus = () => {

@@ -65,10 +65,19 @@ setupIonicReact({
   },
 });
 
-// AndroidFullScreen.isImmersiveModeSupported()
-//   .then(() => AndroidFullScreen.immersiveMode())
-//   .catch(console.warn);
+import {Elements} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
+import CheckoutForm from "./components/stripe/CheckoutForm";
+import { STRIPE_PUBLIC_KEY, STRIPE_PRIVATE_KEY } from "./data/users";
 
+// Make sure to call `loadStripe` outside of a component’s render to avoid
+// recreating the `Stripe` object on every render.
+const stripePromise = loadStripe(STRIPE_PUBLIC_KEY);
+
+const options = {
+  // passing the client secret obtained from the server
+  clientSecret: STRIPE_PRIVATE_KEY,
+};
 const App: React.FC = () => (
   <UserProvider>
     <IonApp>
@@ -142,6 +151,9 @@ const App: React.FC = () => (
           <Route path="/forgot-password" component={ForgotPasswordScreen} exact={true} />
         </IonRouterOutlet>
       </IonReactRouter>
+      {/* <Elements stripe={stripePromise} options={options}>
+      <CheckoutForm />
+    </Elements> */}
     </IonApp>
   </UserProvider>
 );

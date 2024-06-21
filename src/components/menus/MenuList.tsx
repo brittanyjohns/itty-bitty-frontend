@@ -27,7 +27,7 @@ const MenuList = () => {
 
   return (
     <div className="w-full p-2">
-      <IonList className="w-full">
+      <IonList className="w-full md:w-3/4 lg:w-1/2 mx-auto">
         {menus?.map((menu, index) => (
           <MenuListItem key={index} menu={menu} />
         ))}

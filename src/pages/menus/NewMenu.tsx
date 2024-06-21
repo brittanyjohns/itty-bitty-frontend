@@ -214,8 +214,8 @@ const NewMenu: React.FC = (props: any) => {
 
           </form>
         </div>
-        <Tabs />
       </IonContent>
+      <Tabs />
     </IonPage>
   );
 };

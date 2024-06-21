@@ -7,12 +7,8 @@ import {
   rearrangeImages,
 } from "../../data/boards";
 import {
-  IonButton,
-  IonButtons,
   IonContent,
   IonHeader,
-  IonIcon,
-  IonLabel,
   IonLoading,
   IonPage,
   IonRefresher,
@@ -22,22 +18,15 @@ import {
   useIonViewWillEnter,
 } from "@ionic/react";
 
-import {
-  copyOutline,
-  createOutline,
-  documentLockOutline,
-  shareOutline,
-} from "ionicons/icons";
 
 import { useHistory, useParams } from "react-router";
 import "./ViewBoard.css";
 import React from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import DraggableGrid from "../../components/images/DraggableGrid";
 import { Team } from "../../data/teams";
-import AddToTeamForm from "../../components/teams/AddToTeamForm";
 import Tabs from "../../components/utils/Tabs";
 import MainMenu from "../../components/main_menu/MainMenu";
+import BoardView from "../../components/boards/BoardView";
 
 const ViewBoard: React.FC<any> = () => {
   const [board, setBoard] = useState<Board>();
@@ -47,7 +36,6 @@ const ViewBoard: React.FC<any> = () => {
   const [showIcon, setShowIcon] = useState(false);
   const [showLoading, setShowLoading] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
-  const [imageCount, setImageCount] = useState(0);
   const { currentUser } = useCurrentUser();
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [currentUserTeams, setCurrentUserTeams] = useState<Team[]>();
@@ -55,7 +43,6 @@ const ViewBoard: React.FC<any> = () => {
 
   const handleAddToTeam = async (teamId: string) => {
     const boardId = params.id;
-    console.log("teamId", teamId);
     if (!teamId) {
       return;
     }
@@ -74,10 +61,7 @@ const ViewBoard: React.FC<any> = () => {
       alert("Error fetching board");
       return;
     } else {
-      const imgCount = board?.images?.length;
       setCurrentUserTeams(board?.current_user_teams);
-      console.log("currentUserTeams", board?.current_user_teams);
-      setImageCount(imgCount as number);
       setShowLoading(false);
       const userCanEdit = board.can_edit || currentUser?.role === "admin";
       setShowEdit(userCanEdit);
@@ -107,11 +91,6 @@ const ViewBoard: React.FC<any> = () => {
   useIonViewDidLeave(() => {
     inputRef.current?.value && clearInput();
   });
-
-  useEffect(() => {
-    console.log("USE EFFECT");
-    // fetchBoard();
-  }, []);
 
   useIonViewWillEnter(() => {
     console.log("USE ION VIEW WILL ENTER");
@@ -157,76 +136,18 @@ const ViewBoard: React.FC<any> = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <IonLoading message="Please wait..." isOpen={showLoading} />
-          <div className="flex justify-center items-center">
-            <div ref={addToTeamRef} className="p-4 hidden">
-              {currentUserTeams && (
-                <AddToTeamForm
-                  onSubmit={handleAddToTeam}
-                  toggleAddToTeam={toggleAddToTeam}
-                  currentUserTeams={currentUserTeams}
-                />
-              )}
-            </div>
-          </div>
-          <div className="flex justify-center items-center px-4">
-            <IonButtons slot="end">
-              {showEdit && (
-                <IonButton onClick={toggleAddToTeam} className="mr-4">
-                  <IonIcon icon={shareOutline} className="mx-2" />
-                  <IonLabel>Share</IonLabel>
-                </IonButton>
-              )}
-              <IonButton
-                routerLink={`/boards/${params.id}/locked`}
-                className="mr-4"
-              >
-                <IonIcon icon={documentLockOutline} className="mx-2" />
-                <IonLabel>Lock</IonLabel>
-              </IonButton>
-              <IonButton onClick={handleClone} className="mr-4">
-                <IonIcon icon={copyOutline} className="mx-2" />
-                <IonLabel>Clone</IonLabel>
-              </IonButton>
-              {showEdit && (
-                <IonButton
-                  routerLink={`/boards/${params.id}/gallery`}
-                  className="mr-4"
-                >
-                  <IonIcon icon={createOutline} className="mx-2" />
-                  <IonLabel>Edit</IonLabel>
-                </IonButton>
-              )}
-            </IonButtons>
-          </div>
-
-          {board && (
-            <DraggableGrid
-              images={board.images}
-              board={board}
-              setShowIcon={setShowIcon}
-              inputRef={inputRef}
-              columns={numOfColumns}
-              disableReorder={true}
-              mute={true}
-              viewOnClick={true}
-              showRemoveBtn={true}
-            />
-          )}
-          {imageCount < 1 && (
-            <div className="text-center pt-32">
-              <p>No images found</p>
-            </div>
-          )}
-          {board?.parent_type === "Menu" && imageCount < 1 && (
-            <div className="text-center pt-32">
-              <IonLoading
-                message="Please wait while we load your board..."
-                isOpen={showLoading}
-              />
-            </div>
-          )}
-                  <Tabs />
-
+          <BoardView 
+            board={board} 
+            showEdit={showEdit}
+            currentUserTeams={currentUserTeams}
+            handleAddToTeam={handleAddToTeam}
+            toggleAddToTeam={toggleAddToTeam}
+            handleClone={handleClone}
+            setShowIcon={setShowIcon}
+            inputRef={inputRef}
+            numOfColumns={numOfColumns}
+          />
+        <Tabs />
         </IonContent>
       </IonPage>
     </>

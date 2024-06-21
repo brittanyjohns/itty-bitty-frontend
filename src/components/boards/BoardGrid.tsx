@@ -26,7 +26,7 @@ const BoardGrid = ({ boards }: BoardGridProps) => {
   return (
     <div className="ion-padding">
       <div
-        className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2"
+        className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-8 gap-1"
         ref={gridRef}
       >
         {boards &&
@@ -42,14 +42,14 @@ const BoardGrid = ({ boards }: BoardGridProps) => {
           ))}
         {currentUser && boards?.length === 0 && (
           <div className="text-center">
-            <p>No boards found</p>
+            <p className="text-lg">No boards found</p>
+
             <IonButton routerLink="/boards/new" color="primary">
               Create a new board
             </IonButton>
           </div>
         )}
 
-        {!currentUser && <SignInScreen />}
       </div>
     </div>
   );
