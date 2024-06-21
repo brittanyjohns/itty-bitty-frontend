@@ -54,7 +54,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
     const handleResize = () => {
       const currentWidth = window.innerWidth;
       setWidth(currentWidth);
-      const adjustWidth = width - 100;
+      const adjustWidth = width - 10;
       const dynamicRowHeight = Math.floor(adjustWidth / columns);
       setRowHeight(dynamicRowHeight);
     };
@@ -85,7 +85,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
       width={width}
       rowHeight={rowHeight}
       onLayoutChange={onLayoutChange}
-      margin={[5, 5]}
+      margin={[10, 5]}
     >
       {images.map((img: any, index: number) => (
         <div

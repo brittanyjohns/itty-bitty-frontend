@@ -32,7 +32,7 @@ const BoardGrid = ({ boards }: BoardGridProps) => {
         boards.map((board, i) => (
           <div
             id={board.id}
-            className="rounded-md flex relative p-1"
+            className="rounded-md flex relative p-2"
             onClick={() => handleBoardClick(board)}
             key={board.id}
           >
