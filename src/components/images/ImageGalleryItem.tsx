@@ -127,7 +127,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       ref={imgRef}
       className={`relative cursor-pointer ${
         image.bg_color || "bg-white"
-      } rounded-md shadow-md p-0 `}
+      } rounded-sm p-1`}
     >
       <IonImg
         src={image.src || placeholderUrl}
@@ -136,7 +136,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
         onClick={() => handleImageClick(image)}
       />
       {!image.is_placeholder && (
-      <span className="bg-white bg-opacity-80 w-full font-medium text-sm md:text-md lg:text-md text-black absolute bottom-0 left-0 p-1 pl-2 rounded-sm">
+      <span className="bg-white bg-opacity-90 w-full font-medium tracking-tighter leading-tight text-xs md:text-sm lg:text-sm text-black absolute bottom-0 left-0 shadow-md">
         {image.label.length > 15
           ? `${image.label.substring(0, 12)}...`
           : image.label}
@@ -157,10 +157,10 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
         <IonIcon
           slot="icon-only"
           icon={imageStarIcon(image)}
-          size="small"
+          size="x-small"
           onClick={() => onSetDisplayImage(image)}
           color="secondary"
-          className="absolute top-0 right-0 p-1 pr-2"
+          className="absolute top-0 right-0 m-1 shadow-md bg-white bg-opacity-90 rounded-full p-1"
         />
       )}
       <IonAlert
