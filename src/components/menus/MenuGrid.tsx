@@ -18,33 +18,31 @@ const MenuGrid = ({ menus }: MenuGridProps) => {
   };
 
   return (
-    <div className="ion-padding">
-      <div
-        className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-1"
-        ref={gridRef}
-      >
-        {menus &&
-          menus.map((menu, i) => (
-            <div
-              id={menu.id}
-              className="rounded-md flex relative p-1"
-              onClick={() => handleMenuClick(menu)}
-              key={menu.id}
-            >
-              <MenuGridItem menu={menu} />
-            </div>
-          ))}
-        {currentUser && menus?.length === 0 && (
-          <div className="text-center">
-            <p className="text-lg">No menus found</p>
-
-            <IonButton routerLink="/menus/new" color="primary">
-              Create a new menu
-            </IonButton>
+    <div
+      className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-1"
+      ref={gridRef}
+    >
+      {menus &&
+        menus.map((menu, i) => (
+          <div
+            id={menu.id}
+            className="rounded-md flex relative p-1"
+            onClick={() => handleMenuClick(menu)}
+            key={menu.id}
+          >
+            <MenuGridItem menu={menu} />
           </div>
-        )}
+        ))}
+      {currentUser && menus?.length === 0 && (
+        <div className="text-center">
+          <p className="text-lg">No menus found</p>
 
-      </div>
+          <IonButton routerLink="/menus/new" color="primary">
+            Create a new menu
+          </IonButton>
+        </div>
+      )}
+
     </div>
   );
 };
