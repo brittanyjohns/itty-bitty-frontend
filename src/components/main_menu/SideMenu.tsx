@@ -59,7 +59,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
             src={getImageUrl("round_itty_bitty_logo_1", "png")}
             className="h-10 w-10 mx-auto"
           />
-          <IonTitle className="text-2xl text-black">SpeakAnyWay</IonTitle>
+          <IonTitle className="text-2xl">SpeakAnyWay</IonTitle>
         </IonItem>
       </IonToolbar>
       <IonList className="h-full">
@@ -70,11 +70,11 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
           detail={true}
         >
           <IonIcon icon={arrowDownCircleOutline} className="mr-5"></IonIcon>
-          <IonLabel>{currentUser?.email ?? "Guest"}</IonLabel>
+          <IonLabel>{currentUser?.email ?? "Try it for FREE"}</IonLabel>
         </IonItem>
         <IonAccordionGroup ref={accordionGroup}>
           <IonAccordion value="second">
-            <div className="pl-5 ion-padding text-black text-lg" slot="content">
+            <div className="pl-5 ion-padding text-lg text-white" slot="content">
               <IonIcon
                 icon={personCircleOutline}
                 className=""
@@ -91,7 +91,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
                 }}
               ></IonLabel>
               <IonLabel
-                className="ml-2 hover:cursor-pointer text-black"
+                className="ml-2 hover:cursor-pointer"
                 onClick={() => {
                   history.push("/dashboard");
                   setIsOpen(false);
