@@ -37,6 +37,7 @@ const NewMenu: React.FC = (props: any) => {
   const { currentUser } = useCurrentUser();
   const imageElementRef = useRef<HTMLImageElement>(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [name, setName] = useState<string>("");
 
   const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
     if (
@@ -56,7 +57,7 @@ const NewMenu: React.FC = (props: any) => {
       alert("Please select a file to upload");
       return;
     }
-    if (!menu.name) {
+    if (!name) {
       alert("Please enter a name for the menu");
       return;
     }
@@ -66,7 +67,7 @@ const NewMenu: React.FC = (props: any) => {
     }
     console.log(menu);
     const data = new FormData();
-    data.append("menu[name]", menu.name);
+    data.append("menu[name]", name);
     data.append("menu[description]", menu.description);
     const file = menu.file;
     if (file) {
@@ -97,7 +98,8 @@ const NewMenu: React.FC = (props: any) => {
   };
 
   const handleNameInput = (event: any) => {
-    setMenus({ ...menu, name: event.target.value });
+    setName(event.target.value);
+    console.log("name: ", event.target.value);
   };
 
   const onFileChange = (event: any) => {
@@ -185,7 +187,7 @@ const NewMenu: React.FC = (props: any) => {
               <IonInput
                 label="Name"
                 placeholder="Enter new menu name"
-                onIonChange={handleNameInput}
+                onIonInput={handleNameInput}
                 required
               ></IonInput>
             </IonItem>
