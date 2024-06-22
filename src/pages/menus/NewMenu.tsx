@@ -14,11 +14,12 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { arrowBackCircleOutline } from "ionicons/icons";
+import { arrowBackCircleOutline, cameraOutline } from "ionicons/icons";
 import { useRef, useState } from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/utils/Tabs";
 import ImagePasteHandler from "../../components/utils/ImagePasteHandler";
+import MainMenu from "../../components/main_menu/MainMenu";
 
 type NewMenu = {
   name: string;
@@ -148,7 +149,9 @@ const NewMenu: React.FC = (props: any) => {
   }
 
   return (
-    <IonPage id="new-menu-page">
+    <>
+      <MainMenu />
+      <IonPage id="main-content">
       <IonHeader className="bg-inherit shadow-none">
         <IonToolbar>
           <IonButtons slot="start">
@@ -165,7 +168,14 @@ const NewMenu: React.FC = (props: any) => {
           message="Please wait while we analyze your menu..."
           isOpen={showLoading}
         />
-        <div className="ion-padding w-full md:w-3/4 lg:w-1/2 mx-auto">
+        <IonItem lines="none" className="ion-margin-bottom mx-auto w-3/4 md:w-1/2 text-2xl">
+          <h1 className="text-center">Create a new menu board</h1>
+        </IonItem>
+        <div className="ion-padding w-full md:w-3/4 lg:w-1/2 mx-auto border shadow-lg">
+        <IonItem lines="none" className="ion-margin-bottom mx-4">
+          <h1 className="text-center">Browse for an image or paste an image to create a new menu</h1>
+          <IonIcon icon={cameraOutline} size="large" className="mx-auto" />
+        </IonItem>
           <form
             className="ion-padding"
             onSubmit={uploadPhoto}
@@ -196,8 +206,9 @@ const NewMenu: React.FC = (props: any) => {
             type="submit" 
             expand="block"
             color={"secondary"}
-            fill="outline"
+            fill="solid"
             slot="start"
+            size="large"
             >
               Create
             </IonButton>
@@ -207,6 +218,7 @@ const NewMenu: React.FC = (props: any) => {
              color={"danger"}
              fill="outline"
              slot="end"
+              size="small"
              >
               Cancel
             </IonButton>
@@ -217,6 +229,7 @@ const NewMenu: React.FC = (props: any) => {
       </IonContent>
       <Tabs />
     </IonPage>
+    </>
   );
 };
 

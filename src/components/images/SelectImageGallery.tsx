@@ -111,7 +111,7 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
       </div>
       <div className="mt-1">
         <div
-          className="my-auto mx-auto grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-1"
+          className="my-auto mx-auto grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-1"
           key={remainingImages.length}
         >
           {remainingImages &&

@@ -47,7 +47,6 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
   };
   return (
     <>
-      {" "}
       <IonToolbar>
         <IonItem
           routerLink="/"
@@ -63,7 +62,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
           <IonTitle className="text-2xl text-black">SpeakAnyWay</IonTitle>
         </IonItem>
       </IonToolbar>
-      <IonList className="h-full ">
+      <IonList className="h-full">
         <IonItem
           slot="header"
           onClick={toggleAccordion}
