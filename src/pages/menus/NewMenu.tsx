@@ -185,7 +185,7 @@ const NewMenu: React.FC = (props: any) => {
               <IonInput
                 label="Name"
                 placeholder="Enter new menu name"
-                onIonInput={handleNameInput}
+                onIonChange={handleNameInput}
                 required
               ></IonInput>
             </IonItem>
