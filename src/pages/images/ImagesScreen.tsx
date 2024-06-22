@@ -148,7 +148,7 @@ const ImagesScreen: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent>
-          <IonToolbar>
+          <div className="p-2 w-4/5 md:w-3/4 mx-auto">
             <IonSearchbar
               debounce={1000}
               onIonInput={handleSearchInput}
@@ -158,7 +158,7 @@ const ImagesScreen: React.FC = () => {
               value={searchInput}
               placeholder="Search existing images"
             ></IonSearchbar>
-          </IonToolbar>
+          </div>
           {showCreateBtn && (
             <IonList>
               <IonItem slot="start" className="w-full">
