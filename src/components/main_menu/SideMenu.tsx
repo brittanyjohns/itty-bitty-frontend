@@ -74,7 +74,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
         </IonItem>
         <IonAccordionGroup ref={accordionGroup}>
           <IonAccordion value="second">
-            <div className="pl-5 ion-padding text-lg text-white" slot="content">
+            <div className="pl-5 ion-padding text-lg" slot="content">
               <IonIcon
                 icon={personCircleOutline}
                 className=""
