@@ -89,7 +89,7 @@ const MainPageContent = () => {
             </div>
             <div className="mt-1 text-center">
               <Link
-                to="/register"
+                to="/demo"
                 className="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg sm:mt-5"
               >
                 Get Started
