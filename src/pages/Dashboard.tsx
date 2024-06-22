@@ -39,17 +39,20 @@ const Dashboard: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <div className="p-4">
+          <h1 className="text-4xl font-bold my-8"> Under Construction </h1> 
+
             <h1 className="text-2xl">Welcome to your dashboard</h1>
-            <p>
-              This is a protected page. You can only view this page if you are
-              logged in.
-            </p>  
+            <p className="text-lg">
+              This is where you can view your account information, manage your
+              subscriptions, and more.
+            </p>
           </div>
-          <CheckoutForm />
+          {/* <CheckoutForm /> */}
 
         </IonContent>
+        <Tabs />
+
       </IonPage>
-      <Tabs />
     </>
   );
 };
