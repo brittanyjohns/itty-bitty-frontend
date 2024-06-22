@@ -26,6 +26,7 @@ import MainHeader from "../MainHeader";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import BoardView from "../../components/boards/BoardView";
 import { Team } from "../../data/teams";
+import Tabs from "../../components/utils/Tabs";
 interface ViewMenuScreenProps {
   id: string;
 }
@@ -107,7 +108,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
       <MainMenu />
 
       <IonPage id="main-content">
-        {!isWideScreen && <MainHeader />}
+        {/* {!isWideScreen && <MainHeader />} */}
         <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
             <IonButtons slot="start">
@@ -126,7 +127,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
             </IonSegment>
           </IonToolbar>
         </IonHeader>
-        <IonContent className="ion-padding" scrollY={true}>
+        <IonContent scrollY={true}>
           <div className="hidden" ref={menuTab}>
             {menu && menu.displayImage && (
               <div className="">
@@ -140,13 +141,15 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
           <div className="hidden" ref={boardTab}>
           <BoardView 
             board={board} 
-            showEdit={showEdit}
+            showEdit={true}
             currentUserTeams={currentUserTeams}
             setShowIcon={setShowIcon}
+            showShare={false} // Temporarily set to false
             numOfColumns={numOfColumns}
           />
           </div>
         </IonContent>
+        <Tabs />
       </IonPage>
     </>
   );

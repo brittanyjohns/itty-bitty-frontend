@@ -197,6 +197,7 @@ const ViewImageScreen: React.FC = () => {
     const imgToSet = currentImg;
     setImage(imgToSet);
     setCurrentImage(imgToSet?.display_doc?.src ?? imgToSet.src);
+    setupData();
   };
 
   const handleGenerate = async () => {
@@ -310,14 +311,14 @@ const ViewImageScreen: React.FC = () => {
             )}
           </div>
           <div className="mt-6 hidden" ref={generateForm}>
-            <IonList className="ion-padding w-1/2 mx-auto" lines="none">
+            <IonList className="ion-padding w-full md:w-3/4 lg:w-1/2 mx-auto" lines="none">
               <IonItem className="mt-2 border-2">
                 <IonLoading
                   className="loading-icon"
                   cssClass="loading-icon"
                   isOpen={showLoading}
                   message={
-                    "Generating image... Please wait. This may take a few seconds."
+                    "Generating image... Please wait."
                   }
                 />
                 {image && (
