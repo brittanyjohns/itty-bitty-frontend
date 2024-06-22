@@ -4,11 +4,6 @@ import {
   IonContent,
   IonInput,
   IonButton,
-  IonButtons,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonBackButton,
 } from "@ionic/react";
 import { NewUser, signUp } from "../../data/users";
 import { useHistory } from "react-router-dom";
@@ -22,7 +17,7 @@ const SignInScreen: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
-  const { currentUser, isWideScreen } = useCurrentUser();
+  const { isWideScreen } = useCurrentUser();
 
   const handlePassword = (password: string) => {
     setPassword(password);
@@ -50,6 +45,7 @@ const SignInScreen: React.FC = () => {
       } else {
         localStorage.setItem("token", response.token); // Store the token
         history.push("/boards");
+        window.location.reload(); // Reload the page to update the menu
       }
     } catch (error) {
       console.error("Error signing up: ", error);

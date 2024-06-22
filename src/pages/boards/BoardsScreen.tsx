@@ -32,7 +32,6 @@ const BoardsScreen: React.FC = () => {
   const [presetBoards, setPresetBoards] = useState([]);
   const [userBoards, setUserBoards] = useState([]);
   const [scenarioBoards, setScenarioBoards] = useState([]);
-  const [sharedBoards, setSharedBoards] = useState([]);
   const [segmentType, setSegmentType] = useState("user");
   const [pageTitle, setPageTitle] = useState("Your Boards");
 
