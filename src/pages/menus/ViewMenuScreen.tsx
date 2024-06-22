@@ -130,7 +130,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
         <IonContent scrollY={true}>
           <div className="hidden" ref={menuTab}>
             {menu && menu.displayImage && (
-              <div className="">
+              <div className="w-full md:w-1/2 mx-auto">
                 <IonImg src={menu.displayImage} alt={menu.name} />
               </div>
             )}
