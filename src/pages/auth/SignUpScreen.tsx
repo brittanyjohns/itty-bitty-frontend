@@ -50,7 +50,6 @@ const SignInScreen: React.FC = () => {
       } else {
         localStorage.setItem("token", response.token); // Store the token
         history.push("/boards");
-        window.location.reload();
       }
     } catch (error) {
       console.error("Error signing up: ", error);
@@ -64,7 +63,6 @@ const SignInScreen: React.FC = () => {
       <IonPage id="main-content">
         {!isWideScreen && <MainHeader />}
         <IonContent className="ion-padding">
-        <div className="container p-4 bg-white bg-opacity-50 mx-auto shadow-lg">
             <div
               className="hero_main1 bg-cover bg-center  min-h-screen"
               style={{ backgroundImage: `url(${getImageUrl("feature_1", "webp")})` }}
@@ -79,11 +77,13 @@ const SignInScreen: React.FC = () => {
               </div>
             
             <div className="w-full max-w-xs mx-auto">
-              <form className="shadow-md rounded mt-10 bg-white bg-opacity-95 p-8">
+              <form className="shadow-md rounded mt-10 bg-white text-black bg-opacity-95 p-8">
               <h1 className="text-2xl font-bold text-center mb-3">Sign Up</h1>
                 <div className="mb-4">
                   <IonInput
                     value={email}
+                    label="Email"
+                    labelPlacement="stacked"
                     placeholder="Email"
                     onIonInput={(e) => handleEmail(e.detail.value!)}
                     className=""
@@ -91,7 +91,9 @@ const SignInScreen: React.FC = () => {
                 </div>
                 <div className="mb-6">
                   <IonInput
+                    label="Password"
                     type="password"
+                    labelPlacement="stacked"
                     value={password}
                     placeholder="Choose A Password"
                     onIonInput={(e) => handlePassword(e.detail.value!)}
@@ -100,8 +102,10 @@ const SignInScreen: React.FC = () => {
                 </div>
                 <div className="mb-6">
                   <IonInput
+                    label="Password Confirmation"
                     type="password"
                     value={passwordConfirmation}
+                    labelPlacement="stacked"
                     placeholder="Confirm Password"
                     onIonInput={(e) =>
                       handlePasswordConfirmation(e.detail.value!)
@@ -133,7 +137,6 @@ const SignInScreen: React.FC = () => {
               </form>
             </div>
           </div>
-        </div>          
         </IonContent>
       </IonPage>
     </>
