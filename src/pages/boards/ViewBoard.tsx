@@ -139,6 +139,7 @@ const ViewBoard: React.FC<any> = () => {
           <BoardView 
             board={board} 
             showEdit={showEdit}
+            showShare={true}
             currentUserTeams={currentUserTeams}
             handleAddToTeam={handleAddToTeam}
             toggleAddToTeam={toggleAddToTeam}
@@ -147,8 +148,8 @@ const ViewBoard: React.FC<any> = () => {
             inputRef={inputRef}
             numOfColumns={numOfColumns}
           />
-        <Tabs />
         </IonContent>
+        <Tabs />
       </IonPage>
     </>
   );

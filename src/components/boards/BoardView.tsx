@@ -39,6 +39,7 @@ interface BoardViewProps {
     handleAddToTeam: any;
     toggleAddToTeam: any;
     handleClone?: any;
+    showShare?: boolean;
 }
 
 const BoardView: React.FC<any> = ({
@@ -54,6 +55,7 @@ const BoardView: React.FC<any> = ({
     handleAddToTeam,
     toggleAddToTeam,
     handleClone,
+    showShare
 }) => {
 
     return (
@@ -71,7 +73,7 @@ const BoardView: React.FC<any> = ({
             </div>
             <div className="flex justify-center items-center px-4">
                 <IonButtons slot="end">
-                    {showEdit && (
+                    {showShare && (
                         <IonButton onClick={toggleAddToTeam} className="mr-4">
                             <IonIcon icon={shareOutline} className="mx-2" />
                             <IonLabel>Share</IonLabel>
