@@ -337,8 +337,8 @@ const SelectGalleryScreen: React.FC = () => {
             </IonSegment>
           </IonToolbar>
         </IonHeader>
-        <IonContent className="ion-padding" scrollY={true}>
-          <div className="ion-justify-content-center ion-align-items-center ion-text-center pt-1">
+        <IonContent scrollY={true}>
+          <div className="ion-justify-content-center ion-align-items-center ion-text-center p-1">
             <IonText className="font-bold text-2xl">
               {board && board.name}{" "}
             </IonText>
@@ -346,7 +346,7 @@ const SelectGalleryScreen: React.FC = () => {
           </div>
 
           <div className="lg:px-12" ref={editForm}>
-            <div className="mb-2">
+            <div className="m-2">
               <IonText className="text-sm text-gray-500">
                 Voice: {board?.voice}
               </IonText>
@@ -371,18 +371,21 @@ const SelectGalleryScreen: React.FC = () => {
                   </p>
 
                   <IonButton
-                    className="my-5 block w-5/6 mx-auto text-md"
+                    className="block my-5 w-5/6 md:w-1/3 lg:w-1/4 mx-auto text-md text-wrap"
                     onClick={handleSaveLayout}
+                    size="large"
                   >
                     Save Layout
                   </IonButton>
-                  <IonLabel
-                    className="text-sm text-gray-500"
+                  <IonButton
+                    className="block text-xl font-bold text-center my-2 cursor-pointer w-full lg:w-1/2 mx-auto text-wrap"
                     onClick={handleRearrangeImages}
                   >
                     Reset layout
-                    <IonIcon icon={appsOutline} />
-                  </IonLabel>
+                    <IonIcon icon={appsOutline}
+                    className="px-2" />
+                    <span className="text-xs font-normal"> This will resize tile the images horizontally</span>
+                  </IonButton>
                   <DraggableGrid
                     images={board.images}
                     columns={numberOfColumns}
