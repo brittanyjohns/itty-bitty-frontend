@@ -17,6 +17,7 @@ import {
   IonTextarea,
   IonTitle,
   IonToolbar,
+  useIonViewWillEnter,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
 import {
@@ -81,7 +82,19 @@ const ViewImageScreen: React.FC = () => {
     return img;
   };
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   const queryString = window.location.search;
+  //   const urlParams = new URLSearchParams(queryString);
+  //   const boardId = urlParams.get("boardId");
+  //   setShowHardDelete(currentUser?.role === "admin");
+  //   setBoardId(boardId);
+  //   getData();
+  //   if(image && image.src) {
+  //     setCurrentImage(image.src);
+  //   }
+  // }, []);
+
+  const setupData = async () => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const boardId = urlParams.get("boardId");
@@ -91,7 +104,11 @@ const ViewImageScreen: React.FC = () => {
     if(image && image.src) {
       setCurrentImage(image.src);
     }
-  }, []);
+  }
+
+  useIonViewWillEnter(() => {
+    setupData();
+  } );
 
   const getData = async () => {
     const imgToSet = await fetchImage();
@@ -362,20 +379,21 @@ const ViewImageScreen: React.FC = () => {
             )}
             
             {image && boards && (
-              <div className="mt-6 flex justify-center">
-                <div className="mx-auto p-1">
+              <div className="mt-6 flex justify-center gap-4">
+                <div className="mx-auto p-1 w-1/2">
                   {boards && boards.length > 0 && (
                     <BoardDropdown imageId={image.id} boards={boards} />
                   )}
                 </div>
-                <div className="mx-auto">
+                {image?.user_image_boards && image?.user_image_boards?.length > 0 && (
+                  <div className="mx-auto">
                   <IonText className="text-md">This image is on the following boards:</IonText>
                   {image?.user_image_boards?.map((board) => (
                     <IonItem key={board.id} routerLink={`/boards/${board.id}`} detail={true}  className="text-sm font-mono">
                       {board.name}
                     </IonItem>  
                   ))}
-                </div>
+                </div>)}
               </div>
             )}
             {currentUser?.role === "admin" && (

@@ -136,7 +136,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
         onClick={() => handleImageClick(image)}
       />
       {!image.is_placeholder && (
-      <span className="bg-white bg-opacity-90 w-full font-medium tracking-tighter leading-tight text-xs md:text-sm lg:text-sm text-black absolute bottom-0 left-0 shadow-md">
+      <span onClick={() => handleImageClick(image)} className="bg-white bg-opacity-90 w-full font-medium tracking-tighter leading-tight text-xs md:text-sm lg:text-sm text-black absolute bottom-0 left-0 shadow-md">
         {image.label.length > 15
           ? `${image.label.substring(0, 12)}...`
           : image.label}
@@ -150,7 +150,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
           size="small"
           onClick={() => setIsOpen(true)}
           color="danger"
-          className="absolute bottom-0 right-0 p-1 pr-2"
+          className="tiny absolute bottom-0 right-0"
         />
       )}
       {showRemoveBtn && (
