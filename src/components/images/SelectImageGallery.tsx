@@ -126,7 +126,6 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
                 key={image.id}
                 id={`image_${image.id}`}
               >
-                
                 <IonImg
                   src={image.src || generatePlaceholderImage(image.label)}
                   alt={image.label}

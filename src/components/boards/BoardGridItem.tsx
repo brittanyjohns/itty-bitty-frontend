@@ -1,9 +1,16 @@
-import { IonActionSheet, IonImg, IonItem, IonLabel, IonText } from "@ionic/react";
+import {
+  IonActionSheet,
+  IonImg,
+  IonItem,
+  IonLabel,
+  IonText,
+} from "@ionic/react";
 import { Board, deleteBoard } from "../../data/boards";
 import "./BoardListItem.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ActionList from "../utils/ActionList";
 import { useHistory } from "react-router";
+import { generatePlaceholderImage } from "../../data/utils";
 
 interface BoardListItemProps {
   board: Board;
@@ -16,6 +23,10 @@ const BoardGridItem: React.FC<BoardListItemProps> = ({ board }) => {
   const [showActionList, setShowActionList] = useState(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const history = useHistory();
+  const placeholderUrl = useMemo(
+    () => generatePlaceholderImage(board.name),
+    [board.name]
+  );
 
   const removeBoard = async (boardId: string) => {
     try {
@@ -45,21 +56,20 @@ const BoardGridItem: React.FC<BoardListItemProps> = ({ board }) => {
   return (
     <>
       <div
-        className="cursor-pointer rounded-md w-full text-center p-1 border hover:bg-slate-200"
+        className="cursor-pointer rounded-md w-full text-center p-1 border hover:bg-slate-200 hover:text-slate-800"
         onClick={() => handleBoardClick(board)}
       >
         <IonImg
-        src={board.display_image_url || ""}
-        alt={board.name}
-        className="ion-img-contain mx-auto"
-      />
+          src={board.display_image_url || placeholderUrl}
+          alt={board.name}
+          className="ion-img-contain mx-auto"
+        />
         <IonText className="text-xl">
           {board.name.length > 50
             ? `${board.name.substring(0, 50)}...`
             : board.name}
         </IonText>
       </div>
-     
     </>
   );
 };

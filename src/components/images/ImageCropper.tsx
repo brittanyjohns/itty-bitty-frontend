@@ -6,21 +6,14 @@ import {
   IonButtons,
   IonCard,
   IonInput,
-  IonLabel,
   IonLoading,
-  useIonViewWillEnter,
   useIonViewWillLeave,
 } from "@ionic/react";
-import { createImage, cropImage, findOrCreateImage } from "../../data/images";
+import { cropImage, findOrCreateImage } from "../../data/images";
 import { useHistory } from "react-router";
 import ImagePasteHandler from "../utils/ImagePasteHandler";
 
 interface ImageCropperProps {
-  // onSubmit: (data: {
-  //   label: string;
-  //   croppedImage: string;
-  //   fileExtension: string;
-  // }) => void;
   existingId?: string;
   boardId?: string | null;
   existingLabel?: string | null;
@@ -66,6 +59,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
   };
 
   const handlePastedFile = (file: File) => {
+    console.log("Pasted file: ", file);
     const fileExtension = file.name.split(".").pop() || "";
     setFileExtension(fileExtension);
     const reader = new FileReader();
@@ -83,13 +77,12 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
     };
 
     reader.readAsDataURL(file);
-  }
+  };
 
   const handleCancel = () => {
     setImageSrc(null);
     setLabel("");
-    
-  }
+  };
 
   useEffect(() => {
     if (imageSrc && imageElementRef.current) {
@@ -114,9 +107,8 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
       if (label) {
         const formData = new FormData();
         formData.append("image[label]", label);
-        
-        const result = await findOrCreateImage(formData, false);
 
+        const result = await findOrCreateImage(formData, false);
       }
     }
   };
@@ -157,7 +149,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
       alert("An error occurred. Please try again.");
     }
   };
-  
+
   useIonViewWillLeave(() => {
     imageElementRef.current?.removeAttribute("src");
     if (imageSrc) {
@@ -166,7 +158,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
     if (label) {
       setLabel("");
     }
-  } );
+  });
 
   return (
     <div className="w-full md:w-1/2 lg:w-1/2 mx-auto">
@@ -205,22 +197,22 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
           </>
         )}
         <IonButtons>
-        <IonButton
-          type="submit"
-          className="mt-4"
-          color="secondary"
-          expand="block"
-        >
-          Submit
-        </IonButton>
-        <IonButton
-          onClick={handleCancel}
-          className="mt-4"
-          color="danger"
-          expand="block"  
-        >
-          Cancel
-        </IonButton>
+          <IonButton
+            type="submit"
+            className="mt-4"
+            color="secondary"
+            expand="block"
+          >
+            Submit
+          </IonButton>
+          <IonButton
+            onClick={handleCancel}
+            className="mt-4"
+            color="danger"
+            expand="block"
+          >
+            Cancel
+          </IonButton>
         </IonButtons>
       </form>
       <IonLoading isOpen={showLoading} message="Uploading..." />

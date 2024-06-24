@@ -382,9 +382,11 @@ const SelectGalleryScreen: React.FC = () => {
                     onClick={handleRearrangeImages}
                   >
                     Reset layout
-                    <IonIcon icon={appsOutline}
-                    className="px-2" />
-                    <span className="text-xs font-normal"> This will resize tile the images horizontally</span>
+                    <IonIcon icon={appsOutline} className="px-2" />
+                    <span className="text-xs font-normal">
+                      {" "}
+                      This will resize tile the images horizontally
+                    </span>
                   </IonButton>
                   <DraggableGrid
                     images={board.images}
