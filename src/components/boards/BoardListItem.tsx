@@ -95,9 +95,7 @@ const BoardListItem: React.FC<BoardListItemProps> = ({
     <>
       <IonItem
         className="w-full py-3"
-        // onClick={() => handleBoardClick(board)}
-        // onTouchStart={handleButtonPress}
-        // onTouchEnd={handleButtonRelease}
+        onClick={() => handleBoardClick(board)}
         detail={false}
         lines="none"
       >
@@ -107,25 +105,6 @@ const BoardListItem: React.FC<BoardListItemProps> = ({
             : board.name}
         </IonText>
       </IonItem>
-
-      {/* {!board?.predefined && (
-        <IonActionSheet
-          isOpen={showActionList}
-          onDidDismiss={onClose}
-          buttons={[
-            {
-              text: "Delete",
-              role: "destructive",
-              handler: () => handleActionSelected("delete"),
-            },
-            {
-              text: "Cancel",
-              role: "cancel",
-              handler: onClose,
-            },
-          ]}
-        />
-      )} */}
     </>
   );
 };

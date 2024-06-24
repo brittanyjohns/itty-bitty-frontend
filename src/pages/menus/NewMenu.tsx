@@ -91,8 +91,8 @@ const NewMenu: React.FC = (props: any) => {
       alert(`Error creating menu: ${result.error}`);
       return result;
     } else {
-      const boardId = result.boardId;
-      props.history.push("/boards/" + boardId);
+      const id = result.id;
+      props.history.push("/menus/" + id);
       window.location.reload();
     }
   };
@@ -103,7 +103,6 @@ const NewMenu: React.FC = (props: any) => {
   };
 
   const onFileChange = (event: any) => {
-
     event.preventDefault();
     console.log("File: ", event.target.files[0]);
     let file = event.target.files[0];
@@ -118,21 +117,21 @@ const NewMenu: React.FC = (props: any) => {
     console.log("Pasted: ", file);
 
     handleFile(file);
-    const fileField = document.querySelector('#file_field') as HTMLImageElement;
-    console.log('fileField', fileField);
+    const fileField = document.querySelector("#file_field") as HTMLImageElement;
+    console.log("fileField", fileField);
     if (fileField) {
       fileField.hidden = true;
 
       // fileField.src = URL.createObjectURL(file);
     }
-  }
+  };
 
   const handleFile = (file: File) => {
     let reader = new FileReader();
 
     reader.onload = (event: ProgressEvent<FileReader>) => {
       const dataUrl = event.target?.result as string;
-      
+
       setShowLoading(true);
 
       Tesseract.recognize(dataUrl, "eng", {
@@ -148,89 +147,93 @@ const NewMenu: React.FC = (props: any) => {
       });
     };
     reader.readAsArrayBuffer(file);
-  }
+  };
 
   return (
     <>
       <MainMenu />
       <IonPage id="main-content">
-      <IonHeader className="bg-inherit shadow-none">
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonButton routerLink="/menus">
-              <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
-            </IonButton>
-          </IonButtons>
-          <IonTitle>New Menu</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+        <IonHeader className="bg-inherit shadow-none">
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonButton routerLink="/menus">
+                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
+              </IonButton>
+            </IonButtons>
+            <IonTitle>New Menu</IonTitle>
+          </IonToolbar>
+        </IonHeader>
 
-      <IonContent fullscreen scrollY={true}>
-        <IonLoading
-          message="Please wait while we analyze your menu..."
-          isOpen={showLoading}
-        />
-        <IonItem lines="none" className="ion-margin-bottom ion-margin-top mx-auto w-3/4 md:w-1/2 text-2xl">
-          <h1 className="text-center">Create a new menu board</h1>
-        </IonItem>
-        <div className="ion-padding w-full md:w-3/4 lg:w-1/2 mx-auto border shadow-lg">
-        <IonItem lines="none" className="ion-margin-bottom mx-4">
-          <h1 className="text-center">Browse for an image or paste an image to create a new menu</h1>
-          <IonIcon icon={cameraOutline} size="large" className="mx-auto" />
-        </IonItem>
-          <form
-            className="ion-padding"
-            onSubmit={uploadPhoto}
-            encType="multipart/form-data"
+        <IonContent fullscreen scrollY={true}>
+          <IonLoading
+            message="Please wait while we analyze your menu..."
+            isOpen={showLoading}
+          />
+          <IonItem
+            lines="none"
+            className="ion-margin-bottom ion-margin-top mx-auto w-3/4 md:w-1/2 text-2xl"
           >
-            <IonItem lines="none" className="ion-margin-bottom">
-              <IonInput
-                label="Name"
-                placeholder="Enter new menu name"
-                onIonInput={handleNameInput}
-                required
-              ></IonInput>
+            <h1 className="text-center">Create a new menu board</h1>
+          </IonItem>
+          <div className="ion-padding w-full md:w-3/4 lg:w-1/2 mx-auto border shadow-lg">
+            <IonItem lines="none" className="ion-margin-bottom mx-4">
+              <h1 className="text-center">
+                Browse for an image or paste an image to create a new menu
+              </h1>
+              <IonIcon icon={cameraOutline} size="large" className="mx-auto" />
             </IonItem>
-
-            <IonItem lines="none" className="ion-margin-bottom">
-              <input
-                className="bg-inherit w-full p-4 rounded-md"
-                type="file"
-                id="file_field"
-                onChange={(ev) => onFileChange(ev)}
-              />
-            </IonItem>
-            <ImagePasteHandler setFile={handlePaste} />
-            
-            <IonButtons className="ion-margin-top">
-            <IonButton 
-            className="ion-margin-top" 
-            type="submit" 
-            expand="block"
-            color={"secondary"}
-            fill="solid"
-            slot="start"
-            size="large"
+            <form
+              className="ion-padding"
+              onSubmit={uploadPhoto}
+              encType="multipart/form-data"
             >
-              Create
-            </IonButton>
-            <IonButton
-             onClick={() => window.location.reload()}
-             expand="block"
-             color={"danger"}
-             fill="outline"
-             slot="end"
-              size="small"
-             >
-              Cancel
-            </IonButton>
-          </IonButtons>
+              <IonItem lines="none" className="ion-margin-bottom">
+                <IonInput
+                  label="Name"
+                  placeholder="Enter new menu name"
+                  onIonInput={handleNameInput}
+                  required
+                ></IonInput>
+              </IonItem>
 
-          </form>
-        </div>
-      </IonContent>
-      <Tabs />
-    </IonPage>
+              <IonItem lines="none" className="ion-margin-bottom">
+                <input
+                  className="bg-inherit w-full p-4 rounded-md"
+                  type="file"
+                  id="file_field"
+                  onChange={(ev) => onFileChange(ev)}
+                />
+              </IonItem>
+              <ImagePasteHandler setFile={handlePaste} />
+
+              <IonButtons className="ion-margin-top">
+                <IonButton
+                  className="ion-margin-top"
+                  type="submit"
+                  expand="block"
+                  color={"secondary"}
+                  fill="solid"
+                  slot="start"
+                  size="large"
+                >
+                  Create
+                </IonButton>
+                <IonButton
+                  onClick={() => window.location.reload()}
+                  expand="block"
+                  color={"danger"}
+                  fill="outline"
+                  slot="end"
+                  size="small"
+                >
+                  Cancel
+                </IonButton>
+              </IonButtons>
+            </form>
+          </div>
+        </IonContent>
+        <Tabs />
+      </IonPage>
     </>
   );
 };

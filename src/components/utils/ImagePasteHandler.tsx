@@ -1,57 +1,70 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
 interface ImagePasteHandlerProps {
-    setFile: (file: File) => void;
+  setFile: (file: File) => void;
 }
 
 const ImagePasteHandler: React.FC<ImagePasteHandlerProps> = ({ setFile }) => {
-    useEffect(() => {
-        const handlePaste = (evt: ClipboardEvent) => {
-            const clipboardItems = evt.clipboardData?.items;
-            if (!clipboardItems) return;
+  useEffect(() => {
+    console.log("ImagePasteHandler mounted");
+    const handlePaste = (evt: ClipboardEvent) => {
+      console.log("ClipboardEvent", evt);
+      const clipboardItems = evt.clipboardData?.items;
+      if (!clipboardItems) return;
 
-            const items = Array.from(clipboardItems).filter(item => /^image\//.test(item.type));
-            if (items.length === 0) {
-                return;
-            }
+      const items = Array.from(clipboardItems).filter((item) =>
+        /^image\//.test(item.type)
+      );
+      if (items.length === 0) {
+        return;
+      }
 
-            const item = items[0];
-            const blob = item.getAsFile();
-            if (!blob) return;
+      const item = items[0];
+      const blob = item.getAsFile();
+      if (!blob) return;
 
-            const imageEle = document.getElementById('preview') as HTMLImageElement;
-            imageEle.style.display = 'block';
-            if (imageEle) {
-                imageEle.src = URL.createObjectURL(blob);
-            }
+      const imageEle = document.getElementById("preview") as HTMLImageElement;
+      imageEle.style.display = "block";
+      if (imageEle) {
+        imageEle.src = URL.createObjectURL(blob);
+      } else {
+        console.error("Image element not found");
+      }
 
-            const file = new File([blob], "file name", { type: "image/jpeg", lastModified: new Date().getTime() });
-            console.log('file', file);
-            const container = new DataTransfer();
-            container.items.add(file);
-            const fileField = document.querySelector('#file_field') as HTMLImageElement;
-            console.log('fileField', fileField);
+      console.log("blob", blob);
 
-            if (fileField) {
-                fileField.src = URL.createObjectURL(file);
-            }
-            console.log('fileField.src', fileField.src);
-            setFile(file);
-        };
+      const file = new File([blob], "file name", {
+        type: "image/jpeg",
+        lastModified: new Date().getTime(),
+      });
+      console.log("file", file);
+      const container = new DataTransfer();
+      container.items.add(file);
+      const fileField = document.querySelector(
+        "#file_field"
+      ) as HTMLImageElement;
+      console.log("fileField", fileField);
 
-        document.addEventListener('paste', handlePaste);
+      if (fileField) {
+        fileField.src = URL.createObjectURL(file);
+      }
+      console.log("fileField.src", fileField.src);
+      setFile(file);
+    };
 
-        return () => {
-            document.removeEventListener('paste', handlePaste);
-        };
-    }, []);
+    document.addEventListener("paste", handlePaste);
 
-    return (
-        <div className='w-full md:w-1/2 lg:w-1/2 mx-auto'>
-            {/* <input type="file" id="file_input" style={{ display: 'none' }} /> */}
-            <img id="preview" alt="Preview" style={{ display: 'none' }} />
-        </div>
-    );
+    return () => {
+      document.removeEventListener("paste", handlePaste);
+    };
+  }, []);
+
+  return (
+    <div className="w-full md:w-1/2 lg:w-1/2 mx-auto">
+      {/* <input type="file" id="file_input" style={{ display: 'none' }} /> */}
+      <img id="preview" alt="Preview" style={{ display: "none" }} />
+    </div>
+  );
 };
 
 export default ImagePasteHandler;

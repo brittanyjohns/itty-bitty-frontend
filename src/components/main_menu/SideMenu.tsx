@@ -1,13 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  IonContent,
-  IonHeader,
   IonList,
   IonMenu,
   IonTitle,
   IonToolbar,
-  useIonViewWillLeave,
-  useIonViewWillEnter,
   IonItem,
   IonIcon,
   IonLabel,
