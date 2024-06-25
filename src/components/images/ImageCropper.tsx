@@ -132,8 +132,8 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
     } else {
       formData.append("image[label]", label);
     }
-    const labeToSendl = formData.get("image[label]");
-    if (!labeToSendl) {
+    const labelToSend = formData.get("image[label]");
+    if (!labelToSend) {
       alert("Please provide a label for the image.");
       setShowLoading(false);
       return;

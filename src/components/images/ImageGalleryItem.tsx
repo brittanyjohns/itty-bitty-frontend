@@ -1,5 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { IonAlert, IonIcon, IonImg, useIonViewDidLeave, useIonViewWillEnter } from "@ionic/react";
+import {
+  IonAlert,
+  IonIcon,
+  IonImg,
+  useIonViewDidLeave,
+  useIonViewWillEnter,
+} from "@ionic/react";
 import { Image } from "../../data/images";
 import { Board, removeImageFromBoard, updateBoard } from "../../data/boards";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
@@ -37,7 +43,10 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   const imgRef = useRef<HTMLDivElement>(null);
   const [audioList, setAudioList] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const placeholderUrl = useMemo(() => generatePlaceholderImage(image.label), [image.label]);
+  const placeholderUrl = useMemo(
+    () => generatePlaceholderImage(image.label),
+    [image.label]
+  );
   const history = useHistory();
 
   const removeImage = async () => {
@@ -86,7 +95,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     }
     setAudioList([...audioList, audioSrc]);
 
-    console.log("Playing audio: ", audioSrc)
+    console.log("Playing audio: ", audioSrc);
     const audio = new Audio(audioSrc);
 
     const promise = audio.play();
@@ -95,10 +104,9 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
         .then(() => {})
         .catch((error) => {
           speak(label);
-
         });
     }
-  }; 
+  };
 
   const speak = async (text: string) => {
     const language = currentUser?.settings?.voice?.language || "en-US";
@@ -117,11 +125,11 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
 
   const imageStarIcon = (image: Image) => {
     if (board?.display_image_url === image.src) {
-      return ( starSharp )
+      return starSharp;
     } else {
-      return ( starOutline )
+      return starOutline;
     }
-  }
+  };
   return (
     <div
       ref={imgRef}
@@ -136,11 +144,15 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
         onClick={() => handleImageClick(image)}
       />
       {!image.is_placeholder && (
-      <span onClick={() => handleImageClick(image)} className="bg-white bg-opacity-90 w-full font-medium tracking-tighter leading-tight text-xs md:text-sm lg:text-sm text-black absolute bottom-0 left-0 shadow-md">
-        {image.label.length > 15
-          ? `${image.label.substring(0, 10)}...`
-          : image.label}
-      </span>
+        <span
+          onClick={() => handleImageClick(image)}
+          className="bg-white bg-opacity-90 w-full font-medium tracking-tighter leading-tight text-xs md:text-sm lg:text-sm text-black absolute bottom-0 left-0 shadow-md"
+        >
+          {image.label.length > 15
+            ? `${image.label.substring(0, 10)}...`
+            : image.label}
+          {image.image_last_added_at}
+        </span>
       )}
       {image.audio && <audio src={image.audio} />}
       {showRemoveBtn && (

@@ -12,11 +12,13 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
+  IonItem,
   IonLabel,
   IonLoading,
   IonPage,
   IonRefresher,
   IonRefresherContent,
+  IonText,
   IonToolbar,
   useIonViewDidLeave,
   useIonViewWillEnter,
@@ -30,59 +32,56 @@ import {
 } from "ionicons/icons";
 import DraggableGrid from "../images/DraggableGrid";
 import AddToTeamForm from "../teams/AddToTeamForm";
-import { useParams } from "react-router";
+import { useHistory } from "react-router";
 
 interface BoardViewProps {
   board: Board;
   showEdit: boolean;
   currentUserTeams: any;
   inputRef?: any;
-  addToTeamRef?: any;
+  //   addToTeamRef: any;
   setShowIcon: any;
   showLoading: boolean;
   imageCount?: number;
   numOfColumns: number;
-  handleAddToTeam: any;
-  toggleAddToTeam: any;
+  //   handleAddToTeam: any;
+  //   toggleAddToTeam: any;
   handleClone?: any;
   showShare?: boolean;
 }
 
-const BoardView: React.FC<any> = ({
+const BoardView: React.FC<BoardViewProps> = ({
   board,
   showEdit,
   currentUserTeams,
   inputRef,
-  addToTeamRef,
+  //   addToTeamRef,
   setShowIcon,
   showLoading,
   imageCount,
   numOfColumns,
-  handleAddToTeam,
-  toggleAddToTeam,
+  //   handleAddToTeam,
+  //   toggleAddToTeam,
   handleClone,
   showShare,
 }) => {
-  const iconTest = (
-    <svg
-      width="64"
-      height="64"
-      viewBox="0 0 64 64"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <circle cx="32" cy="32" r="30" stroke="black" stroke-width="4" />
-      <path
-        d="M20 32C20 28.6863 22.6863 26 26 26H38C41.3137 26 44 28.6863 44 32C44 35.3137 41.3137 38 38 38H26C22.6863 38 20 35.3137 20 32Z"
-        fill="black"
-      />
-      <path
-        d="M48 32C48 30.3431 49.3431 29 51 29C52.6569 29 54 30.3431 54 32C54 33.6569 52.6569 35 51 35C49.3431 35 48 33.6569 48 32Z"
-        fill="black"
-      />
-    </svg>
-  );
+  const history = useHistory();
+  const addToTeamRef = useRef<HTMLDivElement>(null);
 
+  const handleAddToTeam = async (teamId: string) => {
+    const boardId = board.id;
+    if (!teamId || !boardId) {
+      return;
+    }
+    const response = await addToTeam(boardId, teamId);
+    if (response) {
+      history.push("/teams/" + teamId);
+    }
+  };
+
+  const toggleAddToTeam = () => {
+    addToTeamRef.current?.classList.toggle("hidden");
+  };
   return (
     <>
       <div className="flex justify-center items-center">
@@ -97,6 +96,18 @@ const BoardView: React.FC<any> = ({
         </div>
       </div>
       <div className="flex justify-center items-center px-4">
+        <IonItem lines="none">
+          {board && board?.has_generating_images && (
+            <IonText color="success">
+              {`Please wait while we generate images for your board`}
+            </IonText>
+          )}
+        </IonItem>
+        <IonItem lines="none">
+          {board && board?.status && (
+            <IonText color="success">{`Status: ${board?.status}`}</IonText>
+          )}
+        </IonItem>
         <IonButtons slot="end">
           {showShare && (
             <IonButton onClick={toggleAddToTeam} className="mr-4">

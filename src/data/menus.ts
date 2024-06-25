@@ -11,6 +11,7 @@ export interface Menu {
     images?: Image[];
     boardId?: string;
     board: Board;
+    token_limit?: number;
 }
 
 export const getMenus = () => {
