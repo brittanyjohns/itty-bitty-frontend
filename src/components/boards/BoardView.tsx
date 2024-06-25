@@ -1,31 +1,16 @@
-import { useEffect, useRef, useState } from "react";
-import {
-  Board,
-  addToTeam,
-  cloneBoard,
-  getBoard,
-  rearrangeImages,
-} from "../../data/boards";
+import { useRef } from "react";
+import { Board, addToTeam } from "../../data/boards";
 import {
   IonButton,
   IonButtons,
-  IonContent,
-  IonHeader,
   IonIcon,
   IonItem,
   IonLabel,
   IonLoading,
-  IonPage,
-  IonRefresher,
-  IonRefresherContent,
   IonText,
-  IonToolbar,
-  useIonViewDidLeave,
-  useIonViewWillEnter,
 } from "@ionic/react";
 import {
   shareOutline,
-  documentLockOutline,
   copyOutline,
   createOutline,
   chatbubbleEllipsesOutline,
@@ -39,13 +24,10 @@ interface BoardViewProps {
   showEdit: boolean;
   currentUserTeams: any;
   inputRef?: any;
-  //   addToTeamRef: any;
   setShowIcon: any;
   showLoading: boolean;
   imageCount?: number;
   numOfColumns: number;
-  //   handleAddToTeam: any;
-  //   toggleAddToTeam: any;
   handleClone?: any;
   showShare?: boolean;
 }
@@ -55,13 +37,10 @@ const BoardView: React.FC<BoardViewProps> = ({
   showEdit,
   currentUserTeams,
   inputRef,
-  //   addToTeamRef,
   setShowIcon,
   showLoading,
   imageCount,
   numOfColumns,
-  //   handleAddToTeam,
-  //   toggleAddToTeam,
   handleClone,
   showShare,
 }) => {
@@ -155,12 +134,12 @@ const BoardView: React.FC<BoardViewProps> = ({
           showRemoveBtn={true}
         />
       )}
-      {imageCount < 1 && (
+      {imageCount && imageCount < 1 && (
         <div className="text-center pt-32">
           <p>No images found</p>
         </div>
       )}
-      {board?.parent_type === "Menu" && imageCount < 1 && (
+      {board?.parent_type === "Menu" && imageCount && imageCount < 1 && (
         <div className="text-center pt-32">
           <IonLoading
             message="Please wait while we load your board..."

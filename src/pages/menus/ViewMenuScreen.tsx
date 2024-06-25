@@ -42,6 +42,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
   const { currentUser } = useCurrentUser();
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [currentUserTeams, setCurrentUserTeams] = useState<Team[]>();
+  const [showIcon, setShowIcon] = useState(false);
 
   const fetchMenu = async () => {
     const menuToSet = await getMenu(Number(id));
@@ -209,9 +210,10 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
                 board={board}
                 showEdit={true}
                 currentUserTeams={currentUserTeams}
-                // setShowIcon={setShowIcon}
+                setShowIcon={setShowIcon}
                 showShare={false} // Temporarily set to false
                 numOfColumns={numOfColumns}
+                showLoading={false}
               />
             )}
           </div>
