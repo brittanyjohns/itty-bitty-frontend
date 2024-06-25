@@ -68,12 +68,12 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
       setNumOfColumns(board.number_of_columns);
       setGridSize(board.number_of_columns);
 
-      if (board?.status === "pending") {
-        setShowLoading(true);
-        setTimeout(() => {
-          window.location.reload();
-        }, 4000);
-      }
+      // if (board?.status === "pending") {
+      //   setShowLoading(true);
+      //   setTimeout(() => {
+      //     window.location.reload();
+      //   }, 4000);
+      // }
     }
   };
 

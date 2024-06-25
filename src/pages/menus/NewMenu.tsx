@@ -25,12 +25,14 @@ type NewMenu = {
   name: string;
   file: File;
   description: string;
+  token_limit: number;
 };
 const NewMenu: React.FC = (props: any) => {
   const [menu, setMenus] = useState<NewMenu>({
     name: "",
     file: new File([""], "filename"),
     description: "",
+    token_limit: 1,
   });
   const [showLoading, setShowLoading] = useState<boolean>(false);
 
@@ -38,6 +40,7 @@ const NewMenu: React.FC = (props: any) => {
   const imageElementRef = useRef<HTMLImageElement>(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [name, setName] = useState<string>("");
+  const [tokenLimit, setTokenLimit] = useState<number>(10);
 
   const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
     if (
@@ -65,10 +68,10 @@ const NewMenu: React.FC = (props: any) => {
       alert("Something went wrong. Please try a different image.");
       return;
     }
-    console.log(menu);
     const data = new FormData();
     data.append("menu[name]", name);
     data.append("menu[description]", menu.description);
+    data.append("menu[token_limit]", tokenLimit.toString());
     const file = menu.file;
     if (file) {
       data.append("menu[docs][image]", file);
@@ -86,9 +89,10 @@ const NewMenu: React.FC = (props: any) => {
       return;
     }
     let result = await createMenu(formData);
-    if (result?.error) {
-      console.error("Error:", result.error);
-      alert(`Error creating menu: ${result.error}`);
+    console.log("Result:", result);
+    if (result?.errors) {
+      console.error("Error:", result.errors);
+      alert(`Error creating menu: ${JSON.stringify(result)}`);
       return result;
     } else {
       const id = result.id;
@@ -140,6 +144,7 @@ const NewMenu: React.FC = (props: any) => {
         setMenus({ ...menu, file: file, description: text });
         if (imageElementRef.current) {
           imageElementRef.current.src = dataUrl;
+          console.log("Setting image source: ", dataUrl);
         }
         console.log("Data URL: ", dataUrl);
         // setImageSrc(dataUrl);
@@ -203,6 +208,16 @@ const NewMenu: React.FC = (props: any) => {
                   id="file_field"
                   onChange={(ev) => onFileChange(ev)}
                 />
+              </IonItem>
+              <IonItem lines="none" className="ion-margin-bottom">
+                <IonInput
+                  label="Token Limit"
+                  type="number"
+                  placeholder="Enter token limit"
+                  value={tokenLimit}
+                  onIonInput={(e) => setTokenLimit(parseInt(e.detail.value!))}
+                  required
+                ></IonInput>
               </IonItem>
               <ImagePasteHandler setFile={handlePaste} />
 

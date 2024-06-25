@@ -28,6 +28,12 @@ import { BASE_URL } from "./users";
     user_next_words?: string[];
     is_placeholder?: boolean;
     user_image_boards?: Board[];
+    status?: string;
+    error?: string;
+    part_of_speech?: string;
+    added_at?: string;
+    image_last_added_at?: string;
+    open_symbol_api_status?: string;
   }
 
   export interface DraggableGridLayout {

@@ -10,18 +10,30 @@ const ImagePasteHandler: React.FC<ImagePasteHandlerProps> = ({ setFile }) => {
     const handlePaste = (evt: ClipboardEvent) => {
       console.log("ClipboardEvent", evt);
       const clipboardItems = evt.clipboardData?.items;
-      if (!clipboardItems) return;
+      console.log("clipboardItems", clipboardItems);
+      if (!clipboardItems) {
+        alert(
+          "Failed to paste image - no clipboard items found. Please refresh the page and try again."
+        );
+        return;
+      }
 
       const items = Array.from(clipboardItems).filter((item) =>
         /^image\//.test(item.type)
       );
       if (items.length === 0) {
+        alert("Failed to paste image - no image found in clipboard.");
         return;
       }
 
       const item = items[0];
       const blob = item.getAsFile();
-      if (!blob) return;
+      if (!blob) {
+        alert(
+          "Failed to paste image - unable to convert clipboard item to file"
+        );
+        return;
+      }
 
       const imageEle = document.getElementById("preview") as HTMLImageElement;
       imageEle.style.display = "block";
@@ -31,7 +43,7 @@ const ImagePasteHandler: React.FC<ImagePasteHandlerProps> = ({ setFile }) => {
         console.error("Image element not found");
       }
 
-      console.log("blob", blob);
+      console.log("imageEle", imageEle);
 
       const file = new File([blob], "file name", {
         type: "image/jpeg",
@@ -60,7 +72,7 @@ const ImagePasteHandler: React.FC<ImagePasteHandlerProps> = ({ setFile }) => {
   }, []);
 
   return (
-    <div className="w-full md:w-1/2 lg:w-1/2 mx-auto">
+    <div className="w-full md:w-1/2 lg:w-1/3 mx-auto">
       {/* <input type="file" id="file_input" style={{ display: 'none' }} /> */}
       <img id="preview" alt="Preview" style={{ display: "none" }} />
     </div>

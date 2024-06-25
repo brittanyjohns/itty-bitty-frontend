@@ -15,6 +15,10 @@ export interface Board {
     voice?: string;
     can_edit?: boolean;
     can_delete?: boolean;
+    cost?: number;
+    status?: string;
+    token_limit?: number;
+    has_generating_images?: boolean;
 }
 
 export interface PredictiveBoard {

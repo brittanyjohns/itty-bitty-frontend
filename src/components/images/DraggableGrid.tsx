@@ -71,11 +71,11 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
       console.log("Setting display image: ", image);
       const updatingBoard: Board = { ...board, display_image_url: image.src };
 
-    const savedBoard = await updateBoard(updatingBoard);
-    console.log("Saved board: ", savedBoard);
-    window.location.reload();
-    // alert("Response: " + savedBoard);
-    // setBoard(savedBoard);
+      const savedBoard = await updateBoard(updatingBoard);
+      console.log("Saved board: ", savedBoard);
+      window.location.reload();
+      // alert("Response: " + savedBoard);
+      // setBoard(savedBoard);
     }
   };
   return (
@@ -89,7 +89,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
     >
       {images.map((img: any, index: number) => (
         <div
-          key={img.layout.i}
+          key={Number(img.id)}
           data-grid={{
             ...img.layout,
             isResizable: enableResize,

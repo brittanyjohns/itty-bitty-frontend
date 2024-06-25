@@ -18,7 +18,6 @@ import {
   useIonViewWillEnter,
 } from "@ionic/react";
 
-
 import { useHistory, useParams } from "react-router";
 import "./ViewBoard.css";
 import React from "react";
@@ -32,25 +31,12 @@ const ViewBoard: React.FC<any> = () => {
   const [board, setBoard] = useState<Board>();
   const params = useParams<{ id: string }>();
   const inputRef = useRef<HTMLIonInputElement>(null);
-  const addToTeamRef = useRef<HTMLDivElement>(null);
   const [showIcon, setShowIcon] = useState(false);
   const [showLoading, setShowLoading] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
   const { currentUser } = useCurrentUser();
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [currentUserTeams, setCurrentUserTeams] = useState<Team[]>();
-  const history = useHistory();
-
-  const handleAddToTeam = async (teamId: string) => {
-    const boardId = params.id;
-    if (!teamId) {
-      return;
-    }
-    const response = await addToTeam(boardId, teamId);
-    if (response) {
-      history.push("/teams/" + teamId);
-    }
-  };
 
   const fetchBoard = async () => {
     const board = await getBoard(params.id);
@@ -69,12 +55,9 @@ const ViewBoard: React.FC<any> = () => {
       setBoard(board);
       setNumOfColumns(board.number_of_columns);
 
-      if (board?.status === "pending") {
-        setShowLoading(true);
-        setTimeout(() => {
-          window.location.reload();
-        }, 4000);
-      }
+      // if (board?.status === "pending") {
+      //   setShowLoading(true);
+      // }
     }
   };
 
@@ -84,9 +67,9 @@ const ViewBoard: React.FC<any> = () => {
     }
     setShowIcon(false);
   };
-  const toggleAddToTeam = () => {
-    addToTeamRef.current?.classList.toggle("hidden");
-  };
+  // const toggleAddToTeam = () => {
+  //   addToTeamRef.current?.classList.toggle("hidden");
+  // };
 
   useIonViewDidLeave(() => {
     inputRef.current?.value && clearInput();
@@ -136,13 +119,13 @@ const ViewBoard: React.FC<any> = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <IonLoading message="Please wait..." isOpen={showLoading} />
-          <BoardView 
-            board={board} 
+          <BoardView
+            board={board}
             showEdit={showEdit}
             showShare={true}
             currentUserTeams={currentUserTeams}
-            handleAddToTeam={handleAddToTeam}
-            toggleAddToTeam={toggleAddToTeam}
+            // handleAddToTeam={handleAddToTeam}
+            // toggleAddToTeam={toggleAddToTeam}
             handleClone={handleClone}
             setShowIcon={setShowIcon}
             inputRef={inputRef}
