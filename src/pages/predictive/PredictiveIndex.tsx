@@ -20,10 +20,13 @@ import MainMenu from "../../components/main_menu/MainMenu";
 import { useHistory, useParams } from "react-router";
 import Tabs from "../../components/utils/Tabs";
 import {
+  add,
   addCircleOutline,
   arrowBackCircleOutline,
-  images,
+  // images,
   playCircleOutline,
+  pulseOutline,
+  refreshCircleOutline,
   text,
   trashBinOutline,
 } from "ionicons/icons";
@@ -118,7 +121,8 @@ const PredictiveImagesScreen: React.FC = () => {
     });
   };
 
-  const clearInput = () => {
+  const clearInput = async () => {
+    console.log("Clearing input");
     if (inputRef.current) {
       inputRef.current.value = "";
     }
@@ -140,6 +144,24 @@ const PredictiveImagesScreen: React.FC = () => {
       fetchFirstBoard();
     }
   }, []);
+
+  const loadMoreImages = async () => {
+    console.log("Loading more images", initialImages);
+    const newImages = await getInitialImages();
+    const allImages = [...newImages, ...initialImages];
+    const uniqueImageIds = new Set(allImages.map((image) => image.id));
+    const uniqueImages = Array.from(uniqueImageIds).map((id) =>
+      allImages.find((image) => image.id === id)
+    );
+
+    const imagesToSet = uniqueImages.filter(
+      (image) => image !== undefined
+    ) as Image[];
+
+    console.log("Setting images: ", imagesToSet);
+
+    setImages(imagesToSet);
+  };
 
   const [audioList, setAudioList] = useState<string[]>([]);
 
@@ -186,6 +208,15 @@ const PredictiveImagesScreen: React.FC = () => {
                   ></IonIcon>
                 </IonButton>
               )}
+              {showIcon && (
+                <IonButton size="small" onClick={loadMoreImages}>
+                  <IonIcon
+                    slot="icon-only"
+                    className="tiny"
+                    icon={refreshCircleOutline}
+                  ></IonIcon>
+                </IonButton>
+              )}
             </IonButtons>
             <IonButtons slot="end">
               {showIcon && (
@@ -194,7 +225,6 @@ const PredictiveImagesScreen: React.FC = () => {
                     slot="icon-only"
                     className="tiny"
                     icon={trashBinOutline}
-                    onClick={() => clearInput()}
                   ></IonIcon>
                 </IonButton>
               )}

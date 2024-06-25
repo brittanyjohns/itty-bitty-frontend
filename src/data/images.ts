@@ -183,12 +183,11 @@ export async function getUserImages(): Promise<Image[]> {
   const images: Image[] = await response.json();
   return images;
 }
-export async function getPredictiveImages(boardId: string): Promise<Image[]> {
-  console.log('getPredictiveImages boardId', boardId);
-  if (!boardId) {
+export async function getPredictiveImages(imageId: string): Promise<Image[]> {
+  if (!imageId) {
     return [];
   }
-  const response = await fetch(`${BASE_URL}boards/${boardId}/predictive_images`, { headers: userHeaders });
+  const response = await fetch(`${BASE_URL}boards/${imageId}/predictive_images`, { headers: userHeaders });
   const images: Image[] = await response.json();
   return images;
 }
