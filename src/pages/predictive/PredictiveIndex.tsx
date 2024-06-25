@@ -75,9 +75,7 @@ const PredictiveImagesScreen: React.FC = () => {
     handleClickWord(image);
     const audioSrc = image.audio;
     const label = image.label;
-    // setCurrentWord(label);
-    console.log("label:", label);
-    console.log("word:", currentWord);
+
     if (inputRef.current) {
       inputRef.current.value += ` ${label}`;
     }
@@ -93,8 +91,20 @@ const PredictiveImagesScreen: React.FC = () => {
     }
     handleUpdateAudioList(audioSrc);
     // setAudioList([...audioList, audioSrc as string]);
+    // const audio = new Audio(audioSrc);
+    // audio.play();
+    console.log("Playing audio: ", audioSrc);
     const audio = new Audio(audioSrc);
-    audio.play();
+
+    const promise = audio.play();
+    if (promise !== undefined) {
+      promise
+        .then(() => {})
+        .catch((error) => {
+          console.error("Error playing audio: ", error);
+          speak(label);
+        });
+    }
   };
 
   const speak = async (text: string) => {
@@ -112,6 +122,7 @@ const PredictiveImagesScreen: React.FC = () => {
     if (inputRef.current) {
       inputRef.current.value = "";
     }
+    setAudioList([]);
     setShowIcon(false);
     setPreviousLabel(undefined);
     fetchFirstBoard();
