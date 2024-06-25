@@ -35,6 +35,7 @@ import { speak } from "../../hoarder/TextToSpeech";
 import FloatingWordsBtn from "../../components/utils/FloatingWordsBtn";
 import { set } from "react-hook-form";
 import { clickWord } from "../../data/audits";
+import { playAudioList } from "../../data/utils";
 
 const PredictiveImagesScreen: React.FC = () => {
   const startingImageId = useParams<{ id: string }>().id;
@@ -90,6 +91,7 @@ const PredictiveImagesScreen: React.FC = () => {
       speak(label);
       return;
     }
+    handleUpdateAudioList(audioSrc);
     // setAudioList([...audioList, audioSrc as string]);
     const audio = new Audio(audioSrc);
     audio.play();
@@ -128,6 +130,16 @@ const PredictiveImagesScreen: React.FC = () => {
     }
   }, []);
 
+  const [audioList, setAudioList] = useState<string[]>([]);
+
+  const handleUpdateAudioList = (audio: string) => {
+    setAudioList([...audioList, audio]);
+  };
+
+  const handlePlayAudioList = async () => {
+    await playAudioList(audioList);
+  };
+
   const refresh = (e: CustomEvent) => {
     // Implement the logic to refresh images here, for example:
     e.detail.complete();
@@ -155,15 +167,11 @@ const PredictiveImagesScreen: React.FC = () => {
             </IonItem>
             <IonButtons slot="start">
               {showIcon && (
-                <IonButton
-                  size="small"
-                  onClick={() => speak(inputRef.current?.value as string)}
-                >
+                <IonButton size="small" onClick={handlePlayAudioList}>
                   <IonIcon
                     slot="icon-only"
                     className="tiny"
                     icon={playCircleOutline}
-                    onClick={() => speak(inputRef.current?.value as string)}
                   ></IonIcon>
                 </IonButton>
               )}
