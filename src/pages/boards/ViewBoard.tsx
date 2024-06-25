@@ -119,18 +119,19 @@ const ViewBoard: React.FC<any> = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <IonLoading message="Please wait..." isOpen={showLoading} />
-          <BoardView
-            board={board}
-            showEdit={showEdit}
-            showShare={true}
-            currentUserTeams={currentUserTeams}
-            // handleAddToTeam={handleAddToTeam}
-            // toggleAddToTeam={toggleAddToTeam}
-            handleClone={handleClone}
-            setShowIcon={setShowIcon}
-            inputRef={inputRef}
-            numOfColumns={numOfColumns}
-          />
+          {board && (
+            <BoardView
+              board={board}
+              showEdit={showEdit}
+              showShare={true}
+              currentUserTeams={currentUserTeams}
+              handleClone={handleClone}
+              setShowIcon={setShowIcon}
+              inputRef={inputRef}
+              numOfColumns={numOfColumns}
+              showLoading={showLoading}
+            />
+          )}
         </IonContent>
         <Tabs />
       </IonPage>
