@@ -15,8 +15,10 @@ const ImageComponent: React.FC<ImageComponentProps> = ({
   audioSrc,
   bg_color,
 }) => {
-
-  const placeholderUrl = useMemo(() => generatePlaceholderImage(label), [label]);
+  const placeholderUrl = useMemo(
+    () => generatePlaceholderImage(label),
+    [label]
+  );
   return (
     <div
       className={`cursor-pointer ${
@@ -25,10 +27,14 @@ const ImageComponent: React.FC<ImageComponentProps> = ({
     >
       {/* Use IonImg for built-in lazy loading */}
       <IonImg
-       src={src || placeholderUrl}
-       alt={label} className="ion-img-contain mx-auto" />
+        src={src || placeholderUrl}
+        alt={label}
+        className="ion-img-contain mx-auto"
+      />
       <span className="font-medium pl-1 text-xs md:text-sm lg:text-md bg-white bg-opacity-85 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black">
-        {label.length > 15 ? `${label.substring(0, 15)}...` : label}
+        {label?.length && label.length > 15
+          ? `${label.substring(0, 15)}...`
+          : label}
       </span>
       {/* Audio, if applicable */}
       {audioSrc && (

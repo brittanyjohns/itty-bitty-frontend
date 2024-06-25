@@ -8,10 +8,10 @@ interface PredictiveImageGalleryProps {
 }
 
 const PredictiveImageGallery: React.FC<PredictiveImageGalleryProps> = ({
-  initialImages,
+  initialImages: images,
   onImageSpeak: handleImageSpeak,
 }) => {
-  const [currentImages, setCurrentImages] = useState<Image[]>(initialImages);
+  const [currentImages, setCurrentImages] = useState<Image[]>(images);
 
   const handleImageClick = async (image: Image) => {
     handleImageSpeak(image);
@@ -30,8 +30,8 @@ const PredictiveImageGallery: React.FC<PredictiveImageGalleryProps> = ({
   };
 
   useEffect(() => {
-    setCurrentImages(initialImages);
-  }, [initialImages]);
+    setCurrentImages(images);
+  }, [images]);
 
   return (
     <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-1">
@@ -43,11 +43,13 @@ const PredictiveImageGallery: React.FC<PredictiveImageGalleryProps> = ({
             image.bg_color || "bg-white"
           } rounded-lg shadow-md p-1`}
         >
-          <ImageComponent
-            label={image.label}
-            src={image.src}
-            bg_color={image.bg_color}
-          />
+          {image && (
+            <ImageComponent
+              label={image.label}
+              src={image.src}
+              bg_color={image.bg_color}
+            />
+          )}
         </div>
       ))}
     </div>
