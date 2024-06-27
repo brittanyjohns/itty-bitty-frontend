@@ -1,7 +1,8 @@
-import React from "react";
-import { get } from "react-hook-form";
 import { Link } from "react-router-dom"; // Assuming React Router for navigation
 import { getIconUrl, getImageUrl } from "../data/utils";
+import { IonButton, IonInput, IonItem, IonToast } from "@ionic/react";
+import { useState } from "react";
+import { BetaRequest, createBetaRequest } from "../data/beta_requests";
 
 const MainPageContent = () => {
   const steps = [
@@ -55,6 +56,31 @@ const MainPageContent = () => {
     },
   ];
 
+  const [email, setEmail] = useState("");
+  const [toastMessage, setToastMessage] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleSubmitEmail = () => {
+    console.log("Email submitted: ", email);
+    const betaRequest: BetaRequest = { email }; // Create a BetaRequest object using the email value
+    createBetaRequest(betaRequest) // Pass the betaRequest object as an argument
+      .then((response: any) => {
+        console.log("Beta request submitted successfully: ", response);
+        // Handle success
+      })
+      .catch((error: any) => {
+        console.error("Error submitting beta request: ", error);
+        // Handle error
+      });
+
+    setEmail(""); // Clear the email input field
+    setToastMessage("Thank you for joining the beta! We'll be in touch soon.");
+    setIsOpen(true);
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 2000);
+  };
+
   return (
     <div className="container p-4 bg-white bg-opacity-50 mx-auto shadow-lg">
       <div
@@ -97,9 +123,25 @@ const MainPageContent = () => {
             </div>
           </div>
           <div className="container mx-auto mt-4 px-1 py-5">
-            <h2 className="text-2xl font-bold text-center text-black">
-              Join the Beta
-            </h2>
+            <h2 className="text-2xl font-bold text-center">Join the Beta</h2>
+            <IonItem className="mt-4">
+              <IonInput
+                type="email"
+                value={email}
+                placeholder="Enter your email"
+                className="w-full"
+                onIonChange={(e) => setEmail(e.detail.value || "")} // Assuming Ionic React
+              />
+              <IonButton className="" onClick={handleSubmitEmail}>
+                Join Beta
+              </IonButton>
+              <IonToast
+                isOpen={isOpen}
+                message={toastMessage}
+                onDidDismiss={() => setIsOpen(false)}
+                duration={2000}
+              ></IonToast>
+            </IonItem>
             <p className="text-lg text-gray-600 my-4 text-center">
               Enter your email to join the beta & get early access to all of the
               most recent features.
