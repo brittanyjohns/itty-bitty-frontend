@@ -1,11 +1,14 @@
-import {PaymentElement} from '@stripe/react-stripe-js';
+import { IonCard } from "@ionic/react";
+import { PaymentElement } from "@stripe/react-stripe-js";
 
 const CheckoutForm = () => {
   return (
-    <form>
-      <PaymentElement />
-      <button>Submit</button>
-    </form>
+    <IonCard>
+      <form>
+        <PaymentElement />
+        <button>Submit</button>
+      </form>
+    </IonCard>
   );
 };
 

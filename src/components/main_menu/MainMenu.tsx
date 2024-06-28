@@ -50,6 +50,7 @@ const MainMenu: React.FC<MainMenuProps> = () => {
       "teams",
       "predictive",
       "settings",
+      // "admin-dashboard",
     ];
     const signedOutLinks = ["sign-in", "sign-up", "forgot-password", "home"];
 
@@ -64,7 +65,18 @@ const MainMenu: React.FC<MainMenuProps> = () => {
 
   useIonViewWillEnter(() => {
     const links = getMenu();
+    if (currentUser?.role === "admin") {
+      console.log("getMenu", currentUser);
+      links.push({
+        endpoint: "/admin-dashboard",
+        name: "Admin Dashboard",
+        slug: "admin-dashboard",
+        icon: homeOutline,
+        id: 8,
+      });
+    }
     setMenuLinks(links);
+    console.log("links", links);
     // if (isWideScreen) {
     //   openMenu();
     // }
@@ -93,16 +105,17 @@ const MainMenu: React.FC<MainMenuProps> = () => {
           swipeGesture={true}
         >
           <IonHeader className="bg-inherit shadow-none">
-            <IonToolbar>            
-          <img
-              slot="start"
-              // src="/src/assets/images/round_itty_bitty_logo_1.png"
-              src={getImageUrl("round_itty_bitty_logo_1", "png")}
-              className=" ml-2 h-10 w-10 mt-1"
-            />
-            <IonTitle className="text-left" onClick={() => history.push("/")}>
-              SpeakAnyWay</IonTitle>
-              </IonToolbar>
+            <IonToolbar>
+              <img
+                slot="start"
+                // src="/src/assets/images/round_itty_bitty_logo_1.png"
+                src={getImageUrl("round_itty_bitty_logo_1", "png")}
+                className=" ml-2 h-10 w-10 mt-1"
+              />
+              <IonTitle className="text-left" onClick={() => history.push("/")}>
+                SpeakAnyWay
+              </IonTitle>
+            </IonToolbar>
           </IonHeader>
           <IonContent className="ion-padding">
             {currentUser && (

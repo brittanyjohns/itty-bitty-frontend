@@ -100,7 +100,6 @@ const menuLinks: MenuLink[] = [
     icon: logOutOutline,
     id: 14
   },
-  
 ];
 
 export const getMenu = () => menuLinks;

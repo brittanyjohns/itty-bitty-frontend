@@ -1,14 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Menu, deleteMenu, getMenus } from "../../data/menus";
+import { useEffect, useState, useRef } from "react";
+import { Menu, getMenus } from "../../data/menus";
 import { IonList, IonButton } from "@ionic/react";
 import MenuListItem from "./MenuListItem";
 import SignInScreen from "../../pages/auth/SignUpScreen";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 const MenuList = () => {
   const [menus, setMenus] = useState<Menu[]>([]);
-  const [menuId, setMenuId] = useState<string>("");
-  const [leaving, setLeaving] = useState<boolean>(false);
-  const { currentUser, setCurrentUser } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const fetchMenus = async () => {
     const allMenus = await getMenus();

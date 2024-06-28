@@ -65,11 +65,12 @@ setupIonicReact({
   },
 });
 
-import {Elements} from '@stripe/react-stripe-js';
-import {loadStripe} from '@stripe/stripe-js';
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import CheckoutForm from "./components/stripe/CheckoutForm";
 import { STRIPE_PUBLIC_KEY, STRIPE_PRIVATE_KEY } from "./data/users";
 import PricingPage from "./pages/PricingPage";
+import AdminDashboard from "./pages/AdminDashboard";
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -91,9 +92,18 @@ const App: React.FC = () => (
             <Home />
           </Route>
           {/* <Route path="/users/password/edit/:reset_password_token" component={ResetPasswordScreen} exact={true} /> */}
-          <Route path="/reset_password/" component={ResetPasswordScreen} exact={true} />
+          <Route
+            path="/reset_password/"
+            component={ResetPasswordScreen}
+            exact={true}
+          />
 
           <Route path="/dashboard" component={Dashboard} exact={true} />
+          <Route
+            path="/admin/dashboard"
+            component={AdminDashboard}
+            exact={true}
+          />
           <Route path="/demo" component={Demo} exact={true} />
           <Route path="/faq" component={Dashboard} exact={true} />
           <Route path="/boards/:id" component={ViewBoard} exact={true} />
@@ -149,7 +159,11 @@ const App: React.FC = () => (
           </Route>
           <Route path={"/sign-in"} component={SignInScreen} exact={true} />
           <Route path="/sign-out" component={SignOutScreen} exact={true} />
-          <Route path="/forgot-password" component={ForgotPasswordScreen} exact={true} />
+          <Route
+            path="/forgot-password"
+            component={ForgotPasswordScreen}
+            exact={true}
+          />
           <Route path="/pricing" component={PricingPage} exact />
         </IonRouterOutlet>
       </IonReactRouter>

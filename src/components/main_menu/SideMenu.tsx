@@ -13,12 +13,7 @@ import {
 import { MenuLink, getMenu } from "../../data/menu";
 import MenuListItem from "./MainMenuListItem";
 import { getImageUrl } from "../../data/utils";
-import {
-  arrowDownCircleOutline,
-  homeOutline,
-  person,
-  personCircleOutline,
-} from "ionicons/icons";
+import { arrowDownCircleOutline, personCircleOutline } from "ionicons/icons";
 import { useHistory } from "react-router";
 
 interface SideMenuProps {
@@ -89,7 +84,9 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
               <IonLabel
                 className="ml-2 hover:cursor-pointer"
                 onClick={() => {
-                  history.push("/dashboard");
+                  currentUser?.role === "admin"
+                    ? history.push("/admin/dashboard")
+                    : history.push("/dashboard");
                   setIsOpen(false);
                 }}
               >
