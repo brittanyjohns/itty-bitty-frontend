@@ -1,8 +1,7 @@
 import { createRef, useState } from "react";
 import { Board } from "../../data/boards";
-import { IonGrid, IonButton, IonItem, IonText } from "@ionic/react";
+import { IonButton } from "@ionic/react";
 import BoardGridItem from "./BoardGridItem";
-import SignInScreen from "../../pages/auth/SignUpScreen";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 interface BoardGridProps {
@@ -15,12 +14,6 @@ const BoardGrid = ({ boards }: BoardGridProps) => {
 
   const handleBoardClick = (board: Board) => {
     setBoardId(board.id as string);
-  };
-
-  const shouldDisableActionGrid = (board: Board) => {
-    const isPredefined = board?.predefined === true;
-
-    return isPredefined;
   };
 
   return (
@@ -48,7 +41,6 @@ const BoardGrid = ({ boards }: BoardGridProps) => {
           </IonButton>
         </div>
       )}
-
     </div>
   );
 };

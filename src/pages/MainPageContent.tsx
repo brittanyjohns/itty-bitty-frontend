@@ -3,8 +3,10 @@ import { getIconUrl, getImageUrl } from "../data/utils";
 import { IonButton, IonInput, IonItem, IonToast } from "@ionic/react";
 import { useState } from "react";
 import { BetaRequest, createBetaRequest } from "../data/beta_requests";
-
-const MainPageContent = () => {
+interface MainPageContentProps {
+  ipAddr: string;
+}
+const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
   const steps = [
     {
       title: "Customize and Share Communication Boards",
@@ -62,7 +64,7 @@ const MainPageContent = () => {
 
   const handleSubmitEmail = () => {
     console.log("Email submitted: ", email);
-    const betaRequest: BetaRequest = { email }; // Create a BetaRequest object using the email value
+    const betaRequest: BetaRequest = { email, ip: ipAddr }; // Create a betaRequest object
     createBetaRequest(betaRequest) // Pass the betaRequest object as an argument
       .then((response: any) => {
         console.log("Beta request submitted successfully: ", response);
@@ -82,7 +84,7 @@ const MainPageContent = () => {
   };
 
   return (
-    <div className="container p-4 bg-white bg-opacity-50 mx-auto shadow-lg">
+    <div className="container p-1 bg-white bg-opacity-50 mx-auto shadow-lg">
       <div
         className="hero_main1 bg-cover bg-center min-h-48 md:min-h-96"
         style={{ backgroundImage: `url(${getImageUrl("hero_main1", "webp")})` }}
@@ -122,9 +124,9 @@ const MainPageContent = () => {
               </Link>
             </div>
           </div>
-          <div className="container mx-auto mt-4 px-1 py-5">
+          <div className="container mx-auto mt-4 p-4 shadow-lg w-2/3 md:w-1/2">
             <h2 className="text-2xl font-bold text-center">Join the Beta</h2>
-            <IonItem className="mt-4">
+            <IonItem>
               <IonInput
                 type="email"
                 value={email}
@@ -154,13 +156,13 @@ const MainPageContent = () => {
           </div>
         </section>
       </div>
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2">
-        <section className="row-span-1 py-8 bg-white">
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-1">
+        <section className="row-span-1 py-4 bg-white">
           <div className="container mx-auto px-2">
             <h2 className="text-4xl font-bold text-center  text-black">
               Features
             </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 mt-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-1 mt-8">
               {features.map((feature, index) => (
                 <Link
                   key={feature.id}
@@ -207,13 +209,6 @@ const MainPageContent = () => {
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-        <section className="col-span-1 py-3 bg-white">
-          <div className="container mx-auto px-2">
-            <h2 className="text-4xl font-bold text-center mb-4">
-              Try it for yourself!
-            </h2>
           </div>
         </section>
       </div>
