@@ -105,71 +105,70 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
             Discover the simplicity of SpeakAnyWay.
           </p>
         </div>
-      </div>
-      <div className="mt-5 text-center">
-        <section className="p-1 rounded-sm bg-white">
-          <div className="container mx-auto px-1">
-            <div className="my-4 space-x-2 space-y-2">
-              <Link
-                to="/demo"
-                className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg"
-              >
-                Learn More
-              </Link>
-              <Link
-                to="/faq"
-                className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg"
-              >
-                FAQs
-              </Link>
+        <div className="mt-5 text-center">
+          <section className="p-1 rounded-sm bg-white bg-opacity-70">
+            <div className="container mx-auto mt-4 p-4 shadow-lg w-2/3 md:w-1/2 p-3 bg-white bg-opacity-70">
+              <div className="container mx-auto px-1">
+                <div className="my-4 space-x-2 space-y-2">
+                  <IonButton
+                    onClick={() => history.push("/sign-up")}
+                    className=""
+                  >
+                    Get Started
+                  </IonButton>
+                </div>
+                {/* <IonButtons className="flex justify-between space-x-4 bg-white w-3/4 md:w-1/2 mx-auto p-4 rounded-lg"> */}
+                <IonButton onClick={() => history.push("/about")} className="">
+                  Learn More
+                </IonButton>
+
+                <IonButton onClick={() => history.push("/demo")} className="">
+                  Watch Demo
+                </IonButton>
+
+                <IonButton
+                  onClick={() => history.push("/pricing")}
+                  className=""
+                >
+                  Pricing
+                </IonButton>
+                {/* </IonButtons> */}
+              </div>
+              <h2 className="text-2xl font-bold text-center mt-5">
+                Join the Beta
+              </h2>
+              <IonItem className="pt-5">
+                <IonInput
+                  type="email"
+                  value={email}
+                  placeholder="Enter your email"
+                  className="w-full"
+                  onIonChange={(e) => setEmail(e.detail.value || "")} // Assuming Ionic React
+                />
+                <IonButton className="" onClick={handleSubmitEmail}>
+                  Join Beta
+                </IonButton>
+                <IonToast
+                  isOpen={isOpen}
+                  message={toastMessage}
+                  onDidDismiss={() => setIsOpen(false)}
+                  duration={2000}
+                ></IonToast>
+              </IonItem>
+              <p className="text-lg text-gray-600 my-4 text-center">
+                Enter your email to join the beta & get early access to all of
+                the most recent features.
+              </p>
+              <p className="text-center text-sm text-gray-600">
+                We're working on mobile apps for Android and iOS{" "}
+              </p>
+              <p className="font-bold"> Stay tuned for updates!</p>
+              <div className="w-full">{/* Form component goes here */}</div>
             </div>
-            <IonButtons className="flex justify-center space-x-4 bg-white">
-              <IonButton onClick={() => history.push("/demo")} className="">
-                Watch Demo
-              </IonButton>
-              <IonButton onClick={() => history.push("/pricing")} className="">
-                Get Started
-              </IonButton>
-              <IonButton
-                onClick={() => history.push("/contact-us")}
-                className=""
-              >
-                Contact Us
-              </IonButton>
-            </IonButtons>
-          </div>
-          <div className="container mx-auto mt-4 p-4 shadow-lg w-2/3 md:w-1/2">
-            <h2 className="text-2xl font-bold text-center">Join the Beta</h2>
-            <IonItem>
-              <IonInput
-                type="email"
-                value={email}
-                placeholder="Enter your email"
-                className="w-full"
-                onIonChange={(e) => setEmail(e.detail.value || "")} // Assuming Ionic React
-              />
-              <IonButton className="" onClick={handleSubmitEmail}>
-                Join Beta
-              </IonButton>
-              <IonToast
-                isOpen={isOpen}
-                message={toastMessage}
-                onDidDismiss={() => setIsOpen(false)}
-                duration={2000}
-              ></IonToast>
-            </IonItem>
-            <p className="text-lg text-gray-600 my-4 text-center">
-              Enter your email to join the beta & get early access to all of the
-              most recent features.
-            </p>
-            <p className="text-center text-sm text-gray-600">
-              We're working on mobile apps for Android and iOS{" "}
-            </p>
-            <p className="font-bold"> Stay tuned for updates!</p>
-            <div className="w-full">{/* Form component goes here */}</div>
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
+
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-1">
         <section className="row-span-1 py-4 bg-white">
           <div className="container mx-auto px-2">
