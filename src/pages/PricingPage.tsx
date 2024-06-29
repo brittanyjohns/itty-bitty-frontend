@@ -33,9 +33,9 @@ const PricingPage: React.FC = () => {
               backgroundImage: `url(${getImageUrl("hero_main1", "webp")})`,
             }}
           >
-            <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-50">
+            <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-70 mb-8">
               <h1 className="text-2xl md:text-5xl font-bold text-white">
-                Find the SpeakAnyWay plan that's right for you.
+                Find the plan that's right for you.
               </h1>
               <p className="mt-4 text-sm md:text-xl text-white">
                 Join the growing community of users who enhance their
@@ -98,7 +98,7 @@ const PricingPage: React.FC = () => {
                     Ideal for speech therapists, occupational therapists,
                     teachers, and other professionals.
                   </p>
-                  <p className="mt-4">
+                  <p className="mt-4 font-bold">
                     Custom solutions tailored to your needs.
                   </p>
                   <IonButton
