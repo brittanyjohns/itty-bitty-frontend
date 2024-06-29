@@ -37,7 +37,16 @@ const Demo: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <IonContent fullscreen></IonContent>
+          <div className="p-4 font-mono">
+            <h1 className="text-4xl font-bold my-8"> Under Construction </h1>
+
+            <h1 className="text-2xl font-semibold mb-5">
+              Awesome demo coming soon!
+            </h1>
+            <p className="text-lg">
+              We are working on this page. Please check back later.
+            </p>
+          </div>
         </IonContent>
       </IonPage>
       <Tabs />

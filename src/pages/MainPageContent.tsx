@@ -94,10 +94,10 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
   return (
     <div className="container p-1 bg-white bg-opacity-50 mx-auto shadow-lg">
       <div
-        className="hero_main1 bg-cover bg-center min-h-48 md:min-h-96"
+        className="hero_main1 bg-cover bg-center h-full w-full"
         style={{ backgroundImage: `url(${getImageUrl("hero_main1", "webp")})` }}
       >
-        <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-50">
+        <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-70">
           <h1 className="text-2xl md:text-5xl font-bold text-white">
             Empower Your Child's Communication
           </h1>
@@ -106,8 +106,8 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
           </p>
         </div>
         <div className="mt-5 text-center">
-          <section className="p-1 rounded-sm bg-white bg-opacity-70">
-            <div className="container mx-auto mt-4 p-4 shadow-lg w-2/3 md:w-1/2 p-3 bg-white bg-opacity-70">
+          <section className="p-1 rounded-sm bg-white bg-opacity-10">
+            <div className="container mx-auto mt-4 p-4 shadow-lg w-2/3 md:w-1/2 p-3 bg-white bg-opacity-90 rounded-lg shadow-lg">
               <div className="container mx-auto px-1">
                 <div className="my-4 space-x-2 space-y-2">
                   <IonButton
@@ -170,7 +170,7 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
       </div>
 
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-1">
-        <section className="row-span-1 py-4 bg-white">
+        <section className="row-span-1 py-4">
           <div className="container mx-auto px-2">
             <h2 className="text-4xl font-bold text-center  text-black">
               Features
@@ -199,7 +199,7 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
             </div>
           </div>
         </section>
-        <section className="col-span-1 p-4 bg-white">
+        <section className="col-span-1 p-4">
           <div className="container mx-auto px-2">
             <h2 className="text-4xl font-bold text-center mb-4 text-black">
               How It Works
