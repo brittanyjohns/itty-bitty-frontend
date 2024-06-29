@@ -20,6 +20,8 @@ import {
   settingsOutline,
   homeOutline,
   peopleCircleOutline,
+  lockClosed,
+  lockClosedOutline,
 } from "ionicons/icons";
 import { set } from "react-hook-form";
 const menuLinks: MenuLink[] = [
@@ -94,12 +96,20 @@ const menuLinks: MenuLink[] = [
     id: 12
   },
   {
+    endpoint: '/admin/dashboard',
+    name: 'Admin Dashboard',
+    slug: 'admin-dashboard',
+    icon: lockClosedOutline,
+    id: 14
+  },
+  {
     endpoint: '/sign-out',
     name: 'Sign Out',
     slug: 'sign-out',
     icon: logOutOutline,
-    id: 14
+    id: 15
   },
+  
 ];
 
 export const getMenu = () => menuLinks;

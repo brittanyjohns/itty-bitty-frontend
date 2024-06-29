@@ -151,7 +151,6 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
           {image.label.length > 15
             ? `${image.label.substring(0, 10)}...`
             : image.label}
-          {image.image_last_added_at}
         </span>
       )}
       {image.audio && <audio src={image.audio} />}

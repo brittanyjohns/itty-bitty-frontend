@@ -18,6 +18,7 @@ import {
 import DraggableGrid from "../images/DraggableGrid";
 import AddToTeamForm from "../teams/AddToTeamForm";
 import { useHistory } from "react-router";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 interface BoardViewProps {
   board: Board;
@@ -45,6 +46,7 @@ const BoardView: React.FC<BoardViewProps> = ({
   showShare,
 }) => {
   const history = useHistory();
+  const { currentUser } = useCurrentUser();
   const addToTeamRef = useRef<HTMLDivElement>(null);
 
   const handleAddToTeam = async (teamId: string) => {
@@ -57,6 +59,11 @@ const BoardView: React.FC<BoardViewProps> = ({
       history.push("/teams/" + teamId);
     }
   };
+
+  const shouldShowRemoveBtn = currentUser?.role === "admin" || board?.can_edit;
+  console.log("shouldShowRemoveBtn", shouldShowRemoveBtn);
+  console.log("currentUser", currentUser?.id);
+  console.log("board", board?.user_id);
 
   const toggleAddToTeam = () => {
     addToTeamRef.current?.classList.toggle("hidden");
@@ -131,7 +138,7 @@ const BoardView: React.FC<BoardViewProps> = ({
           disableReorder={true}
           mute={true}
           viewOnClick={true}
-          showRemoveBtn={true}
+          showRemoveBtn={shouldShowRemoveBtn}
         />
       )}
       {imageCount && imageCount < 1 && (

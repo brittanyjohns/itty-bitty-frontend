@@ -19,6 +19,7 @@ export interface Board {
     status?: string;
     token_limit?: number;
     has_generating_images?: boolean;
+    user_id?: string;
 }
 
 export interface PredictiveBoard {

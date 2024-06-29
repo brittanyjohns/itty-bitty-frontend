@@ -71,6 +71,9 @@ import CheckoutForm from "./components/stripe/CheckoutForm";
 import { STRIPE_PUBLIC_KEY, STRIPE_PRIVATE_KEY } from "./data/users";
 import PricingPage from "./pages/PricingPage";
 import AdminDashboard from "./pages/AdminDashboard";
+import Upgrade from "./pages/Upgrade";
+import ContactUs from "./pages/ContactUs";
+import About from "./pages/About";
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -155,7 +158,6 @@ const App: React.FC = () => (
           <Route path="/settings" component={SettingsPage} exact={true} />
           <Route path={"/sign-up"}>
             <SignUpScreen />
-            {/* {isUserSignedIn() ? <Redirect to="/" /> : <SignUpScreen />} */}
           </Route>
           <Route path={"/sign-in"} component={SignInScreen} exact={true} />
           <Route path="/sign-out" component={SignOutScreen} exact={true} />
@@ -165,6 +167,10 @@ const App: React.FC = () => (
             exact={true}
           />
           <Route path="/pricing" component={PricingPage} exact />
+          <Route path="/contact-us" component={ContactUs} exact />
+          <Route path="/upgrade" component={Upgrade} exact />
+          <Route path="/faq" component={About} exact />
+          <Route path="/about" component={About} exact />
         </IonRouterOutlet>
       </IonReactRouter>
       {/* <Elements stripe={stripePromise} options={options}>

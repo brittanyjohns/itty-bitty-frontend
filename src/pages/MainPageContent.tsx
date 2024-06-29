@@ -1,12 +1,20 @@
 import { Link } from "react-router-dom"; // Assuming React Router for navigation
 import { getIconUrl, getImageUrl } from "../data/utils";
-import { IonButton, IonInput, IonItem, IonToast } from "@ionic/react";
+import {
+  IonButton,
+  IonButtons,
+  IonInput,
+  IonItem,
+  IonToast,
+} from "@ionic/react";
 import { useState } from "react";
 import { BetaRequest, createBetaRequest } from "../data/beta_requests";
+import { useHistory } from "react-router-dom";
 interface MainPageContentProps {
   ipAddr: string;
 }
 const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
+  const history = useHistory();
   const steps = [
     {
       title: "Customize and Share Communication Boards",
@@ -101,7 +109,7 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
       <div className="mt-5 text-center">
         <section className="p-1 rounded-sm bg-white">
           <div className="container mx-auto px-1">
-            <div className="mt-4 space-x-2 space-y-2">
+            <div className="my-4 space-x-2 space-y-2">
               <Link
                 to="/demo"
                 className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg"
@@ -115,14 +123,20 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
                 FAQs
               </Link>
             </div>
-            <div className="mt-1 text-center">
-              <Link
-                to="/demo"
-                className="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg sm:mt-5"
-              >
+            <IonButtons className="flex justify-center space-x-4 bg-white">
+              <IonButton onClick={() => history.push("/demo")} className="">
+                Watch Demo
+              </IonButton>
+              <IonButton onClick={() => history.push("/pricing")} className="">
                 Get Started
-              </Link>
-            </div>
+              </IonButton>
+              <IonButton
+                onClick={() => history.push("/contact-us")}
+                className=""
+              >
+                Contact Us
+              </IonButton>
+            </IonButtons>
           </div>
           <div className="container mx-auto mt-4 p-4 shadow-lg w-2/3 md:w-1/2">
             <h2 className="text-2xl font-bold text-center">Join the Beta</h2>
