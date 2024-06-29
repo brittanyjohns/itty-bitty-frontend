@@ -164,8 +164,8 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
             </p>
             <p className="text-center text-sm text-gray-600">
               We're working on mobile apps for Android and iOS{" "}
-              <span className="font-bold"> Stay tuned for updates!</span>
             </p>
+            <p className="font-bold"> Stay tuned for updates!</p>
             <div className="w-full">{/* Form component goes here */}</div>
           </div>
         </section>
