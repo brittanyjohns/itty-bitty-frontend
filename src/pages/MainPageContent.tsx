@@ -92,13 +92,13 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
   };
 
   return (
-    <div className="container p-1 bg-white bg-opacity-50 mx-auto shadow-lg">
+    <div className="">
       <div
-        className="hero_main1 bg-cover bg-center h-full w-full"
+        className="hero_main1 bg-cover bg-center h-full w-full pt-10"
         style={{ backgroundImage: `url(${getImageUrl("hero_main1", "webp")})` }}
       >
         <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-70">
-          <h1 className="text-2xl md:text-5xl font-bold text-white">
+          <h1 className="text-2xl md:text-5xl font-bold text-white mt-4">
             Empower Your Child's Communication
           </h1>
           <p className="mt-4 text-sm md:text-xl text-white">
@@ -106,8 +106,8 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
           </p>
         </div>
         <div className="mt-5 text-center">
-          <section className="p-1 rounded-sm bg-white bg-opacity-10">
-            <div className="container mx-auto mt-4 p-4 shadow-lg w-2/3 md:w-1/2 p-3 bg-white bg-opacity-90 rounded-lg shadow-lg">
+          <section className="p-1 rounded-sm bg-opacity-10">
+            <div className="container mx-auto mt-4 mb-10 p-4 shadow-lg w-2/3 md:w-1/2 p-3 bg-white bg-opacity-80 rounded-lg shadow-lg">
               <div className="container mx-auto px-1">
                 <div className="my-4 space-x-2 space-y-2">
                   <IonButton
@@ -117,7 +117,6 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
                     Get Started
                   </IonButton>
                 </div>
-                {/* <IonButtons className="flex justify-between space-x-4 bg-white w-3/4 md:w-1/2 mx-auto p-4 rounded-lg"> */}
                 <IonButton onClick={() => history.push("/about")} className="">
                   Learn More
                 </IonButton>
@@ -132,7 +131,6 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
                 >
                   Pricing
                 </IonButton>
-                {/* </IonButtons> */}
               </div>
               <h2 className="text-2xl font-bold text-center mt-5">
                 Join the Beta
