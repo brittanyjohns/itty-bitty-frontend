@@ -41,7 +41,7 @@ const MainMenu: React.FC<MainMenuProps> = () => {
   const history = useHistory();
   // Function to filter links based on the current user's status
   const filterList = (links: MenuLink[]) => {
-    const signedInLinks = [
+    const adminLinks = [
       "home",
       "sign-out",
       "boards",
@@ -50,13 +50,57 @@ const MainMenu: React.FC<MainMenuProps> = () => {
       "teams",
       "predictive",
       "settings",
-      // "admin-dashboard",
+      "admin-dashboard",
     ];
+    const professionalLinks = [
+      "home",
+      "sign-out",
+      "boards",
+      "images",
+      "teams",
+      "settings",
+    ];
+    const professionalProLinks = [
+      "home",
+      "sign-out",
+      "boards",
+      "images",
+      "menus",
+      "teams",
+      "predictive",
+      "settings",
+    ];
+    const premimumLinks = [
+      "home",
+      "sign-out",
+      "boards",
+      "images",
+      "menus",
+      "predictive",
+      "settings",
+    ];
+
+    const freemiumLinks = ["home", "sign-out", "boards", "images", "settings"];
     const signedOutLinks = ["sign-in", "sign-up", "forgot-password", "home"];
 
     return links.filter((link) => {
       if (currentUser) {
-        return signedInLinks.includes(link.slug ?? "");
+        if (currentUser.role === "admin") {
+          return adminLinks.includes(link.slug ?? "");
+        }
+        if (currentUser.plan_type === "free") {
+          return freemiumLinks.includes(link.slug ?? "");
+        }
+        if (currentUser.plan_type === "professional") {
+          return professionalLinks.includes(link.slug ?? "");
+        }
+        if (currentUser.plan_type === "professional-pro") {
+          return professionalProLinks.includes(link.slug ?? "");
+        }
+        if (currentUser.plan_type === "premium") {
+          return premimumLinks.includes(link.slug ?? "");
+        }
+        return freemiumLinks.includes(link.slug ?? "");
       } else {
         return signedOutLinks.includes(link.slug ?? "");
       }
@@ -131,7 +175,7 @@ const MainMenu: React.FC<MainMenuProps> = () => {
                     {currentUser?.email ?? "Guest"}
                   </p>
                   <p className="mt-1 text-xs">
-                    {currentUser?.role ?? "free trial"}
+                    {currentUser?.plan_type ?? "free trial"}
                   </p>
                 </div>
               </IonItem>

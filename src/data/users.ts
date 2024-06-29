@@ -34,6 +34,12 @@ export interface User {
     platforms?: string[];
     isDesktop?: boolean;
     errors?: string[];
+    plan_type?: string;
+    plan_status?: string;
+    plan_expires_at?: string;
+    total_plan_cost?: number;
+    monthly_price?: number;
+    yearly_price?: number;
 }
 export interface VoiceSetting {
     name?: string;

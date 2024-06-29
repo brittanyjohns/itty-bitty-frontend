@@ -44,8 +44,6 @@ const Home: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <MainPageContent ipAddr={ip} />
-          <h2>Your IP Address is</h2>
-          <h4>{ip}</h4>
         </IonContent>
         {currentUser && !isWideScreen && <Tabs />}
       </IonPage>

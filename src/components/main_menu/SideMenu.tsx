@@ -84,16 +84,14 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
               <IonLabel
                 className="ml-2 hover:cursor-pointer"
                 onClick={() => {
-                  currentUser?.role === "admin"
-                    ? history.push("/admin/dashboard")
-                    : history.push("/dashboard");
+                  history.push("/dashboard");
                   setIsOpen(false);
                 }}
               >
                 Dashboard
                 <p className="mt-1 text-xs">
                   <span className="font-bold"> Plan type:</span>{" "}
-                  {currentUser?.role ?? "free trial"}
+                  {currentUser?.plan_type ?? "free trial"}
                 </p>
                 <p className="mt-1 text-xs">
                   <span className="font-bold"> Tokens:</span>{" "}

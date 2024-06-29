@@ -1,53 +1,121 @@
-// src/pages/PricingPage.tsx
-import React from 'react';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardContent } from '@ionic/react';
+import React from "react";
+import {
+  IonPage,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonButton,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+} from "@ionic/react";
+import MainMenu from "../components/main_menu/MainMenu";
+import { getImageUrl } from "../data/utils";
+import { useHistory } from "react-router";
 
 const PricingPage: React.FC = () => {
+  const history = useHistory();
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle className="text-center">Pricing Plans</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="flex flex-col items-center p-6 space-y-6">
-        <IonCard className="w-full max-w-md">
-          <IonCardHeader className="text-center">
-            <IonCardTitle>Freemium</IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent className="text-center">
-            <p>Access to basic features</p>
-            <p>Limited support</p>
-            <p>Free forever</p>
-            <IonButton className="mt-4" expand="full">Get Started</IonButton>
-          </IonCardContent>
-        </IonCard>
+    <>
+      <MainMenu />
+      <IonPage id="main-content">
+        <IonHeader className="bg-inherit shadow-none">
+          <IonToolbar>
+            <IonTitle>Pricing</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent className="flex flex-col items-center p-6 space-y-6 bg-gray-50">
+          <div
+            className="hero_main1 bg-cover bg-center h-full w-full"
+            style={{
+              backgroundImage: `url(${getImageUrl("hero_main1", "webp")})`,
+            }}
+          >
+            <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-50">
+              <h1 className="text-2xl md:text-5xl font-bold text-white">
+                Find the SpeakAnyWay plan that's right for you.
+              </h1>
+              <p className="mt-4 text-sm md:text-xl text-white">
+                Join the growing community of users who enhance their
+                communication with SpeakAnyWay.
+              </p>
+            </div>
+            <div className="flex flex-wrap justify-center space-x-6">
+              <IonCard className="w-full max-w-sm">
+                <IonCardHeader className="text-center">
+                  <IonCardTitle>Freemium</IonCardTitle>
+                </IonCardHeader>
+                <IonCardContent className="text-center">
+                  <p>
+                    Access basic features and communicate with ease using
+                    SpeakAnyWay's free plan.
+                  </p>
+                  <div className="text-3xl font-bold my-4">Free</div>
+                  <p className="text-gray-500 mt-2">
+                    Forever - All basic features
+                  </p>
+                  <IonButton
+                    className="mt-4"
+                    expand="full"
+                    color="primary"
+                    onClick={() => history.push("/sign-up")}
+                  >
+                    Get Started
+                  </IonButton>
+                </IonCardContent>
+              </IonCard>
 
-        <IonCard className="w-full max-w-md">
-          <IonCardHeader className="text-center">
-            <IonCardTitle>Premium</IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent className="text-center">
-            <p>All Freemium features</p>
-            <p>Access to premium features</p>
-            <p>Priority support</p>
-            <p>$9.99/month</p>
-            <IonButton className="mt-4" expand="full">Upgrade Now</IonButton>
-          </IonCardContent>
-        </IonCard>
+              <IonCard className="w-full max-w-sm">
+                <IonCardHeader className="text-center">
+                  <IonCardTitle>Premium</IonCardTitle>
+                </IonCardHeader>
+                <IonCardContent className="text-center">
+                  <p>
+                    Enjoy an ad-free experience and unlock premium features like
+                    the Menu Reader & AI-generated images.
+                  </p>
+                  <div className="text-3xl font-bold my-4">$8.99/mo</div>
+                  <p className="text-gray-500 mt-2">Or $89/year (save 17%)</p>
+                  <IonButton
+                    className="mt-4"
+                    expand="full"
+                    color="secondary"
+                    onClick={() => history.push("/upgrade")}
+                  >
+                    Upgrade Now
+                  </IonButton>
+                </IonCardContent>
+              </IonCard>
 
-        <IonCard className="w-full max-w-md">
-          <IonCardHeader className="text-center">
-            <IonCardTitle>Contact Us</IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent className="text-center">
-            <p>Need more options?</p>
-            <p>Contact us for a custom plan</p>
-            <IonButton className="mt-4" expand="full">Contact Us</IonButton>
-          </IonCardContent>
-        </IonCard>
-      </IonContent>
-    </IonPage>
+              <IonCard className="w-full max-w-sm">
+                <IonCardHeader className="text-center">
+                  <IonCardTitle>Professional</IonCardTitle>
+                </IonCardHeader>
+                <IonCardContent className="text-center">
+                  <p>
+                    Ideal for speech therapists, occupational therapists,
+                    teachers, and other professionals.
+                  </p>
+                  <p className="mt-4">
+                    Custom solutions tailored to your needs.
+                  </p>
+                  <IonButton
+                    className="mt-4"
+                    expand="full"
+                    color="dark"
+                    onClick={() => history.push("/contact")}
+                  >
+                    Contact Us
+                  </IonButton>
+                </IonCardContent>
+              </IonCard>
+            </div>
+          </div>
+        </IonContent>
+      </IonPage>
+    </>
   );
 };
 
