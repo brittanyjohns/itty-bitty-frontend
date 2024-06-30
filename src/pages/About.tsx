@@ -46,7 +46,7 @@ const About: React.FC = () => {
               backgroundImage: `url(${getImageUrl("feature_2", "webp")})`,
             }}
           >
-            <div className="mt-5 text-center bg-white bg-opacity-90 py-8 w-full">
+            <div className="mt-5 text-center bg-white text-black bg-opacity-90 py-8 w-full">
               <h1 className="text-4xl font-bold text-center ">
                 What is SpeakAnyWay?
               </h1>
@@ -55,13 +55,13 @@ const About: React.FC = () => {
                 boards to communicate with people who have difficulty speaking.
               </p>
             </div>
-            <div className="mt-5 px-4 text-center bg-white bg-opacity-80 py-8 w-full md:w-4/5 mx-auto rounded-lg">
+            <div className="mt-5 px-4 bg-white text-black bg-opacity-95 py-8 w-full md:w-4/5 mx-auto rounded-lg">
               <h1 className="text-4xl font-bold text-center ">Our Story</h1>
 
-              <div className="mt-5 px-4 text-center py-8 w-full md:w-4/5 mx-auto rounded-lg">
+              <div className="mt-5 px-4 py-8 w-full md:w-4/5 mx-auto rounded-lg">
                 <div className="my-4 text-sm md:text-xl">
                   <p className="mt-4">
-                    Hi! I’m the mom behind SpeakAnyWay. My adventure into
+                    Hi! I'm the mom behind SpeakAnyWay. My adventure into
                     creating an AAC app began out of necessity and love when I
                     realized how hard it was for my son, who is on the autism
                     spectrum, to just tell us what he needed or felt. The
@@ -76,7 +76,7 @@ const About: React.FC = () => {
                     technology.
                   </p>
                   <p className="mt-4">
-                    That’s how SpeakAnyWay was born—out of a mom’s desire to
+                    That's how SpeakAnyWay was born—out of a mom's desire to
                     help her child speak his way. Our app is straightforward and
                     user-friendly, and we keep it mostly free because no one
                     should have to pay a premium to communicate.
@@ -84,7 +84,7 @@ const About: React.FC = () => {
                   <p className="mt-4">
                     I'm so excited to bring SpeakAnyWay into your homes, helping
                     to give a voice to those who find words just out of reach.
-                    Together, let’s make sure everyone can express themselves
+                    Together, let's make sure everyone can express themselves
                     and connect with the world around them.
                   </p>
                 </div>

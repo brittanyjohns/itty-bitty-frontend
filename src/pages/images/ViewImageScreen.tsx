@@ -447,7 +447,7 @@ const ViewImageScreen: React.FC = () => {
                         {image.next_words.map((word, index) => (
                           <div
                             key={index}
-                            className="bg-gray-200 m-1 p-1 rounded-md text-black"
+                            className="bg-gray-200 m-1 p-1 rounded-md"
                           >
                             <IonText className="text-sm">{word}</IonText>
                           </div>

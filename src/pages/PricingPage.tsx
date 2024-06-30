@@ -38,7 +38,7 @@ const PricingPage: React.FC = () => {
               backgroundImage: `url(${getImageUrl("hero_main1", "webp")})`,
             }}
           >
-            <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-70 mb-8">
+            <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-80 mb-8">
               <h1 className="text-2xl md:text-5xl font-bold text-white">
                 Find the plan that's right for you.
               </h1>
@@ -47,10 +47,10 @@ const PricingPage: React.FC = () => {
                 communication with SpeakAnyWay.
               </p>
             </div>
-            <div className="flex flex-wrap justify-center space-x-6">
-              <IonCard className="w-full max-w-sm">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <IonCard className="">
                 <IonCardHeader className="text-center">
-                  <IonCardTitle>Freemium</IonCardTitle>
+                  <div className="text-2xl font-bold">Freemium</div>
                 </IonCardHeader>
                 <IonCardContent className="text-center">
                   <p>
@@ -70,9 +70,9 @@ const PricingPage: React.FC = () => {
                 </IonCardContent>
               </IonCard>
 
-              <IonCard className="w-full max-w-sm">
+              <IonCard className="">
                 <IonCardHeader className="text-center">
-                  <IonCardTitle>Premium</IonCardTitle>
+                  <div className="text-2xl font-bold">Premium</div>
                 </IonCardHeader>
                 <IonCardContent className="text-center">
                   <p>
@@ -92,16 +92,18 @@ const PricingPage: React.FC = () => {
                 </IonCardContent>
               </IonCard>
 
-              <IonCard className="w-full max-w-sm">
+              <IonCard className="">
                 <IonCardHeader className="text-center">
-                  <IonCardTitle>Professional</IonCardTitle>
+                  <div className="text-2xl font-bold">Professional</div>
                 </IonCardHeader>
                 <IonCardContent className="text-center">
                   <p>
-                    Ideal for speech therapists, occupational therapists,
-                    teachers, and other professionals.
+                    Ideal for therapists, educators, and organizations that need
+                    to manage multiple users.
                   </p>
-                  <p className="mt-4 font-bold">
+                  <p className="mt-4 font-bold"></p>
+                  <div className="text-3xl font-bold my-4">Contact Us</div>
+                  <p className="mt-2">
                     Custom solutions tailored to your needs.
                   </p>
                   <IonButton
@@ -110,7 +112,7 @@ const PricingPage: React.FC = () => {
                     color="dark"
                     onClick={() => history.push("/contact")}
                   >
-                    Contact Us
+                    Get in Touch
                   </IonButton>
                 </IonCardContent>
               </IonCard>

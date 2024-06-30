@@ -50,7 +50,7 @@ const UsersForm: React.FC<UsersFormProps> = ({
             type="text"
             value={existingUser?.name}
             onIonChange={handleNameChange}
-            className="border rounded w-full text-black"
+            className="border rounded w-full"
           ></IonInput>
         </div>
       </div>

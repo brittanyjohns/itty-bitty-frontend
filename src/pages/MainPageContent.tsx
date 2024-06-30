@@ -97,7 +97,7 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
         className="hero_main1 bg-cover bg-center h-full w-full py-10"
         style={{ backgroundImage: `url(${getImageUrl("hero_main1", "webp")})` }}
       >
-        <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-70">
+        <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-80">
           <h1 className="text-2xl md:text-5xl font-bold text-white mt-4">
             Empower Your Child's Communication
           </h1>
@@ -107,7 +107,7 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
         </div>
         <div className="mt-5 text-center">
           <section className="rounded-sm">
-            <div className="container mx-auto mt-4 mb-10 p-4 shadow-lg w-5/6 md:w-1/2 p-3 bg-white bg-opacity-80 rounded-lg shadow-lg">
+            <div className="container mx-auto mt-4 mb-10 p-4 shadow-lg w-5/6 md:w-1/2 p-3 bg-white bg-opacity-85 rounded-lg shadow-lg">
               <div className="container mx-auto px-1">
                 <div className="my-4 text-center">
                   <IonButton
@@ -117,38 +117,54 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
                     Get Started
                   </IonButton>
                 </div>
-                <IonButton onClick={() => history.push("/about")} className="">
+                <IonButton
+                  onClick={() => history.push("/about")}
+                  className=""
+                  color="dark"
+                >
                   Learn More
                 </IonButton>
 
-                <IonButton onClick={() => history.push("/demo")} className="">
+                <IonButton
+                  onClick={() => history.push("/demo")}
+                  className=""
+                  color={"light"}
+                >
                   Demo
                 </IonButton>
               </div>
-              <h2 className="text-2xl font-bold text-center mt-5">
-                Join the Beta
-              </h2>
-              <IonItem className="pt-5">
+              <h2 className="text-2xl font-bold mt-5">Join the Beta</h2>
+              <div className="pt-5 w-full md:w-2/3 mx-auto">
                 <IonInput
                   type="email"
                   value={email}
                   placeholder="Enter your email"
-                  className="w-full"
-                  onIonChange={(e) => setEmail(e.detail.value || "")} // Assuming Ionic React
+                  style={{
+                    background: "white",
+                    backgroundOpacity: "0.5",
+                    padding: "10px",
+                    borderRadius: "5px",
+                    width: "100%",
+                    border: "1px solid #ccc",
+                  }}
+                  onIonInput={(e) => setEmail(e.detail.value || "")} // Assuming Ionic React
                 />
 
-                <IonToast
-                  isOpen={isOpen}
-                  message={toastMessage}
-                  onDidDismiss={() => setIsOpen(false)}
-                  duration={2000}
-                ></IonToast>
-              </IonItem>
-              <IonItem className="pt-5">
-                <IonButton className="" onClick={handleSubmitEmail}>
+                <IonButton
+                  className="w-full mt-4 bg-purple-600"
+                  color={"success"}
+                  onClick={handleSubmitEmail}
+                  disabled={!email}
+                >
                   Join Beta
                 </IonButton>
-              </IonItem>
+              </div>
+              <IonToast
+                isOpen={isOpen}
+                message={toastMessage}
+                onDidDismiss={() => setIsOpen(false)}
+                duration={2000}
+              ></IonToast>
               <p className="text-lg text-gray-600 my-4 text-center">
                 Join the beta & get early access to all of the most recent
                 features.
@@ -166,9 +182,7 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-1">
         <section className="row-span-1 py-4">
           <div className="container mx-auto px-2">
-            <h2 className="text-4xl font-bold text-center  text-black">
-              Features
-            </h2>
+            <h2 className="text-4xl font-bold text-center ">Features</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-1 mt-8">
               {features.map((feature, index) => (
                 <Link
@@ -195,7 +209,7 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
         </section>
         <section className="col-span-1 p-4">
           <div className="container mx-auto px-2">
-            <h2 className="text-4xl font-bold text-center mb-4 text-black">
+            <h2 className="text-4xl font-bold text-center mb-4">
               How It Works
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

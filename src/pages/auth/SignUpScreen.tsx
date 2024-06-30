@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  IonPage,
-  IonContent,
-  IonInput,
-  IonButton,
-} from "@ionic/react";
+import { IonPage, IonContent, IonInput, IonButton } from "@ionic/react";
 import { NewUser, signUp } from "../../data/users";
 import { useHistory } from "react-router-dom";
 import MainMenu from "../../components/main_menu/MainMenu";
@@ -55,26 +50,28 @@ const SignInScreen: React.FC = () => {
 
   return (
     <>
-    <MainMenu />
+      <MainMenu />
       <IonPage id="main-content">
         {!isWideScreen && <MainHeader />}
-        <IonContent className="ion-padding">
-            <div
-              className="hero_main1 bg-cover bg-center  min-h-screen"
-              style={{ backgroundImage: `url(${getImageUrl("feature_1", "webp")})` }}
-            >
-              <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-70">
-                <h1 className="text-2xl md:text-5xl font-bold text-white">
-                  Empower Your Child's Communication
-                </h1>
-                <p className="mt-4 text-sm md:text-xl text-white">
-                  Discover the simplicity of SpeakAnyWay.
-                </p>
-              </div>
-            
+        <IonContent className="">
+          <div
+            className="hero_main1 bg-cover bg-center min-h-screen"
+            style={{
+              backgroundImage: `url(${getImageUrl("feature_1", "webp")})`,
+            }}
+          >
+            <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-80">
+              <h1 className="text-2xl md:text-5xl font-bold text-white">
+                Empower Your Child's Communication
+              </h1>
+              <p className="mt-4 text-sm md:text-xl text-white">
+                Discover the simplicity of SpeakAnyWay.
+              </p>
+            </div>
+            9
             <div className="w-full max-w-xs mx-auto">
-              <form className="shadow-md rounded mt-10 bg-white text-black bg-opacity-95 p-8">
-              <h1 className="text-2xl font-bold text-center mb-3">Sign Up</h1>
+              <form className="shadow-md rounded mt-10 bg-white bg-opacity-95 p-8">
+                <h1 className="text-2xl font-bold text-center mb-3">Sign Up</h1>
                 <div className="mb-4">
                   <IonInput
                     value={email}
@@ -118,13 +115,15 @@ const SignInScreen: React.FC = () => {
                   >
                     Sign Up
                   </IonButton>
-                  <p className="text-center mt-8 font-light">Already have an account?</p>
+                  <p className="text-center mt-8 font-light">
+                    Already have an account?
+                  </p>
                   <IonButton
                     expand="full"
                     fill="clear"
                     color="medium"
                     className="ion-text-wrap mx-auto w-full mt-2 font-bold"
-                    style={{ minWidth: '200px' }}
+                    style={{ minWidth: "200px" }}
                     onClick={() => history.push("/sign-in")}
                   >
                     Sign In

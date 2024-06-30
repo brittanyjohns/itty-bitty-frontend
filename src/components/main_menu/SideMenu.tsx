@@ -53,7 +53,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
           <IonTitle className="text-2xl">SpeakAnyWay</IonTitle>
         </IonItem>
       </IonToolbar>
-      <IonList className="h-full">
+      <div className="h-full">
         {currentUser && (
           <>
             <IonItem
@@ -107,13 +107,11 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
         )}
 
         {filteredLinks.map((menuLink) => (
-          <MenuListItem
-            key={menuLink.id}
-            menuLink={menuLink}
-            icon={menuLink.icon}
-          />
+          <div key={menuLink.id} className="text-white">
+            <MenuListItem menuLink={menuLink} />
+          </div>
         ))}
-      </IonList>
+      </div>
     </>
   );
 };

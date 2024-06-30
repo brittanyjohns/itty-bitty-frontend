@@ -146,7 +146,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       {!image.is_placeholder && (
         <span
           onClick={() => handleImageClick(image)}
-          className="bg-white bg-opacity-90 w-full font-medium tracking-tighter leading-tight text-xs md:text-sm lg:text-sm text-black absolute bottom-0 left-0 shadow-md"
+          className="bg-white bg-opacity-90 w-full font-medium tracking-tighter leading-tight text-xs md:text-sm lg:text-sm absolute bottom-0 left-0 shadow-md"
         >
           {image.label.length > 15
             ? `${image.label.substring(0, 10)}...`
