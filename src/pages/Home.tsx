@@ -44,14 +44,7 @@ const Home: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <div
-            className="hero_main1 bg-cover bg-center h-full w-full"
-            style={{
-              backgroundImage: `url(${getImageUrl("hero_main1", "webp")})`,
-            }}
-          >
-            <MainPageContent ipAddr={ip} />
-          </div>
+          <MainPageContent ipAddr={ip} />
         </IonContent>
         {currentUser && !isWideScreen && <Tabs />}
       </IonPage>
