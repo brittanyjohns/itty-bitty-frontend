@@ -47,7 +47,7 @@ const About: React.FC = () => {
             }}
           >
             <div className="mt-5 text-center bg-white bg-opacity-90 py-8 w-full">
-              <h1 className="text-2xl font-bold text-center ">
+              <h1 className="text-4xl font-bold text-center ">
                 What is SpeakAnyWay?
               </h1>
               <p className="my-4 text-sm md:text-xl ">
@@ -55,39 +55,37 @@ const About: React.FC = () => {
                 boards to communicate with people who have difficulty speaking.
               </p>
             </div>
-            <div className="mt-5 px-8 text-center bg-white bg-opacity-80 py-8 w-full md:w-4/5 mx-auto rounded-lg">
-              <h1 className="text-2xl font-bold text-center ">Our Story</h1>
+            <div className="mt-5 px-4 text-center bg-white bg-opacity-80 py-8 w-full md:w-4/5 mx-auto rounded-lg">
+              <h1 className="text-4xl font-bold text-center ">Our Story</h1>
 
-              <div className="mt-5 px-8 text-center bg-white py-8 w-full md:w-4/5 mx-auto rounded-lg">
-                <div className="my-4 text-sm md:text-xl ">
+              <div className="mt-5 px-4 text-center py-8 w-full md:w-4/5 mx-auto rounded-lg">
+                <div className="my-4 text-sm md:text-xl">
                   <p className="mt-4">
-                    SpeakAnyWay began with a mother's love and determination. As
-                    a mom of a child with autism, I knew the heartache of not
-                    understanding my child’s daily needs and thoughts.
-                    Traditional AAC (Augmentative and Alternative Communication)
-                    tools were either too expensive or overly complicated,
-                    creating barriers rather than breaking them.
+                    Hi! I’m the mom behind SpeakAnyWay. My adventure into
+                    creating an AAC app began out of necessity and love when I
+                    realized how hard it was for my son, who is on the autism
+                    spectrum, to just tell us what he needed or felt. The
+                    available tools? Way too expensive and complex for something
+                    that should be simple and accessible.
                   </p>
                   <p className="mt-4">
-                    Being a software engineer, I decided to put my skills to
-                    good use. I wanted to create something simpler, more
-                    affordable, and just as effective, not just for my kiddo but
-                    for anyone facing similar challenges. This led to the
-                    creation of SpeakAnyWay—a tool crafted from a blend of
-                    personal passion and professional expertise.
+                    With a background in software engineering, I rolled up my
+                    sleeves and decided to craft an app that families like mine
+                    could easily use without breaking the bank. I wanted to
+                    build a tool that felt more like a friend than a piece of
+                    technology.
                   </p>
                   <p className="mt-4">
-                    Our mission at SpeakAnyWay is to make communication
-                    accessible to everyone. We provide most of our features for
-                    free, with premium options available for those who need
-                    advanced capabilities. We’re dedicated to supporting
-                    families, educators, and anyone who can benefit from
-                    improved communication tools.
+                    That’s how SpeakAnyWay was born—out of a mom’s desire to
+                    help her child speak his way. Our app is straightforward and
+                    user-friendly, and we keep it mostly free because no one
+                    should have to pay a premium to communicate.
                   </p>
                   <p className="mt-4">
-                    From my family to yours, I’m proud to share SpeakAnyWay with
-                    you. Together, we can break down communication barriers and
-                    create a world where everyone has a voice.
+                    I'm so excited to bring SpeakAnyWay into your homes, helping
+                    to give a voice to those who find words just out of reach.
+                    Together, let’s make sure everyone can express themselves
+                    and connect with the world around them.
                   </p>
                 </div>
               </div>
