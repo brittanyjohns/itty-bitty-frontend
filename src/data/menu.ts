@@ -22,6 +22,9 @@ import {
   peopleCircleOutline,
   lockClosed,
   lockClosedOutline,
+  codeDownloadOutline,
+  pricetagOutline,
+  bookOutline,
 } from "ionicons/icons";
 import { set } from "react-hook-form";
 const menuLinks: MenuLink[] = [
@@ -38,6 +41,21 @@ const menuLinks: MenuLink[] = [
     slug: 'home',
     icon: homeOutline,
     id: 0
+  },
+  {endpoint: '/pricing',
+  name: 'Pricing',
+  slug: 'pricing',
+  icon: pricetagOutline,
+  id: 16
+  },
+
+  {
+    endpoint: '/about',
+    name: 'About',
+    slug: 'about',
+    icon: bookOutline,
+    id: 17
+
   },
   {
     endpoint: '/boards',

@@ -36,53 +36,63 @@ const About: React.FC = () => {
             <IonButtons slot="start">
               {!isWideScreen && <IonMenuButton></IonMenuButton>}
             </IonButtons>
-            <IonTitle>Contact Us</IonTitle>
+            <IonTitle>About Us</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent className="flex flex-col items-center p-6 space-y-6 bg-gray-50">
           <div
-            className="hero_main1 bg-cover bg-center  h-full w-full"
+            className="hero_main1 bg-cover bg-center h-full w-full pt-10 pb-20"
             style={{
-              backgroundImage: `url(${getImageUrl("feature_1", "webp")})`,
+              backgroundImage: `url(${getImageUrl("feature_2", "webp")})`,
             }}
           >
-            <div className="mt-5 text-center bg-black bg-opacity-70 py-8">
+            <div className="mt-5 text-center bg-black bg-opacity-90 py-8 w-full">
               <h1 className="text-2xl font-bold text-center text-white">
-                Get in touch with SpeakAnyWay
+                What is SpeakAnyWay?
               </h1>
               <p className="my-4 text-sm md:text-xl text-white">
-                We're here to help! Whether you have questions about our plans,
-                features, or anything else, our team is ready to answer all your
-                questions.
+                SpeakAnyWay is a communication tool that helps you create visual
+                boards to communicate with people who have difficulty speaking.
               </p>
             </div>
-            <div className="mt-3 bv w-3/4 max-w-lg space-y-4 mx-auto p-6 bg-white shadow-lg rounded-lg bg-opacity-85">
-              <h2 className="text-2xl font-bold text-center">
-                Send us a message
-              </h2>
-              <IonItem className="w-full">
-                <IonLabel position="floating">Name</IonLabel>
-                <IonInput type="text" required></IonInput>
-              </IonItem>
+            <div className="mt-5 px-8 text-center bg-black bg-opacity-80 py-8 w-full md:w-4/5 mx-auto rounded-lg">
+              <h1 className="text-2xl font-bold text-center text-white">
+                Our Story
+              </h1>
 
-              <IonItem className="w-full">
-                <IonLabel position="floating">Email</IonLabel>
-                <IonInput type="email" required></IonInput>
-              </IonItem>
-
-              <IonItem className="w-full">
-                <IonLabel position="floating">Subject</IonLabel>
-                <IonInput type="text" required></IonInput>
-              </IonItem>
-
-              <IonItem className="w-full">
-                <IonLabel position="floating">Message</IonLabel>
-                <IonTextarea rows={6} required></IonTextarea>
-              </IonItem>
-
-              <IonButton expand="full" color="primary" className="mt-4">
-                Send Message
-              </IonButton>
+              <div className="mt-5 px-8 text-center bg-black py-8 w-full md:w-4/5 mx-auto rounded-lg">
+                <div className="my-4 text-sm md:text-xl text-white">
+                  <p className="mt-4">
+                    SpeakAnyWay began with a mother's love and determination. As
+                    a mom of a child with autism, I knew the heartache of not
+                    understanding my child’s daily needs and thoughts.
+                    Traditional AAC (Augmentative and Alternative Communication)
+                    tools were either too expensive or overly complicated,
+                    creating barriers rather than breaking them.
+                  </p>
+                  <p className="mt-4">
+                    Being a software engineer, I decided to put my skills to
+                    good use. I wanted to create something simpler, more
+                    affordable, and just as effective, not just for my kiddo but
+                    for anyone facing similar challenges. This led to the
+                    creation of SpeakAnyWay—a tool crafted from a blend of
+                    personal passion and professional expertise.
+                  </p>
+                  <p className="mt-4">
+                    Our mission at SpeakAnyWay is to make communication
+                    accessible to everyone. We provide most of our features for
+                    free, with premium options available for those who need
+                    advanced capabilities. We’re dedicated to supporting
+                    families, educators, and anyone who can benefit from
+                    improved communication tools.
+                  </p>
+                  <p className="mt-4">
+                    From my family to yours, I’m proud to share SpeakAnyWay with
+                    you. Together, we can break down communication barriers and
+                    create a world where everyone has a voice.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </IonContent>
