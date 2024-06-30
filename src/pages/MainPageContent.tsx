@@ -94,7 +94,7 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
   return (
     <div className="">
       <div
-        className="hero_main1 bg-cover bg-center h-full w-full pt-10"
+        className="hero_main1 bg-cover bg-center h-full w-full py-10"
         style={{ backgroundImage: `url(${getImageUrl("hero_main1", "webp")})` }}
       >
         <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-70">
@@ -106,10 +106,10 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
           </p>
         </div>
         <div className="mt-5 text-center">
-          <section className="p-1 rounded-sm bg-opacity-10">
-            <div className="container mx-auto mt-4 mb-10 p-4 shadow-lg w-2/3 md:w-1/2 p-3 bg-white bg-opacity-80 rounded-lg shadow-lg">
+          <section className="rounded-sm">
+            <div className="container mx-auto mt-4 mb-10 p-4 shadow-lg w-5/6 md:w-1/2 p-3 bg-white bg-opacity-80 rounded-lg shadow-lg">
               <div className="container mx-auto px-1">
-                <div className="my-4 space-x-2 space-y-2">
+                <div className="my-4 text-center">
                   <IonButton
                     onClick={() => history.push("/sign-up")}
                     className=""
@@ -122,14 +122,7 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
                 </IonButton>
 
                 <IonButton onClick={() => history.push("/demo")} className="">
-                  Watch Demo
-                </IonButton>
-
-                <IonButton
-                  onClick={() => history.push("/pricing")}
-                  className=""
-                >
-                  Pricing
+                  Demo
                 </IonButton>
               </div>
               <h2 className="text-2xl font-bold text-center mt-5">
@@ -143,9 +136,7 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
                   className="w-full"
                   onIonChange={(e) => setEmail(e.detail.value || "")} // Assuming Ionic React
                 />
-                <IonButton className="" onClick={handleSubmitEmail}>
-                  Join Beta
-                </IonButton>
+
                 <IonToast
                   isOpen={isOpen}
                   message={toastMessage}
@@ -153,14 +144,19 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
                   duration={2000}
                 ></IonToast>
               </IonItem>
+              <div>
+                <IonButton className="" onClick={handleSubmitEmail}>
+                  Join Beta
+                </IonButton>
+              </div>
               <p className="text-lg text-gray-600 my-4 text-center">
-                Enter your email to join the beta & get early access to all of
-                the most recent features.
+                Join the beta & get early access to all of the most recent
+                features.
               </p>
               <p className="text-center text-sm text-gray-600">
                 We're working on mobile apps for Android and iOS{" "}
               </p>
-              <p className="font-bold"> Stay tuned for updates!</p>
+              <p className="mt-2 font-bold"> Stay tuned for updates!</p>
               <div className="w-full">{/* Form component goes here */}</div>
             </div>
           </section>
