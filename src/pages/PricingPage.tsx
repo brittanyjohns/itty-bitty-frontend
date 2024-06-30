@@ -10,6 +10,8 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
+  IonBackButton,
+  IonButtons,
 } from "@ionic/react";
 import MainMenu from "../components/main_menu/MainMenu";
 import { getImageUrl } from "../data/utils";
@@ -23,6 +25,9 @@ const PricingPage: React.FC = () => {
       <IonPage id="main-content">
         <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
+            <IonButtons slot="start">
+              <IonBackButton defaultHref="/" />
+            </IonButtons>
             <IonTitle>Pricing</IonTitle>
           </IonToolbar>
         </IonHeader>
