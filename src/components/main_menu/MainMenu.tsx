@@ -81,7 +81,14 @@ const MainMenu: React.FC<MainMenuProps> = () => {
     ];
 
     const freemiumLinks = ["home", "sign-out", "boards", "images", "settings"];
-    const signedOutLinks = ["sign-in", "sign-up", "forgot-password", "home"];
+    const signedOutLinks = [
+      "sign-in",
+      "sign-up",
+      "forgot-password",
+      "home",
+      "pricing",
+      "about",
+    ];
 
     return links.filter((link) => {
       if (currentUser) {
