@@ -144,11 +144,11 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
                   duration={2000}
                 ></IonToast>
               </IonItem>
-              <div>
+              <IonItem className="pt-5">
                 <IonButton className="" onClick={handleSubmitEmail}>
                   Join Beta
                 </IonButton>
-              </div>
+              </IonItem>
               <p className="text-lg text-gray-600 my-4 text-center">
                 Join the beta & get early access to all of the most recent
                 features.
