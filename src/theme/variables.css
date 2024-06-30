@@ -244,3 +244,12 @@ ion-tab-bar {
   --ion-safe-area-inset-bottom: 0;
   bottom: 0;
 }
+
+
+
+.fixed-background {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* This ensures the background is fixed */
+}

@@ -94,7 +94,7 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
   };
 
   return (
-    <div className="ion-padding h-full">
+    <div className="h-full">
       <div>
         <IonButtons class="flex justify-between w-full text-center">
           <IonButton
