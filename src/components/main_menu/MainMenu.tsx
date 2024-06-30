@@ -80,7 +80,14 @@ const MainMenu: React.FC<MainMenuProps> = () => {
       "settings",
     ];
 
-    const freemiumLinks = ["home", "sign-out", "boards", "images", "settings"];
+    const freemiumLinks = [
+      "home",
+      "sign-out",
+      "boards",
+      "images",
+      "predictive",
+      "settings",
+    ];
     const signedOutLinks = [
       "sign-in",
       "sign-up",
