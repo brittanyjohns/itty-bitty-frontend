@@ -101,27 +101,29 @@ const ViewImageScreen: React.FC = () => {
     setShowHardDelete(currentUser?.role === "admin");
     setBoardId(boardId);
     getData();
-    if(image && image.src) {
+    if (image && image.src) {
       setCurrentImage(image.src);
     }
-  }
+  };
 
   useIonViewWillEnter(() => {
     setupData();
-  } );
+  });
 
   const getData = async () => {
     const imgToSet = await fetchImage();
     const allBoards = await getBoards();
-    setBoards(allBoards['boards']);
-    const newFilteredBoards = allBoards['boards'].filter((board: Board) => {
-      return image?.user_image_boards?.find((userBoard: Board) => userBoard.id !== board.id);
-    } );
+    setBoards(allBoards["boards"]);
+    const newFilteredBoards = allBoards["boards"].filter((board: Board) => {
+      return image?.user_image_boards?.find(
+        (userBoard: Board) => userBoard.id !== board.id
+      );
+    });
     if (newFilteredBoards) {
       setFilteredBoards(newFilteredBoards);
     } else {
       console.log("No boards found!");
-      setBoards(allBoards['boards'])
+      setBoards(allBoards["boards"]);
     }
     setImage(imgToSet);
     toggleForms(segmentType, imgToSet);
@@ -130,9 +132,9 @@ const ViewImageScreen: React.FC = () => {
     } else if (imgToSet.src) {
       setCurrentImage(imgToSet.src);
     } else {
-      const imgURl = generatePlaceholderImage(imgToSet.label)
-        setCurrentImage(imgURl);
-    } 
+      const imgURl = generatePlaceholderImage(imgToSet.label);
+      setCurrentImage(imgURl);
+    }
   };
 
   const handleDeleteImage = async () => {
@@ -311,15 +313,13 @@ const ViewImageScreen: React.FC = () => {
             )}
           </div>
           <div className="mt-6 hidden" ref={generateForm}>
-            <IonList className="ion-padding w-full md:w-3/4 lg:w-1/2 mx-auto" lines="none">
+            <IonList className="w-full md:w-3/4 lg:w-1/2 mx-auto" lines="none">
               <IonItem className="mt-2 border-2">
                 <IonLoading
                   className="loading-icon"
                   cssClass="loading-icon"
                   isOpen={showLoading}
-                  message={
-                    "Generating image... Please wait."
-                  }
+                  message={"Generating image... Please wait."}
                 />
                 {image && (
                   <IonTextarea
@@ -336,17 +336,16 @@ const ViewImageScreen: React.FC = () => {
                 <IonButton className="w-full text-lg" onClick={onGenerateClick}>
                   Generate Image
                 </IonButton>
-                
               </IonItem>
               <IonItem className="mt-2 font-mono">
-              <p className="text-sm text-center">
+                <p className="text-sm text-center">
                   This will generate an image based on the prompt you enter.
-              </p>
+                </p>
               </IonItem>
               <IonItem className="mt-2 font-mono">
-              <p className="text-sm text-center">
+                <p className="text-sm text-center">
                   This will cost you 1 token.
-              </p>
+                </p>
               </IonItem>
             </IonList>
           </div>
@@ -378,7 +377,7 @@ const ViewImageScreen: React.FC = () => {
                 </div>
               </div>
             )}
-            
+
             {image && boards && (
               <div className="mt-6 flex justify-center gap-4">
                 <div className="mx-auto p-1 w-1/2">
@@ -386,15 +385,24 @@ const ViewImageScreen: React.FC = () => {
                     <BoardDropdown imageId={image.id} boards={boards} />
                   )}
                 </div>
-                {image?.user_image_boards && image?.user_image_boards?.length > 0 && (
-                  <div className="mx-auto">
-                  <IonText className="text-md">This image is on the following boards:</IonText>
-                  {image?.user_image_boards?.map((board) => (
-                    <IonItem key={board.id} routerLink={`/boards/${board.id}`} detail={true}  className="text-sm font-mono">
-                      {board.name}
-                    </IonItem>  
-                  ))}
-                </div>)}
+                {image?.user_image_boards &&
+                  image?.user_image_boards?.length > 0 && (
+                    <div className="mx-auto">
+                      <IonText className="text-md">
+                        This image is on the following boards:
+                      </IonText>
+                      {image?.user_image_boards?.map((board) => (
+                        <IonItem
+                          key={board.id}
+                          routerLink={`/boards/${board.id}`}
+                          detail={true}
+                          className="text-sm font-mono"
+                        >
+                          {board.name}
+                        </IonItem>
+                      ))}
+                    </div>
+                  )}
               </div>
             )}
             {currentUser?.role === "admin" && (

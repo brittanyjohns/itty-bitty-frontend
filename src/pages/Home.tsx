@@ -10,6 +10,7 @@ import Tabs from "../components/utils/Tabs";
 import MainPageContent from "./MainPageContent";
 import MainHeader from "./MainHeader";
 import { useEffect, useState } from "react";
+import { getImageUrl } from "../data/utils";
 
 const Home: React.FC = () => {
   const { currentUser, isWideScreen } = useCurrentUser();
@@ -39,11 +40,18 @@ const Home: React.FC = () => {
       <MainMenu />
       <IonPage id="main-content">
         {!isWideScreen && <MainHeader />}
-        <IonContent className="ion-padding text-justified" scrollY={true}>
+        <IonContent className="text-justified" scrollY={true}>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <MainPageContent ipAddr={ip} />
+          <div
+            className="hero_main1 bg-cover bg-center h-full w-full"
+            style={{
+              backgroundImage: `url(${getImageUrl("hero_main1", "webp")})`,
+            }}
+          >
+            <MainPageContent ipAddr={ip} />
+          </div>
         </IonContent>
         {currentUser && !isWideScreen && <Tabs />}
       </IonPage>

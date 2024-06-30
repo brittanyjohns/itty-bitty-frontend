@@ -180,7 +180,7 @@ const NewMenu: React.FC = (props: any) => {
           >
             <h1 className="text-center">Create a new menu board</h1>
           </IonItem>
-          <div className="ion-padding w-full md:w-3/4 lg:w-1/2 mx-auto border shadow-lg">
+          <div className="w-full md:w-3/4 lg:w-1/2 mx-auto border shadow-lg">
             <IonItem lines="none" className="ion-margin-bottom mx-4">
               <h1 className="text-center">
                 Browse for an image or paste an image to create a new menu

@@ -74,7 +74,7 @@ const NewBoard: React.FC = (props: any) => {
               Create from scratch
             </IonButton>
             <form
-              className="ion-padding hidden"
+              className="hidden"
               onSubmit={handleSubmit(onSubmit)}
               ref={scratchFormRef}
             >
