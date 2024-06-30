@@ -49,8 +49,8 @@ const PricingPage: React.FC = () => {
                 </IonCardHeader>
                 <IonCardContent className="text-center">
                   <p>
-                    Access basic features and communicate with ease using
-                    SpeakAnyWay's free plan.
+                    Create unlimited boards, use images from our library or
+                    upload your own, and more.
                   </p>
                   <div className="text-3xl font-bold my-4">Free</div>
                   <p className="text-gray-500 mt-2">
@@ -76,8 +76,8 @@ const PricingPage: React.FC = () => {
                     Enjoy an ad-free experience and unlock premium features like
                     the Menu Reader & AI-generated images.
                   </p>
-                  <div className="text-3xl font-bold my-4">$8.99/mo</div>
-                  <p className="text-gray-500 mt-2">Or $89/year (save 17%)</p>
+                  <div className="text-3xl font-bold my-4">$4.99/mo</div>
+                  <p className="text-gray-500 mt-2">Or $49/year (Save 20%)</p>
                   <IonButton
                     className="mt-4"
                     expand="full"
