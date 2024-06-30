@@ -53,9 +53,7 @@ const PricingPage: React.FC = () => {
                     upload your own, and more.
                   </p>
                   <div className="text-3xl font-bold my-4">Free</div>
-                  <p className="text-gray-500 mt-2">
-                    Forever - All basic features
-                  </p>
+                  <p className="mt-2">Forever - All basic features</p>
                   <IonButton
                     className="mt-4"
                     expand="full"
@@ -77,7 +75,7 @@ const PricingPage: React.FC = () => {
                     the Menu Reader & AI-generated images.
                   </p>
                   <div className="text-3xl font-bold my-4">$4.99/mo</div>
-                  <p className="text-gray-500 mt-2">Or $49/year (Save 20%)</p>
+                  <p className="mt-2">Or $49/year (Save 20%)</p>
                   <IonButton
                     className="mt-4"
                     expand="full"

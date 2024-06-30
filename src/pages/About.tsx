@@ -46,22 +46,20 @@ const About: React.FC = () => {
               backgroundImage: `url(${getImageUrl("feature_2", "webp")})`,
             }}
           >
-            <div className="mt-5 text-center bg-black bg-opacity-90 py-8 w-full">
-              <h1 className="text-2xl font-bold text-center text-white">
+            <div className="mt-5 text-center bg-white bg-opacity-90 py-8 w-full">
+              <h1 className="text-2xl font-bold text-center ">
                 What is SpeakAnyWay?
               </h1>
-              <p className="my-4 text-sm md:text-xl text-white">
+              <p className="my-4 text-sm md:text-xl ">
                 SpeakAnyWay is a communication tool that helps you create visual
                 boards to communicate with people who have difficulty speaking.
               </p>
             </div>
-            <div className="mt-5 px-8 text-center bg-black bg-opacity-80 py-8 w-full md:w-4/5 mx-auto rounded-lg">
-              <h1 className="text-2xl font-bold text-center text-white">
-                Our Story
-              </h1>
+            <div className="mt-5 px-8 text-center bg-white bg-opacity-80 py-8 w-full md:w-4/5 mx-auto rounded-lg">
+              <h1 className="text-2xl font-bold text-center ">Our Story</h1>
 
-              <div className="mt-5 px-8 text-center bg-black py-8 w-full md:w-4/5 mx-auto rounded-lg">
-                <div className="my-4 text-sm md:text-xl text-white">
+              <div className="mt-5 px-8 text-center bg-white py-8 w-full md:w-4/5 mx-auto rounded-lg">
+                <div className="my-4 text-sm md:text-xl ">
                   <p className="mt-4">
                     SpeakAnyWay began with a mother's love and determination. As
                     a mom of a child with autism, I knew the heartache of not
