@@ -46,11 +46,11 @@ const ContactUs: React.FC = () => {
               backgroundImage: `url(${getImageUrl("feature_1", "webp")})`,
             }}
           >
-            <div className="mt-5 text-center bg-black bg-opacity-70 py-8">
-              <h1 className="text-2xl font-bold text-center text-white">
+            <div className="mt-5 text-center py-8">
+              <h1 className="text-2xl font-bold text-center">
                 Get in touch with SpeakAnyWay
               </h1>
-              <p className="my-4 text-sm md:text-xl text-white">
+              <p className="my-4 text-sm md:text-xl">
                 We're here to help! Whether you have questions about our plans,
                 features, or anything else, our team is ready to answer all your
                 questions.

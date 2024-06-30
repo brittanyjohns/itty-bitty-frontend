@@ -61,10 +61,10 @@ ion-fab-button::part(native):active::after {
   padding: 0; /* Minimize padding to maximize space */
 }
 
-ion-input {
+/* ion-input {
   background-color: inherit;
   color: #000;
-}
+} */
 
 [type="text"],
 [type="email"],

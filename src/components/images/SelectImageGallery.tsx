@@ -132,7 +132,7 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
                   className="absolute object-contain w-full h-full top-0 left-0"
                 />
                 <div
-                  className={`font-medium text-xs md:text-sm lg:text-md rounded-sm shadow-md bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 text-black mt-2`}
+                  className={`font-medium text-xs md:text-sm lg:text-md rounded-sm shadow-md bg-white bg-opacity-90 overflow-hidden absolute bottom-0 left-0 right-0 p-0 mt-2`}
                 >
                   {image.label}
                   <audio>

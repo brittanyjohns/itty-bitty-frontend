@@ -4,13 +4,6 @@ import {
   IonContent,
   IonInput,
   IonButton,
-  IonButtons,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonBackButton,
-  IonLabel,
-  IonItem,
   IonAlert,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
@@ -27,7 +20,6 @@ const SignInScreen: React.FC = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { setCurrentUser, isWideScreen } = useCurrentUser();
-
 
   const handleSignIn = async () => {
     const user: User = { email, password };
@@ -51,77 +43,78 @@ const SignInScreen: React.FC = () => {
 
   const handleForgotPassword = () => {
     history.push("/forgot-password");
-  }
+  };
 
   return (
     <>
-    <MainMenu />
-    <IonPage id="main-content">
+      <MainMenu />
+      <IonPage id="main-content">
         {!isWideScreen && <MainHeader />}
-        <div className="container p-4 bg-white bg-opacity-50 mx-auto shadow-lg">
-            <div
-              className="hero_main1 bg-cover bg-center  min-h-screen"
-              style={{ backgroundImage: `url(${getImageUrl("feature_2", "webp")})` }}
-            >
-              <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-70">
-                <h1 className="text-2xl md:text-5xl font-bold text-white">
-                  Empower Your Child's Communication
-                </h1>
-                <p className="mt-4 text-sm md:text-xl text-white">
-                  Discover the simplicity of SpeakAnyWay.
-                </p>
-              </div>
-              <div className="max-w-md mx-auto bg-white bg-opacity-95 p-8 rounded-lg shadow-xl mt-20">
+        <div className="h-full">
+          <div
+            className="hero_main1 bg-cover bg-center  min-h-screen"
+            style={{
+              backgroundImage: `url(${getImageUrl("feature_2", "webp")})`,
+            }}
+          >
+            <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-80">
+              <h1 className="text-2xl md:text-5xl font-bold text-white">
+                Empower Your Child's Communication
+              </h1>
+              <p className="mt-4 text-sm md:text-xl text-white">
+                Discover the simplicity of SpeakAnyWay.
+              </p>
+            </div>
+            <div className="max-w-md mx-auto bg-white bg-opacity-95 p-8 rounded-lg shadow-xl mt-20">
               <h1 className="text-2xl font-bold text-center mb-3">Sign In</h1>
-                <form onSubmit={(e) => e.preventDefault()}>
-                  <IonItem lines="full" className="mb-4">
-                    <IonInput
-                      label="Email"
-                      labelPlacement="stacked"
-                      value={email}
-                      placeholder="Enter your email"
-                      onIonChange={(e) => setEmail(e.detail.value!)}
-                      clearInput
-                    />
-                  </IonItem>
-                  <IonItem lines="full">
-                    <IonInput
-                      label="Password"
-                      labelPlacement="stacked"
-                      type="password"
-                      value={password}
-                      placeholder="Enter your password"
-                      onIonChange={(e) => setPassword(e.detail.value!)}
-                      clearInput
-                    />
-                  </IonItem>
-                  <IonButton expand="block" className="mt-6" onClick={handleSignIn}>
-                    Sign In
-                  </IonButton>
-                  <IonButton
-                    expand="block"
-                    fill="clear"
-                    color="medium"
-                    onClick={handleForgotPassword}
-                  >
-                    Forgot Password?
-                  </IonButton>
-                </form>
-                <IonAlert
-                  isOpen={showAlert}
-                  onDidDismiss={() => setShowAlert(false)}
-                  header="Authentication Failed"
-                  message={errorMessage}
-                  buttons={["OK"]}
+              <form onSubmit={(e) => e.preventDefault()}>
+                <IonInput
+                  label="Email"
+                  labelPlacement="stacked"
+                  value={email}
+                  placeholder="Enter your email"
+                  onIonChange={(e) => setEmail(e.detail.value!)}
+                  clearInput
                 />
-              </div>
+
+                <IonInput
+                  label="Password"
+                  labelPlacement="stacked"
+                  type="password"
+                  value={password}
+                  placeholder="Enter your password"
+                  onIonChange={(e) => setPassword(e.detail.value!)}
+                  clearInput
+                />
+                <IonButton
+                  expand="block"
+                  className="mt-6"
+                  onClick={handleSignIn}
+                >
+                  Sign In
+                </IonButton>
+                <IonButton
+                  expand="block"
+                  fill="clear"
+                  color="medium"
+                  onClick={handleForgotPassword}
+                >
+                  Forgot Password?
+                </IonButton>
+              </form>
+              <IonAlert
+                isOpen={showAlert}
+                onDidDismiss={() => setShowAlert(false)}
+                header="Authentication Failed"
+                message={errorMessage}
+                buttons={["OK"]}
+              />
+            </div>
           </div>
-        </div>    
-      <IonContent className="ion-padding">
-        
-      </IonContent>
-    </IonPage>
-  </>
+        </div>
+        <IonContent className="ion-padding"></IonContent>
+      </IonPage>
+    </>
   );
 };
 
