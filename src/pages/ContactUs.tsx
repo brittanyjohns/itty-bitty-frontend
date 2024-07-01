@@ -46,7 +46,7 @@ const ContactUs: React.FC = () => {
               backgroundImage: `url(${getImageUrl("feature_1", "webp")})`,
             }}
           >
-            <div className="mt-5 text-center py-8">
+            <div className="mt-5 text-center py-8 shadow-overlay">
               <h1 className="text-2xl font-bold text-center">
                 Get in touch with SpeakAnyWay
               </h1>
