@@ -103,23 +103,6 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
           <p className="mt-4 text-sm md:text-xl text-white">
             Discover the simplicity of SpeakAnyWay.
           </p>
-          {/* <div className="container mx-auto px-1 mt-4">
-            <IonButton
-              onClick={() => history.push("/about")}
-              className=""
-              color="light"
-            >
-              Learn More
-            </IonButton>
-
-            <IonButton
-              onClick={() => history.push("/demo")}
-              className=""
-              color={"light"}
-            >
-              Demo
-            </IonButton>
-          </div> */}
         </div>
 
         <div className="flex flex-col justify-center items-center text-center gap-4">
