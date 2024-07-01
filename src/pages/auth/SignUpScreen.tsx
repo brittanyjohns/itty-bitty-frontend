@@ -75,35 +75,38 @@ const SignInScreen: React.FC = () => {
                 <div className="mb-4">
                   <IonInput
                     value={email}
+                    fill="solid"
+                    className="mt-4"
                     label="Email"
                     labelPlacement="stacked"
                     placeholder="Email"
                     onIonInput={(e) => handleEmail(e.detail.value!)}
-                    className=""
                   ></IonInput>
                 </div>
                 <div className="mb-6">
                   <IonInput
                     label="Password"
                     type="password"
+                    fill="solid"
+                    className="mt-4"
                     labelPlacement="stacked"
                     value={password}
                     placeholder="Choose A Password"
                     onIonInput={(e) => handlePassword(e.detail.value!)}
-                    className=""
                   ></IonInput>
                 </div>
                 <div className="mb-6">
                   <IonInput
                     label="Password Confirmation"
                     type="password"
+                    fill="solid"
                     value={passwordConfirmation}
                     labelPlacement="stacked"
                     placeholder="Confirm Password"
                     onIonInput={(e) =>
                       handlePasswordConfirmation(e.detail.value!)
                     }
-                    className=""
+                    className="mt-4"
                   ></IonInput>
                 </div>
                 <div className="mt-8">
