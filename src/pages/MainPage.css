@@ -1,0 +1,22 @@
+.fixed-bg {
+  background: url("../assets/images/hero_main1_cropped.webp") no-repeat center
+    bottom fixed;
+  background-size: cover;
+  min-height: 100vh;
+  width: 100%;
+  /* opacity: 0.8; */
+}
+.og-fixed-bg {
+  background: url("../assets/images/hero_main1.webp") no-repeat center bottom
+    fixed;
+  background-size: cover;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.shadow-overlay {
+  position: relative;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.9); /* optional for some background on content */
+  padding: 20px;
+}
