@@ -27,6 +27,7 @@ import BoardView from "../../components/boards/BoardView";
 import { Team } from "../../data/teams";
 import Tabs from "../../components/utils/Tabs";
 import { text } from "ionicons/icons";
+import { set } from "react-hook-form";
 interface ViewMenuScreenProps {
   id: string;
 }
@@ -43,6 +44,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [currentUserTeams, setCurrentUserTeams] = useState<Team[]>();
   const [showIcon, setShowIcon] = useState(false);
+  const [boardError, setBoardError] = useState(false);
 
   const fetchMenu = async () => {
     const menuToSet = await getMenu(Number(id));
@@ -65,6 +67,11 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
   useEffect(() => {
     async function getData() {
       const menuToSet = await fetchMenu();
+      if (!menuToSet) {
+        setBoardError(true);
+        console.error("No menu found");
+        return;
+      }
       setMenu(menuToSet);
     }
     getData();
@@ -157,7 +164,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
                 <IonImg src={menu.displayImage} alt={menu.name} />
               </div>
             )}
-            {!board && (
+            {boardError && (
               <IonList
                 className="text-center text-xl"
                 style={{ marginTop: "20px" }}

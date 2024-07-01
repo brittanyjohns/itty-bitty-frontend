@@ -157,6 +157,36 @@ export const getCurrentUser = async () => {
     }
 }
 
+export const updatePlan = (plan: string, userId?: number) => {
+    console.log('updatePlan', plan);
+    console.log('userId', userId);
+    const planJson = {
+        plan_type: plan  
+    }
+
+    const endpoint = `${BASE_URL}users/${userId}/update_plan`;
+
+    const userSetting = fetch(endpoint, {
+        headers: userHeaders,
+        method: 'PUT',
+        body: JSON.stringify(planJson),
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.error) {
+                console.error('Error:', result.error);
+                return result;
+            } else {
+                return result;
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            return error;
+        });
+    return userSetting;
+}
+
 export const updateUserSettings = (formData: FormData, userId?: string) => {
     console.log('updateUserSettings', formData);
     console.log('userId', userId);

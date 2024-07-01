@@ -1,61 +1,51 @@
-import React, { useEffect, useState } from "react";
-import {
-  IonContent,
-  IonPage,
-  IonLabel,
-  IonSelect,
-  IonSelectOption,
-  IonTextarea,
-  IonButton,
-  IonInput,
-} from "@ionic/react";
-import { language } from "ionicons/icons";
-import { set } from "react-hook-form";
-import { User } from "../../data/users";
+import React, { useState } from "react";
+import { IonButton, IonLabel, IonSelect, IonSelectOption } from "@ionic/react";
+import { User, updatePlan } from "../../data/users";
 
 interface UsersFormProps {
-  onNameChange: any;
   existingUser?: User;
+  onCancel?: any;
+  onSave?: any;
+  setPlanType: any;
+  planType: string;
+  userId?: number | null;
 }
 
-const UsersForm: React.FC<UsersFormProps> = ({
-  onNameChange,
-  existingUser,
+const UserForm: React.FC<UsersFormProps> = ({
+  setPlanType,
+  planType,
+  userId,
 }) => {
-  const [userSetting, setUser] = useState<User>({});
+  const planOptions = ["Free", "Pro", "Professional", "Professional Plus"];
 
-  const handleNameChange = (e: any) => {
-    console.log("name change", e.target.value);
-    onNameChange(e.target.value);
+  const handlePlanSelection = async (e: string) => {
+    setPlanType(e);
+    if (userId) {
+      await updatePlan(e, userId);
+    }
   };
-
   return (
     <>
-      {userSetting.errors && userSetting?.errors?.length > 0 && (
-        <div className="text-red-500 p-2">
-          <h2>{`${userSetting.errors.length} error(s) prohibited this action from being saved:`}</h2>
-          <ul>
-            {userSetting.errors.map((error, index) => (
-              <li key={index}>{error}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-
       <div className="flex flex-col gap-4">
         <div className="text-center">
           <IonLabel className="">Update your info</IonLabel>
 
-          <IonInput
-            type="text"
-            value={existingUser?.name}
-            onIonChange={handleNameChange}
-            className="border rounded w-full"
-          ></IonInput>
+          <IonSelect
+            label="Plan Type"
+            value={planType}
+            onIonChange={(e) => handlePlanSelection(e.detail.value)}
+            className=""
+          >
+            {planOptions.map((option) => (
+              <IonSelectOption key={option} value={option}>
+                {option}
+              </IonSelectOption>
+            ))}
+          </IonSelect>
         </div>
       </div>
     </>
   );
 };
 
-export default UsersForm;
+export default UserForm;

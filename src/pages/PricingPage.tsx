@@ -47,15 +47,15 @@ const PricingPage: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 absolute bottom-20 left-0 right-0 mb-10">
                 <IonCard className="h-fit">
                   <IonCardHeader className="text-center">
-                    <div className="text-2xl font-bold">Freemium</div>
+                    <div className="text-3xl font-bold">Free</div>
                   </IonCardHeader>
                   <IonCardContent className="text-center">
                     <p>
                       Create unlimited boards, use images from our library or
                       upload your own, and more.
                     </p>
-                    <div className="text-3xl font-bold my-4">Free</div>
-                    <p className="mt-2">Forever - All basic features</p>
+                    <div className="text-2xl font-bold my-4">Free Forever</div>
+                    <p className="mt-2">All basic features</p>
                     <IonButton
                       className="mt-4"
                       expand="full"
@@ -69,14 +69,14 @@ const PricingPage: React.FC = () => {
 
                 <IonCard className="h-fit">
                   <IonCardHeader className="text-center">
-                    <div className="text-2xl font-bold">Premium</div>
+                    <div className="text-3xl font-bold">Pro</div>
                   </IonCardHeader>
                   <IonCardContent className="text-center">
                     <p>
                       Enjoy an ad-free experience and unlock premium features
                       like the Menu Reader & AI-generated images.
                     </p>
-                    <div className="text-3xl font-bold my-4">$4.99/mo</div>
+                    <div className="text-2xl font-bold my-4">$4.99/mo</div>
                     <p className="mt-2">
                       Or $49/year{" "}
                       <span className="text-xs font-bold">
@@ -96,7 +96,7 @@ const PricingPage: React.FC = () => {
 
                 <IonCard className="h-fit">
                   <IonCardHeader className="text-center">
-                    <div className="text-2xl font-bold">Professional</div>
+                    <div className="text-3xl font-bold">Professional+</div>
                   </IonCardHeader>
                   <IonCardContent className="text-center">
                     <p>
@@ -104,7 +104,7 @@ const PricingPage: React.FC = () => {
                       need to manage multiple users.
                     </p>
                     <p className="mt-4 font-bold"></p>
-                    <div className="text-3xl font-bold my-4">Contact Us</div>
+                    <div className="text-2xl font-bold my-4">Contact Us</div>
                     <p className="mt-2">
                       Custom solutions tailored to your needs.
                     </p>
