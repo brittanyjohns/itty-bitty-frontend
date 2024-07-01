@@ -144,7 +144,7 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
             <div className="relative h-80 md:h-96 lg:h-96 w-full">
               <div className="p-2 bg-white absolute bottom-0 left-0 right-0 my-5">
                 <h2 className="text-2xl font-bold">Join the Beta</h2>
-                <IonItem className="w-2/3 mx-auto">
+                <IonItem className="w-full md:w-2/3 mx-auto">
                   <IonInput
                     type="email"
                     value={email}
