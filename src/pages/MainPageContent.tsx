@@ -90,13 +90,13 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
     setIsOpen(true);
     setTimeout(() => {
       setIsOpen(false);
-    }, 2000);
+    }, 2500);
   };
 
   return (
-    <div className="fixsed-bg">
+    <div className="">
       <div className="">
-        <div className="flex flex-col justify-center items-center text-center py-4 lg:py-8  shadow-overlay">
+        <div className="flex flex-col justify-center items-center text-center py-4 lg:py-8 shadow-overlay">
           <h1 className="text-2xl md:text-5xl font-bold text-white mt-4">
             Empower Your Child's Communication
           </h1>
