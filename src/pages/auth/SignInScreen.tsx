@@ -72,6 +72,8 @@ const SignInScreen: React.FC = () => {
                   label="Email"
                   labelPlacement="stacked"
                   value={email}
+                  fill="solid"
+                  className="mt-4"
                   placeholder="Enter your email"
                   onIonChange={(e) => setEmail(e.detail.value!)}
                   clearInput
@@ -82,6 +84,8 @@ const SignInScreen: React.FC = () => {
                   labelPlacement="stacked"
                   type="password"
                   value={password}
+                  fill="solid"
+                  className="mt-4"
                   placeholder="Enter your password"
                   onIonChange={(e) => setPassword(e.detail.value!)}
                   clearInput
