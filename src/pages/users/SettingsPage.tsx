@@ -18,7 +18,7 @@ import Tabs from "../../components/utils/Tabs";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import UserSettingsForm from "../../components/users/UserSettingsForm";
 import { User, UserSetting, updateUserSettings } from "../../data/users";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { set } from "react-hook-form";
 import UserForm from "../../components/users/UserForm";
 import { useHistory } from "react-router";
@@ -31,6 +31,7 @@ const SettingsPage: React.FC = () => {
   const history = useHistory();
   const [toastMessage, setToastMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [planType, setPlanType] = useState<string>("Free");
 
   const handleSubmit = (submittedFormData: FormData) => {
     console.log("handle submit: submittedFormData", submittedFormData);
@@ -54,13 +55,18 @@ const SettingsPage: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const planTypeToSet = currentUser?.plan_type || planType || "Free";
+    setPlanType(planTypeToSet);
+  }, [currentUser]);
+
   const handleCancel = () => {
     console.log("cancel");
     history.push("/");
   };
 
-  const handleNameChange = (name: string) => {
-    setName(name);
+  const handleSetPlanType = (name: string) => {
+    setPlanType(name);
   };
 
   const refresh = (e: CustomEvent) => {
@@ -78,44 +84,58 @@ const SettingsPage: React.FC = () => {
             <IonButtons slot="start">
               <IonMenuButton></IonMenuButton>
             </IonButtons>
-            <IonTitle>Settings</IonTitle>
+            <IonTitle>Settings - {planType}</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen className="ion-padding">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <IonList>
-            <IonItem>
-              <IonText> Name: {currentUser && currentUser.name}</IonText>
-            </IonItem>
-            <IonItem>
-              <IonText> Email: {currentUser && currentUser.email}</IonText>
-            </IonItem>
-            <IonItem>
-              <IonText> Role: {currentUser && currentUser.role}</IonText>
-            </IonItem>
-            <IonItem>
-              <IonText> Tokens: {currentUser && currentUser.tokens}</IonText>
-            </IonItem>
-            <IonItem>
-              <IonText>
-                {" "}
-                Created At: {currentUser && currentUser.created_at}
-              </IonText>
-            </IonItem>
-            <IonItem>
-              <IonText>
-                {" "}
-                Updated At: {currentUser && currentUser.updated_at}
-              </IonText>
-            </IonItem>
-          </IonList>
-          <UserSettingsForm
-            onCancel={handleCancel}
-            onSave={handleSubmit}
-            existingUserSetting={currentUser?.settings}
-          />
+          <div className="w-full md:w-1/2 mx-auto p-4 border mt-4">
+            <UserForm
+              onCancel={handleCancel}
+              onSave={handleSubmit}
+              planType={planType}
+              setPlanType={handleSetPlanType}
+              userId={currentUser?.id}
+            />
+          </div>
+          <div className="w-full md:w-1/2 mx-auto p-4 border">
+            <IonList>
+              <IonItem>
+                <IonText> Name: {currentUser && currentUser.name}</IonText>
+              </IonItem>
+              <IonItem>
+                <IonText> Email: {currentUser && currentUser.email}</IonText>
+              </IonItem>
+              <IonItem>
+                <IonText> Role: {currentUser && currentUser.role}</IonText>
+              </IonItem>
+              <IonItem>
+                <IonText> Tokens: {currentUser && currentUser.tokens}</IonText>
+              </IonItem>
+              <IonItem>
+                <IonText>
+                  {" "}
+                  Created At: {currentUser && currentUser.created_at}
+                </IonText>
+              </IonItem>
+              <IonItem>
+                <IonText>
+                  {" "}
+                  Updated At: {currentUser && currentUser.updated_at}
+                </IonText>
+              </IonItem>
+            </IonList>
+          </div>
+          <div className="w-full md:w-1/2 mx-auto p-4 border mt-4">
+            <UserSettingsForm
+              onCancel={handleCancel}
+              onSave={handleSubmit}
+              existingUserSetting={currentUser?.settings}
+            />
+          </div>
+
           <IonToast
             isOpen={isOpen}
             message={toastMessage}

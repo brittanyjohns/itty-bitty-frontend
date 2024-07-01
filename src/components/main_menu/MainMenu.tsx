@@ -70,7 +70,7 @@ const MainMenu: React.FC<MainMenuProps> = () => {
       "predictive",
       "settings",
     ];
-    const premimumLinks = [
+    const proLinks = [
       "home",
       "sign-out",
       "boards",
@@ -80,7 +80,7 @@ const MainMenu: React.FC<MainMenuProps> = () => {
       "settings",
     ];
 
-    const freemiumLinks = [
+    const freeLinks = [
       "home",
       "sign-out",
       "boards",
@@ -102,19 +102,19 @@ const MainMenu: React.FC<MainMenuProps> = () => {
         if (currentUser.role === "admin") {
           return adminLinks.includes(link.slug ?? "");
         }
-        if (currentUser.plan_type === "free") {
-          return freemiumLinks.includes(link.slug ?? "");
+        if (currentUser.plan_type === "Free") {
+          return freeLinks.includes(link.slug ?? "");
         }
-        if (currentUser.plan_type === "professional") {
-          return professionalLinks.includes(link.slug ?? "");
+        if (currentUser.plan_type === "Pro") {
+          return proLinks.includes(link.slug ?? "");
         }
-        if (currentUser.plan_type === "professional-pro") {
+        if (currentUser.plan_type === "Professional Plus") {
           return professionalProLinks.includes(link.slug ?? "");
         }
-        if (currentUser.plan_type === "premium") {
-          return premimumLinks.includes(link.slug ?? "");
+        if (currentUser.plan_type === "Premium") {
+          return professionalProLinks.includes(link.slug ?? "");
         }
-        return freemiumLinks.includes(link.slug ?? "");
+        return freeLinks.includes(link.slug ?? "");
       } else {
         return signedOutLinks.includes(link.slug ?? "");
       }
