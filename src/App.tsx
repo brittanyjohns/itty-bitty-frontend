@@ -74,15 +74,11 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Upgrade from "./pages/Upgrade";
 import ContactUs from "./pages/ContactUs";
 import About from "./pages/About";
+import SuccessfulSubscription from "./pages/SuccessfulSubscription";
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
-const stripePromise = loadStripe(STRIPE_PUBLIC_KEY);
 
-const options = {
-  // passing the client secret obtained from the server
-  clientSecret: STRIPE_PRIVATE_KEY,
-};
 const App: React.FC = () => (
   <UserProvider>
     <IonApp>
@@ -171,11 +167,11 @@ const App: React.FC = () => (
           <Route path="/upgrade" component={Upgrade} exact />
           <Route path="/faq" component={About} exact />
           <Route path="/about" component={About} exact />
+
+          <Route path="/success" component={SuccessfulSubscription} exact />
+          <Route path="/billing" component={Upgrade} exact />
         </IonRouterOutlet>
       </IonReactRouter>
-      {/* <Elements stripe={stripePromise} options={options}>
-      <CheckoutForm />
-    </Elements> */}
     </IonApp>
   </UserProvider>
 );

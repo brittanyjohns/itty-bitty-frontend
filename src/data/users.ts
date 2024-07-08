@@ -23,6 +23,7 @@ export interface NewUser {
 }
 export interface User {
     id?: number;
+    uuid?: string;
     email?: string;
     password?: string;
     name?: string;
@@ -40,6 +41,7 @@ export interface User {
     total_plan_cost?: number;
     monthly_price?: number;
     yearly_price?: number;
+    stripe_customer_id?: string;
 }
 export interface VoiceSetting {
     name?: string;
