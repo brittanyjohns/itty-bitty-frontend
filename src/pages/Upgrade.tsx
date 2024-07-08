@@ -12,6 +12,8 @@ import {
 import MainMenu from "../components/main_menu/MainMenu";
 import Tabs from "../components/utils/Tabs";
 import { useCurrentUser } from "../hooks/useCurrentUser";
+import SubscriptionLink from "../components/stripe/SubscriptionLink";
+
 const Upgrade: React.FC = () => {
   const { isWideScreen } = useCurrentUser();
 
@@ -37,7 +39,7 @@ const Upgrade: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <IonContent fullscreen></IonContent>
+          <SubscriptionLink />
         </IonContent>
       </IonPage>
       <Tabs />
