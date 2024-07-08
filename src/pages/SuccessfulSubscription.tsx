@@ -13,14 +13,13 @@ import {
 import MainMenu from "../components/main_menu/MainMenu";
 import Tabs from "../components/utils/Tabs";
 import { useCurrentUser } from "../hooks/useCurrentUser";
-import { useState, useEffect } from "react";
-import SubscriptionList from "../components/stripe/SubscriptionList";
+import { useEffect, useState } from "react";
 import { Subscription, getSubscriptions } from "../data/subscriptions";
+import SubscriptionList from "../components/stripe/SubscriptionList";
 import AccountLink from "../components/stripe/AccountLink";
-import SubscriptionLink from "../components/stripe/SubscriptionLink";
-const Dashboard: React.FC = () => {
-  const { isWideScreen, currentUser } = useCurrentUser();
 
+const SuccessfulSubscription: React.FC = () => {
+  const { isWideScreen, currentUser } = useCurrentUser();
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
 
   const refresh = (e: CustomEvent) => {
@@ -38,6 +37,8 @@ const Dashboard: React.FC = () => {
     loadSubscriptions();
   }, []);
 
+  // loadSubscriptions();
+
   return (
     <>
       <MainMenu />
@@ -47,36 +48,36 @@ const Dashboard: React.FC = () => {
             <IonButtons slot="start">
               {!isWideScreen && <IonMenuButton></IonMenuButton>}
             </IonButtons>
-            <IonTitle>Dashboard</IonTitle>
+            <IonTitle>Success!!</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <div className="p-4">
-            <div className="p-4">
-              <h1 className="text-4xl font-bold my-8"> Under Construction </h1>
+          <div className="mb-4 p-4 w-full md:w-1/2 mx-auto">
+            <h1 className="text-4xl font-bold my-8">
+              Thank you for subscribing!
+            </h1>
 
-              <h1 className="text-2xl">Welcome to your dashboard</h1>
-              <p className="text-lg">
-                This is where you can view your account information, manage your
-                subscriptions, and more.
-              </p>
-            </div>
-            {currentUser?.plan_type !== "free" && (
-              <SubscriptionList subscriptions={subscriptions} />
+            <h1 className="text-2xl">Your subscription is now active.</h1>
+            <p className="text-lg">
+              You can now access all the features of the Pro plan.
+            </p>
+            <p className="text-lg">
+              You can manage your subscription from the settings page.
+            </p>
+            {currentUser?.plan_status !== "active" && (
+              <IonButton routerLink="/upgrade">Upgrade</IonButton>
             )}
-            <div className="p-3 mt-5">
-              <AccountLink />
-              <SubscriptionLink />
-            </div>
           </div>
+          <SubscriptionList subscriptions={subscriptions} />
+          {currentUser?.plan_status === "active" && <AccountLink />}
         </IonContent>
-        <Tabs />
       </IonPage>
+      <Tabs />
     </>
   );
 };
 
-export default Dashboard;
+export default SuccessfulSubscription;

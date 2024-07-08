@@ -85,6 +85,7 @@ const MainMenu: React.FC<MainMenuProps> = () => {
       "sign-out",
       "boards",
       "images",
+      "menus",
       "predictive",
       "settings",
     ];
