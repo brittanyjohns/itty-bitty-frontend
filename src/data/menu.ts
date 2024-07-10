@@ -7,22 +7,16 @@ export interface MenuLink {
   id: number;
 }
 import {
-  cloudUploadOutline,
   gridOutline,
-  refreshCircleOutline,
-  appsOutline,
   fastFoodOutline,
   imageOutline,
   logInOutline,
   logOutOutline,
-  sunny,
   sunnyOutline,
   settingsOutline,
   homeOutline,
   peopleCircleOutline,
-  lockClosed,
   lockClosedOutline,
-  codeDownloadOutline,
   pricetagOutline,
   bookOutline,
 } from "ionicons/icons";

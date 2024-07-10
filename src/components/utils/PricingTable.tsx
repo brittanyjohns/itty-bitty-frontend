@@ -7,7 +7,11 @@ import {
   IonCardHeader,
   IonCardContent,
   IonButton,
+  IonList,
+  IonItem,
+  IonIcon,
 } from "@ionic/react";
+import { checkmarkCircleOutline } from "ionicons/icons";
 
 // If using TypeScript, add the following snippet to your file as well.
 declare global {
@@ -37,31 +41,83 @@ function PricingTable() {
       </div>
       <div className="relative fixed-bg">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 absolute bottom-20 left-0 right-0 mb-10">
-          <IonCard className="h-fit">
-            <IonCardHeader className="text-center">
-              <div className="text-3xl font-bold">Free</div>
-            </IonCardHeader>
-            <IonCardContent className="text-center">
-              <p>
-                Create up to unlimited custom boards, use images from our
-                library or upload your own, and more.
-              </p>
-              <div className="text-2xl font-bold my-4">Free Forever</div>
-              <p className="mt-2">All basic features</p>
-              <IonButton
-                className="mt-4"
-                expand="full"
-                color="primary"
-                onClick={() => history.push("/sign-up")}
-              >
-                Get Started
-              </IonButton>
-            </IonCardContent>
-          </IonCard>
+          {currentUser && currentUser.plan_type === "free" && (
+            <IonCard className="h-fit">
+              <IonCardHeader className="text-center">
+                <div className="text-3xl font-bold">Free Forever</div>
+              </IonCardHeader>
+              <IonCardContent className="text-center">
+                <p>
+                  Create up to unlimited custom boards, use images from our
+                  library or upload your own, and more.
+                </p>
+                <div className="text-2xl font-bold my-2 text-green-500 font-bold text-lg bg-green-100 p-2 rounded-lg">
+                  Your Current Plan
+                </div>
+                <p className="mt-2">All basic features</p>
+                <ul className="mt-4 text-left text-sm md:text-base">
+                  <li>
+                    <IonIcon icon={checkmarkCircleOutline} className="mr-2" />
+                    Unlimited Custom Boards
+                  </li>
+                  <li>
+                    <IonIcon icon={checkmarkCircleOutline} className="mr-2" />
+                    Upload Your Own Images
+                  </li>
+                  <li>
+                    <IonIcon icon={checkmarkCircleOutline} className="mr-2" />
+                    Access to Image Library
+                  </li>
+                  <li>
+                    <IonIcon icon={checkmarkCircleOutline} className="mr-2" />
+                    Basic Voice Output
+                  </li>
+                  <li>
+                    <IonIcon icon={checkmarkCircleOutline} className="mr-2" />
+                    Available on all devices
+                  </li>
+                </ul>
+                <IonButton
+                  className="mt-4"
+                  expand="full"
+                  color="success"
+                  onClick={() => history.push("/boards")}
+                >
+                  Get Started Now!
+                </IonButton>
+              </IonCardContent>
+            </IonCard>
+          )}
+          {!currentUser && (
+            <IonCard className="h-fit">
+              <IonCardHeader className="text-center">
+                <div className="text-3xl font-bold">Free</div>
+              </IonCardHeader>
+              <IonCardContent className="text-center">
+                <p>
+                  Create up to unlimited custom boards, use images from our
+                  library or upload your own, and more.
+                </p>
+                <div className="text-2xl font-bold my-4">Free Forever</div>
+                <p className="mt-2">All basic features</p>
+                <IonButton
+                  className="mt-4"
+                  expand="full"
+                  color="success"
+                  onClick={() => history.push("/sign-up")}
+                >
+                  Get Started
+                </IonButton>
+              </IonCardContent>
+            </IonCard>
+          )}
 
           <IonCard className="h-fit">
             <IonCardHeader className="text-center">
               <div className="text-3xl font-bold">Pro</div>
+              <p className="mt-2 text-lg font-md">
+                Includes all basic features
+              </p>
             </IonCardHeader>
             <IonCardContent className="text-center">
               {currentUser && (

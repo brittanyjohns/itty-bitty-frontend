@@ -67,10 +67,10 @@ const BoardsScreen: React.FC = () => {
     fetchBoards();
   });
 
-  useIonViewWillEnter(() => {
-    hideMenu();
-    console.log("ionViewWillEnter event fired");
-  });
+  // useIonViewWillEnter(() => {
+  //   hideMenu();
+  //   console.log("ionViewWillEnter event fired");
+  // });
 
   useEffect(() => {
     if (segmentType === "user") {

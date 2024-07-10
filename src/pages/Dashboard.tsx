@@ -1,5 +1,4 @@
 import {
-  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
@@ -17,7 +16,7 @@ import { useState, useEffect } from "react";
 import SubscriptionList from "../components/stripe/SubscriptionList";
 import { Subscription, getSubscriptions } from "../data/subscriptions";
 import AccountLink from "../components/stripe/AccountLink";
-import SubscriptionLink from "../components/stripe/SubscriptionLink";
+import PricingTable from "../components/utils/PricingTable";
 const Dashboard: React.FC = () => {
   const { isWideScreen, currentUser } = useCurrentUser();
 
@@ -35,6 +34,10 @@ const Dashboard: React.FC = () => {
   };
 
   useEffect(() => {
+    if (!currentUser) {
+      window.location.href = "/sign-in";
+      return;
+    }
     loadSubscriptions();
   }, []);
 
@@ -69,7 +72,7 @@ const Dashboard: React.FC = () => {
             )}
             <div className="p-3 mt-5">
               <AccountLink />
-              <SubscriptionLink />
+              <PricingTable />
             </div>
           </div>
         </IonContent>

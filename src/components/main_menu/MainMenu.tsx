@@ -76,6 +76,7 @@ const MainMenu: React.FC<MainMenuProps> = () => {
       "boards",
       "images",
       "menus",
+      "teams",
       "predictive",
       "settings",
     ];
@@ -85,6 +86,7 @@ const MainMenu: React.FC<MainMenuProps> = () => {
       "sign-out",
       "boards",
       "images",
+      "teams",
       "menus",
       "predictive",
       "settings",
