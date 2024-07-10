@@ -18,10 +18,6 @@ import SubscriptionList from "../components/stripe/SubscriptionList";
 import { Subscription, getSubscriptions } from "../data/subscriptions";
 import AccountLink from "../components/stripe/AccountLink";
 import SubscriptionLink from "../components/stripe/SubscriptionLink";
-<<<<<<< HEAD
-import PricingTable from "../components/utils/PricingTable";
-=======
->>>>>>> main
 const Dashboard: React.FC = () => {
   const { isWideScreen, currentUser } = useCurrentUser();
 
