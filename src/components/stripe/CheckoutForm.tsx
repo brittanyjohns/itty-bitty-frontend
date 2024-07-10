@@ -1,20 +1,10 @@
 import React, { useState } from "react";
-import { BASE_URL, STRIPE_PUBLIC_KEY } from "../../data/users";
+import { BASE_URL } from "../../data/users";
 
-import {
-  PaymentElement,
-  Elements,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { userHeaders } from "../../data/users";
 
-interface CheckoutFormProps {
-  user: any;
-}
-
-const CheckoutForm = ({ user }: CheckoutFormProps) => {
+const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
 

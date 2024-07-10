@@ -64,12 +64,37 @@ function PricingTable() {
               <div className="text-3xl font-bold">Pro</div>
             </IonCardHeader>
             <IonCardContent className="text-center">
-              <stripe-pricing-table
-                pricing-table-id={STRIPE_PRICING_TABLE_ID}
-                publishable-key={STRIPE_PUBLIC_KEY}
-                client-reference-id={currentUser?.uuid}
-                customer-email={currentUser?.email}
-              ></stripe-pricing-table>
+              {currentUser && (
+                <stripe-pricing-table
+                  pricing-table-id={STRIPE_PRICING_TABLE_ID}
+                  publishable-key={STRIPE_PUBLIC_KEY}
+                  client-reference-id={currentUser?.uuid}
+                  customer-email={currentUser?.email}
+                ></stripe-pricing-table>
+              )}
+              {!currentUser && (
+                <div>
+                  <p>
+                    Enjoy an ad-free experience and unlock premium features like
+                    the Menu Reader & AI-generated images.
+                  </p>
+                  <div className="text-2xl font-bold my-4">$4.99/mo</div>
+                  <p className="mt-2">
+                    Or $49/year{" "}
+                    <span className="text-xs font-bold">
+                      - That's 2 months free!
+                    </span>
+                  </p>
+                  <IonButton
+                    className="mt-4"
+                    expand="full"
+                    color="primary"
+                    onClick={() => history.push("/sign-up/pro")}
+                  >
+                    Sign Up Now
+                  </IonButton>
+                </div>
+              )}
             </IonCardContent>
           </IonCard>
 

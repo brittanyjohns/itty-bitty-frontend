@@ -1,18 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IonPage, IonContent, IonInput, IonButton } from "@ionic/react";
 import { NewUser, signUp } from "../../data/users";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import MainMenu from "../../components/main_menu/MainMenu";
 import { getImageUrl } from "../../data/utils";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import MainHeader from "../MainHeader";
-
-const SignInScreen: React.FC = () => {
+interface SignUpScreenProps {
+  plan: string;
+}
+const SignUpScreen = ({ plan }: SignUpScreenProps) => {
   const history = useHistory();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
   const { isWideScreen } = useCurrentUser();
+  // const params = useParams<{ plan: string }>();
+
+  useEffect(() => {
+    console.log("params.plan", plan);
+  }, []);
 
   const handlePassword = (password: string) => {
     setPassword(password);
@@ -31,6 +38,7 @@ const SignInScreen: React.FC = () => {
       email,
       password,
       password_confirmation: passwordConfirmation,
+      plan: plan,
     };
 
     try {
@@ -39,7 +47,13 @@ const SignInScreen: React.FC = () => {
         alert("Error signing up:\n " + response.error);
       } else {
         localStorage.setItem("token", response.token); // Store the token
-        history.push("/boards");
+        if (plan === "free") {
+          history.push("/dashboard");
+        } else if (plan === "pro") {
+          history.push("/upgrade");
+        } else {
+          history.push("/dashboard");
+        }
         window.location.reload(); // Reload the page to update the menu
       }
     } catch (error) {
@@ -141,4 +155,4 @@ const SignInScreen: React.FC = () => {
   );
 };
 
-export default SignInScreen;
+export default SignUpScreen;

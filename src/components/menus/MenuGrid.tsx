@@ -2,7 +2,6 @@ import { createRef, useState } from "react";
 import { Menu } from "../../data/menus";
 import { IonGrid, IonButton, IonItem, IonText } from "@ionic/react";
 import MenuGridItem from "./MenuGridItem";
-import SignInScreen from "../../pages/auth/SignUpScreen";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 interface MenuGridProps {
@@ -42,7 +41,6 @@ const MenuGrid = ({ menus }: MenuGridProps) => {
           </IonButton>
         </div>
       )}
-
     </div>
   );
 };

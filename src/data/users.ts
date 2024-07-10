@@ -9,8 +9,6 @@ console.log('API URL:', API_URL);
 
 export const BASE_URL = API_URL ? API_URL + '/api/' : 'http://localhost:4000/api/'; // For web development
 export const STRIPE_PUBLIC_KEY = import.meta.env.VITE_STRIPE_PUBLIC_KEY;
-export const STRIPE_PRIVATE_KEY = import.meta.env.VITE_STRIPE_PRIVATE_KEY;
-export const STRIPE_WEBHOOK_SECRET = import.meta.env.VITE_STRIPE_WEBHOOK_SECRET;
 export const STRIPE_PRICING_TABLE_ID = import.meta.env.VITE_STRIPE_PRICING_TABLE_ID;
 export const STRIPE_PAYMENT_LINK_URL = import.meta.env.VITE_STRIPE_PAYMENT_LINK_URL;
 export const STRIPE_CUSTOMER_PORTAL_URL = import.meta.env.VITE_STRIPE_CUSTOMER_PORTAL_URL;
@@ -24,6 +22,7 @@ export interface NewUser {
     email: string;
     password: string;
     password_confirmation: string;
+    plan?: string;
 }
 export interface User {
     id?: number;

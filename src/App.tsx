@@ -65,10 +65,6 @@ setupIonicReact({
   },
 });
 
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import CheckoutForm from "./components/stripe/CheckoutForm";
-import { STRIPE_PUBLIC_KEY, STRIPE_PRIVATE_KEY } from "./data/users";
 import PricingPage from "./pages/PricingPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import Upgrade from "./pages/Upgrade";
@@ -153,7 +149,13 @@ const App: React.FC = () => (
           <Route path="/teams/new" component={NewTeamScreen} exact={true} />
           <Route path="/settings" component={SettingsPage} exact={true} />
           <Route path={"/sign-up"}>
-            <SignUpScreen />
+            <SignUpScreen plan={"free"} />
+          </Route>
+          <Route path={"/sign-up/free"}>
+            <SignUpScreen plan={"free"} />
+          </Route>
+          <Route path={"/sign-up/pro"}>
+            <SignUpScreen plan={"pro"} />
           </Route>
           <Route path={"/sign-in"} component={SignInScreen} exact={true} />
           <Route path="/sign-out" component={SignOutScreen} exact={true} />
