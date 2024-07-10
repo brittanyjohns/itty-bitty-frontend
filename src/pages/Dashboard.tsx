@@ -18,7 +18,10 @@ import SubscriptionList from "../components/stripe/SubscriptionList";
 import { Subscription, getSubscriptions } from "../data/subscriptions";
 import AccountLink from "../components/stripe/AccountLink";
 import SubscriptionLink from "../components/stripe/SubscriptionLink";
+<<<<<<< HEAD
 import PricingTable from "../components/utils/PricingTable";
+=======
+>>>>>>> main
 const Dashboard: React.FC = () => {
   const { isWideScreen, currentUser } = useCurrentUser();
 
@@ -55,25 +58,22 @@ const Dashboard: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <div className="px-4">
-            {currentUser?.plan_type !== "free" && (
-              <div className="p-4">
-                <h1 className="text-4xl font-bold my-8">
-                  {" "}
-                  Under Construction{" "}
-                </h1>
+          <div className="p-4">
+            <div className="p-4">
+              <h1 className="text-4xl font-bold my-8"> Under Construction </h1>
 
-                <h1 className="text-2xl">Welcome to your dashboard</h1>
-                <p className="text-lg">
-                  This is where you can view your account information, manage
-                  your subscriptions, and more.
-                </p>
-                <SubscriptionList subscriptions={subscriptions} />
-              </div>
+              <h1 className="text-2xl">Welcome to your dashboard</h1>
+              <p className="text-lg">
+                This is where you can view your account information, manage your
+                subscriptions, and more.
+              </p>
+            </div>
+            {currentUser?.plan_type !== "free" && (
+              <SubscriptionList subscriptions={subscriptions} />
             )}
             <div className="p-3 mt-5">
               <AccountLink />
-              {currentUser?.plan_type === "free" && <PricingTable />}
+              <SubscriptionLink />
             </div>
           </div>
         </IonContent>
