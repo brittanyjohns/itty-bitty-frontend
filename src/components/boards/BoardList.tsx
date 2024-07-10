@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Board } from "../../data/boards";
-import { IonList, IonButton, IonItem, IonText } from "@ionic/react";
+import { IonList, IonButton, IonItem, IonText, IonLoading } from "@ionic/react";
 import BoardListItem from "./BoardListItem";
 import SignInScreen from "../../pages/auth/SignUpScreen";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
@@ -52,7 +52,7 @@ const BoardList = ({ boards }: BoardListProps) => {
           </IonItem>
         )}
 
-        {!currentUser && <SignInScreen />}
+        {!currentUser && <IonLoading message="Please wait..." isOpen={true} />}
       </IonList>
     </div>
   );
