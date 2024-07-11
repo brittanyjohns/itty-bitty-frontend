@@ -63,7 +63,7 @@ const BoardView: React.FC<BoardViewProps> = ({
   const shouldShowRemoveBtn = currentUser?.role === "admin" || board?.can_edit;
   console.log("shouldShowRemoveBtn", shouldShowRemoveBtn);
   console.log("currentUser", currentUser?.id);
-  console.log("board", board?.user_id);
+  console.log("currentUser", currentUser);
 
   const toggleAddToTeam = () => {
     addToTeamRef.current?.classList.toggle("hidden");
@@ -90,7 +90,7 @@ const BoardView: React.FC<BoardViewProps> = ({
           )}
         </IonItem>
         <IonItem lines="none">
-          {board && board?.status && (
+          {currentUser?.admin && board && board?.status && (
             <IonText color="success">{`Status: ${board?.status}`}</IonText>
           )}
         </IonItem>

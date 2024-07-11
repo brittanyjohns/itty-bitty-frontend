@@ -45,6 +45,13 @@ export interface User {
     monthly_price?: number;
     yearly_price?: number;
     stripe_customer_id?: string;
+    admin?: boolean;
+    free?: boolean;
+    pro?: boolean;
+    team?: any; // TODO: Define Team interface
+    team_id?: number;
+    boards?: any[]; // TODO: Define Board interface
+    starting_board_id?: number;
 }
 export interface VoiceSetting {
     name?: string;
