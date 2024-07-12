@@ -143,9 +143,7 @@ export const getImage = (id: string) => {
 
 export const cropImage = (formData: FormData) => {
   const imageId = formData.get('image[id]');
-  console.log('cropImage imageId', imageId);
   const label = formData.get('image[label]');
-  console.log('cropImage label', label);
     const img = fetch(`${BASE_URL}images/crop`, {
         headers: createHeaders,
         method: 'POST',
@@ -245,9 +243,11 @@ export async function removeDoc(imageId: string, docId: string|undefined): Promi
   return response.json();
 }
 
-export async function setNextWords(imageId: string): Promise<any> {
+export async function setNextWords(imageId: string, nextWords?: string[]): Promise<any> {
+  console.log('setNextWords', nextWords);
   const response = await fetch(`${BASE_URL}images/${imageId}/set_next_words`, {
     headers: userHeaders,
+    body: JSON.stringify({ next_words: nextWords }),
     method: 'POST',
   });
   return response.json();

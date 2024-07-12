@@ -138,6 +138,7 @@ const PredictiveImagesScreen: React.FC = () => {
   };
 
   useEffect(() => {
+    console.log("Starting image id: ", startingImageId);
     if (startingImageId) {
       setStartingImages(startingImageId);
     } else {
@@ -235,6 +236,7 @@ const PredictiveImagesScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent />
           </IonRefresher>
+          {previousLabel}
           <PredictiveImageGallery
             initialImages={initialImages}
             onImageSpeak={handleImageSpeak}

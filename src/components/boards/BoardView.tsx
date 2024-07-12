@@ -14,6 +14,7 @@ import {
   copyOutline,
   createOutline,
   chatbubbleEllipsesOutline,
+  imageOutline,
 } from "ionicons/icons";
 import DraggableGrid from "../images/DraggableGrid";
 import AddToTeamForm from "../teams/AddToTeamForm";
@@ -61,9 +62,6 @@ const BoardView: React.FC<BoardViewProps> = ({
   };
 
   const shouldShowRemoveBtn = currentUser?.role === "admin" || board?.can_edit;
-  console.log("shouldShowRemoveBtn", shouldShowRemoveBtn);
-  console.log("currentUser", currentUser?.id);
-  console.log("currentUser", currentUser);
 
   const toggleAddToTeam = () => {
     addToTeamRef.current?.classList.toggle("hidden");
@@ -117,12 +115,18 @@ const BoardView: React.FC<BoardViewProps> = ({
             </IonButton>
           )}
           {board && showEdit && (
+            <IonButton routerLink={`/boards/${board.id}/edit`} className="mr-4">
+              <IonIcon icon={createOutline} className="mx-2" />
+              <IonLabel>Edit</IonLabel>
+            </IonButton>
+          )}
+          {board && showEdit && (
             <IonButton
               routerLink={`/boards/${board.id}/gallery`}
               className="mr-4"
             >
-              <IonIcon icon={createOutline} className="mx-2" />
-              <IonLabel>Edit</IonLabel>
+              <IonIcon icon={imageOutline} className="mx-2" />
+              <IonLabel>Add</IonLabel>
             </IonButton>
           )}
         </IonButtons>
@@ -141,6 +145,7 @@ const BoardView: React.FC<BoardViewProps> = ({
           showRemoveBtn={shouldShowRemoveBtn}
         />
       )}
+
       {imageCount && imageCount < 1 && (
         <div className="text-center pt-32">
           <p>No images found</p>

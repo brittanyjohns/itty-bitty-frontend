@@ -6,6 +6,7 @@ import {
   IonHeader,
   IonIcon,
   IonImg,
+  IonInput,
   IonItem,
   IonLabel,
   IonList,
@@ -43,6 +44,7 @@ import MainHeader from "../MainHeader";
 import ImageCropper from "../../components/images/ImageCropper";
 import { Board, getBoards } from "../../data/boards";
 import { generatePlaceholderImage } from "../../data/utils";
+import { set } from "react-hook-form";
 
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -50,6 +52,7 @@ const ViewImageScreen: React.FC = () => {
   const [image, setImage] = useState<Image | null>(null);
   const [currentImage, setCurrentImage] = useState<string | null>("");
   const imageGrid = useRef<HTMLDivElement>(null);
+  const newWordInput = useRef<HTMLIonInputElement>(null);
   const [showLoading, setShowLoading] = useState(false);
   const [segmentType, setSegmentType] = useState("gallery");
   const uploadForm = useRef<HTMLDivElement>(null);
@@ -62,6 +65,8 @@ const ViewImageScreen: React.FC = () => {
   const [nextImageWords, setNextImageWords] = useState<string[]>([]);
   const [boards, setBoards] = useState<Board[]>([]);
   const [filteredBoards, setFilteredBoards] = useState<Board[]>([]);
+  const [newImageWord, setNewImageWord] = useState("");
+  const [wordsToRemove, setWordsToRemove] = useState<string[]>([]);
 
   const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
     if (
@@ -81,18 +86,6 @@ const ViewImageScreen: React.FC = () => {
     setNextImageWords(img.next_words);
     return img;
   };
-
-  // useEffect(() => {
-  //   const queryString = window.location.search;
-  //   const urlParams = new URLSearchParams(queryString);
-  //   const boardId = urlParams.get("boardId");
-  //   setShowHardDelete(currentUser?.role === "admin");
-  //   setBoardId(boardId);
-  //   getData();
-  //   if(image && image.src) {
-  //     setCurrentImage(image.src);
-  //   }
-  // }, []);
 
   const setupData = async () => {
     const queryString = window.location.search;
@@ -245,9 +238,62 @@ const ViewImageScreen: React.FC = () => {
     }
   };
 
+  const clearInput = () => {
+    if (newWordInput.current) {
+      newWordInput.current.value = "";
+    }
+    setWordsToRemove([]);
+  };
+
+  const handleAddNextWords = async () => {
+    if (!image) return;
+    console.log("Adding next words: ", nextImageWords);
+    const newImageWords = [...nextImageWords, newImageWord];
+    const result = await setNextWords(image.id, newImageWords);
+    if (result["next_words"]) {
+      setNewImageWord("");
+      clearInput();
+      getData();
+    } else {
+      alert("Error setting next words.\n" + result["message"]);
+    }
+  };
+
   const createSymbol = async () => {
     if (!image) return;
     const result = await create_symbol(image.id);
+  };
+
+  const toggleAddToRemoveList = (e: React.MouseEvent<HTMLIonTextElement>) => {
+    const target = e.target as HTMLIonTextElement;
+    const word = target.innerText;
+    if (wordsToRemove.includes(word)) {
+      const newWords = wordsToRemove.filter((w) => w !== word);
+      setWordsToRemove(newWords);
+    } else {
+      console.log("Removing word: ", word);
+      setWordsToRemove([...wordsToRemove, word]);
+    }
+  };
+
+  const handleDeleteSelected = async () => {
+    if (!image) return;
+    const wordsToSet = nextImageWords.filter(
+      (word) => !wordsToRemove.includes(word)
+    );
+    const result = await setNextWords(image.id, wordsToSet);
+    if (result["next_words"]) {
+      getData();
+    } else {
+      alert("Error setting next words.\n" + result["message"]);
+    }
+  };
+
+  const wordBgColor = (word: string) => {
+    if (wordsToRemove.includes(word)) {
+      return "bg-red-300";
+    }
+    return "bg-gray-200";
   };
 
   return (
@@ -406,7 +452,7 @@ const ViewImageScreen: React.FC = () => {
               </div>
             )}
             {currentUser?.role === "admin" && (
-              <div className="mt-10">
+              <div className="mt-10 w-full">
                 <IonButtons className="flex justify-between">
                   {!image?.no_next && (
                     <IonButton
@@ -439,25 +485,50 @@ const ViewImageScreen: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <div className="text-sm font-mono w-full">
-                  {image?.next_words && image.next_words.length > 0 && (
+                <div className="text-sm font-mono w-full md:w-1/2 mx-auto">
+                  {nextImageWords.length > 0 && (
                     <div className="mt-2">
                       <IonText className="text-md">Next Words:</IonText>
                       <div className="flex flex-wrap">
-                        {image.next_words.map((word, index) => (
+                        {nextImageWords.map((word, index) => (
                           <div
                             key={index}
-                            className="bg-gray-200 m-1 p-1 rounded-md"
+                            className={`m-1 p-1 ${wordBgColor(word)}`}
                           >
-                            <IonText className="text-sm">{word}</IonText>
+                            <IonText
+                              className="text-sm"
+                              onClick={toggleAddToRemoveList}
+                            >
+                              {word}
+                            </IonText>
                           </div>
                         ))}
                       </div>
                     </div>
                   )}
-                  {!image?.no_next && image?.next_words?.length == 0 && (
-                    <p className="text-md">No next words set.</p>
-                  )}
+                </div>
+                <div className="mt-2 w-full md:w-1/2 mx-auto">
+                  <IonInput
+                    className=""
+                    ref={newWordInput}
+                    placeholder="Enter word"
+                    onIonInput={(e) => setNewImageWord(e.detail.value ?? "")}
+                  ></IonInput>
+                  <IonButtons className="mt-2">
+                    <IonButton
+                      className="mt-2 w-full"
+                      onClick={handleAddNextWords}
+                    >
+                      Add Word
+                    </IonButton>
+                    <IonButton
+                      className="mt-2 w-full"
+                      color={"danger"}
+                      onClick={handleDeleteSelected}
+                    >
+                      Delete Selected
+                    </IonButton>
+                  </IonButtons>
                 </div>
               </div>
             )}

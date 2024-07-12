@@ -9,6 +9,8 @@ import "react-resizable/css/styles.css";
 import ImageGalleryItem from "./ImageGalleryItem";
 import { Board, updateBoard } from "../../data/boards";
 import { Image } from "../../data/images";
+import { IonButton, IonIcon, IonLabel } from "@ionic/react";
+import { createOutline } from "ionicons/icons";
 interface DraggableGridProps {
   columns: number;
   images: any;
