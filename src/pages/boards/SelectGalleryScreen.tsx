@@ -46,22 +46,18 @@ import {
 } from "../../data/boards"; // Adjust imports based on actual functions
 import { createImage, generateImage, getMoreImages } from "../../data/images";
 import { Image } from "../../data/images";
-import BoardForm from "../../components/boards/BoardForm";
 import SelectImageGallery from "../../components/images/SelectImageGallery";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/utils/Tabs";
-import DraggableGrid from "../../components/images/DraggableGrid";
 import MainMenu from "../../components/main_menu/MainMenu";
 import ImageCropper from "../../components/images/ImageCropper";
-import ConfirmDeleteAlert from "../../components/utils/ConfirmDeleteAlert";
 
-interface SelectGalleryScreenProps {}
 const SelectGalleryScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [board, setBoard] = useState<Board | null>(null);
   const boardGrid = useRef<HTMLDivElement>(null);
   const [showLoading, setShowLoading] = useState(false);
-  const [segmentType, setSegmentType] = useState("edit");
+  const [segmentType, setSegmentType] = useState("gallery");
   const uploadForm = useRef<HTMLDivElement>(null);
   const generateForm = useRef<HTMLDivElement>(null);
   const editForm = useRef<HTMLDivElement>(null);
@@ -189,13 +185,6 @@ const SelectGalleryScreen: React.FC = () => {
       editForm.current?.classList.add("hidden");
       imageGalleryWrapper.current?.classList.remove("hidden");
     }
-
-    if (segmentType === "edit") {
-      uploadForm.current?.classList.add("hidden");
-      generateForm.current?.classList.add("hidden");
-      editForm.current?.classList.remove("hidden");
-      imageGalleryWrapper.current?.classList.add("hidden");
-    }
   };
 
   const handleGenerate = async () => {
@@ -318,20 +307,22 @@ const SelectGalleryScreen: React.FC = () => {
               </IonButton>
             </IonButtons>
             <IonSegment value={segmentType} onIonChange={handleSegmentChange}>
-              <IonSegmentButton value="edit">
-                <IonLabel className="text-lg">Edit</IonLabel>
-                <IonIcon icon={createOutline} />
-              </IonSegmentButton>
               <IonSegmentButton value="gallery">
-                <IonLabel className="text-lg">Gallery</IonLabel>
+                <IonLabel className="text-sm md:text-md lg:text-lg">
+                  Gallery
+                </IonLabel>
                 <IonIcon icon={imagesOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="upload">
-                <IonLabel className="text-lg">Upload</IonLabel>
+                <IonLabel className="text-sm md:text-md lg:text-lg">
+                  Upload
+                </IonLabel>
                 <IonIcon icon={cloudUploadOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="generate">
-                <IonLabel className="text-lg">Generate</IonLabel>
+                <IonLabel className="text-sm md:text-md lg:text-lg">
+                  Generate
+                </IonLabel>
                 <IonIcon icon={refreshCircleOutline} />
               </IonSegmentButton>
             </IonSegment>
@@ -344,79 +335,10 @@ const SelectGalleryScreen: React.FC = () => {
             </IonText>
             <IonIcon icon={refreshOutline} onClick={fetchBoard} />
           </div>
-
-          <div className="lg:px-12" ref={editForm}>
-            <div className="m-2">
-              <IonText className="text-sm text-gray-500">
-                Voice: {board?.voice}
-              </IonText>
-            </div>
-            <div className="w-11/12 lg:w-1/2 mx-auto">
-              {board && (
-                <BoardForm
-                  board={board}
-                  setBoard={setBoard}
-                  onSubmit={loadPage}
-                />
-              )}
-            </div>
-            <div className="mt-6 px-4 lg:px-12">
-              {board && board.images && board.images.length > 0 && (
-                <div className="">
-                  <p className="text-center font-bold text-lg">
-                    This board currently has {board.images.length} images.
-                  </p>
-                  <p className="text-center font-bold text-md">
-                    Drag and drop to rearrange the layout.
-                  </p>
-
-                  <IonButton
-                    className="block my-5 w-5/6 md:w-1/3 lg:w-1/4 mx-auto text-md text-wrap"
-                    onClick={handleSaveLayout}
-                    size="large"
-                  >
-                    Save Layout
-                  </IonButton>
-                  <IonButton
-                    className="block text-xl font-bold text-center my-2 cursor-pointer w-full lg:w-1/2 mx-auto text-wrap"
-                    onClick={handleRearrangeImages}
-                  >
-                    Reset layout
-                    <IonIcon icon={appsOutline} className="px-2" />
-                    <span className="text-xs font-normal">
-                      {" "}
-                      This will resize tile the images horizontally
-                    </span>
-                  </IonButton>
-                  <DraggableGrid
-                    images={board.images}
-                    columns={numberOfColumns}
-                    onLayoutChange={(layout: any) => setGrid(layout)}
-                    mute={true}
-                    enableResize={true}
-                    viewOnClick={false}
-                    showRemoveBtn={false}
-                  />
-                </div>
-              )}
-              {board && board.images && board.images.length < 1 && (
-                <div className="text-center">
-                  <p>No images found</p>
-                </div>
-              )}
-            </div>
-            <div className="flex justify-end items-center px-4">
-              {showEdit && (
-                <ConfirmDeleteAlert
-                  onConfirm={removeBoard}
-                  onCanceled={() => {}}
-                />
-              )}
-            </div>
-          </div>
-
           <div className="mt-6 py-3 px-1 hidden text-center" ref={uploadForm}>
-            <IonText className="text-lg">Upload your own image</IonText>
+            <IonText className="text-sm md:text-md lg:text-lg">
+              Upload your own image
+            </IonText>
             {board && image && (
               <ImageCropper
                 existingId={image.id}
@@ -426,7 +348,7 @@ const SelectGalleryScreen: React.FC = () => {
             )}
           </div>
           <div className="mt-2 hidden" ref={generateForm}>
-            <IonList className="" lines="none">
+            <IonList className="w-full md:w-1/2 mx-auto" lines="none">
               <IonItem className="my-2">
                 <IonText className="font-bold text-xl mt-2">
                   Generate an board with AI
@@ -460,12 +382,15 @@ const SelectGalleryScreen: React.FC = () => {
                 )}
               </IonItem>
               <IonItem className="mt-2">
-                <IonButton className="w-full text-lg" onClick={handleGenerate}>
+                <IonButton
+                  className="w-full text-sm md:text-md lg:text-lg"
+                  onClick={handleGenerate}
+                >
                   Generate Image
                 </IonButton>
               </IonItem>
               <IonItem className="mt-2 font-mono text-center">
-                <IonText className="text-md">
+                <IonText className="text-sm md:text-md lg:text-lg">
                   This will generate an board based on the prompt you enter.
                 </IonText>
               </IonItem>

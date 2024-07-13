@@ -309,12 +309,12 @@ const EditBoardScreen: React.FC = () => {
             </IonText>
             <IonButtons className="mr-3" slot="start">
               <IonButton routerLink={`/boards/${board?.id}/gallery`}>
-                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
+                <IonIcon slot="icon-only" icon={imagesOutline} />
               </IonButton>
             </IonButtons>
           </div>
 
-          <div className="lg:px-12" ref={editForm}>
+          <div className=" " ref={editForm}>
             <div className="m-2">
               <IonText className="text-sm text-gray-500">
                 Voice: {board?.voice}
