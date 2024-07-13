@@ -58,7 +58,7 @@ const Dashboard: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <div className="p-4">
-            <div className="p-4">
+            {/* <div className="p-4">
               <h1 className="text-4xl font-bold my-8"> Under Construction </h1>
 
               <h1 className="text-2xl">Welcome to your dashboard</h1>
@@ -66,13 +66,15 @@ const Dashboard: React.FC = () => {
                 This is where you can view your account information, manage your
                 subscriptions, and more.
               </p>
-            </div>
-            {currentUser?.plan_type !== "free" && (
-              <SubscriptionList subscriptions={subscriptions} />
-            )}
+            </div> */}
+            {currentUser?.admin ||
+              (currentUser?.plan_type !== "free" && (
+                <SubscriptionList subscriptions={subscriptions} />
+              ))}
             <div className="p-3 mt-5">
               <AccountLink />
-              <PricingTable />
+
+              {currentUser?.plan_type === "free" && <PricingTable />}
             </div>
           </div>
         </IonContent>

@@ -29,8 +29,8 @@ function PricingTable() {
   const history = useHistory();
   // Paste the stripe-pricing-table snippet in your React component
   return (
-    <div>
-      <div className="flex flex-col justify-center items-center text-center shadow-overlay">
+    <div className="relative">
+      <div className="text-center mt-10 md:mt-20 px-4 md:px-0 md:py-10 md:mb-10">
         <h1 className="text-xl md:text-5xl font-bold text-white">
           Find the plan that's right for you.
         </h1>
