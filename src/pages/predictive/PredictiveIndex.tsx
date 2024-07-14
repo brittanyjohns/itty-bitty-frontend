@@ -23,6 +23,7 @@ import {
   add,
   addCircleOutline,
   arrowBackCircleOutline,
+  imageOutline,
   // images,
   playCircleOutline,
   pulseOutline,
@@ -34,23 +35,20 @@ import { TextToSpeech } from "@capacitor-community/text-to-speech";
 
 import { getInitialImages } from "../../data/boards";
 import PredictiveImageGallery from "../../components/predictive/PredictiveImageGallery";
-import { speak } from "../../hoarder/TextToSpeech";
-import FloatingWordsBtn from "../../components/utils/FloatingWordsBtn";
-import { set } from "react-hook-form";
 import { clickWord } from "../../data/audits";
 import { playAudioList } from "../../data/utils";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 const PredictiveImagesScreen: React.FC = () => {
+  const { currentUser } = useCurrentUser();
   const startingImageId = useParams<{ id: string }>().id;
   const [initialImages, setImages] = useState<Image[]>([]);
-  const history = useHistory();
-  const [boardId, setBoardId] = useState("");
   const inputRef = useRef<HTMLIonInputElement>(null);
   const [showIcon, setShowIcon] = useState(false);
-  const [currentWord, setCurrentWord] = useState("");
   const [previousLabel, setPreviousLabel] = useState<string | undefined>(
     undefined
   );
+  const [imageId, setImageId] = useState<string | undefined>(undefined);
 
   const fetchFirstBoard = async () => {
     const imgs = await getInitialImages();
@@ -147,7 +145,6 @@ const PredictiveImagesScreen: React.FC = () => {
   }, []);
 
   const loadMoreImages = async () => {
-    console.log("Loading more images", initialImages);
     const newImages = await getInitialImages();
     const allImages = [...newImages, ...initialImages];
     const uniqueImageIds = new Set(allImages.map((image) => image.id));
@@ -158,8 +155,6 @@ const PredictiveImagesScreen: React.FC = () => {
     const imagesToSet = uniqueImages.filter(
       (image) => image !== undefined
     ) as Image[];
-
-    console.log("Setting images: ", imagesToSet);
 
     setImages(imagesToSet);
   };
@@ -182,7 +177,6 @@ const PredictiveImagesScreen: React.FC = () => {
   return (
     <>
       <MainMenu />
-      <h1 className="text-2xl text-center">Predictive Images</h1>
       <IonPage id="main-content">
         <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
@@ -236,10 +230,17 @@ const PredictiveImagesScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent />
           </IonRefresher>
-          {previousLabel}
+          {imageId && currentUser?.admin && (
+            <IonButtons class="flex justify-between w-full text-center">
+              <IonButton routerLink={`/images/${imageId}`}>
+                <IonIcon icon={imageOutline} />
+              </IonButton>
+            </IonButtons>
+          )}
           <PredictiveImageGallery
             initialImages={initialImages}
             onImageSpeak={handleImageSpeak}
+            setImageId={setImageId}
           />
           {/* <FloatingWordsBtn inputRef={inputRef} /> */}
         </IonContent>

@@ -1,19 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
 import ImageComponent from "./ImageComponent";
 import { Image, getPredictiveImages } from "../../data/images";
+import { set } from "react-hook-form";
 
 interface PredictiveImageGalleryProps {
   initialImages: Image[];
   onImageSpeak: (image: Image) => void;
+  setImageId: (id: string) => void;
 }
 
 const PredictiveImageGallery: React.FC<PredictiveImageGalleryProps> = ({
   initialImages: images,
   onImageSpeak: handleImageSpeak,
+  setImageId,
 }) => {
   const [currentImages, setCurrentImages] = useState<Image[]>(images);
 
   const handleImageClick = async (image: Image) => {
+    setImageId(image.id);
     handleImageSpeak(image);
     const newImages = await getPredictiveImages(image.id);
     const allImages = [...newImages, ...currentImages];
