@@ -91,6 +91,7 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
     setTimeout(() => {
       setIsOpen(false);
     }, 2500);
+    window.location.href = "/sign-up?email=" + email;
   };
 
   return (
@@ -190,35 +191,6 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
               </div>
             </div>
           </div>
-
-          {/* <div className="shadow-overlay text-white rounded-lg px-5">
-            <section className="row-span-1 py-4">
-              <div className="container mx-auto px-2">
-                <h2 className="text-4xl font-bold text-center">Features</h2>
-                <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-1 mt-4">
-                  {features.map((feature, index) => (
-                    <Link
-                      key={feature.id}
-                      to="/faq"
-                      className="bg-white rounded-lg shadow p-4 text-center"
-                    >
-                      <img
-                        src={getImageUrl(`feature_${index + 1}`, "webp")}
-                        alt={feature.title}
-                        className="h-40 object-cover rounded-md mx-auto"
-                      />
-                      <h3 className="mt-2 font-semibold text-lg text-purple-600">
-                        {feature.title}
-                      </h3>
-                      <p className="mt-2 text-sm text-gray-600">
-                        {feature.description}
-                      </p>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </section>
-          </div> */}
         </div>
       </div>
     </div>

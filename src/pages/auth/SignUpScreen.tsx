@@ -15,10 +15,10 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
   const [password, setPassword] = useState<string>("");
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
   const { isWideScreen } = useCurrentUser();
-  // const params = useParams<{ plan: string }>();
+  const params = useParams<{ email: string }>();
 
   useEffect(() => {
-    console.log("params.plan", plan);
+    console.log("params.email", params.email);
   }, []);
 
   const handlePassword = (password: string) => {
@@ -71,7 +71,7 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
         {!isWideScreen && <MainHeader />}
         <IonContent className="">
           <div
-            className="hero_main1 bg-cover bg-center min-h-screen"
+            className="hero_main1 bg-cover bg-center min-h-screen pb-20"
             style={{
               backgroundImage: `url(${getImageUrl("feature_1", "webp")})`,
             }}
@@ -84,9 +84,16 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
                 Discover the simplicity of SpeakAnyWay.
               </p>
             </div>
-            9
+            <div className="flex flex-col justify-center items-center text-center gap-4 py-4">
+              <div className="bg-white bg-opacity-95 rounded-lg w-5/6 md:w- p-3/4 font-bold text-2xl sm:text-sm md:text-sm sm:font-light text-center">
+                <p className="text-center p-4">
+                  While you're waiting on the hot, new features, why not check
+                  out the existing ones?
+                </p>
+              </div>
+            </div>
             <div className="w-full max-w-xs mx-auto">
-              <form className="shadow-md rounded mt-10 bg-white bg-opacity-95 p-8">
+              <form className="shadow-md rounded mt-8 bg-white bg-opacity-95 p-8">
                 <h1 className="text-2xl font-bold text-center mb-3">Sign Up</h1>
                 <div className="mb-4">
                   <IonInput
