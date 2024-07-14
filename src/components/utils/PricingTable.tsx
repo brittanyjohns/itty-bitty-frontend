@@ -30,16 +30,18 @@ function PricingTable() {
   // Paste the stripe-pricing-table snippet in your React component
   return (
     <div className="relative">
-      <div className="text-center mt-10 md:mt-20 px-4 md:px-0 md:py-10 md:mb-10">
-        <h1 className="text-xl md:text-5xl font-bold text-white">
-          Find the plan that's right for you.
-        </h1>
-        <p className="mt-4 text-sm md:text-xl text-white">
-          Join the growing community of users who enhance their communication
-          with SpeakAnyWay.
-        </p>
-      </div>
       <div className="relative fixed-bg">
+        {
+          <div className="text-cente bg-black bg-opacity-90 p-4 py-98font-serif text-center">
+            <h1 className="text-xl md:text-5xl font-bold text-white">
+              Find the plan that's right for you.
+            </h1>
+            <p className="mt-4 text-sm md:text-xl text-white">
+              Join the growing community of users who enhance their
+              communication with SpeakAnyWay.
+            </p>
+          </div>
+        }
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 absolute bottom-20 left-0 right-0 mb-10">
           {currentUser && currentUser.plan_type === "free" && (
             <IonCard className="h-fit">
