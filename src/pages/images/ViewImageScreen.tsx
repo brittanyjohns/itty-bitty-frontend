@@ -403,6 +403,7 @@ const ViewImageScreen: React.FC = () => {
                   Click an image to display it for the word: "{image.label}"
                 </IonLabel>
                 <div className="grid grid-cols-3 gap-4 mt-3" ref={imageGrid}>
+                  {/* This needs pulled out into a separate component */}
                   {image?.docs &&
                     image.docs.map((doc, index) => (
                       <div

@@ -48,13 +48,15 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
       } else {
         localStorage.setItem("token", response.token); // Store the token
         if (plan === "free") {
-          history.push("/dashboard");
+          // history.push("/dashboard");
+          window.location.href = "/predictive";
         } else if (plan === "pro") {
-          history.push("/upgrade");
+          // history.push("/upgrade");
+          window.location.href = "/upgrade";
         } else {
-          history.push("/dashboard");
+          // history.push("/dashboard");
+          window.location.href = "/dashboard";
         }
-        window.location.reload(); // Reload the page to update the menu
       }
     } catch (error) {
       console.error("Error signing up: ", error);
