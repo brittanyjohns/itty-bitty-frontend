@@ -126,6 +126,7 @@ const ImagesScreen: React.FC = () => {
       <IonPage id="main-content">
         <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
+            <IonMenuButton></IonMenuButton>
             <IonSegment
               value={segmentType}
               onIonChange={handleSegmentChange}

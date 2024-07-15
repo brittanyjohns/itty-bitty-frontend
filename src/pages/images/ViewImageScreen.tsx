@@ -36,6 +36,8 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 import {
   cloudUploadOutline,
   gridOutline,
+  imagesOutline,
+  personOutline,
   refreshCircleOutline,
   trashBinOutline,
 } from "ionicons/icons";
@@ -303,30 +305,27 @@ const ViewImageScreen: React.FC = () => {
         {!isWideScreen && <MainHeader />}
         <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
-            <IonTitle>{image?.label}</IonTitle>
-          </IonToolbar>
-          <IonToolbar>
-            <IonSegment value={segmentType} onIonChange={handleSegmentChange}>
+            <IonSegment
+              value={segmentType}
+              onIonChange={handleSegmentChange}
+              className="w-full bg-inherit"
+            >
               <IonSegmentButton value="gallery">
-                <IonLabel className="text-xl">
-                  <IonIcon icon={gridOutline} />
-                </IonLabel>
+                <IonLabel className="text-md lg:text-lg">Gallery</IonLabel>
+                <IonIcon icon={gridOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="upload">
-                <IonLabel className="text-xl">
-                  <IonIcon icon={cloudUploadOutline} />
-                </IonLabel>
+                <IonLabel className="text-md lg:text-lg">Upload</IonLabel>
+                <IonIcon icon={cloudUploadOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="generate">
-                <IonLabel className="text-xl">
-                  <IonIcon icon={refreshCircleOutline} />
-                </IonLabel>
+                <IonLabel className="text-md lg:text-lg">Generate</IonLabel>
+                <IonIcon icon={refreshCircleOutline} />
               </IonSegmentButton>
               {showHardDelete && (
                 <IonSegmentButton value="delete">
-                  <IonLabel className="text-xl">
-                    <IonIcon icon={trashBinOutline} />
-                  </IonLabel>
+                  <IonLabel className="text-md lg:text-lg">Delete</IonLabel>
+                  <IonIcon icon={trashBinOutline} />
                 </IonSegmentButton>
               )}
             </IonSegment>

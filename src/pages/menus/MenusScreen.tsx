@@ -31,7 +31,6 @@ const MenusScreen: React.FC = () => {
     }, 3000);
   };
 
-
   const fetchMenus = async () => {
     const allMenus = await getMenus();
     if (!allMenus) {
@@ -52,7 +51,10 @@ const MenusScreen: React.FC = () => {
       <MainMenu />
       <IonPage id="main-content">
         <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar className="p-2">
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonMenuButton></IonMenuButton>
+            </IonButtons>
             <IonTitle>Menus</IonTitle>
             <IonButtons className="mr-4" slot="end">
               <IonButton routerLink="/menus/new" className="text-wrap mx-auto">
@@ -66,7 +68,7 @@ const MenusScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-            <MenuGrid menus={menus} />
+          <MenuGrid menus={menus} />
         </IonContent>
         <Tabs />
       </IonPage>

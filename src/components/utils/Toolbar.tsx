@@ -6,6 +6,7 @@ import {
   IonIcon,
   IonButtons,
   IonButton,
+  IonBackButton,
 } from "@ionic/react";
 import { albumsOutline, gridOutline, addCircleOutline } from "ionicons/icons";
 import React, { useState } from "react";
@@ -22,17 +23,18 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
 
   return (
     <IonToolbar>
+      <IonBackButton />
       <IonSegment
         value={segmentType}
         onIonChange={handleSegmentChange}
         className="w-full bg-inherit"
       >
         <IonSegmentButton value="user">
-          <IonLabel className="text-md lg:text-lg">Your Boards</IonLabel>
+          <IonLabel className="text-xs md:text-md">Your sBoards</IonLabel>
           <IonIcon icon={albumsOutline} />
         </IonSegmentButton>
         <IonSegmentButton value="preset">
-          <IonLabel className="text-md lg:text-lg">Preset Boards</IonLabel>
+          <IonLabel className="text-xs lg:text-md">Preset Boards</IonLabel>
           <IonIcon icon={gridOutline} />
         </IonSegmentButton>
       </IonSegment>
