@@ -48,7 +48,7 @@ const Demo: React.FC = () => {
             </p>
             <div className="p-4 font-mono">
               <video
-                className="w-1/2 mx-auto mt-10"
+                className="w-full md:w-3/4 mx-auto"
                 controls
                 src="https://itty-bitty-boards-development.s3.amazonaws.com/demo071424.mp4"
               ></video>
