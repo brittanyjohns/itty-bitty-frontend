@@ -137,6 +137,7 @@ const PredictiveImagesScreen: React.FC = () => {
 
   useEffect(() => {
     console.log("Starting image id: ", startingImageId);
+    console.log("previousLabel: ", previousLabel);
     if (startingImageId) {
       setStartingImages(startingImageId);
     } else {
