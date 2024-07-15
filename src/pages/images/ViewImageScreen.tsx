@@ -101,9 +101,13 @@ const ViewImageScreen: React.FC = () => {
     }
   };
 
-  useIonViewWillEnter(() => {
+  // useIonViewWillEnter(() => {
+  //   setupData();
+  // });
+
+  useEffect(() => {
     setupData();
-  });
+  }, []);
 
   const getData = async () => {
     const imgToSet = await fetchImage();
@@ -263,7 +267,15 @@ const ViewImageScreen: React.FC = () => {
 
   const createSymbol = async () => {
     if (!image) return;
+    setShowLoading(true);
     const result = await create_symbol(image.id);
+    setShowLoading(false);
+    if (result["status"] === "ok") {
+      // alert("Symbol created successfully.");
+      window.location.reload();
+    } else {
+      alert("Error creating symbol.\n" + result["message"]);
+    }
   };
 
   const toggleAddToRemoveList = (e: React.MouseEvent<HTMLIonTextElement>) => {
