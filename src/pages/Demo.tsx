@@ -46,19 +46,13 @@ const Demo: React.FC = () => {
               Build a custom communication board based on any real life scenario
               & more!
             </p>
-            <video className="w-1/2 mx-auto mt-10" controls>
-              <source src={getDemoUrl("demo071424", "mp4")} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
-          <div className="p-4 font-mono">
-            <img
-              slot="start"
-              // src="/src/assets/images/round_itty_bitty_logo_1.png"
-              src={getDemoUrl("demo071424", "mp4")}
-
-              // className="h-10 w-10"
-            />
+            <div className="p-4 font-mono">
+              <video
+                className="w-1/2 mx-auto mt-10"
+                controls
+                src="https://itty-bitty-boards-development.s3.amazonaws.com/demo071424.mp4"
+              ></video>
+            </div>
           </div>
         </IonContent>
       </IonPage>
