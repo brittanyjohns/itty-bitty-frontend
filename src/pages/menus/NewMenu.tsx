@@ -9,6 +9,7 @@ import {
   IonIcon,
   IonInput,
   IonItem,
+  IonLabel,
   IonLoading,
   IonPage,
   IonTitle,
@@ -174,13 +175,14 @@ const NewMenu: React.FC = (props: any) => {
             message="Please wait while we analyze your menu..."
             isOpen={showLoading}
           />
-          <IonItem
-            lines="none"
-            className="ion-margin-bottom ion-margin-top mx-auto w-3/4 md:w-1/2 text-2xl"
-          >
-            <h1 className="text-center">Create a new menu board</h1>
-          </IonItem>
+
           <div className="w-full md:w-3/4 lg:w-1/2 mx-auto border shadow-lg">
+            <IonItem
+              lines="none"
+              className="ion-margin-bottom ion-margin-top mx-auto w-3/4 md:w-1/2 text-xl md:text-2xl font-bold"
+            >
+              <h1 className="text-center">Create a new menu board</h1>
+            </IonItem>
             <IonItem lines="none" className="ion-margin-bottom mx-4">
               <h1 className="text-center">
                 Browse for an image or paste an image to create a new menu
@@ -209,6 +211,10 @@ const NewMenu: React.FC = (props: any) => {
                   onChange={(ev) => onFileChange(ev)}
                 />
               </IonItem>
+              <p className="text-center">
+                You can set the maximum number of tokens to use to generate this
+                menu.
+              </p>
               <IonItem lines="none" className="ion-margin-bottom">
                 <IonInput
                   label="Token Limit"

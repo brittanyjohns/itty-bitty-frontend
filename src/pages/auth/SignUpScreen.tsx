@@ -85,7 +85,7 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
               </p>
             </div>
             <div className="flex flex-col justify-center items-center text-center gap-4 py-4">
-              <div className="bg-white bg-opacity-95 rounded-lg w-5/6 md:w- p-3/4 font-bold text-2xl sm:text-sm md:text-sm sm:font-light text-center">
+              <div className="bg-white bg-opacity-95 rounded-lg w-5/6 md:w- p-3/4 font-bold text-2xl sm:text-sm md:text-sm  text-center">
                 <p className="text-center p-4">
                   While you're waiting on the hot, new features, why not check
                   out the existing ones?
