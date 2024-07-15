@@ -13,6 +13,14 @@ export const getIconUrl = (name: string, ent: string) => {
     return new URL(`../assets/icons/${name}.${ent}`, import.meta.url).href;
 }
 
+export const getVideoUrl = (name: string, ent: string) => {
+    return new URL(`../assets/videos/${name}.${ent}`, import.meta.url).href;
+}
+
+export const getDemoUrl = (name: string, ent: string = 'mp4') => {
+    return new URL(`../assets/demos/${name}.${ent}`, import.meta.url).href;
+} 
+
 export const playAudioList = async (audioList: string[]) => {
     for (let i = 0; i < audioList.length; i++) {
       const audioSrc = audioList[i];
