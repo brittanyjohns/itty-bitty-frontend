@@ -137,10 +137,6 @@ const MainMenu: React.FC<MainMenuProps> = () => {
       });
     }
     setMenuLinks(links);
-    console.log("links", links);
-    // if (isWideScreen) {
-    //   openMenu();
-    // }
   }, []);
 
   useEffect(() => {

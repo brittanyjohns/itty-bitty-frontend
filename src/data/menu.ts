@@ -71,7 +71,7 @@ const menuLinks: MenuLink[] = [
     name: 'Child Accounts',
     slug: 'child-accounts',
     icon: peopleCircleOutline,
-    id: 0
+    id: 18
   },
   {
     endpoint: '/sign-in',
