@@ -52,6 +52,7 @@ export interface User {
     team_id?: number;
     boards?: any[]; // TODO: Define Board interface
     starting_board_id?: number;
+    child_accounts?: any[]; // TODO: Define ChildAccount interface
 }
 export interface VoiceSetting {
     name?: string;

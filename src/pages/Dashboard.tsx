@@ -17,6 +17,7 @@ import SubscriptionList from "../components/stripe/SubscriptionList";
 import { Subscription, getSubscriptions } from "../data/subscriptions";
 import AccountLink from "../components/stripe/AccountLink";
 import PricingTable from "../components/utils/PricingTable";
+import ChildAccountForm from "../components/childAccounts/ChildAccountForm";
 const Dashboard: React.FC = () => {
   const { isWideScreen, currentUser } = useCurrentUser();
 
@@ -34,10 +35,6 @@ const Dashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!currentUser) {
-      window.location.href = "/sign-in";
-      return;
-    }
     loadSubscriptions();
   }, []);
 
@@ -67,6 +64,14 @@ const Dashboard: React.FC = () => {
 
               {currentUser?.plan_type === "free" && <PricingTable />}
             </div>
+          </div>
+          <div className="p-4">
+            <h1>Child Accounts</h1>
+            <p>
+              Create child accounts to allow your children to use SpeakAnyWay in
+              a way that's safe and secure.
+            </p>
+            {currentUser && <ChildAccountForm currentUser={currentUser} />}
           </div>
         </IonContent>
         <Tabs />

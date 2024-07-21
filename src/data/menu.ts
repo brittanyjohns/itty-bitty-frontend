@@ -22,13 +22,7 @@ import {
 } from "ionicons/icons";
 import { set } from "react-hook-form";
 const menuLinks: MenuLink[] = [
-  // {
-  //   endpoint: '/dashboard',
-  //   name: 'Dashboard',
-  //   slug: 'dashboard',
-  //   icon: appsOutline,
-  //   id: 0
-  // },
+  
   {
     endpoint: '/home',
     name: 'Home',
@@ -71,6 +65,13 @@ const menuLinks: MenuLink[] = [
     slug: 'images',
     icon: imageOutline,
     id: 3
+  },
+  {
+    endpoint: '/child-accounts',
+    name: 'Child Accounts',
+    slug: 'child-accounts',
+    icon: peopleCircleOutline,
+    id: 0
   },
   {
     endpoint: '/sign-in',

@@ -71,6 +71,8 @@ import Upgrade from "./pages/Upgrade";
 import ContactUs from "./pages/ContactUs";
 import About from "./pages/About";
 import SuccessfulSubscription from "./pages/SuccessfulSubscription";
+import ChildAccountsScreen from "./pages/childAccounts/ChildAccountsScreen";
+import ViewChildAccountScreen from "./pages/childAccounts/ViewChildAccountScreen";
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -148,15 +150,16 @@ const App: React.FC = () => (
           <Route path="/teams/:id" component={ViewTeamScreen} exact={true} />
           <Route path="/teams/new" component={NewTeamScreen} exact={true} />
           <Route path="/settings" component={SettingsPage} exact={true} />
-          <Route path={"/sign-up"}>
-            <SignUpScreen plan={"free"} />
+          <Route path="/sign-up">
+            <SignUpScreen plan="free" />
           </Route>
-          <Route path={"/sign-up/free"}>
-            <SignUpScreen plan={"free"} />
+          <Route path="/sign-up/free">
+            <SignUpScreen plan="free" />
           </Route>
-          <Route path={"/sign-up/pro"}>
-            <SignUpScreen plan={"pro"} />
+          <Route path="/sign-up/pro">
+            <SignUpScreen plan="pro" />
           </Route>
+
           <Route path={"/sign-in"} component={SignInScreen} exact={true} />
           <Route path="/sign-out" component={SignOutScreen} exact={true} />
           <Route
@@ -172,6 +175,15 @@ const App: React.FC = () => (
 
           <Route path="/success" component={SuccessfulSubscription} exact />
           <Route path="/billing" component={Upgrade} exact />
+          <Route
+            path="/child-accounts"
+            component={ChildAccountsScreen}
+            exact={true}
+          />
+          <Route
+            path="/child-accounts/:id"
+            component={ViewChildAccountScreen}
+          />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>

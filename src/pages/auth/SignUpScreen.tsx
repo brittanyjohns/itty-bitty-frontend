@@ -1,25 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { IonPage, IonContent, IonInput, IonButton } from "@ionic/react";
 import { NewUser, signUp } from "../../data/users";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import MainMenu from "../../components/main_menu/MainMenu";
 import { getImageUrl } from "../../data/utils";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import MainHeader from "../MainHeader";
+
 interface SignUpScreenProps {
   plan: string;
 }
+
 const SignUpScreen = ({ plan }: SignUpScreenProps) => {
   const history = useHistory();
+  const location = useLocation();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
   const { isWideScreen } = useCurrentUser();
-  const params = useParams<{ email: string }>();
+
+  const getQueryParams = (search: string) => {
+    return new URLSearchParams(search);
+  };
 
   useEffect(() => {
-    console.log("params.email", params.email);
-  }, []);
+    const params = getQueryParams(location.search);
+    const emailParam = params.get("email");
+    if (emailParam) {
+      setEmail(emailParam);
+      console.log("params.email", emailParam);
+    }
+  }, [location.search]);
 
   const handlePassword = (password: string) => {
     setPassword(password);
@@ -48,7 +59,7 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
       } else {
         localStorage.setItem("token", response.token); // Store the token
         if (plan === "free") {
-          // history.push("/dashboard");
+          // history.push("/predictive");
           window.location.href = "/predictive";
         } else if (plan === "pro") {
           // history.push("/upgrade");
@@ -84,14 +95,19 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
                 Discover the simplicity of SpeakAnyWay.
               </p>
             </div>
-            <div className="flex flex-col justify-center items-center text-center gap-4 py-4">
-              <div className="bg-white bg-opacity-95 rounded-lg w-5/6 md:w- p-3/4 font-bold text-2xl sm:text-sm md:text-sm  text-center">
-                <p className="text-center p-4">
-                  While you're waiting on the hot, new features, why not check
-                  out the existing ones?
-                </p>
+            {email && (
+              <div className="flex flex-col justify-center items-center text-center gap-4 py-4">
+                <div className="bg-white bg-opacity-95 rounded-lg w-5/6 md:w- p-3/4 font-bold text-2xl sm:text-sm md:text-sm  text-center">
+                  <p className="text-center p-4 text-md font-semibold">
+                    While you're waiting on the hot, new features, why not check
+                    out the existing ones?
+                  </p>
+                  <p className="text-center p-4 text-sm md:text-md">
+                    Sign up for a free account and start using SpeakAnyWay now!
+                  </p>
+                </div>
               </div>
-            </div>
+            )}
             <div className="w-full max-w-xs mx-auto">
               <form className="shadow-md rounded mt-8 bg-white bg-opacity-95 p-8">
                 <h1 className="text-2xl font-bold text-center mb-3">Sign Up</h1>
