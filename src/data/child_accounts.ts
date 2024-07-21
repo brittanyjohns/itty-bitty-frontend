@@ -16,7 +16,7 @@ export interface ChildAccount {
     password_confirmation?: string;
     boards?: Board[]; // TODO: Define Board interface
     settings?: any; // TODO: Define Settings interface
-    error: string;
+    error?: string;
 }
 
 export async function createChildAccount(payload: ChildAccount): Promise<ChildAccount> {
