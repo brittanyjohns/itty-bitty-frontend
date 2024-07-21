@@ -181,6 +181,11 @@ const App: React.FC = () => (
             exact={true}
           />
           <Route
+            path="/child-accounts/new"
+            component={ChildAccountsScreen}
+            exact={true}
+          />
+          <Route
             path="/child-accounts/:id"
             component={ViewChildAccountScreen}
           />

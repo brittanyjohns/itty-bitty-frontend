@@ -108,12 +108,9 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
 
       <div className="flex flex-col gap-4">
         <div className="text-center">
-          <IonLabel className="">
-            {existingChildAccount ? " Edit" : " Create"} Child Account
-          </IonLabel>
           <IonInput
             label="Child's Name"
-            value={name}
+            value={existingChildAccount?.name || name}
             onIonInput={handleNameChange}
             className=""
           />

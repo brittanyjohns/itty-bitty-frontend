@@ -64,14 +64,14 @@ const menuLinks: MenuLink[] = [
     name: 'Images',
     slug: 'images',
     icon: imageOutline,
-    id: 3
+    id: 9
   },
   {
     endpoint: '/child-accounts',
     name: 'Child Accounts',
     slug: 'child-accounts',
     icon: peopleCircleOutline,
-    id: 18
+    id: 3
   },
   {
     endpoint: '/sign-in',
@@ -92,35 +92,35 @@ const menuLinks: MenuLink[] = [
     name: 'Teams',
     slug: 'teams',
     icon: peopleCircleOutline,
-    id: 10
+    id: 12
   },
   {
     endpoint: '/settings',
     name: 'Settings',
     slug: 'settings',
     icon: settingsOutline,
-    id: 11
+    id: 9997
   },
   {
     endpoint: '/predictive',
     name: 'Predictive',
     slug: 'predictive',
     icon: sunnyOutline,
-    id: 12
+    id: 10
   },
   {
     endpoint: '/admin/dashboard',
     name: 'Admin Dashboard',
     slug: 'admin-dashboard',
     icon: lockClosedOutline,
-    id: 14
+    id: 9998
   },
   {
     endpoint: '/sign-out',
     name: 'Sign Out',
     slug: 'sign-out',
     icon: logOutOutline,
-    id: 15
+    id: 9999
   },
   
 ];

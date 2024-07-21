@@ -65,14 +65,6 @@ const Dashboard: React.FC = () => {
               {currentUser?.plan_type === "free" && <PricingTable />}
             </div>
           </div>
-          <div className="p-4">
-            <h1>Child Accounts</h1>
-            <p>
-              Create child accounts to allow your children to use SpeakAnyWay in
-              a way that's safe and secure.
-            </p>
-            {currentUser && <ChildAccountForm currentUser={currentUser} />}
-          </div>
         </IonContent>
         <Tabs />
       </IonPage>

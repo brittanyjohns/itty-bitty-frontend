@@ -45,6 +45,7 @@ const MainMenu: React.FC<MainMenuProps> = () => {
       "home",
       "sign-out",
       "boards",
+      "child-accounts",
       "images",
       "menus",
       "teams",
@@ -56,6 +57,7 @@ const MainMenu: React.FC<MainMenuProps> = () => {
       "home",
       "sign-out",
       "boards",
+      "child-accounts",
       "images",
       "teams",
       "settings",
@@ -64,6 +66,7 @@ const MainMenu: React.FC<MainMenuProps> = () => {
       "home",
       "sign-out",
       "boards",
+      "child-accounts",
       "images",
       "menus",
       "teams",
@@ -74,6 +77,7 @@ const MainMenu: React.FC<MainMenuProps> = () => {
       "home",
       "sign-out",
       "boards",
+      "child-accounts",
       "images",
       "menus",
       "teams",
@@ -85,6 +89,7 @@ const MainMenu: React.FC<MainMenuProps> = () => {
       "home",
       "sign-out",
       "boards",
+      "child-accounts",
       "images",
       "teams",
       "menus",
@@ -124,20 +129,37 @@ const MainMenu: React.FC<MainMenuProps> = () => {
     });
   };
 
-  useIonViewWillEnter(() => {
+  // useIonViewWillEnter(() => {
+  //   const links = getMenu();
+  //   if (currentUser?.role === "admin") {
+  //     console.log("getMenu", currentUser);
+  //     links.push({
+  //       endpoint: "/admin-dashboard",
+  //       name: "Admin Dashboard",
+  //       slug: "admin-dashboard",
+  //       icon: homeOutline,
+  //       id: 8888,
+  //     });
+  //   }
+  //   console.log("getMenu", links);
+  //   setMenuLinks(links);
+  // }, []);
+
+  useEffect(() => {
     const links = getMenu();
-    if (currentUser?.role === "admin") {
-      console.log("getMenu", currentUser);
-      links.push({
-        endpoint: "/admin-dashboard",
-        name: "Admin Dashboard",
-        slug: "admin-dashboard",
-        icon: homeOutline,
-        id: 8,
-      });
-    }
+    // if (currentUser?.role === "admin") {
+    //   console.log("getMenu", currentUser);
+    //   links.push({
+    //     endpoint: "/admin-dashboard",
+    //     name: "Admin Dashboard",
+    //     slug: "admin-dashboard",
+    //     icon: homeOutline,
+    //     id: 8888,
+    //   });
+    // }
+    console.log("getMenu", links);
     setMenuLinks(links);
-  }, []);
+  }, [currentUser]);
 
   useEffect(() => {
     // Now we filter the list whenever menuLinks or currentUser changes

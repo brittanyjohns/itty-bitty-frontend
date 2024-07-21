@@ -20,10 +20,16 @@ import { useHistory, useParams } from "react-router";
 import { getChildAccount, ChildAccount } from "../../data/child_accounts"; // Adjust imports based on actual functions
 import { Board } from "../../data/boards";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { gridOutline, peopleCircleOutline, mailOutline } from "ionicons/icons";
+import {
+  gridOutline,
+  peopleCircleOutline,
+  mailOutline,
+  addCircleOutline,
+} from "ionicons/icons";
 import BoardGrid from "../../components/boards/BoardGrid";
 import ChildBoardDropdown from "../../components/boards/ChildBoardDropdown";
 import MainMenu from "../../components/main_menu/MainMenu";
+import ChildAccountForm from "../../components/childAccounts/ChildAccountForm";
 
 const ViewChildAccountScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -41,6 +47,11 @@ const ViewChildAccountScreen: React.FC = () => {
     if (!currentUser?.id) {
       console.error("No current user");
       setLoading(false);
+      return;
+    }
+    if (id === "new") {
+      setLoading(false);
+      setSegmentType("newAccountTab");
       return;
     }
     const childAccountToSet = await getChildAccount(Number(id), currentUser.id);
@@ -121,30 +132,35 @@ const ViewChildAccountScreen: React.FC = () => {
             <IonTitle>{childAccount?.name}</IonTitle>
           </IonToolbar>
           <IonToolbar>
-            <IonSegment
-              value={segmentType}
-              onIonChange={handleSegmentChange}
-              className="w-full bg-inherit"
-            >
-              <IonSegmentButton value="childAccountTab">
-                <IonLabel className="text-xl">
-                  <IonIcon
-                    icon={peopleCircleOutline}
-                    className="text-2xl mt-3 mb-2"
-                  />
-                </IonLabel>
-              </IonSegmentButton>
-              <IonSegmentButton value="boardTab">
-                <IonLabel className="text-xl">
-                  <IonIcon icon={gridOutline} />
-                </IonLabel>
-              </IonSegmentButton>
-              <IonSegmentButton value="inviteTab">
-                <IonLabel className="text-xl">
-                  <IonIcon icon={mailOutline} className="text-2xl mt-3 mb-2" />
-                </IonLabel>
-              </IonSegmentButton>
-            </IonSegment>
+            {childAccount && (
+              <IonSegment
+                value={segmentType}
+                onIonChange={handleSegmentChange}
+                className="w-full bg-inherit"
+              >
+                <IonSegmentButton value="childAccountTab">
+                  <IonLabel className="text-xl">
+                    <IonIcon
+                      icon={peopleCircleOutline}
+                      className="text-2xl mt-3 mb-2"
+                    />
+                  </IonLabel>
+                </IonSegmentButton>
+                <IonSegmentButton value="boardTab">
+                  <IonLabel className="text-xl">
+                    <IonIcon icon={gridOutline} />
+                  </IonLabel>
+                </IonSegmentButton>
+                <IonSegmentButton value="newAccountTab">
+                  <IonLabel className="text-xl">
+                    <IonIcon
+                      icon={addCircleOutline}
+                      className="text-2xl mt-3 mb-2"
+                    />
+                  </IonLabel>
+                </IonSegmentButton>
+              </IonSegment>
+            )}
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding" scrollY={true}>
@@ -160,7 +176,7 @@ const ViewChildAccountScreen: React.FC = () => {
                       </IonText>
                     </div>
                     <div>
-                      <IonLabel>ChildAccount Members</IonLabel>
+                      <IonLabel>Account Boards</IonLabel>
                       <IonText>
                         {childAccount.boards?.map((board) => (
                           <div key={board.id}>{board.name}</div>
@@ -186,19 +202,26 @@ const ViewChildAccountScreen: React.FC = () => {
               </div>
             </div>
           )}
-          {segmentType === "inviteTab" && (
-            <div>
-              <IonText>
-                <p>Invite your child to join SpeakAnyWay</p>
-              </IonText>
-              <div className="mx-auto p-1 w-1/2">
-                {userBoards && userBoards.length > 0 && (
-                  <ChildBoardDropdown
-                    boards={userBoards}
-                    childAccountId={Number(id)}
-                  />
-                )}
-              </div>
+          {segmentType === "newAccountTab" && (
+            <div className="p-4">
+              {childAccount ? (
+                <h1 className="text-2xl">Edit child account</h1>
+              ) : (
+                <>
+                  <h1 className="text-2xl">Create a new child account</h1>
+                  <p className="text-sm mt-2">
+                    Create child accounts to allow your children to use
+                    SpeakAnyWay in a way that's safe and secure.
+                  </p>
+                </>
+              )}
+
+              {currentUser && (
+                <ChildAccountForm
+                  currentUser={currentUser}
+                  existingChildAccount={childAccount}
+                />
+              )}
             </div>
           )}
         </IonContent>

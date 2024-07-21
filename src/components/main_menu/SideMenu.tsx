@@ -7,35 +7,17 @@ import {
   IonItem,
   IonIcon,
   IonLabel,
-  IonAccordion,
-  IonAccordionGroup,
 } from "@ionic/react";
 import { MenuLink, getMenu } from "../../data/menu";
 import MenuListItem from "./MainMenuListItem";
 import { getImageUrl } from "../../data/utils";
-import { arrowDownCircleOutline, personCircleOutline } from "ionicons/icons";
-import { useHistory } from "react-router";
+import { personCircleOutline } from "ionicons/icons";
 
 interface SideMenuProps {
   filteredLinks: MenuLink[];
   currentUser?: any;
 }
 const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
-  const history = useHistory();
-  const accordionGroup = useRef<null | HTMLIonAccordionGroupElement>(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const toggleAccordion = () => {
-    if (!accordionGroup.current) {
-      return;
-    }
-    const nativeEl = accordionGroup.current;
-
-    if (nativeEl.value === "second") {
-      nativeEl.value = undefined;
-    } else {
-      nativeEl.value = "second";
-    }
-  };
   return (
     <>
       <IonToolbar>
@@ -106,11 +88,13 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
           </>
         )}
 
-        {filteredLinks.map((menuLink) => (
-          <div key={menuLink.id} className="text-white">
-            <MenuListItem menuLink={menuLink} />
-          </div>
-        ))}
+        {filteredLinks
+          .sort((a, b) => a.id - b.id)
+          .map((menuLink) => (
+            <div key={menuLink.id} className="text-white">
+              <MenuListItem menuLink={menuLink} />
+            </div>
+          ))}
       </div>
     </>
   );
