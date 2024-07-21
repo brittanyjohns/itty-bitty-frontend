@@ -46,37 +46,38 @@ const ViewBoard: React.FC<any> = () => {
       setShowLoading(false);
       alert("Error fetching board");
       return;
+    }
+
+    setCurrentUserTeams(board?.current_user_teams);
+    const userCanEdit = board.can_edit || currentUser?.role === "admin";
+    setShowEdit(userCanEdit);
+
+    // Check if board layout is empty and rearrange images if necessary
+    if (!board.layout) {
+      console.log("Empty board layout, rearranging images");
+      const rearrangedBoard = await rearrangeImages(board.id);
+      setBoard(rearrangedBoard);
     } else {
-      setCurrentUserTeams(board?.current_user_teams);
-      setShowLoading(false);
-      const userCanEdit = board.can_edit || currentUser?.role === "admin";
-      setShowEdit(userCanEdit);
-
       setBoard(board);
-      setNumOfColumns(board.number_of_columns);
-
-      // if (board?.status === "pending") {
-      //   setShowLoading(true);
-      // }
     }
+
+    setNumOfColumns(board.number_of_columns);
+    setShowLoading(false);
   };
 
-  const clearInput = () => {
-    if (inputRef.current) {
-      inputRef.current.value = "";
-    }
-    setShowIcon(false);
-  };
-  // const toggleAddToTeam = () => {
-  //   addToTeamRef.current?.classList.toggle("hidden");
-  // };
+  useEffect(() => {
+    fetchBoard();
+  }, [params.id]);
 
   useIonViewDidLeave(() => {
     inputRef.current?.value && clearInput();
   });
 
+  const clearInput = () => {
+    inputRef.current!.value = "";
+  };
+
   useIonViewWillEnter(() => {
-    console.log("USE ION VIEW WILL ENTER");
     fetchBoard();
   }, []);
 

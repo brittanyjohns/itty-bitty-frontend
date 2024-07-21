@@ -58,14 +58,14 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
           <>
             <IonItem
               slot="header"
-              onClick={toggleAccordion}
+              routerLink="/dashboard"
               className="hover:cursor-pointer text-wrap"
               detail={true}
             >
-              <IonIcon icon={arrowDownCircleOutline} className="mr-5"></IonIcon>
+              <IonIcon icon={personCircleOutline} className="mr-5"></IonIcon>
               <IonLabel>{currentUser?.email ?? "Try it for FREE"}</IonLabel>
             </IonItem>
-            <IonAccordionGroup ref={accordionGroup}>
+            {/* <IonAccordionGroup ref={accordionGroup}>
               <IonAccordion value="second">
                 <div className="pl-5 text-lg" slot="content">
                   <IonIcon
@@ -102,7 +102,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
                   </IonLabel>
                 </div>
               </IonAccordion>
-            </IonAccordionGroup>
+            </IonAccordionGroup> */}
           </>
         )}
 

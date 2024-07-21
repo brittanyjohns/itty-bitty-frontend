@@ -244,7 +244,6 @@ export async function removeDoc(imageId: string, docId: string|undefined): Promi
 }
 
 export async function setNextWords(imageId: string, nextWords?: string[]): Promise<any> {
-  console.log('setNextWords', nextWords);
   const response = await fetch(`${BASE_URL}images/${imageId}/set_next_words`, {
     headers: userHeaders,
     body: JSON.stringify({ next_words: nextWords }),

@@ -20,6 +20,7 @@ export interface Board {
     token_limit?: number;
     has_generating_images?: boolean;
     user_id?: string;
+    layout?: any;
 }
 
 export interface PredictiveBoard {

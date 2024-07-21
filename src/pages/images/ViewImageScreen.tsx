@@ -525,10 +525,10 @@ const ViewImageScreen: React.FC = () => {
                         {nextImageWords.map((word, index) => (
                           <div
                             key={index}
-                            className={`m-1 p-1 ${wordBgColor(word)}`}
+                            className={`m-1 p-2 ${wordBgColor(word)}`}
                           >
                             <IonText
-                              className="text-sm"
+                              className="text-sm hover:cursor-pointer"
                               onClick={toggleAddToRemoveList}
                             >
                               {word}
