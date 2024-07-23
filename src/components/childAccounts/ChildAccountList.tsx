@@ -12,7 +12,7 @@ const ChildAccountList = ({ childAccounts }: ChildAccountListProps) => {
   const { currentUser } = useCurrentUser();
 
   const handleChildAccountClick = (childAccount: ChildAccount) => {
-    setChildAccountId(childAccount.id as string);
+    setChildAccountId(childAccount.id as unknown as string);
   };
 
   const shouldDisableActionList = (childAccount: ChildAccount) => {
@@ -26,7 +26,7 @@ const ChildAccountList = ({ childAccounts }: ChildAccountListProps) => {
           childAccounts.map((childAccount, i) => (
             <IonItem key={i}>
               <div
-                id={childAccount.id}
+                id={Number(childAccount.id).toString()}
                 className="rounded-md flex relative w-full hover:cursor-pointer text-center"
                 onClick={() => handleChildAccountClick(childAccount)}
                 key={childAccount.id}
