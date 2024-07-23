@@ -29,16 +29,27 @@ import {
   peopleCircleOutline,
 } from "ionicons/icons";
 import BoardGrid from "../../components/boards/BoardGrid";
-const BoardsScreen: React.FC = () => {
+import { getChildBoards } from "../../data/child_accounts";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+interface BoardsScreenProps {
+  gridType?: string;
+}
+const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   const [boards, setBoards] = useState([]);
   const [presetBoards, setPresetBoards] = useState([]);
   const [userBoards, setUserBoards] = useState([]);
   const [scenarioBoards, setScenarioBoards] = useState([]);
   const [segmentType, setSegmentType] = useState("user");
   const [pageTitle, setPageTitle] = useState("Your Boards");
+  const { currentAccount } = useCurrentUser();
 
   const fetchBoards = async () => {
-    const fetchedBoards = await getBoards();
+    let fetchedBoards;
+    if (gridType === "child" && currentAccount?.id) {
+      fetchedBoards = await getChildBoards(currentAccount.id);
+    } else {
+      fetchedBoards = await getBoards();
+    }
     if (!fetchedBoards) {
       console.error("Error fetching boards");
       return;

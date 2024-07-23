@@ -14,11 +14,12 @@ import { generatePlaceholderImage } from "../../data/utils";
 
 interface BoardListItemProps {
   board: Board;
+  gridType?: string;
   setShowIcon?: (show: boolean) => void;
   inputRef?: React.RefObject<HTMLInputElement>;
 }
 
-const BoardGridItem: React.FC<BoardListItemProps> = ({ board }) => {
+const BoardGridItem: React.FC<BoardListItemProps> = ({ board, gridType }) => {
   const [boardDetails, setBoardDetails] = useState(board);
   const [showActionList, setShowActionList] = useState(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
@@ -41,7 +42,11 @@ const BoardGridItem: React.FC<BoardListItemProps> = ({ board }) => {
 
   const handleBoardClick = (board: Board) => {
     console.log("Board clicked: ", board);
-    history.push(`/boards/${board.id}`);
+    if (gridType === "child") {
+      history.push(`/child-boards/${board.id}`);
+    } else {
+      history.push(`/boards/${board.id}`);
+    }
   };
   const onClose = () => {
     setShowActionList(false);

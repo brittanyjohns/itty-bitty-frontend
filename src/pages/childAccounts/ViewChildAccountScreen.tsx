@@ -6,7 +6,7 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonLabel,
+  p,
   IonList,
   IonPage,
   IonSegment,
@@ -15,6 +15,7 @@ import {
   IonTitle,
   IonToolbar,
   IonSpinner,
+  IonLabel,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
 import { getChildAccount, ChildAccount } from "../../data/child_accounts"; // Adjust imports based on actual functions
@@ -25,6 +26,7 @@ import {
   peopleCircleOutline,
   mailOutline,
   addCircleOutline,
+  pencilOutline,
 } from "ionicons/icons";
 import BoardGrid from "../../components/boards/BoardGrid";
 import ChildBoardDropdown from "../../components/boards/ChildBoardDropdown";
@@ -75,8 +77,9 @@ const ViewChildAccountScreen: React.FC = () => {
   };
 
   const fetchUserBoards = async () => {
-    // const fetchedBoards = await getBoards(currentUser?.id);
     const fetchedBoards = currentUser?.boards;
+    setUserBoards(fetchedBoards || []);
+    console.log("fetchedUserBoards", fetchedBoards);
     if (!fetchedBoards) {
       console.error("Error fetching boards");
       return;
@@ -86,6 +89,7 @@ const ViewChildAccountScreen: React.FC = () => {
 
   useEffect(() => {
     fetchChildAccount();
+    fetchUserBoards();
   }, []);
 
   useEffect(() => {
@@ -139,25 +143,25 @@ const ViewChildAccountScreen: React.FC = () => {
                 className="w-full bg-inherit"
               >
                 <IonSegmentButton value="childAccountTab">
-                  <IonLabel className="text-xl">
+                  <p className="text-xl">
                     <IonIcon
                       icon={peopleCircleOutline}
                       className="text-2xl mt-3 mb-2"
                     />
-                  </IonLabel>
+                  </p>
                 </IonSegmentButton>
                 <IonSegmentButton value="boardTab">
-                  <IonLabel className="text-xl">
+                  <p className="text-xl">
                     <IonIcon icon={gridOutline} />
-                  </IonLabel>
+                  </p>
                 </IonSegmentButton>
                 <IonSegmentButton value="newAccountTab">
-                  <IonLabel className="text-xl">
+                  <p className="text-xl">
                     <IonIcon
-                      icon={addCircleOutline}
+                      icon={childAccount ? pencilOutline : addCircleOutline}
                       className="text-2xl mt-3 mb-2"
                     />
-                  </IonLabel>
+                  </p>
                 </IonSegmentButton>
               </IonSegment>
             )}
@@ -187,6 +191,11 @@ const ViewChildAccountScreen: React.FC = () => {
                       <IonLabel># of ChildAccount Boards</IonLabel>
                       <IonText>{childAccount.boards?.length}</IonText>
                     </div>
+                    <ChildBoardDropdown
+                      childAccount={childAccount}
+                      boards={userBoards}
+                      onSuccess={fetchChildAccount}
+                    />
                   </IonList>
                 </div>
               )}
@@ -197,7 +206,7 @@ const ViewChildAccountScreen: React.FC = () => {
               <div>
                 <IonLabel>Boards</IonLabel>
                 {childAccount?.boards && (
-                  <BoardGrid boards={childAccount.boards} />
+                  <BoardGrid boards={childAccount.boards} gridType="child" />
                 )}
               </div>
             </div>

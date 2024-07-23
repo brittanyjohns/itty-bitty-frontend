@@ -8,20 +8,26 @@ import {
 } from "@ionic/react";
 import { Board } from "../../data/boards";
 import { useHistory } from "react-router";
-import { assignBoardToChildAccount } from "../../data/child_accounts";
+import {
+  ChildAccount,
+  assignBoardToChildAccount,
+} from "../../data/child_accounts";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { set } from "react-hook-form";
 
 interface ChildBoardDropdownProps {
-  childAccountId: number;
+  childAccount: ChildAccount;
   boards: Board[];
+  onSuccess: () => void;
 }
 
 const ChildBoardDropdown: React.FC<ChildBoardDropdownProps> = ({
-  childAccountId,
+  childAccount: { id: childAccountId },
   boards,
+  onSuccess,
 }) => {
   // const [boards, setBoards] = useState([]);
-  const [boardId, setBoardId] = useState(null);
+  // const [boardId, setBoardId] = useState(null);
   const [showLoading, setShowLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -31,8 +37,6 @@ const ChildBoardDropdown: React.FC<ChildBoardDropdownProps> = ({
 
   const handleSelectChange = (e: CustomEvent) => {
     const boardId = e.detail.value;
-    console.log("boardId", boardId);
-    // setBoardId(boardId);
     setShowLoading(true);
     if (!currentUser?.id) {
       console.error("No current user");
@@ -42,10 +46,12 @@ const ChildBoardDropdown: React.FC<ChildBoardDropdownProps> = ({
     async function addSelectedBoardToAccount() {
       const response = await assignBoardToChildAccount(
         currentUser?.id || 0,
-        childAccountId,
+        childAccountId || 0,
         boardId || 0
       );
       if (!response) {
+        setShowLoading(false);
+
         console.error("Error adding board to child account");
         return;
       }
@@ -56,12 +62,27 @@ const ChildBoardDropdown: React.FC<ChildBoardDropdownProps> = ({
         setIsOpen(true);
         return;
       }
+      if (response) {
+        setShowLoading(false);
+        setToastMessage("Board added to child account");
+        setIsOpen(true);
+        // await delayOpen();
+        history.push(`/child-accounts/${childAccountId}`);
+        onSuccess();
+        // window.location.reload();
+      }
     }
     addSelectedBoardToAccount();
     selectRef.current!.value = null;
   };
+
+  const delayOpen = () => {
+    setTimeout(() => {
+      setIsOpen(true);
+    }, 1000);
+  };
   return (
-    <IonList className="text-center w-full border border-gray-300">
+    <IonList className="text-center w-full md:w-3/4 lg:w-1/2 mx-auto border border-gray-300">
       <IonItem lines="none">
         <IonSelect
           placeholder="Add to board"

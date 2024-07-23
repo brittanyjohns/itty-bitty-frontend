@@ -73,125 +73,147 @@ import About from "./pages/About";
 import SuccessfulSubscription from "./pages/SuccessfulSubscription";
 import ChildAccountsScreen from "./pages/childAccounts/ChildAccountsScreen";
 import ViewChildAccountScreen from "./pages/childAccounts/ViewChildAccountScreen";
+import AccountSignInScreen from "./pages/accounts/AccountSignInScreen";
+import { AccountProvider } from "./contexts/AccountContext";
+import SignInPage from "./pages/SignInPage";
+import AccountSignOutScreen from "./pages/accounts/AccountSignOutScreen";
 
-// Make sure to call `loadStripe` outside of a component’s render to avoid
-// recreating the `Stripe` object on every render.
-
-const App: React.FC = () => (
+const UserRoutes: React.FC = () => (
   <UserProvider>
-    <IonApp>
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <Route path="/" component={Home} exact={true} />
-          {/* {isUserSignedIn() ? <Redirect to="/home" /> : <Redirect to="/sign-in" />} */}
+    <IonReactRouter>
+      <IonRouterOutlet>
+        <Route path="/" component={Home} exact={true} />
 
-          <Route path="/home" exact={true}>
-            <Home />
-          </Route>
-          {/* <Route path="/users/password/edit/:reset_password_token" component={ResetPasswordScreen} exact={true} /> */}
-          <Route
-            path="/reset_password/"
-            component={ResetPasswordScreen}
-            exact={true}
-          />
+        <Route path="/home" exact={true}>
+          <Home />
+        </Route>
+        <Route path="/sign-in" component={SignInPage} exact={true} />
+        {/* <Route path="/users/password/edit/:reset_password_token" component={ResetPasswordScreen} exact={true} /> */}
+        <Route
+          path="/reset_password/"
+          component={ResetPasswordScreen}
+          exact={true}
+        />
 
-          <Route path="/dashboard" component={Dashboard} exact={true} />
-          <Route
-            path="/admin/dashboard"
-            component={AdminDashboard}
-            exact={true}
-          />
-          <Route path="/demo" component={Demo} exact={true} />
-          <Route path="/faq" component={Dashboard} exact={true} />
-          <Route path="/boards/:id" component={ViewBoard} exact={true} />
-          <Route
-            path="/boards/:id/locked"
-            component={ViewLockedBoard}
-            exact={true}
-          />
-          <Route path="/boards/new" component={NewBoard} exact={true} />
-          <Route path="/scenarios/new" component={NewScenario} exact={true} />
-          <Route
-            path="/boards/:id/edit"
-            component={EditBoardScreen}
-            exact={true}
-          />
-          <Route
-            path="/boards/:id/gallery"
-            component={SelectGalleryScreen}
-            exact={true}
-          />
-          <Route path="/boards" component={BoardsScreen} exact={true} />
-          <Route path="/scenarios" component={BoardsScreen} exact={true} />
+        <Route path="/dashboard" component={Dashboard} exact={true} />
+        <Route
+          path="/admin/dashboard"
+          component={AdminDashboard}
+          exact={true}
+        />
+        <Route path="/demo" component={Demo} exact={true} />
+        <Route path="/faq" component={Dashboard} exact={true} />
+        <Route path="/boards/:id" component={ViewBoard} exact={true} />
+        <Route
+          path="/boards/:id/locked"
+          component={ViewLockedBoard}
+          exact={true}
+        />
+        <Route path="/boards/new" component={NewBoard} exact={true} />
+        <Route path="/scenarios/new" component={NewScenario} exact={true} />
+        <Route
+          path="/boards/:id/edit"
+          component={EditBoardScreen}
+          exact={true}
+        />
+        <Route
+          path="/boards/:id/gallery"
+          component={SelectGalleryScreen}
+          exact={true}
+        />
+        <Route path="/boards" component={BoardsScreen} exact={true} />
+        <Route path="/scenarios" component={BoardsScreen} exact={true} />
 
-          <Route path="/menus/new" component={NewMenu} exact={true} />
+        <Route path="/menus/new" component={NewMenu} exact={true} />
 
-          <Route
-            path="/images/:id/edit"
-            component={EditImageScreen}
-            exact={true}
-          />
-          <Route path="/images/:id" component={ViewImageScreen} exact={true} />
-          <Route path="/images/add" component={NewImage} exact={true} />
-          <Route path="/images" component={ImagesScreen} exact={true} />
+        <Route
+          path="/images/:id/edit"
+          component={EditImageScreen}
+          exact={true}
+        />
+        <Route path="/images/:id" component={ViewImageScreen} exact={true} />
+        <Route path="/images/add" component={NewImage} exact={true} />
+        <Route path="/images" component={ImagesScreen} exact={true} />
 
-          <Route path="/predictive" component={PredictiveIndex} exact={true} />
-          <Route
-            path="/predictive/:id"
-            component={PredictiveIndex}
-            exact={true}
-          />
+        <Route path="/predictive" component={PredictiveIndex} exact={true} />
+        <Route
+          path="/predictive/:id"
+          component={PredictiveIndex}
+          exact={true}
+        />
 
-          <Route path="/menus/:id" component={ViewMenuScreen} exact={true} />
-          <Route path="/menus/new" component={NewMenu} exact={true} />
+        <Route path="/menus/:id" component={ViewMenuScreen} exact={true} />
+        <Route path="/menus/new" component={NewMenu} exact={true} />
 
-          <Route path="/menus" component={MenusScreen} exact={true} />
-          <Route path="/teams" component={TeamsScreen} exact={true} />
-          <Route path="/teams/:id" component={ViewTeamScreen} exact={true} />
-          <Route path="/teams/new" component={NewTeamScreen} exact={true} />
-          <Route path="/settings" component={SettingsPage} exact={true} />
-          <Route path="/sign-up">
-            <SignUpScreen plan="free" />
-          </Route>
-          <Route path="/sign-up/free">
-            <SignUpScreen plan="free" />
-          </Route>
-          <Route path="/sign-up/pro">
-            <SignUpScreen plan="pro" />
-          </Route>
+        <Route path="/menus" component={MenusScreen} exact={true} />
+        <Route path="/teams" component={TeamsScreen} exact={true} />
+        <Route path="/teams/:id" component={ViewTeamScreen} exact={true} />
+        <Route path="/teams/new" component={NewTeamScreen} exact={true} />
+        <Route path="/settings" component={SettingsPage} exact={true} />
+        <Route path="/sign-up">
+          <SignUpScreen plan="free" />
+        </Route>
+        <Route path="/sign-up/free">
+          <SignUpScreen plan="free" />
+        </Route>
+        <Route path="/sign-up/pro">
+          <SignUpScreen plan="pro" />
+        </Route>
 
-          <Route path={"/sign-in"} component={SignInScreen} exact={true} />
-          <Route path="/sign-out" component={SignOutScreen} exact={true} />
-          <Route
-            path="/forgot-password"
-            component={ForgotPasswordScreen}
-            exact={true}
-          />
-          <Route path="/pricing" component={PricingPage} exact />
-          <Route path="/contact-us" component={ContactUs} exact />
-          <Route path="/upgrade" component={Upgrade} exact />
-          <Route path="/faq" component={About} exact />
-          <Route path="/about" component={About} exact />
+        <Route path={"/users/sign-in"} component={SignInScreen} exact={true} />
+        <Route path="/users/sign-out" component={SignOutScreen} exact={true} />
+        <Route
+          path="/forgot-password"
+          component={ForgotPasswordScreen}
+          exact={true}
+        />
+        <Route path="/pricing" component={PricingPage} exact />
+        <Route path="/contact-us" component={ContactUs} exact />
+        <Route path="/upgrade" component={Upgrade} exact />
+        <Route path="/faq" component={About} exact />
+        <Route path="/about" component={About} exact />
 
-          <Route path="/success" component={SuccessfulSubscription} exact />
-          <Route path="/billing" component={Upgrade} exact />
-          <Route
-            path="/child-accounts"
-            component={ChildAccountsScreen}
-            exact={true}
-          />
-          <Route
-            path="/child-accounts/new"
-            component={ChildAccountsScreen}
-            exact={true}
-          />
-          <Route
-            path="/child-accounts/:id"
-            component={ViewChildAccountScreen}
-          />
-        </IonRouterOutlet>
-      </IonReactRouter>
-    </IonApp>
+        <Route path="/success" component={SuccessfulSubscription} exact />
+        <Route path="/billing" component={Upgrade} exact />
+
+        <Route
+          path="/child-accounts"
+          component={ChildAccountsScreen}
+          exact={true}
+        />
+        <Route
+          path="/child-accounts/new"
+          component={ChildAccountsScreen}
+          exact={true}
+        />
+        <Route
+          path="/child-accounts/sign-out"
+          component={AccountSignOutScreen}
+          exact={true}
+        />
+        <Route path="/child-accounts/:id" component={ViewChildAccountScreen} />
+        <Route path="/child-boards">
+          <BoardsScreen gridType="child" />
+        </Route>
+        <Route path="/child-boards/:id" component={ViewChildAccountScreen} />
+        <Route
+          path="/accounts/sign-in"
+          component={AccountSignInScreen}
+          exact={true}
+        />
+      </IonRouterOutlet>
+    </IonReactRouter>
   </UserProvider>
+);
+const App: React.FC = () => (
+  <IonApp>
+    <IonReactRouter>
+      <IonRouterOutlet>
+        <Route path="/">
+          <UserRoutes />
+        </Route>
+      </IonRouterOutlet>
+    </IonReactRouter>
+  </IonApp>
 );
 export default App;

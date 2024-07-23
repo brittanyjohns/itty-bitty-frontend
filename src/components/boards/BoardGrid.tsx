@@ -6,8 +6,9 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 interface BoardGridProps {
   boards: Board[];
+  gridType?: string;
 }
-const BoardGrid = ({ boards }: BoardGridProps) => {
+const BoardGrid = ({ boards, gridType }: BoardGridProps) => {
   const [boardId, setBoardId] = useState<string>("");
   const { currentUser } = useCurrentUser();
   const gridRef = createRef<HTMLDivElement>();
@@ -29,7 +30,7 @@ const BoardGrid = ({ boards }: BoardGridProps) => {
             onClick={() => handleBoardClick(board)}
             key={board.id}
           >
-            <BoardGridItem board={board} />
+            <BoardGridItem board={board} gridType={gridType} />
           </div>
         ))}
       {currentUser && boards?.length === 0 && (

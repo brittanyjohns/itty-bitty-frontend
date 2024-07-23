@@ -18,6 +18,7 @@ import SideMenu from "./SideMenu";
 import { homeOutline } from "ionicons/icons";
 import { getImageUrl } from "../../data/utils";
 import { useHistory } from "react-router";
+import ChildSideMenu from "./ChildSideMenu";
 
 export const hideMenu = () => {
   const menu = document.querySelector("ion-menu");
@@ -35,7 +36,7 @@ export const openMenu = () => {
 
 interface MainMenuProps {}
 const MainMenu: React.FC<MainMenuProps> = () => {
-  const { currentUser, isWideScreen } = useCurrentUser();
+  const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
   const [menuLinks, setMenuLinks] = useState<MenuLink[]>([]);
   const [filteredLinks, setFilteredLinks] = useState<MenuLink[]>([]);
   const history = useHistory();
@@ -104,6 +105,13 @@ const MainMenu: React.FC<MainMenuProps> = () => {
       "pricing",
       "about",
     ];
+    const childAccountLinks = [
+      "home",
+      "sign-out",
+      "child-boards",
+      "settings",
+      "child-sign-out",
+    ];
 
     return links.filter((link) => {
       if (currentUser) {
@@ -123,6 +131,8 @@ const MainMenu: React.FC<MainMenuProps> = () => {
           return professionalProLinks.includes(link.slug ?? "");
         }
         return freeLinks.includes(link.slug ?? "");
+      } else if (currentAccount) {
+        return childAccountLinks.includes(link.slug ?? "");
       } else {
         return signedOutLinks.includes(link.slug ?? "");
       }
@@ -159,13 +169,13 @@ const MainMenu: React.FC<MainMenuProps> = () => {
     // }
     console.log("getMenu", links);
     setMenuLinks(links);
-  }, [currentUser]);
+  }, [currentUser, currentAccount]);
 
   useEffect(() => {
     // Now we filter the list whenever menuLinks or currentUser changes
     const filteredList = filterList(menuLinks);
     setFilteredLinks(filteredList);
-  }, [menuLinks, currentUser]); // Depend on menuLinks and currentUser
+  }, [menuLinks, currentUser, currentAccount]); // Depend on menuLinks and currentUser
 
   useIonViewWillLeave(() => {
     hideMenu();
@@ -175,6 +185,9 @@ const MainMenu: React.FC<MainMenuProps> = () => {
     <>
       {isWideScreen && (
         <SideMenu filteredLinks={filteredLinks} currentUser={currentUser} />
+      )}
+      {isWideScreen && (
+        <ChildSideMenu links={filteredLinks} currentAccount={currentAccount} />
       )}
       {!isWideScreen && (
         <IonMenu
