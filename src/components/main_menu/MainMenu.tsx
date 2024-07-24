@@ -165,12 +165,21 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
   //   setMenuLinks(links);
   // }, []);
 
-  useEffect(() => {
-    const links = getMenu();
-    setMenuLinks(links);
+  const setUpMenu = () => {
+    const menuLinks = getMenu();
+    console.log("menuLinks", menuLinks);
+    setMenuLinks(menuLinks);
     // Now we filter the list whenever menuLinks or currentUser changes
-    const filteredList = filterList(links);
+    const filteredList = filterList(menuLinks);
     setFilteredLinks(filteredList);
+  };
+
+  useEffect(() => {
+    setUpMenu();
+  }, []);
+
+  useEffect(() => {
+    setUpMenu();
   }, [menuLinks, currentUser, currentAccount]); // Depend on menuLinks and currentUser
 
   useIonViewWillLeave(() => {
