@@ -76,6 +76,7 @@ import ViewChildAccountScreen from "./pages/childAccounts/ViewChildAccountScreen
 import AccountSignInScreen from "./pages/accounts/AccountSignInScreen";
 import SignInPage from "./pages/SignInPage";
 import AccountSignOutScreen from "./pages/accounts/AccountSignOutScreen";
+import ViewChildBoardScreen from "./pages/childBoards/ViewChildBoardScreen";
 
 const UserRoutes: React.FC = () => (
   <UserProvider>
@@ -195,10 +196,10 @@ const UserRoutes: React.FC = () => (
           exact={true}
         />
 
-        <Route path="/child-boards">
+        <Route path="/child-boards" exact={true}>
           <BoardsScreen gridType="child" />
         </Route>
-        {/* <Route path="/child-boards/:id" component={ViewChildAccountScreen} /> */}
+        <Route path="/child-boards/:id" component={ViewChildBoardScreen} />
         <Route
           path="/accounts/sign-in"
           component={AccountSignInScreen}

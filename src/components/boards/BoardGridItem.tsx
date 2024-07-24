@@ -12,6 +12,7 @@ import ActionList from "../utils/ActionList";
 import { useHistory } from "react-router";
 import { generatePlaceholderImage } from "../../data/utils";
 import { ChildBoard } from "../../data/child_boards";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 interface BoardListItemProps {
   board: Board;
@@ -21,6 +22,7 @@ interface BoardListItemProps {
 }
 
 const BoardGridItem: React.FC<BoardListItemProps> = ({ board, gridType }) => {
+  const { currentUser, currentAccount } = useCurrentUser();
   const [boardDetails, setBoardDetails] = useState(board);
   const [showActionList, setShowActionList] = useState(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
@@ -44,7 +46,9 @@ const BoardGridItem: React.FC<BoardListItemProps> = ({ board, gridType }) => {
   const handleBoardClick = (board: any) => {
     console.log("Board clicked: ", board);
     console.log("Grid type: ", gridType);
-    if (gridType === "child") {
+    if (currentAccount) {
+      history.push(`/child-boards/${board.id}`);
+    } else if (gridType === "child") {
       history.push(`/boards/${board.board_id}`);
     } else {
       history.push(`/boards/${board.id}`);

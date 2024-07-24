@@ -32,7 +32,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ links, currentAccount }) => {
             src={getImageUrl("round_itty_bitty_logo_1", "png")}
             className="h-10 w-10 mx-auto"
           />
-          <IonTitle className="text-2xl">SpeakAnyWay</IonTitle>
+          <IonTitle className="text-2xl">SpeakAnyWayyy</IonTitle>
         </IonItem>
       </IonToolbar>
       <div className="h-full">

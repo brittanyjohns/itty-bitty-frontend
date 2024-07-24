@@ -156,7 +156,6 @@ const MainMenu: React.FC<MainMenuProps> = () => {
   // }, []);
 
   useEffect(() => {
-    console.log("getMenu", currentUser);
     const links = getMenu();
     setMenuLinks(links);
     // Now we filter the list whenever menuLinks or currentUser changes

@@ -14,7 +14,7 @@ import MainMenu from "../../components/main_menu/MainMenu";
 
 const AccountSignInScreen: React.FC = () => {
   const history = useHistory();
-  const [username, setUsename] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [parentId, setParentId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showAlert, setShowAlert] = useState(false);
@@ -28,11 +28,12 @@ const AccountSignInScreen: React.FC = () => {
       user_id: Number(parentId),
     };
     try {
+      console.log("Signing in account: ", account);
       const response = await signIn(account);
       console.log("Account Sign In response", response);
       if (response.token) {
         localStorage.setItem("child_token", response.token);
-        history.push("/child-boards");
+        history.push("/home");
         // alert("ChildAccount signed in");
         window.location.reload();
       } else if (response.error) {
@@ -45,6 +46,12 @@ const AccountSignInScreen: React.FC = () => {
       setShowAlert(true);
       console.error("Error signing in: ", error);
     }
+  };
+
+  const handleSetPassword = (e: CustomEvent) => {
+    const target = e.target as HTMLInputElement;
+    console.log("Password: ", target.value);
+    setPassword(target.value);
   };
 
   useEffect(() => {
@@ -87,7 +94,7 @@ const AccountSignInScreen: React.FC = () => {
                   fill="solid"
                   className="mt-4"
                   placeholder="Enter your ParentId"
-                  onIonChange={(e) => setParentId(e.detail.value!)}
+                  onIonInput={(e) => setParentId(e.detail.value!)}
                   clearInput
                 />
                 <IonInput
@@ -97,7 +104,7 @@ const AccountSignInScreen: React.FC = () => {
                   fill="solid"
                   className="mt-4"
                   placeholder="Enter your username"
-                  onIonChange={(e) => setUsename(e.detail.value!)}
+                  onIonInput={(e) => setUsername(e.detail.value!)}
                   clearInput
                 />
 
@@ -109,7 +116,7 @@ const AccountSignInScreen: React.FC = () => {
                   fill="solid"
                   className="mt-4"
                   placeholder="Enter your password"
-                  onIonChange={(e) => setPassword(e.detail.value!)}
+                  onIonInput={handleSetPassword}
                   clearInput
                 />
                 <IonButton

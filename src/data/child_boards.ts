@@ -23,8 +23,19 @@ export interface ChildBoard {
     layout?: any;
 }
 
+const signedInToken = localStorage.getItem('token') || localStorage.getItem('child_token');
+
+export const signedInHeaders = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': `Bearer ${signedInToken}`,
+    
+}
+
 export const getChildBoards = (childAccountId: number): Promise<ChildBoard[]> => {
-    const boards = fetch(`${BASE_URL}child_boards/${childAccountId}`, { headers: userHeaders }) // `localhostboards
+    console.log('childAccountId', childAccountId);
+    console.log('signedInHeaders', signedInHeaders);
+    const boards = fetch(`${BASE_URL}child_boards/${childAccountId}`, { headers: signedInHeaders }) // `localhostboards
         .then(response => response.json())
         .then(data => data)
         .catch(error => console.error('Error fetching data: ', error));
@@ -33,7 +44,7 @@ export const getChildBoards = (childAccountId: number): Promise<ChildBoard[]> =>
 }
 
 export const getChildBoard = (id: number) => {
-    const board = fetch(`${BASE_URL}child_boards/${id}`, { headers: userHeaders }) // `localhostboards
+    const board = fetch(`${BASE_URL}child_boards/${id}`, { headers: signedInHeaders }) // `localhostboards
         .then(response => response.json())
         .then(data => data)
         .catch(error => console.error('Error fetching data: ', error));

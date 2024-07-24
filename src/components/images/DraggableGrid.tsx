@@ -87,7 +87,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
       width={width}
       rowHeight={rowHeight}
       onLayoutChange={onLayoutChange}
-      margin={[10, 5]}
+      margin={[10, 2]}
     >
       {images.map((img: any, index: number) => (
         <div

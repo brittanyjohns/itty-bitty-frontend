@@ -1,5 +1,5 @@
-import { Board } from "./boards";
 import { userHeaders, BASE_URL } from "./constants";
+import { signedInHeaders } from "./child_boards";
 
 interface WordClickPayload {
     word: string;

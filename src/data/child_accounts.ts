@@ -67,6 +67,7 @@ export const assignBoardToChildAccount = async (userId: number, childAccountId: 
 }
 
 export const signIn = (child_account: ChildAccount) => {
+    console.log('signIn', child_account);
     const response = fetch(`${BASE_URL}v1/child_accounts/login`, {
         method: 'POST',
         headers: {

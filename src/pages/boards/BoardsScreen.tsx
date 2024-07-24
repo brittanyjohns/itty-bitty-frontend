@@ -95,7 +95,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
     if (boardsToSet.length > 0) {
       return <BoardGrid gridType={gridType} boards={boardsToSet} />;
     }
-    return <p>No boards available</p>;
+    return;
   };
 
   return (
@@ -103,31 +103,46 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
       <MainMenu />
       <IonPage id="main-content">
         <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonMenuButton></IonMenuButton>
-            <IonSegment
-              value={segmentType}
-              onIonChange={handleSegmentChange}
-              className="bg-inherit"
-            >
-              <IonSegmentButton value="user">
-                <IonLabel className="text-md lg:text-lg">Your Boards</IonLabel>
-                <IonIcon icon={albumsOutline} />
-              </IonSegmentButton>
-              <IonSegmentButton value="preset">
-                <IonLabel className="text-md lg:text-lg">
-                  Preset Boards
-                </IonLabel>
-                <IonIcon icon={gridOutline} />
-              </IonSegmentButton>
-            </IonSegment>
-            <IonButtons className="mr-4" slot="end">
-              <IonButton routerLink="/boards/new" className="text-wrap mx-auto">
-                <IonLabel className="mr-2 text-md lg:text-lg">New</IonLabel>
-                <IonIcon icon={addCircleOutline} className="block text-xl" />
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
+          {currentAccount && (
+            <IonToolbar>
+              <IonButtons slot="start">
+                <IonBackButton defaultHref="/home" />
+              </IonButtons>
+              <IonTitle>{currentAccount.username}</IonTitle>
+            </IonToolbar>
+          )}
+          {currentUser && (
+            <IonToolbar>
+              <IonMenuButton></IonMenuButton>
+              <IonSegment
+                value={segmentType}
+                onIonChange={handleSegmentChange}
+                className="bg-inherit"
+              >
+                <IonSegmentButton value="user">
+                  <IonLabel className="text-md lg:text-lg">
+                    Your Boards
+                  </IonLabel>
+                  <IonIcon icon={albumsOutline} />
+                </IonSegmentButton>
+                <IonSegmentButton value="preset">
+                  <IonLabel className="text-md lg:text-lg">
+                    Preset Boards
+                  </IonLabel>
+                  <IonIcon icon={gridOutline} />
+                </IonSegmentButton>
+              </IonSegment>
+              <IonButtons className="mr-4" slot="end">
+                <IonButton
+                  routerLink="/boards/new"
+                  className="text-wrap mx-auto"
+                >
+                  <IonLabel className="mr-2 text-md lg:text-lg">New</IonLabel>
+                  <IonIcon icon={addCircleOutline} className="block text-xl" />
+                </IonButton>
+              </IonButtons>
+            </IonToolbar>
+          )}
         </IonHeader>
         <IonContent className="ion-padding">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
