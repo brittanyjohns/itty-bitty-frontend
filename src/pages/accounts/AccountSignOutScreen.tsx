@@ -28,6 +28,25 @@ const AccountSignOutScreen: React.FC = () => {
       // Handle error (e.g., show error message)
     }
   };
+  useEffect(() => {
+    if (!isAccountSignedIn()) {
+      history.push("/home");
+    }
+  }, [history]);
+  useEffect(() => {
+    console.log("currentAccount", currentAccount);
+    let response: any;
+    async function fetchData() {
+      if (currentAccount === null) response = await signOut();
+      console.log(response);
+      console.log("ChildAccount signed out");
+      localStorage.removeItem("child_token");
+      setCurrentAccount(null);
+      history.push("/");
+      window.location.reload();
+    }
+    fetchData();
+  }, []);
 
   // useEffect(() => {
   //   handleSignOut().then(() => {

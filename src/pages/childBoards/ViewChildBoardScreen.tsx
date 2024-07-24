@@ -33,7 +33,7 @@ import DraggableGrid from "../../components/images/DraggableGrid";
 import { playAudioList } from "../../data/utils";
 import { Image } from "../../data/images";
 import { clickWord } from "../../data/audits";
-import { set } from "react-hook-form";
+import { closeChildMenu } from "../../components/main_menu/MainMenu";
 
 const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<ChildBoard>();
@@ -50,9 +50,19 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
     undefined
   );
 
+  useEffect(() => {
+    closeChildMenu();
+  }, []);
+
+  useIonViewDidLeave(() => {
+    inputRef.current?.value && clearInput();
+    closeChildMenu();
+  });
+
   const fetchBoard = async () => {
     const board = await getChildBoard(Number(params.id));
     console.log("Board fetched: ", board);
+    closeChildMenu();
     if (!board) {
       console.error("Error fetching board");
       return;
@@ -145,7 +155,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
 
   return (
     <IonPage id="view-board-page">
-      <p className="text-center">{board?.name}</p>
+      <p className="text-center text-sm">{board?.name}</p>
 
       <IonHeader className="bg-inherit shadow-none">
         <IonToolbar>

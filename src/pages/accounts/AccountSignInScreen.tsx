@@ -67,7 +67,6 @@ const AccountSignInScreen: React.FC = () => {
       <MainMenu />
       <IonPage id="main-content">
         <div className="h-full">
-          <h1 className="font-bold text-2xl text-center mt-4">TEST</h1>
           <div
             className="hero_main1 bg-cover bg-center  min-h-screen"
             style={{

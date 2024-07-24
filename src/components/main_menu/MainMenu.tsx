@@ -28,6 +28,13 @@ export const hideMenu = () => {
   }
 };
 
+export const closeChildMenu = () => {
+  const menu = document.querySelector("#child-side-menu");
+  if (menu) {
+    menu.classList.add("hidden");
+  }
+};
+
 export const openMenu = () => {
   const menu = document.querySelector("ion-menu");
   if (menu) {
@@ -35,8 +42,10 @@ export const openMenu = () => {
   }
 };
 
-interface MainMenuProps {}
-const MainMenu: React.FC<MainMenuProps> = () => {
+interface MainMenuProps {
+  hideLogo?: boolean;
+}
+const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
   const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
   const [menuLinks, setMenuLinks] = useState<MenuLink[]>([]);
   const [filteredLinks, setFilteredLinks] = useState<MenuLink[]>([]);
@@ -133,8 +142,9 @@ const MainMenu: React.FC<MainMenuProps> = () => {
         return freeLinks.includes(link.slug ?? "");
       } else if (currentAccount) {
         return childAccountLinks.includes(link.slug ?? "");
-      } else {
+      } else if (!currentUser && !currentAccount) {
         return signedOutLinks.includes(link.slug ?? "");
+        // return signedOutLinks.includes(link.slug ?? "");
       }
     });
   };
@@ -170,7 +180,11 @@ const MainMenu: React.FC<MainMenuProps> = () => {
   return (
     <>
       {!currentAccount && isWideScreen && (
-        <SideMenu filteredLinks={filteredLinks} currentUser={currentUser} />
+        <SideMenu
+          filteredLinks={filteredLinks}
+          currentUser={currentUser}
+          hideLogo={hideLogo}
+        />
       )}
       {currentAccount && isWideScreen && (
         <ChildSideMenu links={filteredLinks} currentAccount={currentAccount} />
@@ -182,8 +196,9 @@ const MainMenu: React.FC<MainMenuProps> = () => {
           type="overlay"
           swipeGesture={true}
         >
-          <IonHeader className="shadow-none">
-            <IonToolbar>
+          {!hideLogo && (
+            <IonHeader className="shadow-none">
+              {/* <IonToolbar> */}
               <img
                 slot="start"
                 src={getImageUrl("round_itty_bitty_logo_1", "png")}
@@ -192,8 +207,9 @@ const MainMenu: React.FC<MainMenuProps> = () => {
               <IonTitle className="text-left" onClick={() => history.push("/")}>
                 SpeakAnyWay
               </IonTitle>
-            </IonToolbar>
-          </IonHeader>
+              {/* </IonToolbar> */}
+            </IonHeader>
+          )}
           <IonContent className="ion-padding">
             {currentUser && (
               <IonItem

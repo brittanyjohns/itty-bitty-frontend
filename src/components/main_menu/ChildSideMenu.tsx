@@ -12,30 +12,18 @@ import { MenuLink, getMenu } from "../../data/menu";
 import MenuListItem from "./MainMenuListItem";
 import { getImageUrl } from "../../data/utils";
 import { personCircleOutline } from "ionicons/icons";
-
-interface SideMenuProps {
+import "./menu.css";
+interface ChildSideMenuProps {
   links: MenuLink[];
   currentAccount?: any;
 }
-const SideMenu: React.FC<SideMenuProps> = ({ links, currentAccount }) => {
+const ChildSideMenu: React.FC<ChildSideMenuProps> = ({
+  links,
+  currentAccount,
+}) => {
   return (
     <>
-      <IonToolbar>
-        <IonItem
-          routerLink="/"
-          className="hover:cursor-pointer"
-          lines="full"
-          detail={false}
-        >
-          <img
-            slot="start"
-            src={getImageUrl("round_itty_bitty_logo_1", "png")}
-            className="h-10 w-10 mx-auto"
-          />
-          <IonTitle className="text-2xl">SpeakAnyWayyy</IonTitle>
-        </IonItem>
-      </IonToolbar>
-      <div className="h-full">
+      <div className="h-full" id="child-side-menu">
         {currentAccount && (
           <>
             <IonItem
@@ -62,4 +50,4 @@ const SideMenu: React.FC<SideMenuProps> = ({ links, currentAccount }) => {
   );
 };
 
-export default SideMenu;
+export default ChildSideMenu;

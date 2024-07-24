@@ -34,7 +34,7 @@ const menuLinks: MenuLink[] = [
   name: 'Pricing',
   slug: 'pricing',
   icon: pricetagOutline,
-  id: 16
+  id: 7
   },
 
   {
@@ -42,7 +42,7 @@ const menuLinks: MenuLink[] = [
     name: 'About',
     slug: 'about',
     icon: bookOutline,
-    id: 17
+    id: 7
 
   },
   {

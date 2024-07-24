@@ -5,7 +5,6 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonItem,
   IonLabel,
   IonMenuButton,
   IonPage,
@@ -15,7 +14,6 @@ import {
   IonSegmentButton,
   IonTitle,
   IonToolbar,
-  useIonViewWillEnter,
 } from "@ionic/react";
 import MainMenu, { hideMenu } from "../../components/main_menu/MainMenu";
 import Tabs from "../../components/utils/Tabs";
@@ -23,9 +21,7 @@ import { useEffect, useState } from "react";
 import { Board, getBoards } from "../../data/boards";
 import { addCircleOutline, albumsOutline, gridOutline } from "ionicons/icons";
 import BoardGrid from "../../components/boards/BoardGrid";
-import { ChildAccount } from "../../data/child_accounts";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { User } from "../../data/users";
 import { ChildBoard } from "../../data/child_boards";
 
 interface BoardsScreenProps {

@@ -20,14 +20,15 @@ const MainHeader: React.FC = () => {
             <IonButtons slot="start">
               {!isWideScreen && <IonMenuButton />}
             </IonButtons>
-            <img
+            {/* <img
               slot="start"
               // src="/src/assets/images/round_itty_bitty_logo_1.png"
               src={getImageUrl("round_itty_bitty_logo_1", "png")}
               className="h-10 w-10"
-            />
+            /> */}
             <IonTitle className="text-left" onClick={() => history.push("/")}>
-              SpeakAnyWay</IonTitle>
+              SpeakAnyWay MAIN
+            </IonTitle>
           </>
         )}
       </IonToolbar>

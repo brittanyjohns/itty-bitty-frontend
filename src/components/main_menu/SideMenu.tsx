@@ -16,11 +16,17 @@ import { personCircleOutline } from "ionicons/icons";
 interface SideMenuProps {
   filteredLinks: MenuLink[];
   currentUser?: any;
+  hideLogo?: boolean;
 }
-const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
+const SideMenu: React.FC<SideMenuProps> = ({
+  filteredLinks,
+  currentUser,
+  hideLogo,
+}) => {
   return (
     <>
-      {/* <IonToolbar>
+      {!hideLogo && (
+        // <IonToolbar>
         <IonItem
           routerLink="/"
           className="hover:cursor-pointer"
@@ -32,9 +38,10 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
             src={getImageUrl("round_itty_bitty_logo_1", "png")}
             className="h-10 w-10 mx-auto"
           />
-          <IonTitle className="text-2xl">SpeakAnyWaeey</IonTitle>
+          <IonTitle className="text-2xl">SpeakAnyWay</IonTitle>
         </IonItem>
-      </IonToolbar> */}
+        // </IonToolbar>
+      )}
       <div className="h-full">
         {currentUser && (
           <>

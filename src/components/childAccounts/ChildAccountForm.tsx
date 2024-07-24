@@ -62,7 +62,7 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
       } else {
         alert("Child Account created successfully");
         history.push("/child-accounts");
-        // window.location.reload;
+        window.location.reload;
       }
     }
   };

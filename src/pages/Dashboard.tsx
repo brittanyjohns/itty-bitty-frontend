@@ -50,7 +50,8 @@ const Dashboard: React.FC = () => {
           <div className="p-4">
             {currentAccount && (
               <h2 className="text-xl font-semibold">
-                {currentAccount?.name}'s Dashboard 🚀
+                {currentAccount?.name || currentAccount?.username}'s Dashboard
+                🚀
               </h2>
             )}
             {(currentUser && currentUser?.admin) ||

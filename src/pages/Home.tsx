@@ -49,9 +49,9 @@ const Home: React.FC = () => {
         />
         <p className="ml-3 font-bold text-2xl">SpeakAnyWay</p>
       </IonToolbar>
-      <MainMenu />
+      <MainMenu hideLogo={true} />
       <IonPage id="main-content">
-        {!isWideScreen && <MainHeader />}
+        {/* {!isWideScreen && <MainHeader />} */}
         <IonContent className="text-justified" scrollY={true}>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>

@@ -42,6 +42,9 @@ const ChildAccountsScreen: React.FC = () => {
   useEffect(() => {
     fetchChildAccounts();
   }, [currentUser]);
+  useEffect(() => {
+    fetchChildAccounts();
+  }, []);
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
