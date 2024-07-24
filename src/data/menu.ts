@@ -34,7 +34,7 @@ const menuLinks: MenuLink[] = [
   name: 'Pricing',
   slug: 'pricing',
   icon: pricetagOutline,
-  id: 7
+  id: 1
   },
 
   {
@@ -42,7 +42,7 @@ const menuLinks: MenuLink[] = [
     name: 'About',
     slug: 'about',
     icon: bookOutline,
-    id: 7
+    id: 2
 
   },
   {
@@ -50,21 +50,21 @@ const menuLinks: MenuLink[] = [
     name: 'Boards',
     slug: 'boards',
     icon: gridOutline,
-    id: 1
+    id: 3
   },
   {
     endpoint: '/menus',
     name: 'Menus',
     slug: 'menus',
     icon: fastFoodOutline,
-    id: 2
+    id: 4
   },
   {
     endpoint: '/images',
     name: 'Images',
     slug: 'images',
     icon: imageOutline,
-    id: 9
+    id: 5
   },
   {
     endpoint: '/child-accounts',

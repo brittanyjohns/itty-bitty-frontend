@@ -33,7 +33,10 @@ import DraggableGrid from "../../components/images/DraggableGrid";
 import { playAudioList } from "../../data/utils";
 import { Image } from "../../data/images";
 import { clickWord } from "../../data/audits";
-import { closeChildMenu } from "../../components/main_menu/MainMenu";
+import {
+  closeChildMenu,
+  openChildMenu,
+} from "../../components/main_menu/MainMenu";
 
 const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<ChildBoard>();
@@ -56,7 +59,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
 
   useIonViewDidLeave(() => {
     inputRef.current?.value && clearInput();
-    closeChildMenu();
+    openChildMenu();
   });
 
   const fetchBoard = async () => {

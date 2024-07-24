@@ -7,7 +7,6 @@ import {
   IonTitle,
   IonToolbar,
   useIonViewWillLeave,
-  useIonViewWillEnter,
   IonItem,
   IonIcon,
 } from "@ionic/react";
@@ -19,7 +18,6 @@ import { homeOutline } from "ionicons/icons";
 import { getImageUrl } from "../../data/utils";
 import { useHistory } from "react-router";
 import ChildSideMenu from "./ChildSideMenu";
-import { set } from "react-hook-form";
 
 export const hideMenu = () => {
   const menu = document.querySelector("ion-menu");
@@ -32,6 +30,13 @@ export const closeChildMenu = () => {
   const menu = document.querySelector("#child-side-menu");
   if (menu) {
     menu.classList.add("hidden");
+  }
+};
+
+export const openChildMenu = () => {
+  const menu = document.querySelector("#child-side-menu");
+  if (menu) {
+    menu.classList.remove("hidden");
   }
 };
 
@@ -50,6 +55,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
   const [menuLinks, setMenuLinks] = useState<MenuLink[]>([]);
   const [filteredLinks, setFilteredLinks] = useState<MenuLink[]>([]);
   const history = useHistory();
+
   // Function to filter links based on the current user's status
   const filterList = (links: MenuLink[]) => {
     const adminLinks = [
@@ -122,65 +128,47 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
       "child-sign-out",
     ];
 
-    return links.filter((link) => {
-      if (currentUser) {
-        if (currentUser.role === "admin") {
-          return adminLinks.includes(link.slug ?? "");
-        }
-        if (currentUser.plan_type === "Free") {
-          return freeLinks.includes(link.slug ?? "");
-        }
-        if (currentUser.plan_type === "Pro") {
-          return proLinks.includes(link.slug ?? "");
-        }
-        if (currentUser.plan_type === "Professional Plus") {
-          return professionalProLinks.includes(link.slug ?? "");
-        }
-        if (currentUser.plan_type === "Premium") {
-          return professionalProLinks.includes(link.slug ?? "");
-        }
-        return freeLinks.includes(link.slug ?? "");
-      } else if (currentAccount) {
-        return childAccountLinks.includes(link.slug ?? "");
-      } else if (!currentUser && !currentAccount) {
-        return signedOutLinks.includes(link.slug ?? "");
-        // return signedOutLinks.includes(link.slug ?? "");
+    if (currentUser) {
+      if (currentUser.role === "admin") {
+        return links.filter((link) => adminLinks.includes(link.slug ?? ""));
       }
-    });
+      if (currentUser.plan_type === "Free") {
+        return links.filter((link) => freeLinks.includes(link.slug ?? ""));
+      }
+      if (currentUser.plan_type === "Pro") {
+        return links.filter((link) => proLinks.includes(link.slug ?? ""));
+      }
+      if (
+        currentUser.plan_type === "Professional Plus" ||
+        currentUser.plan_type === "Premium"
+      ) {
+        return links.filter((link) =>
+          professionalProLinks.includes(link.slug ?? "")
+        );
+      }
+      return links.filter((link) => freeLinks.includes(link.slug ?? ""));
+    } else if (currentAccount) {
+      return links.filter((link) =>
+        childAccountLinks.includes(link.slug ?? "")
+      );
+    } else if (!currentAccount) {
+      return links.filter((link) => signedOutLinks.includes(link.slug ?? ""));
+    }
   };
-
-  // useIonViewWillEnter(() => {
-  //   const links = getMenu();
-  //   if (currentUser?.role === "admin") {
-  //     console.log("getMenu", currentUser);
-  //     links.push({
-  //       endpoint: "/admin-dashboard",
-  //       name: "Admin Dashboard",
-  //       slug: "admin-dashboard",
-  //       icon: homeOutline,
-  //       id: 8888,
-  //     });
-  //   }
-  //   console.log("getMenu", links);
-  //   setMenuLinks(links);
-  // }, []);
 
   const setUpMenu = () => {
-    const menuLinks = getMenu();
-    console.log("menuLinks", menuLinks);
-    setMenuLinks(menuLinks);
-    // Now we filter the list whenever menuLinks or currentUser changes
-    const filteredList = filterList(menuLinks);
-    setFilteredLinks(filteredList);
+    const links = getMenu();
+    setMenuLinks(links);
+    const filteredList = filterList(links);
+    if (currentAccount) {
+      console.log("Setting up child menu");
+    }
+    setFilteredLinks(filteredList ?? []);
   };
 
   useEffect(() => {
     setUpMenu();
-  }, []);
-
-  useEffect(() => {
-    setUpMenu();
-  }, [menuLinks, currentUser, currentAccount]); // Depend on menuLinks and currentUser
+  }, [currentUser, currentAccount]);
 
   useIonViewWillLeave(() => {
     hideMenu();
@@ -203,11 +191,10 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
           contentId="main-content"
           side="start"
           type="overlay"
-          swipeGesture={true}
+          swipeGesture={false}
         >
           {!hideLogo && (
             <IonHeader className="shadow-none">
-              {/* <IonToolbar> */}
               <img
                 slot="start"
                 src={getImageUrl("round_itty_bitty_logo_1", "png")}
@@ -216,11 +203,10 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
               <IonTitle className="text-left" onClick={() => history.push("/")}>
                 SpeakAnyWay
               </IonTitle>
-              {/* </IonToolbar> */}
             </IonHeader>
           )}
           <IonContent className="ion-padding">
-            {currentUser && (
+            {currentUser && !currentAccount && (
               <IonItem
                 routerLink="/"
                 className="hover:cursor-pointer py-4"
