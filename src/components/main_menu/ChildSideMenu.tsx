@@ -45,7 +45,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ links, currentAccount }) => {
               detail={true}
             >
               <IonIcon icon={personCircleOutline} className="mr-5"></IonIcon>
-              <IonLabel>{currentAccount?.email ?? "Try it for FREE"}</IonLabel>
+              <IonLabel>{currentAccount?.username ?? "No Username"}</IonLabel>
             </IonItem>
           </>
         )}

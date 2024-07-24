@@ -20,54 +20,55 @@ import {
 import MainMenu, { hideMenu } from "../../components/main_menu/MainMenu";
 import Tabs from "../../components/utils/Tabs";
 import { useEffect, useState } from "react";
-import { getBoards } from "../../data/boards";
-import {
-  addCircleOutline,
-  albumsOutline,
-  earthOutline,
-  gridOutline,
-  peopleCircleOutline,
-} from "ionicons/icons";
+import { Board, getBoards } from "../../data/boards";
+import { addCircleOutline, albumsOutline, gridOutline } from "ionicons/icons";
 import BoardGrid from "../../components/boards/BoardGrid";
-import { getChildBoards } from "../../data/child_accounts";
+import { ChildAccount } from "../../data/child_accounts";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { User } from "../../data/users";
+import { ChildBoard } from "../../data/child_boards";
+
 interface BoardsScreenProps {
-  gridType?: string;
+  gridType: string;
 }
+
 const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
-  const [boards, setBoards] = useState([]);
-  const [presetBoards, setPresetBoards] = useState([]);
-  const [userBoards, setUserBoards] = useState([]);
-  const [scenarioBoards, setScenarioBoards] = useState([]);
+  const { currentAccount, currentUser } = useCurrentUser();
+  const [boards, setBoards] = useState<Board[]>([]);
+  const [childBoards, setChildBoards] = useState<ChildBoard[]>([]);
+  const [presetBoards, setPresetBoards] = useState<Board[]>([]);
+  const [userBoards, setUserBoards] = useState<Board[]>([]);
+  const [scenarioBoards, setScenarioBoards] = useState<Board[]>([]);
   const [segmentType, setSegmentType] = useState("user");
   const [pageTitle, setPageTitle] = useState("Your Boards");
-  const { currentAccount } = useCurrentUser();
 
   const fetchBoards = async () => {
-    let fetchedBoards;
-    if (gridType === "child" && currentAccount?.id) {
-      fetchedBoards = await getChildBoards(currentAccount.id);
-    } else {
-      fetchedBoards = await getBoards();
+    if (gridType === "child" && currentAccount) {
+      console.log("Fetching child boards", gridType);
+      const fetchedBoards = currentAccount.boards; // Replace with actual fetching logic
+      if (fetchedBoards) {
+        setChildBoards(fetchedBoards);
+      } else {
+        console.error("No child boards found");
+      }
+    } else if (gridType === "user" && currentUser) {
+      console.log("Fetching user boards", gridType);
+      const fetchedBoards = await getBoards();
+      setUserBoards(fetchedBoards["boards"]);
+      setScenarioBoards(fetchedBoards["scenarios"]);
+      setPresetBoards(fetchedBoards["predefined_boards"]);
+      setBoards(fetchedBoards["boards"]);
     }
-    if (!fetchedBoards) {
-      console.error("Error fetching boards");
-      return;
-    }
-    setUserBoards(fetchedBoards["boards"]);
-    setScenarioBoards(fetchedBoards["scenarios"]);
-    setPresetBoards(fetchedBoards["predefined_boards"]);
-    // setSharedBoards(fetchedBoards["shared_boards"]);
-    console.log("Fetched boards", fetchedBoards);
-    setBoards(fetchedBoards["boards"]);
   };
 
   useEffect(() => {
-    // fetchBoards();
-  }, []);
+    console.log("Use effect -gridType: ", gridType);
+    fetchBoards();
+  }, [gridType, currentAccount, currentUser]);
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
+      fetchBoards();
       e.detail.complete();
     }, 3000);
   };
@@ -76,25 +77,26 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
     setSegmentType(e.detail.value);
   };
 
-  useIonViewWillEnter(() => {
-    fetchBoards();
-  });
-
-  // useIonViewWillEnter(() => {
-  //   hideMenu();
-  //   console.log("ionViewWillEnter event fired");
-  // });
-
   useEffect(() => {
     if (segmentType === "user") {
       setBoards(userBoards);
       setPageTitle("Your Boards");
-    }
-    if (segmentType === "preset") {
+    } else if (segmentType === "preset") {
       setBoards(presetBoards);
       setPageTitle("Preset Boards");
     }
-  }, [segmentType]);
+  }, [segmentType, userBoards, presetBoards]);
+
+  const renderBoardGrid = (
+    gridType: string,
+    boardsToSet: Board[] | ChildBoard[]
+  ) => {
+    console.log("Rendering board grid: ", boardsToSet);
+    if (boardsToSet.length > 0) {
+      return <BoardGrid gridType={gridType} boards={boardsToSet} />;
+    }
+    return <p>No boards available</p>;
+  };
 
   return (
     <>
@@ -131,7 +133,9 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <BoardGrid boards={boards} />
+          {segmentType === "user" && renderBoardGrid("user", boards)}
+          {segmentType === "preset" && renderBoardGrid("preset", presetBoards)}
+          {gridType === "child" && renderBoardGrid("child", childBoards)}
         </IonContent>
         <Tabs />
       </IonPage>

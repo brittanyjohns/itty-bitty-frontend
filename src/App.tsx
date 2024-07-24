@@ -74,7 +74,6 @@ import SuccessfulSubscription from "./pages/SuccessfulSubscription";
 import ChildAccountsScreen from "./pages/childAccounts/ChildAccountsScreen";
 import ViewChildAccountScreen from "./pages/childAccounts/ViewChildAccountScreen";
 import AccountSignInScreen from "./pages/accounts/AccountSignInScreen";
-import { AccountProvider } from "./contexts/AccountContext";
 import SignInPage from "./pages/SignInPage";
 import AccountSignOutScreen from "./pages/accounts/AccountSignOutScreen";
 
@@ -121,7 +120,10 @@ const UserRoutes: React.FC = () => (
           component={SelectGalleryScreen}
           exact={true}
         />
-        <Route path="/boards" component={BoardsScreen} exact={true} />
+        {/* <Route path="/boards" component={BoardsScreen} exact={true} /> */}
+        <Route path="/boards" exact={true}>
+          <BoardsScreen gridType="user" />
+        </Route>
         <Route path="/scenarios" component={BoardsScreen} exact={true} />
 
         <Route path="/menus/new" component={NewMenu} exact={true} />
@@ -186,16 +188,17 @@ const UserRoutes: React.FC = () => (
           component={ChildAccountsScreen}
           exact={true}
         />
+        <Route path="/child-accounts/:id" component={ViewChildAccountScreen} />
         <Route
           path="/child-accounts/sign-out"
           component={AccountSignOutScreen}
           exact={true}
         />
-        <Route path="/child-accounts/:id" component={ViewChildAccountScreen} />
+
         <Route path="/child-boards">
           <BoardsScreen gridType="child" />
         </Route>
-        <Route path="/child-boards/:id" component={ViewChildAccountScreen} />
+        {/* <Route path="/child-boards/:id" component={ViewChildAccountScreen} /> */}
         <Route
           path="/accounts/sign-in"
           component={AccountSignInScreen}

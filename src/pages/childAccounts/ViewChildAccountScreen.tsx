@@ -31,6 +31,7 @@ import BoardGrid from "../../components/boards/BoardGrid";
 import ChildBoardDropdown from "../../components/boards/ChildBoardDropdown";
 import MainMenu from "../../components/main_menu/MainMenu";
 import ChildAccountForm from "../../components/childAccounts/ChildAccountForm";
+import { User } from "../../data/users";
 
 const ViewChildAccountScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -87,19 +88,47 @@ const ViewChildAccountScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchChildAccount();
-    fetchUserBoards();
-  }, []);
-
-  useEffect(() => {
     if (currentUser) {
       fetchChildAccount();
+      fetchUserBoards();
     }
-  }, [currentUser]);
+  }, []);
 
   const handleSegmentChange = (e: CustomEvent) => {
     const newSegment = e.detail.value;
     setSegmentType(newSegment);
+  };
+
+  const renderBoardGrid = (
+    segmentType: string,
+    currentUser?: User | null,
+    currentAccount?: ChildAccount
+  ) => {
+    if (segmentType === "boardTab") {
+      let gridType = "";
+      let boards: any[] = []; // Replace `any` with the actual type of `boards` if known
+
+      if (currentUser?.role === "admin") {
+        gridType = "user";
+        boards = currentUser.boards || [];
+      } else if (currentAccount) {
+        gridType = "child";
+        boards = currentAccount.boards || [];
+      } else {
+        gridType = "user";
+        boards = currentUser?.boards || [];
+      }
+
+      if (boards && boards.length > 0) {
+        return (
+          <div>
+            <IonLabel>Boards</IonLabel>
+            <BoardGrid boards={boards} gridType={gridType} />
+          </div>
+        );
+      }
+    }
+    return null;
   };
 
   if (loading) {
@@ -200,16 +229,7 @@ const ViewChildAccountScreen: React.FC = () => {
               )}
             </div>
           )}
-          {segmentType === "boardTab" && (
-            <div>
-              <div>
-                <IonLabel>Boards</IonLabel>
-                {childAccount?.boards && (
-                  <BoardGrid boards={childAccount.boards} gridType="child" />
-                )}
-              </div>
-            </div>
-          )}
+          {renderBoardGrid(segmentType, currentUser, childAccount)}
           {segmentType === "newAccountTab" && (
             <div className="p-4">
               {childAccount ? (

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { BASE_URL } from "../../data/users";
+import { BASE_URL, userHeaders } from "../../data/constants";
 
 import { useStripe, useElements } from "@stripe/react-stripe-js";
-import { userHeaders } from "../../data/users";
 
 const CheckoutForm = () => {
   const stripe = useStripe();

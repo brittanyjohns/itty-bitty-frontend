@@ -19,6 +19,7 @@ import { homeOutline } from "ionicons/icons";
 import { getImageUrl } from "../../data/utils";
 import { useHistory } from "react-router";
 import ChildSideMenu from "./ChildSideMenu";
+import { set } from "react-hook-form";
 
 export const hideMenu = () => {
   const menu = document.querySelector("ion-menu");
@@ -107,7 +108,6 @@ const MainMenu: React.FC<MainMenuProps> = () => {
     ];
     const childAccountLinks = [
       "home",
-      "sign-out",
       "child-boards",
       "settings",
       "child-sign-out",
@@ -156,24 +156,11 @@ const MainMenu: React.FC<MainMenuProps> = () => {
   // }, []);
 
   useEffect(() => {
+    console.log("getMenu", currentUser);
     const links = getMenu();
-    // if (currentUser?.role === "admin") {
-    //   console.log("getMenu", currentUser);
-    //   links.push({
-    //     endpoint: "/admin-dashboard",
-    //     name: "Admin Dashboard",
-    //     slug: "admin-dashboard",
-    //     icon: homeOutline,
-    //     id: 8888,
-    //   });
-    // }
-    console.log("getMenu", links);
     setMenuLinks(links);
-  }, [currentUser, currentAccount]);
-
-  useEffect(() => {
     // Now we filter the list whenever menuLinks or currentUser changes
-    const filteredList = filterList(menuLinks);
+    const filteredList = filterList(links);
     setFilteredLinks(filteredList);
   }, [menuLinks, currentUser, currentAccount]); // Depend on menuLinks and currentUser
 
@@ -183,10 +170,10 @@ const MainMenu: React.FC<MainMenuProps> = () => {
 
   return (
     <>
-      {isWideScreen && (
+      {!currentAccount && isWideScreen && (
         <SideMenu filteredLinks={filteredLinks} currentUser={currentUser} />
       )}
-      {isWideScreen && (
+      {currentAccount && isWideScreen && (
         <ChildSideMenu links={filteredLinks} currentAccount={currentAccount} />
       )}
       {!isWideScreen && (
@@ -200,7 +187,6 @@ const MainMenu: React.FC<MainMenuProps> = () => {
             <IonToolbar>
               <img
                 slot="start"
-                // src="/src/assets/images/round_itty_bitty_logo_1.png"
                 src={getImageUrl("round_itty_bitty_logo_1", "png")}
                 className=" ml-2 h-10 w-10 mt-1"
               />
@@ -224,6 +210,24 @@ const MainMenu: React.FC<MainMenuProps> = () => {
                   </p>
                   <p className="mt-1 text-xs">
                     {currentUser?.plan_type ?? "free trial"}
+                  </p>
+                </div>
+              </IonItem>
+            )}
+            {currentAccount && (
+              <IonItem
+                routerLink="/"
+                className="hover:cursor-pointer py-4"
+                lines="full"
+                detail={false}
+              >
+                <IonIcon icon={homeOutline} className="" />
+                <div className="ml-5 text-xs">
+                  <p className="mt-1 font-bold">
+                    {currentAccount?.username ?? "Guest Account"}
+                  </p>
+                  <p className="mt-1 text-xs">
+                    {currentAccount?.user_id ?? "no user id"}
                   </p>
                 </div>
               </IonItem>

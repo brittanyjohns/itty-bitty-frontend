@@ -1,4 +1,4 @@
-import { BASE_URL, userHeaders } from '../data/users'
+import { BASE_URL, userHeaders } from '../data/constants'
 
 export interface Scenario {
     prompt_text?: string;

@@ -1,5 +1,8 @@
 import * as React from "react";
-import { STRIPE_PRICING_TABLE_ID, STRIPE_PUBLIC_KEY } from "../../data/users";
+import {
+  STRIPE_PRICING_TABLE_ID,
+  STRIPE_PUBLIC_KEY,
+} from "../../data/constants";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useHistory } from "react-router";
 import {

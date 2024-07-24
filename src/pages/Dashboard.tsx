@@ -17,9 +17,8 @@ import SubscriptionList from "../components/stripe/SubscriptionList";
 import { Subscription, getSubscriptions } from "../data/subscriptions";
 import AccountLink from "../components/stripe/AccountLink";
 import PricingTable from "../components/utils/PricingTable";
-import ChildAccountForm from "../components/childAccounts/ChildAccountForm";
 const Dashboard: React.FC = () => {
-  const { isWideScreen, currentUser } = useCurrentUser();
+  const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
 
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
 
@@ -35,34 +34,38 @@ const Dashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    loadSubscriptions();
+    if (currentUser) {
+      loadSubscriptions();
+    }
   }, []);
 
   return (
     <>
       <MainMenu />
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="start">
-              {!isWideScreen && <IonMenuButton></IonMenuButton>}
-            </IonButtons>
-            <IonTitle>Dashboard</IonTitle>
-          </IonToolbar>
-        </IonHeader>
         <IonContent>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <div className="p-4">
-            {currentUser?.admin ||
-              (currentUser?.plan_type !== "free" && (
-                <SubscriptionList subscriptions={subscriptions} />
+            {currentAccount && (
+              <h2 className="text-xl font-semibold">
+                {currentAccount?.name}'s Dashboard 🚀
+              </h2>
+            )}
+            {(currentUser && currentUser?.admin) ||
+              (currentUser && currentUser?.plan_type !== "free" && (
+                <>
+                  <h2 className="text-xl font-semibold">Subscriptions</h2>
+                  <SubscriptionList subscriptions={subscriptions} />
+                </>
               ))}
             <div className="p-3 mt-5">
               <AccountLink />
 
-              {currentUser?.plan_type === "free" && <PricingTable />}
+              {currentUser && currentUser?.plan_type === "free" && (
+                <PricingTable />
+              )}
             </div>
           </div>
         </IonContent>

@@ -1,4 +1,4 @@
-import { BASE_URL, userHeaders } from "./users";
+import { BASE_URL, userHeaders } from "./constants";
 
 export interface Subscription {
     id: string;

@@ -1,6 +1,6 @@
 import { Board } from './boards';
-import { BASE_URL, User, userHeaders } from './users';
-
+import { BASE_URL, userHeaders } from './constants';
+import { User } from './users';
 export interface Team {
     id?: string;
     name: string;

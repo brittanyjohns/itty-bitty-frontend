@@ -1,5 +1,5 @@
 import { Board } from "./boards";
-import { userHeaders, BASE_URL } from "./users";
+import { userHeaders, BASE_URL } from "./constants";
 
 interface WordClickPayload {
     word: string;

@@ -40,14 +40,15 @@ const AccountSignOutScreen: React.FC = () => {
   return (
     <div>
       <MainMenu />
-      {!isAccountSignedIn() && (
+      <IonButton onClick={handleSignOut}>Sign Out</IonButton>
+      {/* {!isAccountSignedIn() && (
         <IonButton onClick={() => history.push("/accounts/sign-in")}>
           Sign In
         </IonButton>
       )}
       {isAccountSignedIn() && (
         <IonButton onClick={handleSignOut}>Sign Out</IonButton>
-      )}
+      )} */}
     </div>
   );
 };

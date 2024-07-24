@@ -1,4 +1,4 @@
-import { BASE_URL, userHeaders } from "./users";
+import { BASE_URL, userHeaders } from "./constants";
 interface RequestDetails {
     client_ip: string;
 }

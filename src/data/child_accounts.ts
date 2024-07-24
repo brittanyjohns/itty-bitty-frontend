@@ -1,11 +1,7 @@
 import { Board } from "./boards";
 import { User } from "./users";
-import { userHeaders, BASE_URL } from "./users";
-const childAccountHeaders = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': `Bearer ${localStorage.getItem('child_token')}`,
-};
+import { userHeaders, BASE_URL, childAccountHeaders } from "./constants";
+
 export interface ChildAccount {
     id?: number;
     user_id: number;
@@ -88,7 +84,7 @@ export const signIn = (child_account: ChildAccount) => {
 export const getCurrentAccount = async (): Promise<ChildAccount> => {
     const token = localStorage.getItem("child_token");
     if (!token) {
-        return { error: "No token found", user_id: 0, username: "" };
+        return { error: "No account token found", user_id: 0, username: "" };
     }
     const response = await fetch(`${BASE_URL}v1/child_accounts/current`, {
         method: 'GET',
@@ -98,7 +94,7 @@ export const getCurrentAccount = async (): Promise<ChildAccount> => {
         },
     });
     const result = await response.json();
-    return result;
+    return result['child'];
 }
 
 export const isAccountSignedIn = (): boolean => {

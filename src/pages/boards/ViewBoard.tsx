@@ -39,6 +39,7 @@ const ViewBoard: React.FC<any> = () => {
   const [currentUserTeams, setCurrentUserTeams] = useState<Team[]>();
 
   const fetchBoard = async () => {
+    console.log("Fetching board: ", params.id);
     const board = await getBoard(params.id);
 
     if (!board) {
@@ -85,7 +86,7 @@ const ViewBoard: React.FC<any> = () => {
     setTimeout(() => {
       e.detail.complete();
       fetchBoard();
-    }, 5000);
+    }, 10);
   };
 
   const handleClone = async () => {
@@ -116,9 +117,9 @@ const ViewBoard: React.FC<any> = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent scrollY={true}>
-          <IonRefresher slot="fixed" onIonRefresh={refresh}>
+          {/* <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
-          </IonRefresher>
+          </IonRefresher> */}
           <IonLoading message="Please wait..." isOpen={showLoading} />
           {board && (
             <BoardView

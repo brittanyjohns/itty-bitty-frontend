@@ -1,6 +1,6 @@
 import { Layout } from "react-grid-layout";
 import { Board } from "./boards";
-import { BASE_URL } from "./users";
+import { BASE_URL, userHeaders } from "./constants";
   export interface ImageDoc {
     id: string;
     src: string;
@@ -81,12 +81,8 @@ import { BASE_URL } from "./users";
     searchInput: string;
   }
 
-const userHeaders = {   
-  'Content-Type': 'application/json',
-  'Authorization': `Bearer ${localStorage.getItem('token')}`
-};
+
 export const getImages = () => {
-  const userToken = localStorage.getItem('token');
     const images = fetch(`${BASE_URL}images`, { headers: userHeaders })
         .then(response => response.json())
         .then(data => data)

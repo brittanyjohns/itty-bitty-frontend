@@ -11,6 +11,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import ActionList from "../utils/ActionList";
 import { useHistory } from "react-router";
 import { generatePlaceholderImage } from "../../data/utils";
+import { ChildBoard } from "../../data/child_boards";
 
 interface BoardListItemProps {
   board: Board;
@@ -40,10 +41,11 @@ const BoardGridItem: React.FC<BoardListItemProps> = ({ board, gridType }) => {
     }
   };
 
-  const handleBoardClick = (board: Board) => {
+  const handleBoardClick = (board: any) => {
     console.log("Board clicked: ", board);
+    console.log("Grid type: ", gridType);
     if (gridType === "child") {
-      history.push(`/child-boards/${board.id}`);
+      history.push(`/boards/${board.board_id}`);
     } else {
       history.push(`/boards/${board.id}`);
     }

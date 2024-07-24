@@ -1,5 +1,5 @@
 import { Image } from './images';
-import { BASE_URL, userHeaders } from './users';
+import { BASE_URL, userHeaders } from './constants';
 
 export interface Board {
     id?: string;

@@ -1,6 +1,6 @@
 import { Board } from './boards';
 import { Image } from './images';
-import { BASE_URL, userHeaders } from './users';
+import { BASE_URL, userHeaders } from './constants';
 
 export interface Menu {
     id?: string;
