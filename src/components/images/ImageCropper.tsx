@@ -20,6 +20,7 @@ interface ImageCropperProps {
 }
 
 const ImageCropper: React.FC<ImageCropperProps> = ({
+  boardId,
   existingId,
   existingLabel,
 }) => {
@@ -99,17 +100,34 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
   }, [imageSrc]);
 
   const handleSubmit = async (event: React.FormEvent) => {
+    console.log("Existing ID: ", existingId);
     event.preventDefault();
+    let createResult;
     if (cropper) {
+      console.log("Cropping image");
       const croppedImage = cropper.getCroppedCanvas().toDataURL();
-      handleFormSubmit({ croppedImage, fileExtension });
+      createResult = await handleFormSubmit({ croppedImage, fileExtension });
     } else {
       if (label) {
         const formData = new FormData();
         formData.append("image[label]", label);
+        if (existingId) {
+          formData.append("image[id]", existingId);
+        }
 
-        const result = await findOrCreateImage(formData, false);
+        createResult = await findOrCreateImage(formData, false);
+        console.log("Result createResult: ", createResult);
       }
+    }
+    if (createResult) {
+      if (boardId) {
+        history.push(`/boards/${boardId}`);
+        return;
+      } else {
+        window.location.reload();
+      }
+    } else {
+      alert("An error occurred. Please try again.");
     }
   };
 
@@ -141,13 +159,8 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
 
     const result = await cropImage(formData);
     setShowLoading(false);
-
-    if (result && result.id) {
-      history.replace(`/images/${result.id}`);
-    } else {
-      console.error("Error:", result.error);
-      alert("An error occurred. Please try again.");
-    }
+    console.log(">>Result: ", result);
+    return result;
   };
 
   useIonViewWillLeave(() => {

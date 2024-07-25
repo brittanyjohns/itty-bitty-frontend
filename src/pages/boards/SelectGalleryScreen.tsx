@@ -335,10 +335,10 @@ const SelectGalleryScreen: React.FC = () => {
             </IonText>
             <IonIcon icon={refreshOutline} onClick={fetchBoard} />
           </div>
-          <div className="mt-6 py-3 px-1 hidden text-center" ref={uploadForm}>
-            <IonText className="text-sm md:text-md lg:text-lg">
+          <div className="mt-6 py-3 px-1 hidden" ref={uploadForm}>
+            <p className="text-sm md:text-md lg:text-lg text-center">
               Upload your own image
-            </IonText>
+            </p>
             {board && image && (
               <ImageCropper
                 existingId={image.id}

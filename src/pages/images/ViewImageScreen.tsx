@@ -360,7 +360,6 @@ const ViewImageScreen: React.FC = () => {
             </div>
           </div>
           <div className="mt-6 py-3 px-1 hidden" ref={uploadForm}>
-            <IonText className="text-lg">Upload your own image</IonText>
             {image && (
               <ImageCropper
                 existingId={image.id}

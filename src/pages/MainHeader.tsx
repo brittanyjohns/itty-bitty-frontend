@@ -27,7 +27,7 @@ const MainHeader: React.FC = () => {
               className="h-10 w-10"
             /> */}
             <IonTitle className="text-left" onClick={() => history.push("/")}>
-              SpeakAnyWay MAIN
+              SpeakAnyWay
             </IonTitle>
           </>
         )}
