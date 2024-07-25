@@ -12,6 +12,7 @@ import { MenuLink, getMenu } from "../../data/menu";
 import MenuListItem from "./MainMenuListItem";
 import { getImageUrl } from "../../data/utils";
 import { personCircleOutline } from "ionicons/icons";
+import { h } from "ionicons/dist/types/stencil-public-runtime";
 
 interface SideMenuProps {
   filteredLinks: MenuLink[];

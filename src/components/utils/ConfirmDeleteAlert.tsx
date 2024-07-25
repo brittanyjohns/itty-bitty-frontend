@@ -1,4 +1,5 @@
-import { IonAlert, IonButton } from "@ionic/react";
+import { IonAlert, IonButton, IonIcon, IonLabel } from "@ionic/react";
+import { trashBinOutline } from "ionicons/icons";
 interface ConfirmDeleteAlertProps {
   onConfirm: () => void;
   onCanceled: () => void;
@@ -9,7 +10,10 @@ const ConfirmDeleteAlert: React.FC<ConfirmDeleteAlertProps> = ({
 }) => {
   return (
     <>
-      <IonButton id="present-alert">Delete</IonButton>
+      <IonButton className="text-xs" id="present-alert">
+        <IonIcon icon={trashBinOutline} className="mx-2" />
+        <IonLabel>Delete</IonLabel>
+      </IonButton>
       <IonAlert
         header="Are you sure you want to delete this item?"
         trigger="present-alert"

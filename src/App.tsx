@@ -211,13 +211,7 @@ const UserRoutes: React.FC = () => (
 );
 const App: React.FC = () => (
   <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route path="/">
-          <UserRoutes />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
+    <UserRoutes />
   </IonApp>
 );
 export default App;

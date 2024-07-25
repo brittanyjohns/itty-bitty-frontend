@@ -7,12 +7,17 @@ import {
   rearrangeImages,
 } from "../../data/boards";
 import {
+  IonButton,
+  IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonLoading,
+  IonMenuButton,
   IonPage,
   IonRefresher,
   IonRefresherContent,
+  IonTitle,
   IonToolbar,
   useIonViewDidLeave,
   useIonViewWillEnter,
@@ -26,6 +31,7 @@ import { Team } from "../../data/teams";
 import Tabs from "../../components/utils/Tabs";
 import MainMenu from "../../components/main_menu/MainMenu";
 import BoardView from "../../components/boards/BoardView";
+import { addCircleOutline } from "ionicons/icons";
 
 const ViewBoard: React.FC<any> = () => {
   const [board, setBoard] = useState<Board>();
@@ -37,6 +43,7 @@ const ViewBoard: React.FC<any> = () => {
   const { currentUser } = useCurrentUser();
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [currentUserTeams, setCurrentUserTeams] = useState<Team[]>();
+  const { isWideScreen } = useCurrentUser();
 
   const fetchBoard = async () => {
     console.log("Fetching board: ", params.id);
@@ -82,13 +89,6 @@ const ViewBoard: React.FC<any> = () => {
     fetchBoard();
   }, []);
 
-  const refresh = (e: CustomEvent) => {
-    setTimeout(() => {
-      e.detail.complete();
-      fetchBoard();
-    }, 10);
-  };
-
   const handleClone = async () => {
     try {
       const clonedBoard = await cloneBoard(params.id);
@@ -107,19 +107,22 @@ const ViewBoard: React.FC<any> = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none text-xl">
+        <IonHeader className="bg-inherit shadow-none text-xl mt-2">
           <IonToolbar>
-            {!showIcon && (
-              <h1 className="text-center text-lg font-bold">
-                {board?.name || "Board"}
-              </h1>
-            )}
+            <IonButtons slot="start">
+              <IonMenuButton></IonMenuButton>
+              <IonButton routerLink="/boards/new">
+                <IonIcon icon={addCircleOutline} />
+              </IonButton>
+            </IonButtons>
           </IonToolbar>
         </IonHeader>
-        <IonContent scrollY={true}>
-          {/* <IonRefresher slot="fixed" onIonRefresh={refresh}>
-            <IonRefresherContent></IonRefresherContent>
-          </IonRefresher> */}
+        <IonContent>
+          {!showIcon && (
+            <h1 className="text-center text-lg font-bold">
+              {board?.name || "Board"}
+            </h1>
+          )}
           <IonLoading message="Please wait..." isOpen={showLoading} />
           {board && (
             <BoardView

@@ -9,6 +9,8 @@ import {
   useIonViewWillLeave,
   IonItem,
   IonIcon,
+  IonButtons,
+  IonMenuButton,
 } from "@ionic/react";
 import { MenuLink, getMenu } from "../../data/menu";
 import MenuListItem from "./MainMenuListItem";
@@ -176,6 +178,8 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
 
   return (
     <>
+      <IonMenuButton slot="start" />
+
       {!currentAccount && isWideScreen && (
         <SideMenu
           filteredLinks={filteredLinks}
@@ -193,19 +197,19 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
           type="overlay"
           swipeGesture={false}
         >
-          {!hideLogo && (
-            <IonHeader className="shadow-none">
+          {hideLogo && (
+            <div className="flex items-center">
               <img
                 slot="start"
                 src={getImageUrl("round_itty_bitty_logo_1", "png")}
                 className=" ml-2 h-10 w-10 mt-1"
               />
-              <IonTitle className="text-left" onClick={() => history.push("/")}>
+              <div className="font-bold" onClick={() => history.push("/")}>
                 SpeakAnyWay
-              </IonTitle>
-            </IonHeader>
+              </div>
+            </div>
           )}
-          <IonContent className="ion-padding">
+          <IonContent className="">
             {currentUser && !currentAccount && (
               <IonItem
                 routerLink="/"
@@ -237,11 +241,14 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
                     {currentAccount?.username ?? "Guest Account"}
                   </p>
                   <p className="mt-1 text-xs">
-                    {currentAccount?.user_id ?? "no user id"}
+                    User ID: {currentAccount?.user_id ?? "no user id"}
                   </p>
                 </div>
               </IonItem>
             )}
+            <IonTitle className="text-left" onClick={() => history.push("/")}>
+              SpeakAnyWayww
+            </IonTitle>
             <IonList>
               {filteredLinks.map((menuLink) => (
                 <MenuListItem

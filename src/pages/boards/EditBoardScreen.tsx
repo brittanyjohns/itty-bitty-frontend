@@ -34,6 +34,7 @@ import {
   imagesOutline,
   refreshCircleOutline,
   refreshOutline,
+  shareOutline,
 } from "ionicons/icons";
 import {
   getBoard,
@@ -43,6 +44,7 @@ import {
   saveLayout,
   rearrangeImages,
   deleteBoard,
+  addToTeam,
 } from "../../data/boards"; // Adjust imports based on actual functions
 import { createImage, generateImage, getMoreImages } from "../../data/images";
 import { Image } from "../../data/images";
@@ -53,6 +55,7 @@ import DraggableGrid from "../../components/images/DraggableGrid";
 import MainMenu from "../../components/main_menu/MainMenu";
 import ImageCropper from "../../components/images/ImageCropper";
 import ConfirmDeleteAlert from "../../components/utils/ConfirmDeleteAlert";
+import AddToTeamForm from "../../components/teams/AddToTeamForm";
 
 interface EditBoardScreenProps {}
 const EditBoardScreen: React.FC = () => {
@@ -77,6 +80,8 @@ const EditBoardScreen: React.FC = () => {
   const [numberOfColumns, setNumberOfColumns] = useState(4); // Default number of columns
   const [showEdit, setShowEdit] = useState(false);
   const params = useParams<{ id: string }>();
+  const addToTeamRef = useRef<HTMLDivElement>(null);
+  const [currentUserTeams, setCurrentUserTeams] = useState<Team[]>();
 
   const initialImage = {
     id: "",
@@ -246,58 +251,41 @@ const EditBoardScreen: React.FC = () => {
     history.push(`/boards/${board?.id}`);
   };
 
-  const handleImageClick = (image: Image) => {
-    setImage(image);
-    setLoadingMessage("Adding image to board");
-    setShowLoading(true);
-    async function addSelectedImageToBoard() {
-      if (!board?.id) {
-        console.error("Board ID is missing");
-        return;
-      }
-      const response = await addImageToBoard(board.id, image.id);
-      let message = "";
-      if (response["board"]) {
-        message = `Image added to board: ${response["board"]["name"]}`;
-        setToastMessage(message);
-      } else {
-        message = `${response["error"]}`;
-        setToastMessage(message);
-      }
-      setShowLoading(false);
-      setIsOpen(true);
+  const handleAddToTeam = async (teamId: string) => {
+    if (!board) {
+      console.error("Board is missing");
+      return;
     }
-    addSelectedImageToBoard();
-    handleRearrangeImages();
+    const boardId = board.id;
+    if (!teamId || !boardId) {
+      return;
+    }
+    const response = await addToTeam(boardId, teamId);
+    if (response) {
+      history.push("/teams/" + teamId);
+    }
   };
 
-  const handleCreateImage = async (label: string) => {
-    setLoadingMessage("Creating image");
-    setShowLoading(true);
-    const formData = new FormData();
-    formData.append("image[label]", label);
-    const newImage = await createImage(formData);
-    setShowLoading(false);
-    if (newImage) {
-      // history.push(`/images/${newImage.id}`);
-      handleImageClick(newImage);
-    }
+  const toggleAddToTeam = () => {
+    addToTeamRef.current?.classList.toggle("hidden");
   };
 
   return (
     <>
       <MainMenu />
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
-          {/* <IonToolbar>
-            <IonButtons slot="start">
-              <IonButton routerLink={`/boards/${board?.id}`}>
-                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
-              </IonButton>
-            </IonButtons>
-          </IonToolbar> */}
-        </IonHeader>
-        <IonContent scrollY={true}>
+        <IonContent className="ion-padding">
+          <div className="flex justify-center items-center">
+            <div ref={addToTeamRef} className="p-4 hidden">
+              {currentUserTeams && (
+                <AddToTeamForm
+                  onSubmit={handleAddToTeam}
+                  toggleAddToTeam={toggleAddToTeam}
+                  currentUserTeams={currentUserTeams}
+                />
+              )}
+            </div>
+          </div>
           <div className="flex justify-between items-center px-4 w-full md:w-11/12 mx-auto">
             <IonButtons className="mr-3" slot="start">
               <IonButton routerLink={`/boards/${board?.id}`}>
@@ -346,17 +334,6 @@ const EditBoardScreen: React.FC = () => {
                   >
                     Save Layout
                   </IonButton>
-                  <IonButton
-                    className="block text-xl font-bold text-center my-2 cursor-pointer w-full lg:w-1/2 mx-auto text-wrap"
-                    onClick={handleRearrangeImages}
-                  >
-                    Reset layout
-                    <IonIcon icon={appsOutline} className="px-2" />
-                    <span className="text-xs font-normal">
-                      {" "}
-                      This will resize tile the images horizontally
-                    </span>
-                  </IonButton>
                   <DraggableGrid
                     images={board.images}
                     columns={numberOfColumns}
@@ -374,7 +351,20 @@ const EditBoardScreen: React.FC = () => {
                 </div>
               )}
             </div>
-            <div className="flex justify-end items-center px-4">
+            <div className="flex justify-between items-center px-4 mt-4">
+              {showEdit && (
+                <IonButton onClick={toggleAddToTeam} className="mr-1 text-xs">
+                  <IonIcon icon={shareOutline} className="mx-2" />
+                  <IonLabel>Share</IonLabel>
+                </IonButton>
+              )}
+              <IonButton
+                className="text-xs md:text-md lg:text-lg font-bold text-center my-2 cursor-pointer mx-auto text-wrap"
+                onClick={handleRearrangeImages}
+              >
+                <IonIcon icon={appsOutline} className="mx-2" />
+                <IonLabel>Reset layout</IonLabel>
+              </IonButton>
               {showEdit && (
                 <ConfirmDeleteAlert
                   onConfirm={removeBoard}

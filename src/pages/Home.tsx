@@ -1,6 +1,9 @@
 import {
+  IonButtons,
   IonContent,
+  IonHeader,
   IonItem,
+  IonMenuButton,
   IonPage,
   IonRefresher,
   IonRefresherContent,
@@ -51,7 +54,16 @@ const Home: React.FC = () => {
       </IonToolbar>
       <MainMenu hideLogo={true} />
       <IonPage id="main-content">
-        {/* {!isWideScreen && <MainHeader />} */}
+        {!isWideScreen && (
+          <IonHeader className="bg-inherit shadow-none">
+            <IonToolbar>
+              <IonButtons slot="start">
+                {!isWideScreen && <IonMenuButton></IonMenuButton>}
+              </IonButtons>
+              <IonTitle>Home</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+        )}
         <IonContent className="text-justified" scrollY={true}>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
