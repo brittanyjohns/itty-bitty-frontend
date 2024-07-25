@@ -63,9 +63,9 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   });
 
   const fetchBoard = async () => {
-    const board = await getChildBoard(Number(params.id));
-    console.log("Board fetched: ", board);
     closeChildMenu();
+
+    const board = await getChildBoard(Number(params.id));
     if (!board) {
       console.error("Error fetching board");
       return;

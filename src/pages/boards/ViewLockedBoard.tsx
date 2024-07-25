@@ -150,7 +150,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
           </IonButtons>
-          <IonItem slot="start" className="pl-2 w-full">
+          <IonItem slot="start" className="pl-2 w-full" lines="none">
             <IonInput
               placeholder="Click an image to begin speaking"
               ref={inputRef}

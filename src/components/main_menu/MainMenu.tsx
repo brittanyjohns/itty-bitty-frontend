@@ -16,7 +16,11 @@ import { MenuLink, getMenu } from "../../data/menu";
 import MenuListItem from "./MainMenuListItem";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import SideMenu from "./SideMenu";
-import { homeOutline } from "ionicons/icons";
+import {
+  homeOutline,
+  personCircleOutline,
+  personOutline,
+} from "ionicons/icons";
 import { getImageUrl } from "../../data/utils";
 import { useHistory } from "react-router";
 import ChildSideMenu from "./ChildSideMenu";
@@ -235,7 +239,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
                 lines="full"
                 detail={false}
               >
-                <IonIcon icon={homeOutline} className="" />
+                <IonIcon icon={personOutline} className="" />
                 <div className="ml-5 text-xs">
                   <p className="mt-1 font-bold">
                     {currentAccount?.username ?? "Guest Account"}
@@ -246,9 +250,6 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
                 </div>
               </IonItem>
             )}
-            <IonTitle className="text-left" onClick={() => history.push("/")}>
-              SpeakAnyWayww
-            </IonTitle>
             <IonList>
               {filteredLinks.map((menuLink) => (
                 <MenuListItem
