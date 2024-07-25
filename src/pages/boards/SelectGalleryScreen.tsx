@@ -135,7 +135,7 @@ const SelectGalleryScreen: React.FC = () => {
     page: number,
     query: string
   ): Promise<Image[]> => {
-    const additionalImages = await getMoreImages(page, query);
+    const additionalImages = await getMoreImages(page, query, false);
     setRemainingImages(additionalImages);
     setShowCreateBtn(additionalImages.length < 5 && query.length > 0);
     return additionalImages;
