@@ -56,6 +56,7 @@ import MainMenu from "../../components/main_menu/MainMenu";
 import ImageCropper from "../../components/images/ImageCropper";
 import ConfirmDeleteAlert from "../../components/utils/ConfirmDeleteAlert";
 import AddToTeamForm from "../../components/teams/AddToTeamForm";
+import { Team } from "../../data/teams";
 
 interface EditBoardScreenProps {}
 const EditBoardScreen: React.FC = () => {
