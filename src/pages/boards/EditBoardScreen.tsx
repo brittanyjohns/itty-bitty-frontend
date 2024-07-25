@@ -139,22 +139,6 @@ const EditBoardScreen: React.FC = () => {
     setRemainingImages(remainingImgs);
   };
 
-  const handleGetMoreImages = async (
-    page: number,
-    query: string
-  ): Promise<Image[]> => {
-    const additionalImages = await getMoreImages(page, query);
-    setRemainingImages(additionalImages);
-    setShowCreateBtn(additionalImages.length < 5 && query.length > 0);
-    return additionalImages;
-  };
-
-  const handleSearchInput = async (event: CustomEvent) => {
-    const query = event.detail.value.toLowerCase();
-    setSearchInput(query);
-    setPage(1); // Reset to first page on new search
-  };
-
   const loadPage = async () => {
     setShowLoading(true);
     const boardToSet = await fetchBoard();

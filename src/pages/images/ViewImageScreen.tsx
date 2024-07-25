@@ -93,7 +93,9 @@ const ViewImageScreen: React.FC = () => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const boardId = urlParams.get("boardId");
-    setShowHardDelete(currentUser?.role === "admin");
+    setShowHardDelete(
+      currentUser?.role === "admin" || currentUser?.id === image?.user_id
+    );
     setBoardId(boardId);
     getData();
     if (image && image.src) {

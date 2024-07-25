@@ -10,6 +10,7 @@ import { BASE_URL, userHeaders } from "./constants";
   
   export interface Image {
     id: string;
+    user_id?: string;
     src: string | null;
     label: string;
     image_prompt?: string;
@@ -79,6 +80,8 @@ import { BASE_URL, userHeaders } from "./constants";
     onLoadMoreImages: any;
     onImageClick: any;
     searchInput: string;
+    segmentType?: string;
+    fetchUserBoards: any;
   }
 
 
@@ -165,8 +168,8 @@ export const updateImage = (formData: FormData) => {
     return img;
 }
 
-export async function getMoreImages(page: number, query: string): Promise<Image[]> {
-  const response = await fetch(`${BASE_URL}images?page=${page}&query=${query}`,
+export async function getMoreImages(page: number, query: string, userOnly: boolean): Promise<Image[]> {
+  const response = await fetch(`${BASE_URL}images?page=${page}&query=${query}&user_only=${userOnly ? '1' : '0'}`,
    { headers: userHeaders }) 
   const images: Image[] = await response.json();
   return images;

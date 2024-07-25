@@ -36,6 +36,7 @@ const ImagesScreen: React.FC = () => {
   const [images, setImages] = useState<Image[]>([]);
   const history = useHistory();
   const [searchInput, setSearchInput] = useState("");
+  const [onlyUserImages, setOnlyUserImages] = useState(false);
   const [page, setPage] = useState(1);
   const [userImages, setUserImages] = useState<Image[]>([]);
   const [allImages, setAllImages] = useState<Image[]>([]);
@@ -46,13 +47,28 @@ const ImagesScreen: React.FC = () => {
   const inputRef = createRef<HTMLIonInputElement>();
   const [showCreateBtn, setShowCreateBtn] = useState(false);
   const fetchImages = async () => {
+    setShowLoading(true);
+    await fetchAllImages();
+    // const fetchedImages = await getImages();
+    // setImages(fetchedImages);
+    // setAllImages(fetchedImages);
+    // const fetchedUserImages = await getUserImages();
+    // setUserImages(fetchedUserImages);
+    await fetchUserImages();
+    setShowLoading(false);
+  };
+
+  const fetchUserImages = async () => {
+    const fetchedUserImages = await getUserImages();
+    setUserImages(fetchedUserImages);
+  };
+
+  const fetchAllImages = async () => {
     const fetchedImages = await getImages();
     setImages(fetchedImages);
     setAllImages(fetchedImages);
-    const fetchedUserImages = await getUserImages();
-    setUserImages(fetchedUserImages);
-    setShowLoading(false);
   };
+
   useIonViewWillEnter(() => {
     console.log("fetching images");
     fetchImages();
@@ -64,7 +80,7 @@ const ImagesScreen: React.FC = () => {
   ): Promise<Image[]> => {
     setLoadingMessage("Loading more images");
     setShowLoading(true);
-    const additionalImages = await getMoreImages(page, query);
+    const additionalImages = await getMoreImages(page, query, onlyUserImages);
     setImages(additionalImages);
     setShowCreateBtn(additionalImages.length < 5 && query.length > 0);
     setShowLoading(false);
@@ -88,6 +104,13 @@ const ImagesScreen: React.FC = () => {
 
   const handleSegmentChange = (e: CustomEvent): void => {
     setSegmentType(e.detail.value);
+    console.log("Handle Segment type changed to: ", e.detail.value);
+
+    if (e.detail.value === "all") {
+      fetchAllImages();
+    } else {
+      fetchUserImages();
+    }
   };
 
   const handleCreateImage = async (label: string) => {
@@ -103,22 +126,25 @@ const ImagesScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    if (segmentType === "user") {
-      setImages(userImages);
-      setPageTitle("Your Images");
-    }
+    // if (segmentType === "user") {
+    //   setImages(userImages);
+    //   setPageTitle("Your Images");
+    // }
+    // if (segmentType === "all") {
+    //   setImages(allImages);
+    //   setPageTitle("Image Gallery");
+    // }
+    console.log("Segment type changed to: ", segmentType);
     if (segmentType === "all") {
+      setOnlyUserImages(false);
       setImages(allImages);
       setPageTitle("Image Gallery");
+    } else {
+      setOnlyUserImages(true);
+      setImages(userImages);
     }
     clearInput();
   }, [segmentType]);
-
-  const refresh = (e: CustomEvent) => {
-    setTimeout(() => {
-      e.detail.complete();
-    }, 3000);
-  };
 
   return (
     <>
@@ -137,7 +163,9 @@ const ImagesScreen: React.FC = () => {
                 <IonIcon icon={imagesOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="user">
-                <IonLabel className="text-md lg:text-lg">Your Images</IonLabel>
+                <IonLabel className="text-md lg:text-lg">
+                  {onlyUserImages ? " (Your)" : "ALL "} Images
+                </IonLabel>
                 <IonIcon icon={personOutline} />
               </IonSegmentButton>
             </IonSegment>
@@ -183,6 +211,8 @@ const ImagesScreen: React.FC = () => {
             onLoadMoreImages={handleGetMoreImages}
             onImageClick={handleImageClick}
             searchInput={searchInput}
+            segmentType={segmentType}
+            fetchUserBoards={fetchUserImages}
           />
 
           <IonLoading

@@ -124,6 +124,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
         history.push(`/boards/${boardId}`);
         return;
       } else {
+        history.push("/images");
         window.location.reload();
       }
     } else {
