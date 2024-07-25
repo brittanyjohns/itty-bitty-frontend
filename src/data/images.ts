@@ -81,7 +81,7 @@ import { BASE_URL, userHeaders } from "./constants";
     onImageClick: any;
     searchInput: string;
     segmentType?: string;
-    fetchUserBoards: any;
+    fetchUserBoards?: any;
   }
 
 
