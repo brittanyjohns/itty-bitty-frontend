@@ -68,7 +68,7 @@ const NewTeamScreen: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen className="ion-padding">
-          <div className="w-1/3 mx-auto">
+          <div className="w-full md:w-1/2 mx-auto">
             <TeamForm
               onCancel={handleCancel}
               onSave={handleSubmit}
