@@ -78,7 +78,7 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   return (
     <div className="">
       <IonLoading
-        message="Please wait while we analyze your menu..."
+        message="Please wait while we update your board"
         isOpen={showLoading}
       />
 
