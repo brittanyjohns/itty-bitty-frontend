@@ -1,4 +1,5 @@
 import {
+  IonBackButton,
   IonButton,
   IonButtons,
   IonContent,
@@ -14,19 +15,25 @@ import MainMenu from "../components/main_menu/MainMenu";
 import Tabs from "../components/utils/Tabs";
 import MainHeader from "./MainHeader";
 import { getImageUrl } from "../data/utils";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 const SignInPage: React.FC = () => {
-  const refresh = (e: CustomEvent) => {
-    setTimeout(() => {
-      e.detail.complete();
-    }, 3000);
-  };
-
+  const { isWideScreen } = useCurrentUser();
   return (
     <>
       <MainMenu />
       <IonPage id="main-content">
         <div className="h-full">
+          {!isWideScreen && (
+            <IonHeader className="bg-inherit shadow-none">
+              <IonToolbar>
+                <IonButtons slot="start">
+                  <IonMenuButton></IonMenuButton>
+                </IonButtons>
+                <IonTitle>Sign In</IonTitle>
+              </IonToolbar>
+            </IonHeader>
+          )}
           <div
             className="hero_main1 bg-cover bg-center  min-h-screen"
             style={{

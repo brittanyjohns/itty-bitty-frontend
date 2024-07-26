@@ -18,15 +18,15 @@ const MainHeader: React.FC = () => {
         {!isWideScreen && (
           <>
             <IonButtons slot="start">
-              {!isWideScreen && <IonMenuButton />}
+              <IonMenuButton></IonMenuButton>
             </IonButtons>
-            {/* <img
-              slot="start"
-              // src="/src/assets/images/round_itty_bitty_logo_1.png"
-              src={getImageUrl("round_itty_bitty_logo_1", "png")}
-              className="h-10 w-10"
-            /> */}
-            <IonTitle className="text-left" onClick={() => history.push("/")}>
+
+            <IonTitle className="text-center" onClick={() => history.push("/")}>
+              <img
+                // src="/src/assets/images/round_itty_bitty_logo_1.png"
+                src={getImageUrl("round_itty_bitty_logo_1", "png")}
+                className="h-10 w-10 inline"
+              />
               SpeakAnyWay
             </IonTitle>
           </>

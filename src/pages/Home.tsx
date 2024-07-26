@@ -44,21 +44,13 @@ const Home: React.FC = () => {
 
   return (
     <>
-      {/* <IonToolbar>
-        <img
-          slot="start"
-          src={getImageUrl("round_itty_bitty_logo_1", "png")}
-          className="h-10 w-10 mx-auto"
-        />
-        <p className="ml-3 font-bold text-2xl">SpeakAnyWay</p>
-      </IonToolbar> */}
       <MainMenu hideLogo={true} />
       <IonPage id="main-content">
         {!isWideScreen && (
           <IonHeader className="bg-inherit shadow-none">
             <IonToolbar>
               <IonButtons slot="start">
-                {!isWideScreen && <IonMenuButton></IonMenuButton>}
+                <IonMenuButton></IonMenuButton>
               </IonButtons>
               <IonTitle>Home</IonTitle>
             </IonToolbar>

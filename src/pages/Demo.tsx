@@ -13,6 +13,7 @@ import MainMenu from "../components/main_menu/MainMenu";
 import Tabs from "../components/utils/Tabs";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { getDemoUrl, getImageUrl } from "../data/utils";
+import MainHeader from "./MainHeader";
 const Demo: React.FC = () => {
   const { isWideScreen } = useCurrentUser();
 
@@ -26,14 +27,15 @@ const Demo: React.FC = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
+        {/* <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
             <IonButtons slot="start">
               {!isWideScreen && <IonMenuButton></IonMenuButton>}
             </IonButtons>
             <IonTitle>Demo</IonTitle>
           </IonToolbar>
-        </IonHeader>
+        </IonHeader> */}
+        <MainHeader />
         <IonContent>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>

@@ -318,53 +318,50 @@ const ViewImageScreen: React.FC = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        {/* {!isWideScreen && <MainHeader />} */}
+        {!isWideScreen && <MainHeader />}
         <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
             <IonButtons slot="secondary">
               <IonButton>
                 {/* <IonIcon slot="icon-only" icon={personCircle}></IonIcon> */}
-                <IonMenuButton></IonMenuButton>
               </IonButton>
             </IonButtons>
             <IonTitle>{pageTitle}</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonSegment
-              value={segmentType}
-              onIonChange={handleSegmentChange}
-              className="w-full bg-inherit"
-            >
-              <IonSegmentButton value="gallery">
+          <IonSegment
+            value={segmentType}
+            onIonChange={handleSegmentChange}
+            className="w-full bg-inherit"
+          >
+            <IonSegmentButton value="gallery">
+              <IonLabel className="sm:text-sm md:text-md lg:text-lg">
+                Gallery
+              </IonLabel>
+              <IonIcon icon={gridOutline} />
+            </IonSegmentButton>
+            <IonSegmentButton value="upload">
+              <IonLabel className="sm:text-sm md:text-md lg:text-lg">
+                Upload
+              </IonLabel>
+              <IonIcon icon={cloudUploadOutline} />
+            </IonSegmentButton>
+            <IonSegmentButton value="generate">
+              <IonLabel className="sm:text-sm md:text-md lg:text-lg">
+                Generate
+              </IonLabel>
+              <IonIcon icon={refreshCircleOutline} />
+            </IonSegmentButton>
+            {showHardDelete && (
+              <IonSegmentButton value="delete">
                 <IonLabel className="sm:text-sm md:text-md lg:text-lg">
-                  Gallery
+                  Delete
                 </IonLabel>
-                <IonIcon icon={gridOutline} />
+                <IonIcon icon={trashBinOutline} />
               </IonSegmentButton>
-              <IonSegmentButton value="upload">
-                <IonLabel className="sm:text-sm md:text-md lg:text-lg">
-                  Upload
-                </IonLabel>
-                <IonIcon icon={cloudUploadOutline} />
-              </IonSegmentButton>
-              <IonSegmentButton value="generate">
-                <IonLabel className="sm:text-sm md:text-md lg:text-lg">
-                  Generate
-                </IonLabel>
-                <IonIcon icon={refreshCircleOutline} />
-              </IonSegmentButton>
-              {showHardDelete && (
-                <IonSegmentButton value="delete">
-                  <IonLabel className="sm:text-sm md:text-md lg:text-lg">
-                    Delete
-                  </IonLabel>
-                  <IonIcon icon={trashBinOutline} />
-                </IonSegmentButton>
-              )}
-            </IonSegment>
-          </IonToolbar>
+            )}
+          </IonSegment>
         </IonHeader>
         <IonContent className="ion-padding" scrollY={true}>
           <div className="ion-justify-content-center ion-align-items-center ion-text-center pt-1">

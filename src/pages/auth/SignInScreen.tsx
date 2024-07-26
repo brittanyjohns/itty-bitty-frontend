@@ -26,12 +26,12 @@ const SignInScreen: React.FC = () => {
     try {
       const response = await signIn(user);
       console.log("Sign In response", response);
-      if (response.token) {
+      if (response && response.token) {
         localStorage.setItem("token", response.token);
         setCurrentUser(response.user);
         history.push("/boards");
         window.location.reload();
-      } else if (response.error) {
+      } else if (response && response.error) {
         setErrorMessage(response.error);
         setShowAlert(true);
       }
@@ -50,7 +50,7 @@ const SignInScreen: React.FC = () => {
       <MainMenu />
       <IonPage id="main-content">
         {!isWideScreen && <MainHeader />}
-        <div className="h-full">
+        <IonContent className="">
           <div
             className="hero_main1 bg-cover bg-center  min-h-screen"
             style={{
@@ -65,7 +65,7 @@ const SignInScreen: React.FC = () => {
                 Discover the simplicity of SpeakAnyWay.
               </p>
             </div>
-            <div className="max-w-md mx-auto bg-white bg-opacity-95 p-8 rounded-lg shadow-xl mt-20">
+            <div className="max-w-md mx-auto bg-white bg-opacity-95 p-8 shadow-xl mt-20">
               <h1 className="text-2xl font-bold text-center mb-3">Sign In</h1>
               <form onSubmit={(e) => e.preventDefault()}>
                 <IonInput
@@ -115,8 +115,7 @@ const SignInScreen: React.FC = () => {
               />
             </div>
           </div>
-        </div>
-        <IonContent className="ion-padding"></IonContent>
+        </IonContent>
       </IonPage>
     </>
   );
