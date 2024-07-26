@@ -184,7 +184,11 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
             )}
             <IonList lines="none" className="text-center">
               {currentUser?.role === "admin" && (
-                <IonButton onClick={handleRerun}>Rerun</IonButton>
+                <IonItem>
+                  <IonButton onClick={handleRerun}>Rerun</IonButton>
+                  <IonLabel position="stacked">Description</IonLabel>
+                  <IonText>{menu?.description}</IonText>
+                </IonItem>
               )}
               <IonItem>
                 <IonLabel position="stacked">Name</IonLabel>
@@ -204,10 +208,6 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
               <IonItem>
                 <IonLabel position="stacked">Status</IonLabel>
                 <IonText>{board?.status}</IonText>
-              </IonItem>
-              <IonItem>
-                <IonLabel position="stacked">Description</IonLabel>
-                <IonText>{menu?.description}</IonText>
               </IonItem>
             </IonList>
           </div>

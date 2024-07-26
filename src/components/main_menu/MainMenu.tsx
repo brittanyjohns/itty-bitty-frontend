@@ -221,7 +221,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
               <IonItem
                 routerLink="/"
                 className="hover:cursor-pointer py-4"
-                lines="full"
+                lines="none"
                 detail={false}
               >
                 <IonIcon icon={personOutline} className="" />

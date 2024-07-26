@@ -41,6 +41,7 @@ const SideMenu: React.FC<SideMenuProps> = memo(
             routerLink="/dashboard"
             className="hover:cursor-pointer text-wrap"
             detail={true}
+            lines="none"
           >
             <IonIcon icon={personCircleOutline} className="mr-5"></IonIcon>
             <IonLabel>{currentUser?.email ?? "Try it for FREE"}</IonLabel>

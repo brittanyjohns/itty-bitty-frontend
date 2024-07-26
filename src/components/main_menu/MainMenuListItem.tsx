@@ -36,7 +36,7 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
       key={menuLink.id}
       onClick={handleClick(menuLink.slug, menuLink.endpoint)}
       className="hover:cursor-pointer active:bg-gray-400"
-      lines="full"
+      lines="none"
       detail={false}
       ref={itemRef}
     >

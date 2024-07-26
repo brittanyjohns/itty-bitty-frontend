@@ -39,7 +39,6 @@ const AccountSignInScreen: React.FC = () => {
       } else if (response.error) {
         setErrorMessage(response.error);
         setShowAlert(true);
-        alert("Error signing in: " + response.error);
       }
     } catch (error) {
       setErrorMessage("Error signing in: " + error);

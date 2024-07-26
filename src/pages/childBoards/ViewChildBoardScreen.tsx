@@ -37,6 +37,7 @@ import {
   closeChildMenu,
   openChildMenu,
 } from "../../components/main_menu/MainMenu";
+import FullscreenToggle from "../../components/utils/FullscreenToggle";
 
 const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<ChildBoard>();
@@ -158,6 +159,8 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
 
   return (
     <IonPage id="view-board-page">
+      <FullscreenToggle />
+
       <p className="text-center text-sm">{board?.name}</p>
 
       <IonHeader className="bg-inherit shadow-none">

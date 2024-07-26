@@ -35,6 +35,7 @@ import DraggableGrid from "../../components/images/DraggableGrid";
 import { playAudioList } from "../../data/utils";
 import { Image } from "../../data/images";
 import { clickWord } from "../../data/audits";
+import FullscreenToggle from "../../components/utils/FullscreenToggle";
 
 const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();
@@ -93,18 +94,6 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
       setPreviousLabel(text);
     }
   };
-
-  const speak = async (text: string) => {
-    await TextToSpeech.speak({
-      text: text,
-      lang: "en-US",
-      rate: 1.0,
-      pitch: 1.0,
-      volume: 1.0,
-      category: "ambient",
-    });
-  };
-
   const clearInput = () => {
     if (inputRef.current) {
       inputRef.current.value = "";
@@ -174,6 +163,8 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
             )}
           </IonButtons>
           <IonButtons slot="end">
+            <FullscreenToggle />
+
             {showIcon && (
               <IonButton size="small" onClick={() => clearInput()}>
                 <IonIcon
@@ -192,6 +183,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
         <IonLoading message="Please wait..." isOpen={showLoading} />
+
         {board && (
           <DraggableGrid
             images={board.images}

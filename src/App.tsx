@@ -50,7 +50,9 @@ import Demo from "./pages/Demo";
 import { forgotPassword } from "./data/users";
 import ForgotPasswordScreen from "./pages/auth/ForgotPasswordScreen";
 import ResetPasswordScreen from "./pages/auth/ResetPasswordScreen ";
-
+AndroidFullScreen.isImmersiveModeSupported()
+  .then(() => AndroidFullScreen.immersiveMode())
+  .catch(console.warn);
 setupIonicReact({
   platform: {
     /** The default `desktop` function returns false for devices with a touchscreen.
@@ -78,6 +80,8 @@ import AccountSignInScreen from "./pages/accounts/AccountSignInScreen";
 import SignInPage from "./pages/SignInPage";
 import AccountSignOutScreen from "./pages/accounts/AccountSignOutScreen";
 import ViewChildBoardScreen from "./pages/childBoards/ViewChildBoardScreen";
+import { AndroidFullScreen } from "@awesome-cordova-plugins/android-full-screen";
+import FullscreenToggle from "./components/utils/FullscreenToggle";
 
 const UserRoutes: React.FC = () => (
   <UserProvider>

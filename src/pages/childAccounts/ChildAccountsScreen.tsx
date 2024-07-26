@@ -55,6 +55,8 @@ const ChildAccountsScreen: React.FC = () => {
 
   return (
     <>
+      <MainMenu />
+
       <IonPage id="main-content">
         <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
