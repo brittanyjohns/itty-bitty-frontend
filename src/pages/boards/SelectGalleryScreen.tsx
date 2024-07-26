@@ -12,6 +12,7 @@ import {
   IonLabel,
   IonList,
   IonLoading,
+  IonMenuButton,
   IonPage,
   IonSearchbar,
   IonSegment,
@@ -25,16 +26,7 @@ import {
   useIonViewWillEnter,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
-import {
-  addCircleOutline,
-  appsOutline,
-  arrowBackCircleOutline,
-  cloudUploadOutline,
-  createOutline,
-  imagesOutline,
-  refreshCircleOutline,
-  refreshOutline,
-} from "ionicons/icons";
+import { addCircleOutline } from "ionicons/icons";
 import {
   getBoard,
   addImageToBoard,
@@ -97,19 +89,6 @@ const SelectGalleryScreen: React.FC = () => {
     return false;
   };
 
-  const removeBoard = async () => {
-    try {
-      const boardId = params.id;
-      console.log("Removing board: ", boardId);
-      // Implement delete board logic
-      await deleteBoard(boardId);
-      window.location.href = "/boards";
-    } catch (error) {
-      console.error("Error removing board: ", error);
-      alert("Error removing board");
-    }
-  };
-
   const handleRearrangeImages = async () => {
     setShowLoading(true);
     const updatedBoard = await rearrangeImages(id);
@@ -150,6 +129,7 @@ const SelectGalleryScreen: React.FC = () => {
   const loadPage = async () => {
     setShowLoading(true);
     const boardToSet = await fetchBoard();
+    console.log("Board to set: ", boardToSet);
     fetchRemaining(boardToSet.id, 1);
     toggleForms(segmentType);
     const userCanEdit = boardToSet.can_edit || currentUser?.role === "admin";
@@ -220,12 +200,6 @@ const SelectGalleryScreen: React.FC = () => {
     // history.push(`/boards/${board.id}`);
   };
 
-  const handleSegmentChange = (e: CustomEvent) => {
-    const newSegment = e.detail.value;
-    setSegmentType(newSegment);
-    toggleForms(newSegment);
-  };
-
   const handleImagePromptInput = (e: CustomEvent) => {
     const newPrompt = e.detail.value;
     if (image) {
@@ -238,23 +212,6 @@ const SelectGalleryScreen: React.FC = () => {
     if (image) {
       setImage({ ...image, label: newLabel });
     }
-  };
-
-  const setGrid = (layout: any) => {
-    setGridLayout(layout);
-  };
-
-  const handleSaveLayout = async () => {
-    if (!board?.id) {
-      console.error("Board ID is missing");
-      return;
-    }
-    const updatedBoard = await saveLayout(board.id, gridLayout);
-    const message = "Board layout saved";
-    setToastMessage(message);
-    setIsOpen(true);
-    setBoard(updatedBoard);
-    history.push(`/boards/${board?.id}`);
   };
 
   const handleImageClick = (image: Image) => {
@@ -290,7 +247,6 @@ const SelectGalleryScreen: React.FC = () => {
     const newImage = await createImage(formData);
     setShowLoading(false);
     if (newImage) {
-      // history.push(`/images/${newImage.id}`);
       handleImageClick(newImage);
     }
   };
@@ -301,40 +257,25 @@ const SelectGalleryScreen: React.FC = () => {
       <IonPage id="main-content">
         <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
-            <IonButtons slot="start">
-              <IonButton routerLink={`/boards/${board?.id}`}>
-                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
+            <IonButtons slot="secondary">
+              <IonButton>
+                {/* <IonIcon slot="icon-only" icon={personCircle}></IonIcon> */}
+                <IonMenuButton></IonMenuButton>
               </IonButton>
             </IonButtons>
-            <IonSegment value={segmentType} onIonChange={handleSegmentChange}>
-              <IonSegmentButton value="gallery">
-                <IonLabel className="text-sm md:text-md lg:text-lg">
-                  Gallery
-                </IonLabel>
-                <IonIcon icon={imagesOutline} />
-              </IonSegmentButton>
-              <IonSegmentButton value="upload">
-                <IonLabel className="text-sm md:text-md lg:text-lg">
-                  Upload
-                </IonLabel>
-                <IonIcon icon={cloudUploadOutline} />
-              </IonSegmentButton>
-              <IonSegmentButton value="generate">
-                <IonLabel className="text-sm md:text-md lg:text-lg">
-                  Generate
-                </IonLabel>
-                <IonIcon icon={refreshCircleOutline} />
-              </IonSegmentButton>
-            </IonSegment>
+            <IonButtons slot="primary">
+              <IonButton routerLink="/boards/new">
+                <IonIcon
+                  slot="icon-only"
+                  ios={addCircleOutline}
+                  md={addCircleOutline}
+                ></IonIcon>
+              </IonButton>
+            </IonButtons>
+            <IonTitle>{board?.name || "Board"}</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent scrollY={true}>
-          <div className="ion-justify-content-center ion-align-items-center ion-text-center p-1">
-            <IonText className="font-bold text-2xl">
-              {board && board.name}{" "}
-            </IonText>
-            <IonIcon icon={refreshOutline} onClick={fetchBoard} />
-          </div>
           <div className="mt-6 py-3 px-1 hidden" ref={uploadForm}>
             <p className="text-sm md:text-md lg:text-lg text-center">
               Upload your own image
@@ -401,9 +342,10 @@ const SelectGalleryScreen: React.FC = () => {
           </div>
 
           <div className="hidden" ref={imageGalleryWrapper}>
-            <IonLabel className="font-sans text-sm">
+            <h2 className="font-sans text-md md:text-xl lg:text-2xl text-center mt-4">
               Search for images - Click to add to board
-            </IonLabel>
+            </h2>
+
             <IonSearchbar
               className="mt-2"
               onIonChange={handleSearchInput}

@@ -177,26 +177,34 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
   return (
     <div className="w-full md:w-1/2 lg:w-1/2 mx-auto">
       <form onSubmit={handleSubmit} className="flex flex-col items-center">
+        <h1 className="text-xl font-bold">Upload an image</h1>
         <IonCard className="p-4 m-4 border">
           {!existingId ? (
             <IonInput
               value={label}
-              label="Image Label"
-              labelPlacement="stacked"
+              aria-label="Label"
+              placeholder="Enter a label for the image"
+              // labelPlacement="stacked"
               required
               onIonChange={(e) => setLabel(e.detail.value!)}
               className="p-2 border border-gray-300 rounded my-2 pl-2"
             />
           ) : null}
 
-          <input
-            type="file"
-            id="file_field"
-            accept="image/*"
-            onChange={onFileChange}
-          />
+          <div className="flex flex-col items-center mt-8">
+            <input
+              type="file"
+              id="file_field"
+              accept="image/*"
+              onChange={onFileChange}
+            />
+          </div>
         </IonCard>
-        <ImagePasteHandler setFile={handlePastedFile} />
+        <IonCard className="p-4 m-4 border text-center">
+          <h2 className="text-xl font-bold">Paste an image</h2>
+          <p className="text-sm">Right-click and paste an image here</p>
+          <ImagePasteHandler setFile={handlePastedFile} />
+        </IonCard>
         {imageSrc && (
           <>
             <img
@@ -210,11 +218,12 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
             </div>
           </>
         )}
-        <IonButtons>
+        <IonButtons className="mt-4">
           <IonButton
             type="submit"
             className="mt-4"
             color="secondary"
+            fill="outline"
             expand="block"
           >
             Submit
@@ -222,6 +231,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
           <IonButton
             onClick={handleCancel}
             className="mt-4"
+            fill="outline"
             color="danger"
             expand="block"
           >

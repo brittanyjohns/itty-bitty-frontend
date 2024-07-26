@@ -12,6 +12,7 @@ import {
   IonPage,
   IonRefresher,
   IonRefresherContent,
+  IonTextarea,
   IonToolbar,
   useIonViewDidLeave,
   useIonViewWillEnter,
@@ -150,14 +151,16 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
           </IonButtons>
-          <IonItem slot="start" className="pl-2 w-full" lines="none">
+          <IonItem slot="start" className="ml-2 w-full" lines="none">
             <IonInput
               placeholder="Click an image to begin speaking"
               ref={inputRef}
               readonly={true}
-              className="w-full text-sm text-justify"
+              type="text"
+              className="w-full text-sm text-justify text-wrap"
             ></IonInput>
           </IonItem>
+
           <IonButtons slot="start">
             {showIcon && (
               <IonButton size="small" onClick={handlePlayAudioList}>

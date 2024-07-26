@@ -27,7 +27,6 @@ const SideMenu: React.FC<SideMenuProps> = ({
   return (
     <>
       {!hideLogo && (
-        // <IonToolbar>
         <IonItem
           routerLink="/"
           className="hover:cursor-pointer"
@@ -41,7 +40,6 @@ const SideMenu: React.FC<SideMenuProps> = ({
           />
           <IonTitle className="text-2xl">SpeakAnyWay</IonTitle>
         </IonItem>
-        // </IonToolbar>
       )}
       <div className="h-full">
         {currentUser && (
@@ -55,44 +53,6 @@ const SideMenu: React.FC<SideMenuProps> = ({
               <IonIcon icon={personCircleOutline} className="mr-5"></IonIcon>
               <IonLabel>{currentUser?.email ?? "Try it for FREE"}</IonLabel>
             </IonItem>
-            {/* <IonAccordionGroup ref={accordionGroup}>
-              <IonAccordion value="second">
-                <div className="pl-5 text-lg" slot="content">
-                  <IonIcon
-                    icon={personCircleOutline}
-                    className=""
-                    onClick={() => {
-                      history.push("/");
-                      setIsOpen(false);
-                    }}
-                  />
-                  <IonLabel
-                    className="text-xl"
-                    onClick={() => {
-                      history.push("/");
-                      setIsOpen(false);
-                    }}
-                  ></IonLabel>
-                  <IonLabel
-                    className="ml-2 hover:cursor-pointer"
-                    onClick={() => {
-                      history.push("/dashboard");
-                      setIsOpen(false);
-                    }}
-                  >
-                    Dashboard
-                    <p className="mt-1 text-xs">
-                      <span className="font-bold"> Plan type:</span>{" "}
-                      {currentUser?.plan_type ?? "free trial"}
-                    </p>
-                    <p className="mt-1 text-xs">
-                      <span className="font-bold"> Tokens:</span>{" "}
-                      {currentUser?.tokens ?? 0}
-                    </p>
-                  </IonLabel>
-                </div>
-              </IonAccordion>
-            </IonAccordionGroup> */}
           </>
         )}
 

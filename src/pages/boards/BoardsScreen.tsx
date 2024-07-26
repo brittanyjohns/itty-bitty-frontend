@@ -10,6 +10,8 @@ import {
   IonPage,
   IonRefresher,
   IonRefresherContent,
+  IonSegment,
+  IonSegmentButton,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
@@ -17,10 +19,17 @@ import MainMenu, { hideMenu } from "../../components/main_menu/MainMenu";
 import Tabs from "../../components/utils/Tabs";
 import { useEffect, useState } from "react";
 import { Board, getBoards } from "../../data/boards";
-import { addCircleOutline, albumsOutline, gridOutline } from "ionicons/icons";
+import {
+  addCircleOutline,
+  albumsOutline,
+  gridOutline,
+  imagesOutline,
+  personOutline,
+} from "ionicons/icons";
 import BoardGrid from "../../components/boards/BoardGrid";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { ChildBoard } from "../../data/child_boards";
+import { set } from "react-hook-form";
 
 interface BoardsScreenProps {
   gridType: string;
@@ -67,8 +76,11 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
     }, 3000);
   };
 
-  const handleSegmentChange = (boardType: string) => {
-    setSegmentType(boardType);
+  const handleSegmentChange = (event: CustomEvent) => {
+    const segmentValue = event.detail.value;
+    console.log("Segment value: ", segmentValue);
+    setSegmentType(segmentValue);
+    setPageTitle(segmentValue === "user" ? "Your Boards" : "Preset Boards");
   };
 
   useEffect(() => {
@@ -96,21 +108,23 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none px-2">
+        <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
-            <IonButtons slot="start">
-              {!isWideScreen && <IonMenuButton></IonMenuButton>}
-            </IonButtons>
-            <IonTitle>{pageTitle}</IonTitle>
-            <IonButtons slot="end">
-              <IonButton
-                routerLink="/boards/new"
-                className="mr-1 text-xs md:text-md lg:text-lg"
-              >
-                <IonLabel className="mr-2 text-md lg:text-lg">New</IonLabel>
-                <IonIcon icon={addCircleOutline} className="block text-xl" />
+            <IonButtons slot="secondary">
+              <IonButton>
+                <IonMenuButton></IonMenuButton>
               </IonButton>
             </IonButtons>
+            <IonButtons slot="primary">
+              <IonButton routerLink="/boards/new">
+                <IonIcon
+                  slot="icon-only"
+                  ios={addCircleOutline}
+                  md={addCircleOutline}
+                ></IonIcon>
+              </IonButton>
+            </IonButtons>
+            <IonTitle>{pageTitle}</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
@@ -119,33 +133,22 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
           </IonRefresher>
           <div className="bg-inherit shadow-none w-full md:w-2/3 lg:w-1/2 mx-auto my-3">
             {currentUser && (
-              <IonButtons className="flex justify-between items-center">
-                <IonButton
-                  onClick={() => handleSegmentChange("user")}
-                  className="mr-1 text-xs md:text-md lg:text-lg"
-                >
-                  <IonIcon icon={albumsOutline} />
-                  <IonLabel className="text-md lg:text-lg mx-1">
-                    Boards
+              <IonSegment
+                value={segmentType}
+                onIonChange={handleSegmentChange}
+                className="w-full bg-inherit"
+              >
+                <IonSegmentButton value="all">
+                  <IonLabel className="text-md lg:text-lg">Gallery</IonLabel>
+                  <IonIcon icon={imagesOutline} />
+                </IonSegmentButton>
+                <IonSegmentButton value="user">
+                  <IonLabel className="text-md lg:text-lg">
+                    Your Images
                   </IonLabel>
-                </IonButton>
-                <IonButton
-                  onClick={() => handleSegmentChange("preset")}
-                  className="mr-1 text-xs md:text-md lg:text-lg"
-                >
-                  <IonIcon icon={gridOutline} />
-                  <IonLabel className="text-md lg:text-lg mx-1">
-                    Preset
-                  </IonLabel>
-                </IonButton>
-                {/* <IonButton
-                  routerLink="/boards/new"
-                  className="mr-1 text-xs md:text-md lg:text-lg"
-                >
-                  <IonLabel className="mr-2 text-md lg:text-lg">New</IonLabel>
-                  <IonIcon icon={addCircleOutline} className="block text-xl" />
-                </IonButton> */}
-              </IonButtons>
+                  <IonIcon icon={personOutline} />
+                </IonSegmentButton>
+              </IonSegment>
             )}
           </div>
           {segmentType === "user" && renderBoardGrid("user", boards)}

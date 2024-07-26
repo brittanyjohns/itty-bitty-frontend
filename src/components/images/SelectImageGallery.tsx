@@ -19,7 +19,6 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
   onLoadMoreImages,
   searchInput,
   segmentType,
-  fetchUserBoards,
 }) => {
   const [remainingImages, setRemainingImages] = useState<Image[]>(images);
   const [page, setPage] = useState(1);
@@ -45,10 +44,6 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
   useEffect(() => {
     fetchImages();
   }, [page, searchInput]);
-
-  useEffect(() => {
-    fetchUserBoards();
-  }, []);
 
   useEffect(() => {
     setRemainingImages(images);

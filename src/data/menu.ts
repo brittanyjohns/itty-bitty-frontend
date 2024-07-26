@@ -92,7 +92,7 @@ const menuLinks: MenuLink[] = [
     name: 'Teams',
     slug: 'teams',
     icon: peopleCircleOutline,
-    id: 12
+    id: 12654654
   },
   {
     endpoint: '/settings',

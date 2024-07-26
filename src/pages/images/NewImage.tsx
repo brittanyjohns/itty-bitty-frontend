@@ -18,8 +18,6 @@ import MainMenu from "../../components/main_menu/MainMenu";
 const NewImage: React.FC = () => {
   const history = useHistory();
 
-  
-
   return (
     <>
       <MainMenu />
@@ -34,10 +32,7 @@ const NewImage: React.FC = () => {
             <IonTitle>New Image</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent fullscreen className="ion-padding">
-        <div className="w-full md:w-1/2 lg:w-1/2 mx-auto">
-          {/* <ImagePasteHandler /> */}
-        </div>
+        <IonContent className="ion-padding">
           <div className="w-full md:w-1/2 lg:w-1/2 mx-auto">
             <ImageCropper />
           </div>

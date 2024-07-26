@@ -43,11 +43,11 @@ const Dashboard: React.FC = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        <IonContent>
+        <IonContent className="ion-padding">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <div className="p-4">
+          <div className="">
             {currentAccount && (
               <h2 className="text-xl font-semibold">
                 {currentAccount?.name || currentAccount?.username}'s Dashboard
@@ -61,7 +61,7 @@ const Dashboard: React.FC = () => {
                   <SubscriptionList subscriptions={subscriptions} />
                 </>
               ))}
-            <div className="p-3 mt-5">
+            <div className="">
               <AccountLink />
 
               {currentUser && currentUser?.plan_type === "free" && (

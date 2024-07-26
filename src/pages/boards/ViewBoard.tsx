@@ -15,8 +15,6 @@ import {
   IonLoading,
   IonMenuButton,
   IonPage,
-  IonRefresher,
-  IonRefresherContent,
   IonTitle,
   IonToolbar,
   useIonViewDidLeave,
@@ -31,7 +29,13 @@ import { Team } from "../../data/teams";
 import Tabs from "../../components/utils/Tabs";
 import MainMenu from "../../components/main_menu/MainMenu";
 import BoardView from "../../components/boards/BoardView";
-import { addCircleOutline } from "ionicons/icons";
+import {
+  addCircleOutline,
+  ellipsisHorizontal,
+  ellipsisVertical,
+  personCircle,
+  search,
+} from "ionicons/icons";
 
 const ViewBoard: React.FC<any> = () => {
   const [board, setBoard] = useState<Board>();
@@ -103,26 +107,43 @@ const ViewBoard: React.FC<any> = () => {
     }
   };
 
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <>
       <MainMenu />
+
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none text-xl mt-2">
-          <IonToolbar>
+        <IonHeader className="">
+          {/* <IonToolbar>
             <IonButtons slot="start">
               <IonMenuButton></IonMenuButton>
+              {board?.name || "Board"}
               <IonButton routerLink="/boards/new">
                 <IonIcon icon={addCircleOutline} />
               </IonButton>
             </IonButtons>
+          </IonToolbar> */}
+          <IonToolbar>
+            <IonButtons slot="secondary">
+              <IonButton>
+                {/* <IonIcon slot="icon-only" icon={personCircle}></IonIcon> */}
+                <IonMenuButton></IonMenuButton>
+              </IonButton>
+            </IonButtons>
+            <IonButtons slot="primary">
+              <IonButton routerLink="/boards/new">
+                <IonIcon
+                  slot="icon-only"
+                  ios={addCircleOutline}
+                  md={addCircleOutline}
+                ></IonIcon>
+              </IonButton>
+            </IonButtons>
+            <IonTitle>{board?.name || "Board"}</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent>
-          {!showIcon && (
-            <h1 className="text-center text-lg font-bold">
-              {board?.name || "Board"}
-            </h1>
-          )}
           <IonLoading message="Please wait..." isOpen={showLoading} />
           {board && (
             <BoardView

@@ -31,6 +31,7 @@ import SelectImageGallery from "../../components/images/SelectImageGallery";
 import { useHistory } from "react-router";
 import Tabs from "../../components/utils/Tabs";
 import { addCircleOutline, imagesOutline, personOutline } from "ionicons/icons";
+import { set } from "react-hook-form";
 
 const ImagesScreen: React.FC = () => {
   const [images, setImages] = useState<Image[]>([]);
@@ -108,8 +109,10 @@ const ImagesScreen: React.FC = () => {
 
     if (e.detail.value === "all") {
       fetchAllImages();
+      setPageTitle("Image Gallery");
     } else {
       fetchUserImages();
+      setPageTitle("Your Images");
     }
   };
 
@@ -126,14 +129,6 @@ const ImagesScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    // if (segmentType === "user") {
-    //   setImages(userImages);
-    //   setPageTitle("Your Images");
-    // }
-    // if (segmentType === "all") {
-    //   setImages(allImages);
-    //   setPageTitle("Image Gallery");
-    // }
     console.log("Segment type changed to: ", segmentType);
     if (segmentType === "all") {
       setOnlyUserImages(false);
@@ -151,7 +146,7 @@ const ImagesScreen: React.FC = () => {
       <MainMenu />
       <IonPage id="main-content">
         <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
+          {/* <IonToolbar>
             <IonMenuButton></IonMenuButton>
             <IonSegment
               value={segmentType}
@@ -163,9 +158,7 @@ const ImagesScreen: React.FC = () => {
                 <IonIcon icon={imagesOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="user">
-                <IonLabel className="text-md lg:text-lg">
-                  {onlyUserImages ? " (Your)" : "ALL "} Images
-                </IonLabel>
+                <IonLabel className="text-md lg:text-lg">Your Images</IonLabel>
                 <IonIcon icon={personOutline} />
               </IonSegmentButton>
             </IonSegment>
@@ -174,10 +167,44 @@ const ImagesScreen: React.FC = () => {
                 <IonIcon icon={addCircleOutline} />
               </IonButton>
             </IonButtons>
+          </IonToolbar> */}
+          <IonToolbar>
+            <IonButtons slot="secondary">
+              <IonButton>
+                {/* <IonIcon slot="icon-only" icon={personCircle}></IonIcon> */}
+                <IonMenuButton></IonMenuButton>
+              </IonButton>
+            </IonButtons>
+            <IonButtons slot="primary">
+              <IonButton routerLink="/images/add">
+                <IonIcon
+                  slot="icon-only"
+                  ios={addCircleOutline}
+                  md={addCircleOutline}
+                ></IonIcon>
+              </IonButton>
+            </IonButtons>
+            <IonTitle>{pageTitle}</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent>
-          <div className="p-2 w-4/5 md:w-3/4 mx-auto">
+        <IonContent className="ion-padding">
+          <div className="bg-inherit shadow-none w-full md:w-2/3 lg:w-1/2 mx-auto my-3">
+            <IonSegment
+              value={segmentType}
+              onIonChange={handleSegmentChange}
+              className="w-full bg-inherit"
+            >
+              <IonSegmentButton value="all">
+                <IonLabel className="text-md lg:text-lg">Gallery</IonLabel>
+                <IonIcon icon={imagesOutline} />
+              </IonSegmentButton>
+              <IonSegmentButton value="user">
+                <IonLabel className="text-md lg:text-lg">Your Images</IonLabel>
+                <IonIcon icon={personOutline} />
+              </IonSegmentButton>
+            </IonSegment>
+          </div>
+          <div className="p-2 w-7/8 md:w-5/6 mx-auto">
             <IonSearchbar
               debounce={1000}
               onIonInput={handleSearchInput}

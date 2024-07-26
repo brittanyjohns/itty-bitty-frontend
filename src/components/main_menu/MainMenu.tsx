@@ -24,6 +24,7 @@ import {
 import { getImageUrl } from "../../data/utils";
 import { useHistory } from "react-router";
 import ChildSideMenu from "./ChildSideMenu";
+import SearchAlert from "../utils/SearchAlert";
 
 export const hideMenu = () => {
   const menu = document.querySelector("ion-menu");
@@ -82,7 +83,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
       "boards",
       "child-accounts",
       "images",
-      "teams",
+      // "teams",
       "settings",
     ];
     const professionalProLinks = [
@@ -92,7 +93,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
       "child-accounts",
       "images",
       "menus",
-      "teams",
+      // "teams",
       "predictive",
       "settings",
     ];
@@ -103,7 +104,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
       "child-accounts",
       "images",
       "menus",
-      "teams",
+      // "teams",
       "predictive",
       "settings",
     ];
@@ -114,7 +115,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
       "boards",
       "child-accounts",
       "images",
-      "teams",
+      // "teams",
       "menus",
       "predictive",
       "settings",
@@ -130,7 +131,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
     const childAccountLinks = [
       "home",
       "child-boards",
-      "settings",
+      // "settings",
       "child-sign-out",
     ];
 
@@ -216,17 +217,17 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
           <IonContent className="">
             {currentUser && !currentAccount && (
               <IonItem
-                routerLink="/"
+                routerLink="/dashboard"
                 className="hover:cursor-pointer py-4"
-                lines="full"
+                lines="none"
                 detail={false}
               >
-                <IonIcon icon={homeOutline} className="" />
-                <div className="ml-5 text-xs">
+                <IonIcon icon={personCircleOutline} className="" />
+                <div className="ml-5 text-xs md:text-sm lg:text-base">
                   <p className="mt-1 font-bold">
                     {currentUser?.email ?? "Guest"}
                   </p>
-                  <p className="mt-1 text-xs">
+                  <p className="mt-1 text-xs md:text-sm lg:text-base">
                     {currentUser?.plan_type ?? "free trial"}
                   </p>
                 </div>
