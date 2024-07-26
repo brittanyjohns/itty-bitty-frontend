@@ -56,16 +56,20 @@ ion-toolbar ion-buttons ion-menu-button {
   --color: rgb(238, 238, 238);
 }
 
-ion-segment-button {
-  /* --color: rgb(238, 238, 238); */
-  --indicator-color: #0e4e7b;
-  /* --background: #266795; */
-}
-
-ion-segment-button:hover {
+ion-toolbar ion-buttons ion-back-button {
   --color: rgb(238, 238, 238);
 }
 
-ion-segment-button:active {
-  --background: #255380;
+ion-segment-button {
+  --color: rgb(238, 238, 238);
+  /* --background: #bcc3c8; */
+  /* --indicator-color: #6f8391; */
+  --background-checked: #13496f;
+  --background-focused: #13496f;
+  --background-hover: #13496f;
+  --color-checked: #13496f;
+}
+
+ion-segment-button:hover {
+  /* --color: rgb(238, 238, 238); */
 }

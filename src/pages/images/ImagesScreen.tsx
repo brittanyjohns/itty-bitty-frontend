@@ -50,11 +50,6 @@ const ImagesScreen: React.FC = () => {
   const fetchImages = async () => {
     setShowLoading(true);
     await fetchAllImages();
-    // const fetchedImages = await getImages();
-    // setImages(fetchedImages);
-    // setAllImages(fetchedImages);
-    // const fetchedUserImages = await getUserImages();
-    // setUserImages(fetchedUserImages);
     await fetchUserImages();
     setShowLoading(false);
   };
@@ -166,22 +161,22 @@ const ImagesScreen: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
-          <div className="bg-inherit shadow-none w-full md:w-2/3 lg:w-1/2 mx-auto my-3">
-            <IonSegment
-              value={segmentType}
-              onIonChange={handleSegmentChange}
-              className="w-full bg-inherit"
-            >
-              <IonSegmentButton value="all">
-                <IonLabel className="text-md lg:text-lg">Gallery</IonLabel>
-                <IonIcon icon={imagesOutline} />
-              </IonSegmentButton>
-              <IonSegmentButton value="user">
-                <IonLabel className="text-md lg:text-lg">Your Images</IonLabel>
-                <IonIcon icon={personOutline} />
-              </IonSegmentButton>
-            </IonSegment>
-          </div>
+          {/* <div className="bg-inherit shadow-none w-full md:w-2/3 lg:w-1/2 mx-auto my-3"> */}
+          <IonSegment
+            value={segmentType}
+            onIonChange={handleSegmentChange}
+            className="w-full bg-inherit"
+          >
+            <IonSegmentButton value="all">
+              <IonLabel className="text-md lg:text-lg">Gallery</IonLabel>
+              <IonIcon icon={imagesOutline} />
+            </IonSegmentButton>
+            <IonSegmentButton value="user">
+              <IonLabel className="text-md lg:text-lg">Your Images</IonLabel>
+              <IonIcon icon={personOutline} />
+            </IonSegmentButton>
+          </IonSegment>
+          {/* </div> */}
           <div className="p-2 w-7/8 md:w-5/6 mx-auto">
             <IonSearchbar
               debounce={1000}

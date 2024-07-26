@@ -163,37 +163,35 @@ const ViewChildAccountScreen: React.FC = () => {
             </IonButtons>
             <IonTitle>{childAccount?.name}</IonTitle>
           </IonToolbar>
-          <IonToolbar>
-            {childAccount && (
-              <IonSegment
-                value={segmentType}
-                onIonChange={handleSegmentChange}
-                className="w-full bg-inherit"
-              >
-                <IonSegmentButton value="childAccountTab">
-                  <p className="text-xl">
-                    <IonIcon
-                      icon={peopleCircleOutline}
-                      className="text-2xl mt-3 mb-2"
-                    />
-                  </p>
-                </IonSegmentButton>
-                <IonSegmentButton value="boardTab">
-                  <p className="text-xl">
-                    <IonIcon icon={gridOutline} />
-                  </p>
-                </IonSegmentButton>
-                <IonSegmentButton value="newAccountTab">
-                  <p className="text-xl">
-                    <IonIcon
-                      icon={childAccount ? pencilOutline : addCircleOutline}
-                      className="text-2xl mt-3 mb-2"
-                    />
-                  </p>
-                </IonSegmentButton>
-              </IonSegment>
-            )}
-          </IonToolbar>
+          {childAccount && (
+            <IonSegment
+              value={segmentType}
+              onIonChange={handleSegmentChange}
+              className="w-full bg-inherit"
+            >
+              <IonSegmentButton value="childAccountTab">
+                <p className="text-xl">
+                  <IonIcon
+                    icon={peopleCircleOutline}
+                    className="text-2xl mt-3 mb-2"
+                  />
+                </p>
+              </IonSegmentButton>
+              <IonSegmentButton value="boardTab">
+                <p className="text-xl">
+                  <IonIcon icon={gridOutline} />
+                </p>
+              </IonSegmentButton>
+              <IonSegmentButton value="newAccountTab">
+                <p className="text-xl">
+                  <IonIcon
+                    icon={childAccount ? pencilOutline : addCircleOutline}
+                    className="text-2xl mt-3 mb-2"
+                  />
+                </p>
+              </IonSegmentButton>
+            </IonSegment>
+          )}
         </IonHeader>
         <IonContent className="ion-padding" scrollY={true}>
           {segmentType === "childAccountTab" && (

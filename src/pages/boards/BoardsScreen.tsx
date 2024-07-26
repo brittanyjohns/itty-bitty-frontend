@@ -34,6 +34,7 @@ import { set } from "react-hook-form";
 interface BoardsScreenProps {
   gridType: string;
 }
+import "./ViewBoard.css";
 
 const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   const { currentAccount, currentUser, isWideScreen } = useCurrentUser();
@@ -60,6 +61,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
       setUserBoards(fetchedBoards["boards"]);
       setScenarioBoards(fetchedBoards["scenarios"]);
       setPresetBoards(fetchedBoards["predefined_boards"]);
+      console.log("Set preset boards: ", fetchedBoards["predefined_boards"]);
       setBoards(fetchedBoards["boards"]);
     }
   };
@@ -80,7 +82,14 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
     const segmentValue = event.detail.value;
     console.log("Segment value: ", segmentValue);
     setSegmentType(segmentValue);
-    setPageTitle(segmentValue === "user" ? "Your Boards" : "Preset Boards");
+    // setPageTitle(segmentValue === "user" ? "Your Boards" : "Preset Boards");
+    if (segmentType === "user") {
+      setBoards(userBoards);
+      setPageTitle("Your Boards");
+    } else if (segmentType === "preset") {
+      setBoards(presetBoards);
+      setPageTitle("Preset Boards");
+    }
   };
 
   useEffect(() => {
@@ -138,15 +147,15 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
                 onIonChange={handleSegmentChange}
                 className="w-full bg-inherit"
               >
-                <IonSegmentButton value="all">
+                <IonSegmentButton value="preset">
                   <IonLabel className="text-md lg:text-lg">Gallery</IonLabel>
-                  <IonIcon icon={imagesOutline} />
+                  <IonIcon icon={imagesOutline} size="small" />
                 </IonSegmentButton>
                 <IonSegmentButton value="user">
                   <IonLabel className="text-md lg:text-lg">
-                    Your Images
+                    Your Boards
                   </IonLabel>
-                  <IonIcon icon={personOutline} />
+                  <IonIcon icon={personOutline} size="small" />
                 </IonSegmentButton>
               </IonSegment>
             )}
