@@ -25,7 +25,8 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
   const shouldDisable =
     menuLink.pro &&
     currentUser?.trial_days_left &&
-    currentUser?.trial_days_left <= 0;
+    currentUser?.trial_days_left <= 0 &&
+    !currentUser?.admin;
 
   const handleClick =
     (slug: string | undefined, endpoint: string | undefined) => () => {
