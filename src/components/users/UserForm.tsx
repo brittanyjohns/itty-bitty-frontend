@@ -35,6 +35,7 @@ const UserForm: React.FC<UsersFormProps> = ({
             value={planType}
             onIonChange={(e) => handlePlanSelection(e.detail.value)}
             className=""
+            disabled={true}
           >
             {planOptions.map((option) => (
               <IonSelectOption key={option} value={option}>
