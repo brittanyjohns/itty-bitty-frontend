@@ -44,7 +44,6 @@ const ViewBoard: React.FC<any> = () => {
   const { isWideScreen } = useCurrentUser();
 
   const fetchBoard = async () => {
-    console.log("Fetching board: ", params.id);
     const board = await getBoard(params.id);
 
     if (!board) {
@@ -63,6 +62,7 @@ const ViewBoard: React.FC<any> = () => {
       console.log("Empty board layout, rearranging images");
       const rearrangedBoard = await rearrangeImages(board.id);
       setBoard(rearrangedBoard);
+      window.location.reload();
     } else {
       setBoard(board);
     }

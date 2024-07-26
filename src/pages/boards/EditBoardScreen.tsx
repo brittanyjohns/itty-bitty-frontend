@@ -199,12 +199,6 @@ const EditBoardScreen: React.FC = () => {
     // history.push(`/boards/${board.id}`);
   };
 
-  const handleSegmentChange = (e: CustomEvent) => {
-    const newSegment = e.detail.value;
-    setSegmentType(newSegment);
-    toggleForms(newSegment);
-  };
-
   const handleImagePromptInput = (e: CustomEvent) => {
     const newPrompt = e.detail.value;
     if (image) {

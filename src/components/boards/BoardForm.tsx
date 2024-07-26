@@ -6,6 +6,7 @@ import {
   IonInput,
   IonItem,
   IonList,
+  IonLoading,
   IonSelect,
   IonSelectOption,
   IonToast,
@@ -28,6 +29,7 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [voice, setVoice] = React.useState(board.voice);
   const [toastMessage, setToastMessage] = React.useState("");
+  const [showLoading, setShowLoading] = React.useState(false);
 
   const handleGridSizeChange = (event: CustomEvent) => {
     setGridSize(event.detail.value);
@@ -49,10 +51,12 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
       console.error("No board found");
       return;
     }
+    setShowLoading(true);
     const updatingBoard = { ...board, number_of_columns: gridSize };
 
     const savedBoard = await updateBoard(updatingBoard);
     setBoard(savedBoard);
+    setShowLoading(false);
     setToastMessage("Board saved successfully");
     setIsOpen(true);
     // window.location.reload();
@@ -69,11 +73,15 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
     setVoice(event.detail.value);
     const updateBoard = { ...board, voice: event.detail.value };
     setBoard(updateBoard);
-    console.log(event.detail.value);
   };
 
   return (
     <div className="">
+      <IonLoading
+        message="Please wait while we analyze your menu..."
+        isOpen={showLoading}
+      />
+
       <IonList>
         <IonItem className="mb-4">
           <IonInput
