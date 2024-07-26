@@ -1,6 +1,6 @@
 import { createRef, useState } from "react";
 import { Menu } from "../../data/menus";
-import { IonGrid, IonButton, IonItem, IonText } from "@ionic/react";
+import { IonGrid, IonButton } from "@ionic/react";
 import MenuGridItem from "./MenuGridItem";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 

@@ -109,15 +109,6 @@ const ViewBoard: React.FC<any> = () => {
 
       <IonPage id="main-content">
         <IonHeader className="">
-          {/* <IonToolbar>
-            <IonButtons slot="start">
-              <IonMenuButton></IonMenuButton>
-              {board?.name || "Board"}
-              <IonButton routerLink="/boards/new">
-                <IonIcon icon={addCircleOutline} />
-              </IonButton>
-            </IonButtons>
-          </IonToolbar> */}
           <IonToolbar>
             <IonButtons slot="secondary">
               <IonButton>

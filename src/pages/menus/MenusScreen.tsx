@@ -4,7 +4,6 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonItem,
   IonLabel,
   IonMenuButton,
   IonPage,
@@ -12,11 +11,8 @@ import {
   IonRefresherContent,
   IonTitle,
   IonToolbar,
-  useIonViewWillEnter,
 } from "@ionic/react";
-import MenuList from "../../components/menus/MenuList";
 import MainMenu, { hideMenu } from "../../components/main_menu/MainMenu";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/utils/Tabs";
 import { addCircleOutline } from "ionicons/icons";
 import MenuGrid from "../../components/menus/MenuGrid";
@@ -52,16 +48,21 @@ const MenusScreen: React.FC = () => {
       <IonPage id="main-content">
         <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
-            <IonButtons slot="start">
-              <IonMenuButton></IonMenuButton>
-            </IonButtons>
-            <IonTitle>Menus</IonTitle>
-            <IonButtons className="mr-4" slot="end">
-              <IonButton routerLink="/menus/new" className="text-wrap mx-auto">
-                <IonLabel className="mr-2 text-md lg:text-lg">New</IonLabel>
-                <IonIcon icon={addCircleOutline} className="block text-xl" />
+            <IonButtons slot="secondary">
+              <IonButton>
+                <IonMenuButton></IonMenuButton>
               </IonButton>
             </IonButtons>
+            <IonButtons slot="primary">
+              <IonButton routerLink="/menus/new">
+                <IonIcon
+                  slot="icon-only"
+                  ios={addCircleOutline}
+                  md={addCircleOutline}
+                ></IonIcon>
+              </IonButton>
+            </IonButtons>
+            <IonTitle>Menus</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">

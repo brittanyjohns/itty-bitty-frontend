@@ -146,21 +146,23 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
             </IonButtons>
             <IonTitle>{menu?.name}</IonTitle>
           </IonToolbar>
-          <IonToolbar>
-            <IonSegment value={segmentType} onIonChange={handleSegmentChange}>
-              <IonSegmentButton value="menuTab">
-                <IonLabel>Menu</IonLabel>
-              </IonSegmentButton>
-              <IonSegmentButton value="boardTab">
-                <IonLabel>Board</IonLabel>
-              </IonSegmentButton>
-            </IonSegment>
-          </IonToolbar>
+          <IonSegment
+            value={segmentType}
+            onIonChange={handleSegmentChange}
+            className="w-full bg-inherit my-2 p-2"
+          >
+            <IonSegmentButton value="menuTab">
+              <IonLabel className="text-md lg:text-lg">Menu</IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton value="boardTab">
+              <IonLabel className="text-md lg:text-lg">Board</IonLabel>
+            </IonSegmentButton>
+          </IonSegment>
         </IonHeader>
         <IonContent scrollY={true}>
           <div className="hidden" ref={menuTab}>
             {menu && menu.displayImage && (
-              <div className="w-full md:w-1/2 mx-auto">
+              <div className="w-7/8 md:w-1/3 lg:w-1/4 mx-auto">
                 <IonImg src={menu.displayImage} alt={menu.name} />
               </div>
             )}
@@ -190,25 +192,18 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
                   <IonText>{menu?.description}</IonText>
                 </IonItem>
               )}
-              <IonItem>
-                <IonLabel position="stacked">Name</IonLabel>
-                <IonText>{menu?.name}</IonText>
-              </IonItem>
+
               <IonCard className="p-4 w-1/2 md:w-1/3 lg:w-1/4 mx-auto">
                 <IonText>Current Cost: {menu?.board?.cost}</IonText>
                 <IonInput
                   type="number"
                   value={menu?.token_limit}
                   label="Token Limit"
-                  labelPlacement="stacked"
+                  labelPlacement="fixed"
                   onIonChange={handleLimitChange}
                 />
                 <IonButton onClick={handleUpdateMenu}>Update</IonButton>
               </IonCard>
-              <IonItem>
-                <IonLabel position="stacked">Status</IonLabel>
-                <IonText>{board?.status}</IonText>
-              </IonItem>
             </IonList>
           </div>
           <div className="hidden" ref={boardTab}>
