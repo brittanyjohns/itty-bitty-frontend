@@ -5,6 +5,7 @@ export interface MenuLink {
   slug?: string;
   icon?: string;
   id: number;
+  pro?: boolean;
 }
 import {
   gridOutline,
@@ -57,6 +58,7 @@ const menuLinks: MenuLink[] = [
     name: 'Menus',
     slug: 'menus',
     icon: fastFoodOutline,
+    pro: true,
     id: 4
   },
   {
@@ -71,6 +73,7 @@ const menuLinks: MenuLink[] = [
     name: 'Child Accounts',
     slug: 'child-accounts',
     icon: peopleCircleOutline,
+    pro: true,
     id: 33
   },
   {
@@ -91,6 +94,7 @@ const menuLinks: MenuLink[] = [
     endpoint: '/teams',
     name: 'Teams',
     slug: 'teams',
+    pro: true,
     icon: peopleCircleOutline,
     id: 12654654
   },
@@ -106,6 +110,7 @@ const menuLinks: MenuLink[] = [
     name: 'Predictive',
     slug: 'predictive',
     icon: sunnyOutline,
+    pro: false,
     id: 10
   },
   {

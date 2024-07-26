@@ -34,6 +34,9 @@ export interface User {
     boards?: any[]; // TODO: Define Board interface
     starting_board_id?: number;
     child_accounts?: any[]; // TODO: Define ChildAccount interface
+    free_trial?: boolean;
+    trial_days_left?: number;
+    trial_expired?: boolean;
 }
 export interface VoiceSetting {
     name?: string;

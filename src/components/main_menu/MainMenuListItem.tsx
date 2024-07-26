@@ -2,6 +2,7 @@ import { IonIcon, IonItem, IonLabel } from "@ionic/react";
 import { MenuLink } from "../../data/menu";
 import { useHistory } from "react-router";
 import { useRef, useState } from "react";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 interface MainMenuListItemProps {
   menuLink: MenuLink;
@@ -18,9 +19,20 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
   const itemRef = useRef<HTMLIonItemElement>(null);
   const iconsRef = useRef<HTMLIonIconElement>(null);
   const [active, setActive] = useState<string | null>(null);
+  const { currentUser } = useCurrentUser();
+
+  const freeTrial = menuLink.pro && currentUser?.free_trial;
+  const shouldDisable =
+    menuLink.pro &&
+    currentUser?.trial_days_left &&
+    currentUser?.trial_days_left <= 0;
 
   const handleClick =
     (slug: string | undefined, endpoint: string | undefined) => () => {
+      if (shouldDisable) {
+        alert("Your trial has ended. Please upgrade to continue.");
+        return;
+      }
       if (itemRef.current && slug) {
         itemRef.current.style.backgroundColor = "red";
         setActive(slug);
@@ -35,14 +47,24 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
     <IonItem
       key={menuLink.id}
       onClick={handleClick(menuLink.slug, menuLink.endpoint)}
-      className="hover:cursor-pointer active:bg-gray-400"
+      // className="hover:cursor-pointer active:bg-gray-400"
+      className={
+        freeTrial || shouldDisable
+          ? "hover:cursor-pointer text-red-700"
+          : "hover:cursor-pointer"
+      }
       lines="none"
       detail={false}
       ref={itemRef}
     >
       <IonIcon icon={menuLink.icon} ref={iconsRef} />
-      <IonLabel className="text-xl ml-8">
-        <h2>{menuLink.name}</h2>
+
+      <IonLabel className="ml-5">
+        {menuLink.name}
+        <span className="text-xs font-light font-mono ml-3">
+          {freeTrial ? "Free Trial" : ""}
+          {shouldDisable ? `Trial ended ` : ""}
+        </span>
       </IonLabel>
     </IonItem>
   );
