@@ -227,9 +227,14 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
                   <p className="mt-1 font-bold">
                     {currentUser?.email ?? "Guest"}
                   </p>
-                  <p className="mt-1 text-xs md:text-sm lg:text-base">
-                    {currentUser?.plan_type ?? "free trial"}
-                  </p>
+                  <div className="justify-between flex">
+                    <p className="mt-1 text-xs md:text-sm lg:text-base">
+                      {currentUser?.plan_type ?? "free trial"} plan
+                    </p>
+                    <p className="mt-1 text-xs md:text-sm lg:text-base">
+                      {currentUser?.tokens ?? 0} tokens
+                    </p>
+                  </div>
                 </div>
               </IonItem>
             )}
