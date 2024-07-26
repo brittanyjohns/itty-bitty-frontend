@@ -1,36 +1,30 @@
-import { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   IonContent,
-  IonHeader,
-  IonList,
-  IonMenu,
-  IonTitle,
-  IonToolbar,
-  useIonViewWillLeave,
   IonItem,
   IonIcon,
-  IonButtons,
+  IonList,
+  IonMenu,
   IonMenuButton,
+  useIonViewWillLeave,
 } from "@ionic/react";
 import { MenuLink, getMenu } from "../../data/menu";
 import MenuListItem from "./MainMenuListItem";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import SideMenu from "./SideMenu";
-import {
-  homeOutline,
-  personCircleOutline,
-  personOutline,
-} from "ionicons/icons";
-import { getImageUrl } from "../../data/utils";
-import { useHistory } from "react-router";
 import ChildSideMenu from "./ChildSideMenu";
-import SearchAlert from "../utils/SearchAlert";
+import { getImageUrl } from "../../data/utils";
+import { personCircleOutline, personOutline } from "ionicons/icons";
+import { useHistory } from "react-router";
 
 export const hideMenu = () => {
   const menu = document.querySelector("ion-menu");
-  if (menu) {
-    menu.close();
-  }
+  menu?.close();
+};
+
+export const openMenu = () => {
+  const menu = document.querySelector("ion-menu");
+  menu?.open();
 };
 
 export const closeChildMenu = () => {
@@ -47,135 +41,118 @@ export const openChildMenu = () => {
   }
 };
 
-export const openMenu = () => {
-  const menu = document.querySelector("ion-menu");
-  if (menu) {
-    menu.open();
-  }
-};
-
 interface MainMenuProps {
   hideLogo?: boolean;
 }
+
 const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
   const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
   const [menuLinks, setMenuLinks] = useState<MenuLink[]>([]);
   const [filteredLinks, setFilteredLinks] = useState<MenuLink[]>([]);
   const history = useHistory();
 
-  // Function to filter links based on the current user's status
-  const filterList = (links: MenuLink[]) => {
-    const adminLinks = [
-      "home",
-      "sign-out",
-      "boards",
-      "child-accounts",
-      "images",
-      "menus",
-      "teams",
-      "predictive",
-      "settings",
-      "admin-dashboard",
-    ];
-    const professionalLinks = [
-      "home",
-      "sign-out",
-      "boards",
-      "child-accounts",
-      "images",
-      // "teams",
-      "settings",
-    ];
-    const professionalProLinks = [
-      "home",
-      "sign-out",
-      "boards",
-      "child-accounts",
-      "images",
-      "menus",
-      // "teams",
-      "predictive",
-      "settings",
-    ];
-    const proLinks = [
-      "home",
-      "sign-out",
-      "boards",
-      "child-accounts",
-      "images",
-      "menus",
-      // "teams",
-      "predictive",
-      "settings",
-    ];
+  const filterList = useCallback(
+    (links: MenuLink[]): MenuLink[] => {
+      const adminLinks = [
+        "home",
+        "sign-out",
+        "boards",
+        "child-accounts",
+        "images",
+        "menus",
+        "teams",
+        "predictive",
+        "settings",
+        "admin-dashboard",
+      ];
+      const professionalLinks = [
+        "home",
+        "sign-out",
+        "boards",
+        "child-accounts",
+        "images",
+        "settings",
+      ];
+      const professionalProLinks = [
+        "home",
+        "sign-out",
+        "boards",
+        "child-accounts",
+        "images",
+        "menus",
+        "predictive",
+        "settings",
+      ];
+      const proLinks = [
+        "home",
+        "sign-out",
+        "boards",
+        "child-accounts",
+        "images",
+        "menus",
+        "predictive",
+        "settings",
+      ];
+      const freeLinks = [
+        "home",
+        "sign-out",
+        "boards",
+        "child-accounts",
+        "images",
+        "menus",
+        "predictive",
+        "settings",
+      ];
+      const signedOutLinks = [
+        "sign-in",
+        "sign-up",
+        "forgot-password",
+        "home",
+        "pricing",
+        "about",
+      ];
+      const childAccountLinks = ["home", "child-boards", "child-sign-out"];
 
-    const freeLinks = [
-      "home",
-      "sign-out",
-      "boards",
-      "child-accounts",
-      "images",
-      // "teams",
-      "menus",
-      "predictive",
-      "settings",
-    ];
-    const signedOutLinks = [
-      "sign-in",
-      "sign-up",
-      "forgot-password",
-      "home",
-      "pricing",
-      "about",
-    ];
-    const childAccountLinks = [
-      "home",
-      "child-boards",
-      // "settings",
-      "child-sign-out",
-    ];
-
-    if (currentUser) {
-      if (currentUser.role === "admin") {
-        return links.filter((link) => adminLinks.includes(link.slug ?? ""));
-      }
-      if (currentUser.plan_type === "Free") {
+      if (currentUser) {
+        if (currentUser.role === "admin") {
+          return links.filter((link) => adminLinks.includes(link.slug ?? ""));
+        }
+        if (currentUser.plan_type === "Free") {
+          return links.filter((link) => freeLinks.includes(link.slug ?? ""));
+        }
+        if (currentUser.plan_type === "Pro") {
+          return links.filter((link) => proLinks.includes(link.slug ?? ""));
+        }
+        if (
+          currentUser.plan_type === "Professional Plus" ||
+          currentUser.plan_type === "Premium"
+        ) {
+          return links.filter((link) =>
+            professionalProLinks.includes(link.slug ?? "")
+          );
+        }
         return links.filter((link) => freeLinks.includes(link.slug ?? ""));
-      }
-      if (currentUser.plan_type === "Pro") {
-        return links.filter((link) => proLinks.includes(link.slug ?? ""));
-      }
-      if (
-        currentUser.plan_type === "Professional Plus" ||
-        currentUser.plan_type === "Premium"
-      ) {
+      } else if (currentAccount) {
         return links.filter((link) =>
-          professionalProLinks.includes(link.slug ?? "")
+          childAccountLinks.includes(link.slug ?? "")
         );
+      } else {
+        return links.filter((link) => signedOutLinks.includes(link.slug ?? ""));
       }
-      return links.filter((link) => freeLinks.includes(link.slug ?? ""));
-    } else if (currentAccount) {
-      return links.filter((link) =>
-        childAccountLinks.includes(link.slug ?? "")
-      );
-    } else if (!currentAccount) {
-      return links.filter((link) => signedOutLinks.includes(link.slug ?? ""));
-    }
-  };
+    },
+    [currentUser, currentAccount]
+  );
 
-  const setUpMenu = () => {
+  const setUpMenu = useCallback(() => {
     const links = getMenu();
     setMenuLinks(links);
     const filteredList = filterList(links);
-    if (currentAccount) {
-      console.log("Setting up child menu");
-    }
     setFilteredLinks(filteredList ?? []);
-  };
+  }, [filterList]);
 
   useEffect(() => {
     setUpMenu();
-  }, [currentUser, currentAccount]);
+  }, [setUpMenu]);
 
   useIonViewWillLeave(() => {
     hideMenu();
@@ -192,9 +169,11 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
           hideLogo={hideLogo}
         />
       )}
+
       {currentAccount && isWideScreen && (
         <ChildSideMenu links={filteredLinks} currentAccount={currentAccount} />
       )}
+
       {!isWideScreen && (
         <IonMenu
           contentId="main-content"
@@ -202,19 +181,19 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
           type="overlay"
           swipeGesture={false}
         >
-          {hideLogo && (
+          {!hideLogo && (
             <div className="flex items-center">
               <img
                 slot="start"
                 src={getImageUrl("round_itty_bitty_logo_1", "png")}
-                className=" ml-2 h-10 w-10 mt-1"
+                className="ml-2 h-10 w-10 mt-1"
               />
               <div className="font-bold" onClick={() => history.push("/")}>
                 SpeakAnyWay
               </div>
             </div>
           )}
-          <IonContent className="">
+          <IonContent>
             {currentUser && !currentAccount && (
               <IonItem
                 routerLink="/dashboard"
