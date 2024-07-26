@@ -11,6 +11,7 @@ import {
   IonLabel,
   IonList,
   IonLoading,
+  IonMenuButton,
   IonPage,
   IonSegment,
   IonSegmentButton,
@@ -34,6 +35,7 @@ import { markAsCurrent } from "../../data/docs"; // Adjust imports based on actu
 import BoardDropdown from "../../components/boards/BoardDropdown";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import {
+  addCircleOutline,
   cloudUploadOutline,
   gridOutline,
   imagesOutline,
@@ -316,7 +318,18 @@ const ViewImageScreen: React.FC = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        {!isWideScreen && <MainHeader />}
+        {/* {!isWideScreen && <MainHeader />} */}
+        <IonHeader className="bg-inherit shadow-none">
+          <IonToolbar>
+            <IonButtons slot="secondary">
+              <IonButton>
+                {/* <IonIcon slot="icon-only" icon={personCircle}></IonIcon> */}
+                <IonMenuButton></IonMenuButton>
+              </IonButton>
+            </IonButtons>
+            <IonTitle>{pageTitle}</IonTitle>
+          </IonToolbar>
+        </IonHeader>
         <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
             <IonSegment
@@ -325,20 +338,28 @@ const ViewImageScreen: React.FC = () => {
               className="w-full bg-inherit"
             >
               <IonSegmentButton value="gallery">
-                <IonLabel className="text-md lg:text-lg">Gallery</IonLabel>
+                <IonLabel className="sm:text-sm md:text-md lg:text-lg">
+                  Gallery
+                </IonLabel>
                 <IonIcon icon={gridOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="upload">
-                <IonLabel className="text-md lg:text-lg">Upload</IonLabel>
+                <IonLabel className="sm:text-sm md:text-md lg:text-lg">
+                  Upload
+                </IonLabel>
                 <IonIcon icon={cloudUploadOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="generate">
-                <IonLabel className="text-md lg:text-lg">Generate</IonLabel>
+                <IonLabel className="sm:text-sm md:text-md lg:text-lg">
+                  Generate
+                </IonLabel>
                 <IonIcon icon={refreshCircleOutline} />
               </IonSegmentButton>
               {showHardDelete && (
                 <IonSegmentButton value="delete">
-                  <IonLabel className="text-md lg:text-lg">Delete</IonLabel>
+                  <IonLabel className="sm:text-sm md:text-md lg:text-lg">
+                    Delete
+                  </IonLabel>
                   <IonIcon icon={trashBinOutline} />
                 </IonSegmentButton>
               )}

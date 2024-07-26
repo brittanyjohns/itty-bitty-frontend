@@ -65,7 +65,7 @@ const ImagePasteHandler: React.FC<ImagePasteHandlerProps> = ({ setFile }) => {
     };
 
     document.addEventListener("paste", handlePaste);
-
+    console.log("Event listener added");
     return () => {
       document.removeEventListener("paste", handlePaste);
     };

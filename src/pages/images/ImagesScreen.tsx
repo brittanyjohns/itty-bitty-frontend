@@ -146,28 +146,6 @@ const ImagesScreen: React.FC = () => {
       <MainMenu />
       <IonPage id="main-content">
         <IonHeader className="bg-inherit shadow-none">
-          {/* <IonToolbar>
-            <IonMenuButton></IonMenuButton>
-            <IonSegment
-              value={segmentType}
-              onIonChange={handleSegmentChange}
-              className="w-full bg-inherit"
-            >
-              <IonSegmentButton value="all">
-                <IonLabel className="text-md lg:text-lg">Gallery</IonLabel>
-                <IonIcon icon={imagesOutline} />
-              </IonSegmentButton>
-              <IonSegmentButton value="user">
-                <IonLabel className="text-md lg:text-lg">Your Images</IonLabel>
-                <IonIcon icon={personOutline} />
-              </IonSegmentButton>
-            </IonSegment>
-            <IonButtons slot="end">
-              <IonButton routerLink="/images/add">
-                <IonIcon icon={addCircleOutline} />
-              </IonButton>
-            </IonButtons>
-          </IonToolbar> */}
           <IonToolbar>
             <IonButtons slot="secondary">
               <IonButton>

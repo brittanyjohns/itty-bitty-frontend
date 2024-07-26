@@ -55,3 +55,17 @@ ion-toolbar ion-buttons ion-button:focus {
 ion-toolbar ion-buttons ion-menu-button {
   --color: rgb(238, 238, 238);
 }
+
+ion-segment-button {
+  /* --color: rgb(238, 238, 238); */
+  --indicator-color: #0e4e7b;
+  /* --background: #266795; */
+}
+
+ion-segment-button:hover {
+  --color: rgb(238, 238, 238);
+}
+
+ion-segment-button:active {
+  --background: #255380;
+}
