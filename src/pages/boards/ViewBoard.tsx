@@ -29,13 +29,7 @@ import { Team } from "../../data/teams";
 import Tabs from "../../components/utils/Tabs";
 import MainMenu from "../../components/main_menu/MainMenu";
 import BoardView from "../../components/boards/BoardView";
-import {
-  addCircleOutline,
-  ellipsisHorizontal,
-  ellipsisVertical,
-  personCircle,
-  search,
-} from "ionicons/icons";
+import { addCircleOutline } from "ionicons/icons";
 
 const ViewBoard: React.FC<any> = () => {
   const [board, setBoard] = useState<Board>();

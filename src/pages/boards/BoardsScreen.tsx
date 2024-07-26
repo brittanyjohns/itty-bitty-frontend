@@ -148,7 +148,9 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
                 className="w-full bg-inherit"
               >
                 <IonSegmentButton value="preset">
-                  <IonLabel className="text-md lg:text-lg">Gallery</IonLabel>
+                  <IonLabel className="text-md lg:text-lg">
+                    Preset Boards
+                  </IonLabel>
                   <IonIcon icon={imagesOutline} size="small" />
                 </IonSegmentButton>
                 <IonSegmentButton value="user">

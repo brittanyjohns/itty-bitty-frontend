@@ -92,7 +92,10 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4">
+    <form
+      onSubmit={handleSubmit}
+      className="w-full md:w-1/2 lg:w-1/2 mx-auto mt-4"
+    >
       {childAccount &&
         childAccount.errors &&
         childAccount?.errors?.length > 0 && (
@@ -113,6 +116,7 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
             value={existingChildAccount?.name || name}
             onIonInput={handleNameChange}
             className=""
+            fill="outline"
           />
         </div>
         <div className="text-center">
@@ -121,6 +125,7 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
             value={username}
             onIonInput={(e) => setUsername(e.detail.value!)}
             className=""
+            fill="outline"
           />
         </div>
         <div className="text-center">
@@ -130,6 +135,7 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
             type="password"
             onIonInput={(e) => setPassword(e.detail.value!)}
             className=""
+            fill="outline"
           />
         </div>
         <div className="text-center">
@@ -139,6 +145,7 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
             type="password"
             onIonInput={(e) => setPasswordConfirmation(e.detail.value!)}
             className=""
+            fill="outline"
           />
         </div>
       </div>

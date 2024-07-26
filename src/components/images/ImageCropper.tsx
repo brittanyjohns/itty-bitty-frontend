@@ -6,7 +6,9 @@ import {
   IonButtons,
   IonCard,
   IonInput,
+  IonItem,
   IonLoading,
+  IonTextarea,
   useIonViewWillLeave,
 } from "@ionic/react";
 import { cropImage, findOrCreateImage } from "../../data/images";
@@ -17,12 +19,14 @@ interface ImageCropperProps {
   existingId?: string;
   boardId?: string | null;
   existingLabel?: string | null;
+  disableCrop?: boolean;
 }
 
 const ImageCropper: React.FC<ImageCropperProps> = ({
   boardId,
   existingId,
   existingLabel,
+  disableCrop,
 }) => {
   const imageElementRef = useRef<HTMLImageElement>(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -86,6 +90,10 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
   };
 
   useEffect(() => {
+    if (disableCrop) {
+      console.log("Cropping disabled");
+      return;
+    }
     if (imageSrc && imageElementRef.current) {
       const cropperInstance = new Cropper(imageElementRef.current, {
         aspectRatio: 1,
@@ -203,7 +211,13 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
         <IonCard className="p-4 m-4 border text-center">
           <h2 className="text-xl font-bold">Paste an image</h2>
           <p className="text-sm">Right-click and paste an image here</p>
-          <ImagePasteHandler setFile={handlePastedFile} />
+          <IonItem className="mt-4">
+            {/* <IonTextarea
+              placeholder="Paste an image here"
+              readonly
+            ></IonTextarea> */}
+            <ImagePasteHandler setFile={handlePastedFile} />
+          </IonItem>
         </IonCard>
         {imageSrc && (
           <>

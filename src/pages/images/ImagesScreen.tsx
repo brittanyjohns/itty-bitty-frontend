@@ -32,8 +32,10 @@ import { useHistory } from "react-router";
 import Tabs from "../../components/utils/Tabs";
 import { addCircleOutline, imagesOutline, personOutline } from "ionicons/icons";
 import { set } from "react-hook-form";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 const ImagesScreen: React.FC = () => {
+  const { isWideScreen } = useCurrentUser();
   const [images, setImages] = useState<Image[]>([]);
   const history = useHistory();
   const [searchInput, setSearchInput] = useState("");
@@ -144,8 +146,7 @@ const ImagesScreen: React.FC = () => {
           <IonToolbar>
             <IonButtons slot="secondary">
               <IonButton>
-                {/* <IonIcon slot="icon-only" icon={personCircle}></IonIcon> */}
-                <IonMenuButton></IonMenuButton>
+                {!isWideScreen && <IonMenuButton slot="start" />}
               </IonButton>
             </IonButtons>
             <IonButtons slot="primary">

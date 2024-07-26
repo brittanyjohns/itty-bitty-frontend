@@ -161,7 +161,7 @@ const ViewChildAccountScreen: React.FC = () => {
             <IonButtons slot="start">
               <IonBackButton defaultHref="/child-accounts" />
             </IonButtons>
-            <IonTitle>{childAccount?.name}</IonTitle>
+            <IonTitle>{childAccount?.name || "New Account"}</IonTitle>
           </IonToolbar>
           {childAccount && (
             <IonSegment
@@ -229,7 +229,7 @@ const ViewChildAccountScreen: React.FC = () => {
           )}
           {renderBoardGrid(segmentType, currentUser, childAccount)}
           {segmentType === "newAccountTab" && (
-            <div className="p-4">
+            <div className="p-4 text-center">
               {childAccount ? (
                 <h1 className="text-2xl">Edit child account</h1>
               ) : (

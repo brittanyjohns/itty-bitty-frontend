@@ -183,7 +183,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
 
   return (
     <>
-      <IonMenuButton slot="start" />
+      {isWideScreen && <IonMenuButton slot="start" />}
 
       {!currentAccount && isWideScreen && (
         <SideMenu

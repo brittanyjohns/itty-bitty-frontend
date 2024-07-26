@@ -170,7 +170,7 @@ const NewMenu: React.FC = (props: any) => {
           </IonToolbar>
         </IonHeader>
 
-        <IonContent fullscreen scrollY={true}>
+        <IonContent>
           <IonLoading
             message="Please wait while we analyze your menu..."
             isOpen={showLoading}
@@ -211,10 +211,18 @@ const NewMenu: React.FC = (props: any) => {
                   onChange={(ev) => onFileChange(ev)}
                 />
               </IonItem>
-              <p className="text-center">
-                You can set the maximum number of tokens to use to generate this
-                menu.
-              </p>
+              <IonItem lines="none" className="ion-margin-bottom">
+                <p className="w-3/4 md:w-1/2 mx-auto text-center">
+                  You have {currentUser?.tokens} tokens
+                </p>
+              </IonItem>
+              <IonItem lines="none" className="ion-margin-bottom">
+                <p className="text-center">
+                  You can set the maximum number of tokens to use to generate
+                  this menu.
+                </p>
+              </IonItem>
+
               <IonItem lines="none" className="ion-margin-bottom">
                 <IonInput
                   label="Token Limit"

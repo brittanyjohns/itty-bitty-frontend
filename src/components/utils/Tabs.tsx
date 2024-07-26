@@ -9,13 +9,18 @@ import {
 } from "@ionic/react";
 import {
   home,
-  fastFoodOutline,
   imagesOutline,
   albumsOutline,
   peopleCircleOutline,
+  fastFoodOutline,
+  personCircleOutline,
+  ellipseOutline,
+  menuOutline,
+  menuSharp,
+  gridSharp,
 } from "ionicons/icons";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-
+import { openMenu } from "../main_menu/MainMenu";
 const Tabs: React.FC = () => {
   const { isWideScreen } = useCurrentUser();
   return (
@@ -34,17 +39,17 @@ const Tabs: React.FC = () => {
             <IonIcon icon={imagesOutline} />
             <IonLabel>Images</IonLabel>
           </IonTabButton>
-          {/* <IonTabButton tab="menus" href="/menus">
+          <IonTabButton tab="menus" href="/menus">
             <IonIcon icon={fastFoodOutline} />
             <IonLabel>Menus</IonLabel>
           </IonTabButton>
           <IonTabButton tab="teams" href="/teams">
             <IonIcon icon={peopleCircleOutline} />
-            <IonLabel>Teams</IonLabel>
-          </IonTabButton> */}
-          <IonTabButton tab="settings" href="/settings">
-            <IonIcon icon={peopleCircleOutline} />
-            <IonLabel>Settings</IonLabel>
+            <IonLabel>Accounts</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="settings" onClick={openMenu}>
+            <IonIcon icon={gridSharp} />
+            {/* <IonLabel>Settings</IonLabel> */}
           </IonTabButton>
         </IonTabBar>
       )}
