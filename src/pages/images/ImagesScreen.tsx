@@ -1,5 +1,6 @@
 import { createRef, useEffect, useState } from "react";
 import {
+  IonBackButton,
   IonButton,
   IonButtons,
   IonContent,
@@ -144,12 +145,11 @@ const ImagesScreen: React.FC = () => {
       <IonPage id="main-content">
         <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
-            <IonButtons slot="secondary">
-              <IonButton>
-                {!isWideScreen && <IonMenuButton slot="start" />}
-              </IonButton>
+            <IonButtons slot="start">
+              {isWideScreen && <IonBackButton defaultHref="/dashboard" />}
+              {!isWideScreen && <IonMenuButton slot="start" />}
             </IonButtons>
-            <IonButtons slot="primary">
+            <IonButtons slot="end">
               <IonButton routerLink="/images/add">
                 <IonIcon
                   slot="icon-only"
@@ -158,11 +158,10 @@ const ImagesScreen: React.FC = () => {
                 ></IonIcon>
               </IonButton>
             </IonButtons>
-            <IonTitle>{pageTitle}</IonTitle>
+            <IonTitle class="text-center">{pageTitle}</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
-          {/* <div className="bg-inherit shadow-none w-full md:w-2/3 lg:w-1/2 mx-auto my-3"> */}
           <IonSegment
             value={segmentType}
             onIonChange={handleSegmentChange}
@@ -177,7 +176,6 @@ const ImagesScreen: React.FC = () => {
               <IonIcon icon={personOutline} />
             </IonSegmentButton>
           </IonSegment>
-          {/* </div> */}
           <div className="p-2 w-7/8 md:w-5/6 mx-auto">
             <IonSearchbar
               debounce={1000}

@@ -5,7 +5,6 @@ import {
   IonIcon,
   IonList,
   IonMenu,
-  IonMenuButton,
   useIonViewWillLeave,
 } from "@ionic/react";
 import { MenuLink, getMenu } from "../../data/menu";
@@ -41,11 +40,9 @@ export const openChildMenu = () => {
   }
 };
 
-interface MainMenuProps {
-  hideLogo?: boolean;
-}
+interface MainMenuProps {}
 
-const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
+const MainMenu: React.FC<MainMenuProps> = () => {
   const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
   const [menuLinks, setMenuLinks] = useState<MenuLink[]>([]);
   const [filteredLinks, setFilteredLinks] = useState<MenuLink[]>([]);
@@ -160,18 +157,32 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
 
   return (
     <>
-      {isWideScreen && <IonMenuButton slot="start" />}
-
-      {!currentAccount && isWideScreen && (
-        <SideMenu
-          filteredLinks={filteredLinks}
-          currentUser={currentUser}
-          hideLogo={hideLogo}
+      <div className="flex items-center">
+        <img
+          slot="start"
+          src={getImageUrl("round_itty_bitty_logo_1", "png")}
+          className="ml-4 h-10 w-10 mt-1"
         />
-      )}
+        <div
+          className="font-bold ml-2 hover:cursor-pointer"
+          onClick={() => history.push("/")}
+        >
+          SpeakAnyWay
+        </div>
+      </div>
+      {isWideScreen && (
+        <>
+          {!currentAccount && (
+            <SideMenu filteredLinks={filteredLinks} currentUser={currentUser} />
+          )}
 
-      {currentAccount && isWideScreen && (
-        <ChildSideMenu links={filteredLinks} currentAccount={currentAccount} />
+          {currentAccount && isWideScreen && (
+            <ChildSideMenu
+              links={filteredLinks}
+              currentAccount={currentAccount}
+            />
+          )}
+        </>
       )}
 
       {!isWideScreen && (
@@ -181,18 +192,16 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
           type="overlay"
           swipeGesture={false}
         >
-          {!hideLogo && (
-            <div className="flex items-center">
-              <img
-                slot="start"
-                src={getImageUrl("round_itty_bitty_logo_1", "png")}
-                className="ml-2 h-10 w-10 mt-1"
-              />
-              <div className="font-bold" onClick={() => history.push("/")}>
-                SpeakAnyWay
-              </div>
+          <div className="flex items-center">
+            <img
+              slot="start"
+              src={getImageUrl("round_itty_bitty_logo_1", "png")}
+              className="ml-2 h-10 w-10 mt-1"
+            />
+            <div className="font-bold ml-2" onClick={() => history.push("/")}>
+              SpeakAnyWay
             </div>
-          )}
+          </div>
           <IonContent>
             {currentUser && !currentAccount && (
               <IonItem
@@ -240,7 +249,6 @@ const MainMenu: React.FC<MainMenuProps> = ({ hideLogo }) => {
                 <MenuListItem
                   key={menuLink.id}
                   menuLink={menuLink}
-                  icon={menuLink.icon}
                   closeMenu={hideMenu}
                 />
               ))}

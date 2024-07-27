@@ -7,21 +7,17 @@ import { lockClosed, lockClosedOutline } from "ionicons/icons";
 
 interface MainMenuListItemProps {
   menuLink: MenuLink;
-  icon?: any;
   closeMenu?: () => void;
-  isActive: boolean;
 }
 
 const MenuListItem: React.FC<MainMenuListItemProps> = ({
   menuLink,
-  icon,
   closeMenu,
-  isActive,
 }) => {
   const history = useHistory();
   const itemRef = useRef<HTMLIonItemElement>(null);
   const { currentUser } = useCurrentUser();
-  const [activeItem, setActiveItem] = useState("");
+  // const [activeItem, setActiveItem] = useState("");
 
   const freeTrial = menuLink.pro && currentUser?.free_trial;
   const shouldDisable = () => {
@@ -48,21 +44,18 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
       );
       return;
     }
-    if (slug) {
-      setActiveItem(slug);
-      console.log("slug", slug);
-    }
     if (closeMenu) {
       closeMenu();
     }
+    console.log("slug", slug);
     history.push(endpoint ?? "");
   };
 
   const classNameForActive = () => {
-    let x = `hover:cursor-pointer ${isActive ? "bg-red-500" : ""}`;
+    let x = `hover:cursor-pointer`;
     x += freeTrial || shouldDisable() ? "text-red-700" : "";
     x += shouldDisable() ? " opacity-50" : "";
-    x += isActive ? " font-bold text-lg" : "";
+    // x += isActive ? " font-bold text-lg" : "";
 
     return x;
   };
@@ -86,6 +79,7 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
         {menuLink.name}
         <span className="text-xs font-light font-mono ml-3">
           {freeTrial ? "Free Trial" : ""}
+          {shouldDisable() ? "Upgrade" : ""}
         </span>
       </IonLabel>
     </IonItem>

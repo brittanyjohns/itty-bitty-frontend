@@ -48,12 +48,12 @@ const MenusScreen: React.FC = () => {
       <IonPage id="main-content">
         <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
-            <IonButtons slot="secondary">
+            <IonButtons slot="start">
               <IonButton>
                 <IonMenuButton></IonMenuButton>
               </IonButton>
             </IonButtons>
-            <IonButtons slot="primary">
+            <IonButtons slot="end">
               <IonButton routerLink="/menus/new">
                 <IonIcon
                   slot="icon-only"
@@ -62,7 +62,7 @@ const MenusScreen: React.FC = () => {
                 ></IonIcon>
               </IonButton>
             </IonButtons>
-            <IonTitle>Menus</IonTitle>
+            <IonTitle className="text-center">Menus</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">

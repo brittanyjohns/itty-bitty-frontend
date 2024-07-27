@@ -29,9 +29,7 @@ const ChildAccountsScreen: React.FC = () => {
       console.error("No current user");
       return;
     }
-    // const fetchedChildAccounts = await getChildAccounts(currentUser?.id);
     const fetchedChildAccounts = currentUser?.child_accounts;
-    console.log("fetchedChildAccounts", fetchedChildAccounts);
     if (!fetchedChildAccounts) {
       console.error("Error fetching childAccounts");
       // return;

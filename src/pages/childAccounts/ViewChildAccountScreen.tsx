@@ -15,6 +15,7 @@ import {
   IonToolbar,
   IonSpinner,
   IonLabel,
+  IonItem,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
 import { getChildAccount, ChildAccount } from "../../data/child_accounts"; // Adjust imports based on actual functions
@@ -41,7 +42,7 @@ const ViewChildAccountScreen: React.FC = () => {
   const [segmentType, setSegmentType] = useState("childAccountTab");
   const [boards, setBoards] = useState<Board[]>([]);
   const [userBoards, setUserBoards] = useState<Board[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
   const { currentUser } = useCurrentUser();
 
@@ -88,11 +89,13 @@ const ViewChildAccountScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    if (currentUser) {
-      fetchChildAccount();
-      fetchUserBoards();
-    }
+    fetchChildAccount();
+    fetchUserBoards();
   }, []);
+  useEffect(() => {
+    fetchChildAccount();
+    fetchUserBoards();
+  }, [currentUser]);
 
   const handleSegmentChange = (e: CustomEvent) => {
     const newSegment = e.detail.value;
@@ -197,31 +200,31 @@ const ViewChildAccountScreen: React.FC = () => {
           {segmentType === "childAccountTab" && (
             <div>
               {childAccount && (
-                <div>
+                <div className="w-full md:w-1/2 mx-auto">
                   <IonList>
-                    <div>
-                      <IonLabel>Child's Name</IonLabel>
-                      <IonText>
-                        {childAccount.name || childAccount.username}
-                      </IonText>
-                    </div>
-                    <div>
-                      <IonLabel>Account Boards</IonLabel>
-                      <IonText>
-                        {childAccount.boards?.map((board) => (
-                          <div key={board.id}>{board.name}</div>
-                        ))}
-                      </IonText>
-                    </div>
-                    <div>
+                    <IonItem className="flex justify-between">
+                      <IonLabel className="text-2xl">Child's Name</IonLabel>
+                      <IonText>{childAccount.name}</IonText>
+                    </IonItem>
+                    <IonItem className="flex justify-between">
+                      <IonLabel className="text-2xl">Child's Name</IonLabel>
+                      <IonText>{childAccount.name}</IonText>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel>Child's User ID</IonLabel>
+                      <IonText>{childAccount.user_id}</IonText>
+                    </IonItem>
+                    <IonItem>
                       <IonLabel># of ChildAccount Boards</IonLabel>
                       <IonText>{childAccount.boards?.length}</IonText>
-                    </div>
-                    <ChildBoardDropdown
-                      childAccount={childAccount}
-                      boards={userBoards}
-                      onSuccess={fetchChildAccount}
-                    />
+                    </IonItem>
+                    <IonItem className="mt-4" lines="none">
+                      <ChildBoardDropdown
+                        childAccount={childAccount}
+                        boards={userBoards}
+                        onSuccess={fetchChildAccount}
+                      />
+                    </IonItem>
                   </IonList>
                 </div>
               )}

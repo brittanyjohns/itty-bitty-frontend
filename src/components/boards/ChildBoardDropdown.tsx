@@ -85,7 +85,7 @@ const ChildBoardDropdown: React.FC<ChildBoardDropdownProps> = ({
     <IonList className="text-center w-full md:w-3/4 lg:w-1/2 mx-auto border border-gray-300">
       <IonItem lines="none">
         <IonSelect
-          placeholder="Add to board"
+          placeholder="Select a board"
           className="text-sm text-wrap text-center"
           name="boardId"
           onIonChange={(e) => handleSelectChange(e)}

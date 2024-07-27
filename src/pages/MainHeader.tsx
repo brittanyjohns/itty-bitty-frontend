@@ -27,7 +27,7 @@ const MainHeader: React.FC = () => {
                 src={getImageUrl("round_itty_bitty_logo_1", "png")}
                 className="h-10 w-10 inline"
               />
-              SpeakAnyWay
+              SpeakAnyWay main header
             </IonTitle>
           </>
         )}
