@@ -21,6 +21,12 @@ import { getImageUrl } from "../data/utils";
 const ContactUs: React.FC = () => {
   const { isWideScreen } = useCurrentUser();
 
+  const feature1Image = getImageUrl("feature_1", "webp");
+
+  const style = {
+    backgroundImage: `url(${feature1Image})`,
+  };
+
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
       e.detail.complete();
@@ -42,9 +48,7 @@ const ContactUs: React.FC = () => {
         <IonContent className="flex flex-col items-center p-6 space-y-6 bg-gray-50">
           <div
             className="hero_main1 bg-cover bg-center  h-full w-full"
-            style={{
-              backgroundImage: `url(${getImageUrl("feature_1", "webp")})`,
-            }}
+            style={style}
           >
             <div className="mt-5 text-center py-8 shadow-overlay">
               <h1 className="text-2xl font-bold text-center">

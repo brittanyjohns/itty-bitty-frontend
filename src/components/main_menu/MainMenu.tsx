@@ -155,14 +155,12 @@ const MainMenu: React.FC<MainMenuProps> = () => {
     hideMenu();
   });
 
+  const feature1Image = getImageUrl("round_itty_bitty_logo_1", "png");
+
   return (
     <>
       <div className="flex items-center">
-        <img
-          slot="start"
-          src={getImageUrl("round_itty_bitty_logo_1", "png")}
-          className="ml-4 h-10 w-10 mt-1"
-        />
+        <img slot="start" src={feature1Image} className="ml-4 h-10 w-10 mt-1" />
         <div
           className="font-bold ml-2 hover:cursor-pointer"
           onClick={() => history.push("/")}
