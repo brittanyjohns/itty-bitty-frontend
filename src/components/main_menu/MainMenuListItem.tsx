@@ -1,7 +1,7 @@
 import { IonIcon, IonItem, IonLabel } from "@ionic/react";
 import { MenuLink } from "../../data/menu";
 import { useHistory } from "react-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { lockClosed, lockClosedOutline } from "ionicons/icons";
 
@@ -20,12 +20,25 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
   // const [activeItem, setActiveItem] = useState("");
 
   const freeTrial = menuLink.pro && currentUser?.free_trial;
-  const shouldDisable = () => {
+  // const isActive = history.location.pathname.includes(menuLink.slug);
+  // const isActive = () => {
+  //   return history.location.pathname.includes(menuLink.slug);
+  // };
+  const [isActive, setIsActive] = useState(false);
+  const premiumFeatures = ["menus", "child-accounts", "teams"];
+  const shouldDisable = (slug?: string) => {
     // return false;
+    if (!slug) {
+      return false;
+    }
+
     if (!currentUser) {
       return false;
     }
     if (freeTrial) {
+      if (premiumFeatures.includes(slug)) {
+        return true;
+      }
       return false;
     }
     if (currentUser?.admin) {
@@ -34,8 +47,23 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
     if (currentUser?.pro) {
       return false;
     }
-    return true;
+    return false;
   };
+
+  useEffect(() => {
+    if (window.location.href.includes(menuLink.slug)) {
+      setIsActive(true);
+    } else {
+      setIsActive(false);
+    }
+  }, [window.location.href]);
+  useEffect(() => {
+    if (window.location.href.includes(menuLink.slug)) {
+      setIsActive(true);
+    } else {
+      setIsActive(false);
+    }
+  }, []);
 
   const handleClick = (slug: string, endpoint: string) => () => {
     if (shouldDisable()) {
@@ -55,12 +83,23 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
     let x = `hover:cursor-pointer`;
     x += freeTrial || shouldDisable() ? "text-red-700" : "";
     x += shouldDisable() ? " opacity-50" : "";
-    // x += isActive ? " font-bold text-lg" : "";
+    x += isActive ? " font-bold text-lg" : "";
 
     return x;
   };
 
-  const iconToUse = shouldDisable() ? lockClosed : menuLink.icon;
+  // const iconToUse = shouldDisable(menuLink.slug) ? lockClosed : menuLink.icon;
+
+  const iconToUse = () => {
+    if (shouldDisable(menuLink.slug)) {
+      console.log("lockClosed", menuLink.slug);
+      return lockClosedOutline;
+    }
+    if (isActive) {
+      return menuLink.icon;
+    }
+    return menuLink.icon;
+  };
 
   return (
     <IonItem
@@ -72,14 +111,13 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
       ref={itemRef}
     >
       <IonIcon
-        icon={iconToUse}
-        className={`mr-5 ${shouldDisable() ? "text-red-700" : ""}`}
+        icon={iconToUse()}
+        className={`mr-5 ${shouldDisable(menuLink.slug) ? "text-red-700" : ""}`}
       />
       <IonLabel className="ml-5">
         {menuLink.name}
         <span className="text-xs font-light font-mono ml-3">
           {freeTrial ? "Free Trial" : ""}
-          {shouldDisable() ? "Upgrade" : ""}
         </span>
       </IonLabel>
     </IonItem>

@@ -203,19 +203,19 @@ const ViewChildAccountScreen: React.FC = () => {
                 <div className="w-full md:w-1/2 mx-auto">
                   <IonList>
                     <IonItem className="flex justify-between">
-                      <IonLabel className="text-2xl">Child's Name</IonLabel>
+                      <IonLabel className="text-2xl"> Name</IonLabel>
                       <IonText>{childAccount.name}</IonText>
                     </IonItem>
                     <IonItem className="flex justify-between">
-                      <IonLabel className="text-2xl">Child's Name</IonLabel>
-                      <IonText>{childAccount.name}</IonText>
+                      <IonLabel className="text-2xl"> Username</IonLabel>
+                      <IonText>{childAccount.username}</IonText>
                     </IonItem>
                     <IonItem>
-                      <IonLabel>Child's User ID</IonLabel>
+                      <IonLabel> User ID</IonLabel>
                       <IonText>{childAccount.user_id}</IonText>
                     </IonItem>
                     <IonItem>
-                      <IonLabel># of ChildAccount Boards</IonLabel>
+                      <IonLabel># of Boards</IonLabel>
                       <IonText>{childAccount.boards?.length}</IonText>
                     </IonItem>
                     <IonItem className="mt-4" lines="none">
