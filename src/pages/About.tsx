@@ -31,12 +31,17 @@ const About: React.FC = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
-          <IonButtons slot="start">
-            {!isWideScreen && <IonMenuButton></IonMenuButton>}
-          </IonButtons>
-        </IonHeader>
-        <IonContent className="flex flex-col items-center p-6 space-y-6 bg-gray-50">
+        {!isWideScreen && (
+          <IonHeader className="bg-inherit shadow-none">
+            <IonToolbar>
+              <IonButtons slot="start">
+                <IonMenuButton></IonMenuButton>
+              </IonButtons>
+              <IonTitle>About Us</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+        )}
+        <IonContent className="ion-padding">
           <div
             className="hero_main1 bg-cover bg-center h-full w-full pt-10 pb-20"
             style={{

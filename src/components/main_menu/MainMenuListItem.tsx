@@ -49,8 +49,8 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
       return;
     }
     if (slug) {
-      console.log("slug", slug);
       setActiveItem(slug);
+      console.log("slug", slug);
     }
     if (closeMenu) {
       closeMenu();

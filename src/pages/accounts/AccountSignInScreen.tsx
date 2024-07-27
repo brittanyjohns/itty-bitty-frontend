@@ -5,6 +5,11 @@ import {
   IonInput,
   IonButton,
   IonAlert,
+  IonButtons,
+  IonHeader,
+  IonMenuButton,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import { ChildAccount, signIn } from "../../data/child_accounts";
@@ -19,7 +24,7 @@ const AccountSignInScreen: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [showAlert, setShowAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const { currentUser } = useCurrentUser();
+  const { currentUser, isWideScreen } = useCurrentUser();
 
   const handleSignIn = async () => {
     const account: ChildAccount = {
@@ -65,6 +70,16 @@ const AccountSignInScreen: React.FC = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
+        {!isWideScreen && (
+          <IonHeader className="bg-inherit shadow-none">
+            <IonToolbar>
+              <IonButtons slot="start">
+                <IonMenuButton></IonMenuButton>
+              </IonButtons>
+              <IonTitle>Child Sign In</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+        )}
         <div className="h-full">
           <div
             className="hero_main1 bg-cover bg-center  min-h-screen"

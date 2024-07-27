@@ -44,18 +44,9 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <MainMenu hideLogo={true} />
+      <MainMenu hideLogo={false} />
       <IonPage id="main-content">
-        {!isWideScreen && (
-          <IonHeader className="bg-inherit shadow-none">
-            <IonToolbar>
-              <IonButtons slot="start">
-                <IonMenuButton></IonMenuButton>
-              </IonButtons>
-              <IonTitle>Home</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-        )}
+        {!isWideScreen && <MainHeader />}
         <IonContent className="text-justified" scrollY={true}>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>

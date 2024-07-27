@@ -26,7 +26,7 @@ import {
   useIonViewWillEnter,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
-import { addCircleOutline } from "ionicons/icons";
+import { addCircleOutline, arrowBack } from "ionicons/icons";
 import {
   getBoard,
   addImageToBoard,
@@ -94,7 +94,6 @@ const SelectGalleryScreen: React.FC = () => {
     const updatedBoard = await rearrangeImages(id);
     setBoard(updatedBoard);
     setShowLoading(false);
-    // history.push(`/boards/${board?.id}`);
     window.location.reload();
   };
 
@@ -167,52 +166,52 @@ const SelectGalleryScreen: React.FC = () => {
     }
   };
 
-  const handleGenerate = async () => {
-    if (!checkCurrentUserTokens()) {
-      alert(
-        "Sorry, you do not have enough tokens to generate an image. Please purchase more tokens to continue."
-      );
-      console.error("User does not have enough tokens");
-      return;
-    }
-    if (!image) {
-      console.error("Image is missing");
-      return;
-    }
-    const formData = new FormData();
-    formData.append("image[label]", image.label);
-    if (image.image_prompt) {
-      formData.append("image[image_prompt]", image.image_prompt);
-    }
-    setLoadingMessage("Generating image");
-    setShowLoading(true);
-    const updatedImage = await generateImage(formData); // Ensure generateImage returns a Promise<Image>
-    if (!board?.id) {
-      console.error("Board ID is missing");
-      return;
-    }
-    await addImageToBoard(board.id, updatedImage.id); // Ensure addImageToBoard returns a Promise<Board>
-    setImage(initialImage);
+  // const handleGenerate = async () => {
+  //   if (!checkCurrentUserTokens()) {
+  //     alert(
+  //       "Sorry, you do not have enough tokens to generate an image. Please purchase more tokens to continue."
+  //     );
+  //     console.error("User does not have enough tokens");
+  //     return;
+  //   }
+  //   if (!image) {
+  //     console.error("Image is missing");
+  //     return;
+  //   }
+  //   const formData = new FormData();
+  //   formData.append("image[label]", image.label);
+  //   if (image.image_prompt) {
+  //     formData.append("image[image_prompt]", image.image_prompt);
+  //   }
+  //   setLoadingMessage("Generating image");
+  //   setShowLoading(true);
+  //   const updatedImage = await generateImage(formData); // Ensure generateImage returns a Promise<Image>
+  //   if (!board?.id) {
+  //     console.error("Board ID is missing");
+  //     return;
+  //   }
+  //   await addImageToBoard(board.id, updatedImage.id); // Ensure addImageToBoard returns a Promise<Board>
+  //   setImage(initialImage);
 
-    setShowLoading(false);
-    const message = `Image added to board: ${updatedImage.label}`;
-    setToastMessage(message);
-    // history.push(`/boards/${board.id}`);
-  };
+  //   setShowLoading(false);
+  //   const message = `Image added to board: ${updatedImage.label}`;
+  //   setToastMessage(message);
+  //   // history.push(`/boards/${board.id}`);
+  // };
 
-  const handleImagePromptInput = (e: CustomEvent) => {
-    const newPrompt = e.detail.value;
-    if (image) {
-      setImage({ ...image, image_prompt: newPrompt });
-    }
-  };
+  // const handleImagePromptInput = (e: CustomEvent) => {
+  //   const newPrompt = e.detail.value;
+  //   if (image) {
+  //     setImage({ ...image, image_prompt: newPrompt });
+  //   }
+  // };
 
-  const handleLabelInput = (e: CustomEvent) => {
-    const newLabel = e.detail.value;
-    if (image) {
-      setImage({ ...image, label: newLabel });
-    }
-  };
+  // const handleLabelInput = (e: CustomEvent) => {
+  //   const newLabel = e.detail.value;
+  //   if (image) {
+  //     setImage({ ...image, label: newLabel });
+  //   }
+  // };
 
   const handleImageClick = (image: Image) => {
     setImage(image);
@@ -257,13 +256,14 @@ const SelectGalleryScreen: React.FC = () => {
       <IonPage id="main-content">
         <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
-            <IonButtons slot="secondary">
-              <IonButton>
-                {/* <IonIcon slot="icon-only" icon={personCircle}></IonIcon> */}
-                <IonMenuButton></IonMenuButton>
+            <IonButtons slot="start">
+              <IonButton routerLink={`/boards/${id}`}>
+                <IonIcon icon={arrowBack} />
               </IonButton>
             </IonButtons>
-            <IonButtons slot="primary">
+            <IonTitle>{board?.name || "Board"}</IonTitle>
+
+            <IonButtons slot="end">
               <IonButton routerLink="/boards/new">
                 <IonIcon
                   slot="icon-only"
@@ -272,10 +272,9 @@ const SelectGalleryScreen: React.FC = () => {
                 ></IonIcon>
               </IonButton>
             </IonButtons>
-            <IonTitle>{board?.name || "Board"}</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent scrollY={true}>
+        <IonContent>
           <div className="mt-6 py-3 px-1 hidden" ref={uploadForm}>
             <p className="text-sm md:text-md lg:text-lg text-center">
               Upload your own image

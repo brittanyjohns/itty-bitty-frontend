@@ -40,7 +40,7 @@ const menuLinks: MenuLink[] = [
 
   {
     endpoint: '/about',
-    name: 'About',
+    name: 'About Us',
     slug: 'about',
     icon: bookOutline,
     id: 2

@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { IonPage, IonContent, IonInput, IonButton } from "@ionic/react";
+import {
+  IonPage,
+  IonContent,
+  IonInput,
+  IonButton,
+  IonButtons,
+  IonHeader,
+  IonMenuButton,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
 import { NewUser, signUp } from "../../data/users";
 import { useHistory, useLocation } from "react-router-dom";
 import MainMenu from "../../components/main_menu/MainMenu";
@@ -79,10 +89,20 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        {!isWideScreen && <MainHeader />}
+        {/* {!isWideScreen && <MainHeader />} */}
+        {!isWideScreen && (
+          <IonHeader className="bg-inherit shadow-none">
+            <IonToolbar>
+              <IonButtons slot="start">
+                <IonMenuButton></IonMenuButton>
+              </IonButtons>
+              <IonTitle>Sign Up</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+        )}
         <IonContent className="">
           <div
-            className="hero_main1 bg-cover bg-center min-h-screen pb-20"
+            className="hero_main1 bg-cover bg-center min-h-screen pb-5"
             style={{
               backgroundImage: `url(${getImageUrl("feature_1", "webp")})`,
             }}

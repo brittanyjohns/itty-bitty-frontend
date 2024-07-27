@@ -48,7 +48,7 @@ const SignInPage: React.FC = () => {
                 Discover the simplicity of SpeakAnyWay.
               </p>
             </div>
-            <div className="max-w-md mx-auto bg-white bg-opacity-95 p-8 rounded-lg shadow-xl mt-20">
+            <div className="max-w-md mx-auto bg-white bg-opacity-95 p-8 shadow-xl mt-8">
               <h1 className="text-2xl font-bold text-center mb-3">Sign In</h1>
               <IonButton
                 expand="block"
