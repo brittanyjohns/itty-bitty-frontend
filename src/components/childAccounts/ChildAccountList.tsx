@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChildAccount } from "../../data/child_accounts";
-import { IonList, IonButton, IonItem, IonText } from "@ionic/react";
+import { IonList, IonButton, IonItem, IonText, IonCard } from "@ionic/react";
 import ChildAccountListItem from "./ChildAccountListItem";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 
@@ -39,14 +39,14 @@ const ChildAccountList = ({ childAccounts }: ChildAccountListProps) => {
             </IonItem>
           ))}
         {currentUser && childAccounts?.length === 0 && (
-          <IonItem>
+          <IonCard className="p-4 w-full md:w-1/2 mx-auto">
             <div className="text-center">
-              <p>No childAccounts found</p>
+              <p>No Accounts found</p>
               <IonButton routerLink="/child-accounts/new" color="primary">
                 Create a new childAccount
               </IonButton>
             </div>
-          </IonItem>
+          </IonCard>
         )}
       </IonList>
     </div>

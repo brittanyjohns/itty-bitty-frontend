@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from "react";
+import React, { memo, useMemo, useState } from "react";
 import { IonItem, IonTitle, IonIcon, IonLabel } from "@ionic/react";
 import { MenuLink } from "../../data/menu";
 import MenuListItem from "./MainMenuListItem";
@@ -13,6 +13,8 @@ interface SideMenuProps {
 
 const SideMenu: React.FC<SideMenuProps> = memo(
   ({ filteredLinks, currentUser, hideLogo }) => {
+    const [active, setActive] = useState<string>("");
+
     const logoSection = useMemo(
       () =>
         !hideLogo && (
@@ -55,22 +57,22 @@ const SideMenu: React.FC<SideMenuProps> = memo(
         filteredLinks
           .sort((a, b) => a.id - b.id)
           .map((menuLink) => (
-            <div key={menuLink.id} className="text-white">
-              <MenuListItem menuLink={menuLink} />
+            <div key={menuLink.id} className="">
+              <MenuListItem
+                menuLink={menuLink}
+                isActive={active === menuLink.slug}
+              />
             </div>
           )),
-      [filteredLinks]
+      [filteredLinks, active]
     );
 
     return (
-      <>
-        <div className="h-full">
-          {logoSection}
-
-          {userSection}
-          {linksSection}
-        </div>
-      </>
+      <div className="h-full">
+        {logoSection}
+        {userSection}
+        {linksSection}
+      </div>
     );
   }
 );

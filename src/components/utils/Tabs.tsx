@@ -39,17 +39,17 @@ const Tabs: React.FC = () => {
             <IonIcon icon={imagesOutline} />
             <IonLabel>Images</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="menus" href="/menus">
+          {/* <IonTabButton tab="menus" href="/menus">
             <IonIcon icon={fastFoodOutline} />
             <IonLabel>Menus</IonLabel>
-          </IonTabButton>
+          </IonTabButton> */}
           <IonTabButton tab="teams" href="/teams">
             <IonIcon icon={peopleCircleOutline} />
             <IonLabel>Accounts</IonLabel>
           </IonTabButton>
           <IonTabButton tab="settings" onClick={openMenu}>
-            <IonIcon icon={gridSharp} />
-            {/* <IonLabel>Settings</IonLabel> */}
+            <IonIcon icon={menuSharp} />
+            <IonLabel>Settings</IonLabel>
           </IonTabButton>
         </IonTabBar>
       )}

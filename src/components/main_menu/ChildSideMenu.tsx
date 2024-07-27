@@ -42,7 +42,7 @@ const ChildSideMenu: React.FC<ChildSideMenuProps> = ({
           .sort((a, b) => a.id - b.id)
           .map((menuLink) => (
             <div key={menuLink.id} className="text-white">
-              <MenuListItem menuLink={menuLink} />
+              <MenuListItem menuLink={menuLink} setActiveItem={() => {}} />
             </div>
           ))}
       </div>

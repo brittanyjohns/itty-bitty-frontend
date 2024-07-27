@@ -320,20 +320,10 @@ const ViewImageScreen: React.FC = () => {
       <IonPage id="main-content">
         {!isWideScreen && <MainHeader />}
         <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="secondary">
-              <IonButton>
-                {/* <IonIcon slot="icon-only" icon={personCircle}></IonIcon> */}
-              </IonButton>
-            </IonButtons>
-            <IonTitle>{pageTitle}</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonHeader className="bg-inherit shadow-none">
           <IonSegment
             value={segmentType}
             onIonChange={handleSegmentChange}
-            className="w-full bg-inherit"
+            className="w-full bg-inherit my-5"
           >
             <IonSegmentButton value="gallery">
               <IonLabel className="sm:text-sm md:text-md lg:text-lg">
@@ -363,7 +353,7 @@ const ViewImageScreen: React.FC = () => {
             )}
           </IonSegment>
         </IonHeader>
-        <IonContent className="ion-padding" scrollY={true}>
+        <IonContent className="ion-padding">
           <div className="ion-justify-content-center ion-align-items-center ion-text-center pt-1">
             <IonText className="font-bold text-2xl">{pageTitle}</IonText>
             <div className="mt-4">

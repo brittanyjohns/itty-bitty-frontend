@@ -288,7 +288,7 @@ const SelectGalleryScreen: React.FC = () => {
               />
             )}
           </div>
-          <div className="mt-2 hidden" ref={generateForm}>
+          {/* <div className="mt-2 hidden" ref={generateForm}>
             <IonList className="w-full md:w-1/2 mx-auto" lines="none">
               <IonItem className="my-2">
                 <IonText className="font-bold text-xl mt-2">
@@ -339,9 +339,12 @@ const SelectGalleryScreen: React.FC = () => {
                 <IonText className="ml-6"> It will cost 1 credit.</IonText>
               </IonItem>
             </IonList>
-          </div>
+          </div> */}
 
-          <div className="hidden" ref={imageGalleryWrapper}>
+          <div
+            className="hidden w-full md:w-5/6 mx-auto"
+            ref={imageGalleryWrapper}
+          >
             <h2 className="font-sans text-md md:text-xl lg:text-2xl text-center mt-4">
               Search for images - Click to add to board
             </h2>

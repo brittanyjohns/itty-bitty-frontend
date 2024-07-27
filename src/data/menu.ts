@@ -2,7 +2,7 @@
 export interface MenuLink {
   endpoint: string;
   name: string;
-  slug?: string;
+  slug: string;
   icon?: string;
   id: number;
   pro?: boolean;

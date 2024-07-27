@@ -118,13 +118,13 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
       <MainMenu />
       <IonPage id="main-content">
         <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="secondary">
+          <IonToolbar className="bg-inherit shadow-none text-center">
+            <IonButtons slot="start">
               <IonButton>
                 <IonMenuButton></IonMenuButton>
               </IonButton>
             </IonButtons>
-            <IonButtons slot="primary">
+            <IonButtons slot="end">
               <IonButton routerLink="/boards/new">
                 <IonIcon
                   slot="icon-only"

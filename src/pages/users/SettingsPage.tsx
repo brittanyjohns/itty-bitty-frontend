@@ -1,5 +1,6 @@
 import {
   IonButtons,
+  IonCard,
   IonContent,
   IonHeader,
   IonItem,
@@ -92,48 +93,62 @@ const SettingsPage: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <div className="w-full md:w-1/2 mx-auto p-4 border mt-4">
-            <UserForm
-              onCancel={handleCancel}
-              onSave={handleSubmit}
-              planType={planType}
-              setPlanType={handleSetPlanType}
-              userId={currentUser?.id}
-            />
-          </div>
-          <div className="w-full md:w-1/2 mx-auto p-4 border">
-            <IonList>
-              <IonItem>
-                <IonText> Name: {currentUser && currentUser.name}</IonText>
-              </IonItem>
-              <IonItem>
-                <IonText> Email: {currentUser && currentUser.email}</IonText>
-              </IonItem>
-              <IonItem>
-                <IonText> Role: {currentUser && currentUser.role}</IonText>
-              </IonItem>
-              <IonItem>
-                <IonText> Tokens: {currentUser && currentUser.tokens}</IonText>
-              </IonItem>
-              <IonItem>
-                <IonText>
-                  {" "}
-                  Created At: {currentUser && currentUser.created_at}
-                </IonText>
-              </IonItem>
-              <IonItem>
-                <IonText>
-                  {" "}
-                  Updated At: {currentUser && currentUser.updated_at}
-                </IonText>
-              </IonItem>
-            </IonList>
-          </div>
-          <div className="w-full md:w-1/2 mx-auto p-4 border mt-4">
-            <UserSettingsForm
-              onCancel={handleCancel}
-              onSave={handleSubmit}
-              existingUserSetting={currentUser?.settings}
-            />
+            <IonCard className="p-4 text-center">
+              <h1 className="text-2xl">User Settings</h1>
+              <p className="text-lg">
+                This is where you can view your account information, manage your
+                subscriptions, and more.
+              </p>
+            </IonCard>
+            <div className="w-full md:w-5/6 mx-auto p-4">
+              <IonList>
+                <IonItem>
+                  <IonText> Name: {currentUser && currentUser.name}</IonText>
+                </IonItem>
+                <IonItem>
+                  <IonText> Email: {currentUser && currentUser.email}</IonText>
+                </IonItem>
+                <IonItem>
+                  <IonText> Role: {currentUser && currentUser.role}</IonText>
+                </IonItem>
+                <IonItem>
+                  <IonText>
+                    {" "}
+                    Tokens: {currentUser && currentUser.tokens}
+                  </IonText>
+                </IonItem>
+                <IonItem>
+                  <IonText>
+                    {" "}
+                    Created At: {currentUser && currentUser.created_at}
+                  </IonText>
+                </IonItem>
+                <IonItem>
+                  <IonText>
+                    {" "}
+                    Updated At: {currentUser && currentUser.updated_at}
+                  </IonText>
+                </IonItem>
+              </IonList>
+            </div>
+            <div className="w-full md:w-5/6 mx-auto p-4">
+              <UserSettingsForm
+                onCancel={handleCancel}
+                onSave={handleSubmit}
+                existingUserSetting={currentUser?.settings}
+              />
+            </div>
+
+            <IonCard className="p-4">
+              <h1 className="text-2xl">Account Info</h1>
+              <UserForm
+                onCancel={handleCancel}
+                onSave={handleSubmit}
+                planType={planType}
+                setPlanType={handleSetPlanType}
+                userId={currentUser?.id}
+              />
+            </IonCard>
           </div>
 
           <IonToast

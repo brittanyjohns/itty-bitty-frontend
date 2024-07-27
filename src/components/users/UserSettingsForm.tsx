@@ -81,7 +81,8 @@ const UserSettingsForm: React.FC<UserSettingsFormProps> = ({
         </div>
       )}
 
-      <div className="flex flex-col gap-4">
+      {/* TODO hide for now -- need to figure out user settings */}
+      <div className="flex flex-col gap-4 hidden">
         <div className="text-center">
           <IonLabel className="">Settings</IonLabel>
           <IonSelect

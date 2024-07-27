@@ -60,7 +60,7 @@ const AdminDashboard: React.FC = () => {
             </p>
           </div>
           {betaRequests.length > 0 && (
-            <div className="p-4">
+            <div className="p-4 w-full md:w-1/2 mx-auto">
               <h1 className="text-2xl">Beta Requests</h1>
               <ul>
                 {betaRequests.map((request, i) => (
