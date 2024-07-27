@@ -44,7 +44,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <MainMenu hideLogo={false} />
+      <MainMenu />
       <IonPage id="main-content">
         {!isWideScreen && <MainHeader />}
         <IonContent className="text-justified" scrollY={true}>

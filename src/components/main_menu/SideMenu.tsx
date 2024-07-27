@@ -6,7 +6,6 @@ import { personCircleOutline } from "ionicons/icons";
 interface SideMenuProps {
   filteredLinks: MenuLink[];
   currentUser?: any;
-  hideLogo?: boolean;
 }
 const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
   return (
