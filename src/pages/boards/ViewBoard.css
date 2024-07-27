@@ -19,7 +19,7 @@ ion-toolbar {
   --color: rgb(238, 238, 238);
 
   --border-color: #255380;
-  --border-width: 4px 0;
+  --border-width: 2px 0;
   --border-style: double;
   --min-height: 80px;
   --padding-top: 20px;
