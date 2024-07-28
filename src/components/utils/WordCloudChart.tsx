@@ -91,10 +91,10 @@ const WordCloudChart: React.FC<WordCloudChartProps> = ({ wordEvents }) => {
             (d: any) => "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")"
           )
           .text((d: any) => d.text)
-          .on("mouseover", function (event: any, d: any) {
+          .on("mouseover", function (this: any, event: any, d: any) {
             d3.select(this).style("fill", "red");
           })
-          .on("mouseout", function (event: any, d: any) {
+          .on("mouseout", function (this: any, event: any, d: any) {
             d3.select(this).style("fill", (d: any, i: number) =>
               customColors(i.toString())
             );
