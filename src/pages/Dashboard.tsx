@@ -83,11 +83,9 @@ const Dashboard: React.FC = () => {
                 <PricingTable />
               )}
             </div>
-            <div className="border mt-3 w-full md:w-1/2 mx-auto">
+            <div className="mt-3 w-full md:w-5/6 mx-auto">
               {currentUser && (
-                <div className="border p-5">
-                  <h1 className="text-2xl">Word Relationships </h1>
-
+                <div className="p-4">
                   <IonButtons slot="start" className="mt-4">
                     <IonButton
                       fill="outline"
@@ -96,13 +94,22 @@ const Dashboard: React.FC = () => {
                       size="large"
                       onClick={loadWordEvents}
                     >
-                      Show Graph
+                      Load Graphs
                     </IonButton>
                   </IonButtons>
                   {loading && <IonSpinner />}
-                  <WordNetworkGraph wordEvents={wordEvents} />
-                  <h1>Word Usage Word Cloud</h1>
-                  <WordCloudChart wordEvents={wordEvents} />
+                  <div className="">
+                    <div className="w-full md:w-5/6 mx-auto my-4">
+                      <h1 className="text-2xl mt-4">Word Usage Word Cloud</h1>
+
+                      <WordCloudChart wordEvents={wordEvents} />
+                    </div>
+                    <div className="w-full md:w-5/6 mx-auto my-4">
+                      <h1 className="text-2xl">Word Relationships </h1>
+
+                      <WordNetworkGraph wordEvents={wordEvents} />
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
