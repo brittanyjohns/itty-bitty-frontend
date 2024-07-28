@@ -1,4 +1,6 @@
 import {
+  IonBackButton,
+  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
@@ -6,6 +8,7 @@ import {
   IonPage,
   IonRefresher,
   IonRefresherContent,
+  IonSpinner,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
@@ -17,10 +20,14 @@ import SubscriptionList from "../components/stripe/SubscriptionList";
 import { Subscription, getSubscriptions } from "../data/subscriptions";
 import AccountLink from "../components/stripe/AccountLink";
 import PricingTable from "../components/utils/PricingTable";
+import WordNetworkGraph from "../components/utils/WordNetworkGraph";
+import { WordEvent, fetchWordEvents } from "../data/word_event";
+import WordCloudChart from "../components/utils/WordCloudChart";
 const Dashboard: React.FC = () => {
   const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
 
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const [wordEvents, setWordEvents] = useState<WordEvent[]>([]);
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
@@ -31,6 +38,16 @@ const Dashboard: React.FC = () => {
   const loadSubscriptions = async () => {
     const subs = await getSubscriptions();
     setSubscriptions(subs["subscriptions"]);
+  };
+
+  const [loading, setLoading] = useState(false);
+
+  const loadWordEvents = async () => {
+    setLoading(true);
+    const events = await fetchWordEvents();
+    setLoading(false);
+    console.log("events", events);
+    setWordEvents(events);
   };
 
   useEffect(() => {
@@ -57,15 +74,36 @@ const Dashboard: React.FC = () => {
             {(currentUser && currentUser?.admin) ||
               (currentUser && currentUser?.plan_type !== "free" && (
                 <>
-                  <h2 className="text-xl font-semibold">Subscriptions</h2>
                   <SubscriptionList subscriptions={subscriptions} />
+                  <AccountLink />
                 </>
               ))}
             <div className="">
-              <AccountLink />
-
               {currentUser && currentUser?.plan_type === "free" && (
                 <PricingTable />
+              )}
+            </div>
+            <div className="border mt-3 w-full md:w-1/2 mx-auto">
+              {currentUser && (
+                <div className="border p-5">
+                  <h1 className="text-2xl">Word Relationships </h1>
+
+                  <IonButtons slot="start" className="mt-4">
+                    <IonButton
+                      fill="outline"
+                      color="primary"
+                      expand="block"
+                      size="large"
+                      onClick={loadWordEvents}
+                    >
+                      Show Graph
+                    </IonButton>
+                  </IonButtons>
+                  {loading && <IonSpinner />}
+                  <WordNetworkGraph wordEvents={wordEvents} />
+                  <h1>Word Usage Word Cloud</h1>
+                  <WordCloudChart wordEvents={wordEvents} />
+                </div>
               )}
             </div>
           </div>
