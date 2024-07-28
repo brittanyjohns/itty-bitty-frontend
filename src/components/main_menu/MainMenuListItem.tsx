@@ -80,7 +80,7 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
   };
 
   const classNameForActive = () => {
-    let x = `hover:cursor-pointer`;
+    let x = `hover:cursor-pointer `;
     x += freeTrial || shouldDisable() ? "text-red-700" : "";
     x += shouldDisable() ? " opacity-50" : "";
     x += isActive ? " font-bold text-lg" : "";
