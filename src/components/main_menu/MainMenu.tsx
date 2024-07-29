@@ -17,19 +17,30 @@ import { personCircleOutline, personOutline } from "ionicons/icons";
 import { useHistory } from "react-router";
 
 export const hideMenu = () => {
-  const menu = document.querySelector("ion-menu");
-  menu?.close();
+  // const menu = document.querySelector("ion-menu");
+  // menu?.close();
+  const menu = document.querySelector("#main-menu");
+  menu?.classList.add("hidden");
 };
 
 export const openMenu = () => {
-  const menu = document.querySelector("ion-menu");
-  menu?.open();
+  // const menu = document.querySelector("ion-menu");
+  // menu?.open();
+  const menu = document.querySelector("#main-menu");
+  menu?.classList.remove("hidden");
 };
 
 export const closeChildMenu = () => {
   const menu = document.querySelector("#child-side-menu");
   if (menu) {
     menu.classList.add("hidden");
+  }
+};
+
+export const toggleMainMenu = () => {
+  const menu = document.querySelector("#main-menu");
+  if (menu) {
+    menu.classList.toggle("hidden");
   }
 };
 
@@ -149,11 +160,16 @@ const MainMenu: React.FC<MainMenuProps> = () => {
 
   useEffect(() => {
     setUpMenu();
+    console.log("MainMenu useEffect", isWideScreen);
   }, [setUpMenu]);
 
-  useIonViewWillLeave(() => {
-    hideMenu();
-  });
+  // useIonViewWillLeave(() => {
+  //   hideMenu();
+  // });
+
+  useEffect(() => {
+    toggleMainMenu();
+  }, [isWideScreen]);
 
   const feature1Image = getImageUrl("round_itty_bitty_logo_1", "png");
 
@@ -185,6 +201,7 @@ const MainMenu: React.FC<MainMenuProps> = () => {
 
       {!isWideScreen && (
         <IonMenu
+          id="main-menu"
           contentId="main-content"
           side="start"
           type="overlay"

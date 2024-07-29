@@ -27,23 +27,26 @@ import { useHistory } from "react-router";
 const SettingsPage: React.FC = () => {
   const { currentUser } = useCurrentUser();
   const [user, setUser] = useState<User | null>(currentUser || null);
-  const [formData, setFormData] = useState<FormData | null>(null);
+  const [userSetting, setUserSetting] = useState<UserSetting | null>(null);
   const [name, setName] = useState<string | null>(currentUser?.name || null);
   const history = useHistory();
   const [toastMessage, setToastMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [planType, setPlanType] = useState<string>("Free");
 
-  const handleSubmit = (submittedFormData: FormData) => {
-    console.log("handle submit: submittedFormData", submittedFormData);
-    setFormData(submittedFormData);
+  const handleSubmit = (submittedUserSetting: UserSetting) => {
+    console.log("handle submit: submittedUserSetting", submittedUserSetting);
+    setUserSetting(submittedUserSetting);
 
-    saveSettings(submittedFormData, `${currentUser?.id}`);
+    saveSettings(submittedUserSetting, `${currentUser?.id}`);
   };
 
-  const saveSettings = async (submittedFormData: FormData, userId?: string) => {
-    console.log("save submittedFormData", submittedFormData, userId);
-    const result = await updateUserSettings(submittedFormData, userId);
+  const saveSettings = async (
+    submittedUserSetting: UserSetting,
+    userId?: string
+  ) => {
+    console.log("save submittedUserSetting", submittedUserSetting, userId);
+    const result = await updateUserSettings(submittedUserSetting, userId);
     console.log("result", result);
     if (result) {
       console.log("settings saved");
@@ -92,7 +95,7 @@ const SettingsPage: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <div className="w-full md:w-1/2 mx-auto p-4 border mt-4">
+          <div className="w-full md:w-4/5 mx-auto p-4 border mt-4">
             <IonCard className="p-4 text-center">
               <h1 className="text-2xl">User Settings</h1>
               <p className="text-lg">
@@ -109,7 +112,10 @@ const SettingsPage: React.FC = () => {
                   <IonText> Email: {currentUser && currentUser.email}</IonText>
                 </IonItem>
                 <IonItem>
-                  <IonText> Role: {currentUser && currentUser.role}</IonText>
+                  <IonText>
+                    {" "}
+                    Role: {currentUser && (currentUser.role || "Member")}
+                  </IonText>
                 </IonItem>
                 <IonItem>
                   <IonText>
@@ -120,24 +126,24 @@ const SettingsPage: React.FC = () => {
                 <IonItem>
                   <IonText>
                     {" "}
-                    Created At: {currentUser && currentUser.created_at}
+                    Plan: {currentUser && currentUser.plan_type}
                   </IonText>
                 </IonItem>
                 <IonItem>
                   <IonText>
                     {" "}
-                    Updated At: {currentUser && currentUser.updated_at}
+                    Created At: {currentUser && currentUser.created_at}
                   </IonText>
                 </IonItem>
               </IonList>
             </div>
-            <div className="w-full md:w-5/6 mx-auto p-4">
+            <IonCard className="p-4 w-full md:w-4/5 mx-auto">
               <UserSettingsForm
                 onCancel={handleCancel}
                 onSave={handleSubmit}
                 existingUserSetting={currentUser?.settings}
               />
-            </div>
+            </IonCard>
 
             <IonCard className="p-4">
               <h1 className="text-2xl">Account Info</h1>

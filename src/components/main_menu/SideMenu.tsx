@@ -16,12 +16,12 @@ const SideMenu: React.FC<SideMenuProps> = ({ filteredLinks, currentUser }) => {
             <IonItem
               slot="header"
               routerLink="/dashboard"
-              className="hover:cursor-pointer text-wrap"
               detail={true}
+              className=""
               lines="none"
             >
-              <IonIcon icon={personCircleOutline} className="mr-5"></IonIcon>
-              <IonLabel>{currentUser?.email ?? "Try it for FREE"}</IonLabel>
+              <IonIcon icon={personCircleOutline} className="mr-3"></IonIcon>
+              <IonLabel className="text-xs">{currentUser?.email}</IonLabel>
             </IonItem>
           </>
         )}

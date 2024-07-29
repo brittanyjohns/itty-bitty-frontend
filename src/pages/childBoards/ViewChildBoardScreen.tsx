@@ -12,7 +12,6 @@ import {
   IonPage,
   IonRefresher,
   IonRefresherContent,
-  IonTitle,
   IonToolbar,
   useIonViewDidLeave,
   useIonViewWillEnter,
@@ -26,7 +25,6 @@ import {
 
 import { useParams } from "react-router";
 import React from "react";
-import { TextToSpeech } from "@capacitor-community/text-to-speech";
 import FloatingWordsBtn from "../../components/utils/FloatingWordsBtn";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import DraggableGrid from "../../components/images/DraggableGrid";
@@ -94,6 +92,10 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   }, []);
 
   const handleImageClick = async (image: Image) => {
+    if (currentUser?.settings?.disable_audit_logging) {
+      console.log("Audit logging is disabled");
+      return;
+    }
     const text = image.label;
     if (previousLabel === text) {
       console.log("Same label clicked", text);
@@ -107,17 +109,6 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
       clickWord(payload);
       setPreviousLabel(text);
     }
-  };
-
-  const speak = async (text: string) => {
-    await TextToSpeech.speak({
-      text: text,
-      lang: "en-US",
-      rate: 1.0,
-      pitch: 1.0,
-      volume: 1.0,
-      category: "ambient",
-    });
   };
 
   const clearInput = () => {

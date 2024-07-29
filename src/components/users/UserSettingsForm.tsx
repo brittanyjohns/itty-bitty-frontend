@@ -1,140 +1,166 @@
 import React, { useEffect, useState } from "react";
 import {
-  IonContent,
-  IonPage,
   IonLabel,
   IonSelect,
   IonSelectOption,
-  IonTextarea,
   IonButton,
+  IonToggle,
+  IonItem,
 } from "@ionic/react";
-import { language } from "ionicons/icons";
-import { set } from "react-hook-form";
-import { UserSetting } from "../../data/users";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { denyAccess, classNameForInput } from "../../data/users";
+
+interface VoiceSetting {
+  name?: string;
+  language?: string;
+  speed?: number;
+  pitch?: number;
+  rate?: number;
+  volume?: number;
+}
+
+interface UserSetting {
+  voice?: VoiceSetting;
+  wait_to_speak?: boolean;
+  disable_audit_logging?: boolean;
+  [key: string]: any; // Index signature for dynamic keys
+}
 
 interface UserSettingsFormProps {
-  onSave: any;
+  onSave: (settings: UserSetting) => void;
   onCancel: () => void;
   existingUserSetting?: UserSetting;
 }
 
+const settingsConfig = [
+  {
+    key: "voice.name",
+    label: "Voice",
+    description: "Select a default voice for text-to-speech.",
+    type: "select",
+    options: ["alloy", "onyx", "shimmer", "nova", "fable"],
+  },
+  {
+    key: "voice.language",
+    label: "Language",
+    type: "select",
+    options: ["English", "Spanish", "French"],
+  },
+  {
+    key: "voice.speed",
+    label: "Speed",
+    type: "select",
+    options: [0.5, 1, 1.5, 2],
+  },
+  {
+    key: "voice.pitch",
+    label: "Pitch",
+    type: "select",
+    options: [0.5, 1, 1.5, 2],
+  },
+  {
+    key: "wait_to_speak",
+    label: "Wait To Speak",
+    description: "Stop audio playback when user clicks each word.",
+    type: "toggle",
+  },
+  {
+    key: "disable_audit_logging",
+    label: "Disable Audit Logging",
+    description: "Disable logging of user actions.",
+    type: "toggle",
+  },
+];
+
+const getNestedProperty = (obj: any, path: string, defaultValue: any) => {
+  return path.split(".").reduce((o, p) => (o ? o[p] : defaultValue), obj);
+};
+
+const setNestedProperty = (obj: any, path: string, value: any) => {
+  const keys = path.split(".");
+  const lastKey = keys.pop()!;
+  const deep = keys.reduce((o, k) => (o[k] = o[k] || {}), obj);
+  deep[lastKey] = value;
+};
+
 const UserSettingsForm: React.FC<UserSettingsFormProps> = ({
   onSave,
   onCancel,
-  existingUserSetting,
+  existingUserSetting = {},
 }) => {
-  const [userSetting, setUserSetting] = useState<UserSetting | null>(null);
-  const [voice, setVoice] = useState<string>(
-    existingUserSetting?.voice?.name || ""
-  );
-  const [language, setLanguage] = useState<string>(
-    existingUserSetting?.voice.language || ""
-  );
-  const [speed, setSpeed] = useState<number>(
-    existingUserSetting?.voice.speed || 1
-  );
-  const [pitch, setPitch] = useState<number>(
-    existingUserSetting?.voice.pitch || 1
-  );
-
-  const voiceList: string[] = ["alloy", "onyx", "shimmer"];
-  const languageOptions = ["English", "Spanish", "French"];
-  const decimalOptions = [0.5, 1, 1.5, 2];
+  const [settings, setSettings] = useState<UserSetting>({});
 
   useEffect(() => {
-    setUserSetting(userSetting);
-  }, [userSetting]);
-
-  useEffect(() => {
-    setVoice(existingUserSetting?.voice?.name || "");
-    setLanguage(existingUserSetting?.voice?.language || "");
-    setSpeed(existingUserSetting?.voice?.speed || 1);
-    setPitch(existingUserSetting?.voice?.pitch || 1);
+    const initialSettings = settingsConfig.reduce((acc, setting) => {
+      const value = getNestedProperty(
+        existingUserSetting,
+        setting.key,
+        setting.type === "toggle" ? false : ""
+      );
+      setNestedProperty(acc, setting.key, value);
+      return acc;
+    }, {} as UserSetting);
+    setSettings(initialSettings);
   }, [existingUserSetting]);
+
+  const handleChange = (key: string, value: any) => {
+    console.log("handleChange", key, value);
+    setSettings((prevSettings) => {
+      const updatedSettings = { ...prevSettings };
+      setNestedProperty(updatedSettings, key, value);
+      return updatedSettings;
+    });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const settingToSave = {
-      user: {
-        voice: {
-          name: voice,
-          language: language,
-          speed: speed,
-          pitch: pitch,
-        },
-      },
-    };
-
-    onSave(settingToSave);
+    onSave(settings);
   };
+
+  const { currentUser } = useCurrentUser();
 
   return (
     <form onSubmit={handleSubmit} className="p-4">
-      {userSetting && userSetting.errors && userSetting?.errors?.length > 0 && (
-        <div className="text-red-500 p-2">
-          <h2>{`${userSetting.errors.length} error(s) prohibited this action from being saved:`}</h2>
-          <ul>
-            {userSetting.errors.map((error, index) => (
-              <li key={index}>{error}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {/* TODO hide for now -- need to figure out user settings */}
-      <div className="flex flex-col gap-4 hidden">
-        <div className="text-center">
-          <IonLabel className="">Settings</IonLabel>
-          <IonSelect
-            label="Voice"
-            value={voice}
-            onIonChange={(e) => setVoice(e.detail.value)}
-            placeholder="Select Voice"
-            className=""
-          >
-            {voiceList.map((range, index) => (
-              <IonSelectOption key={index} value={range}>
-                {range}
-              </IonSelectOption>
-            ))}
-          </IonSelect>
-
-          <IonSelect
-            label="Language"
-            value={language}
-            onIonChange={(e) => setLanguage(e.detail.value)}
-            className=""
-          >
-            {languageOptions.map((option) => (
-              <IonSelectOption key={option} value={option}>
-                {option}
-              </IonSelectOption>
-            ))}
-          </IonSelect>
-          <IonSelect
-            label="Speed"
-            value={speed}
-            onIonChange={(e) => setSpeed(parseFloat(e.detail.value))}
-            className=""
-          >
-            {decimalOptions.map((option) => (
-              <IonSelectOption key={option} value={option}>
-                {option}
-              </IonSelectOption>
-            ))}
-          </IonSelect>
-          <IonSelect
-            label="Pitch"
-            value={pitch}
-            onIonChange={(e) => setPitch(parseFloat(e.detail.value))}
-            className=""
-          >
-            {decimalOptions.map((option) => (
-              <IonSelectOption key={option} value={option}>
-                {option}
-              </IonSelectOption>
-            ))}
-          </IonSelect>
+      <div className="">
+        <div className="text-justify">
+          <IonLabel>Settings</IonLabel>
+          {settingsConfig.map((setting) => (
+            <IonItem key={setting.key} lines="none" className="mt-2 p-2 border">
+              <IonLabel>{setting.label}</IonLabel>
+              {setting.type === "select" && (
+                <IonSelect
+                  aria-label="Select Voice"
+                  value={getNestedProperty(settings, setting.key, "")}
+                  onIonChange={(e) => handleChange(setting.key, e.detail.value)}
+                  placeholder={`Select ${setting.label}`}
+                  disabled={denyAccess(currentUser)}
+                  className={`${classNameForInput(currentUser)} ml-4`}
+                >
+                  {setting.options &&
+                    setting.options.map((option: any) => (
+                      <IonSelectOption key={option} value={option}>
+                        {option}
+                      </IonSelectOption>
+                    ))}
+                </IonSelect>
+              )}
+              {setting.type === "toggle" && (
+                <>
+                  <IonToggle
+                    aria-label={setting.label}
+                    className="mt-2 ml-4"
+                    checked={getNestedProperty(settings, setting.key, false)}
+                    onIonChange={(e) =>
+                      handleChange(setting.key, e.detail.checked)
+                    }
+                  />
+                  <p className="text-xs mt-2 ml-2 font-light">
+                    {setting.description}
+                  </p>
+                </>
+              )}
+            </IonItem>
+          ))}
         </div>
       </div>
 

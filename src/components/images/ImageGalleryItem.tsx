@@ -89,22 +89,28 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       }
     }
 
+    const waitToSpeak = currentUser?.settings?.wait_to_speak || false;
+
     if (!audioSrc) {
-      speak(label);
+      if (!waitToSpeak) {
+        speak(label);
+      }
       return;
     }
     setAudioList([...audioList, audioSrc]);
 
     console.log("Playing audio: ", audioSrc);
+    console.log("waitToSpeak ", waitToSpeak);
     const audio = new Audio(audioSrc);
-
-    const promise = audio.play();
-    if (promise !== undefined) {
-      promise
-        .then(() => {})
-        .catch((error) => {
-          speak(label);
-        });
+    if (!waitToSpeak) {
+      const promise = audio.play();
+      if (promise !== undefined) {
+        promise
+          .then(() => {})
+          .catch((error) => {
+            speak(label);
+          });
+      }
     }
   };
 

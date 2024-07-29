@@ -3,8 +3,8 @@ import { MenuLink } from "../../data/menu";
 import { useHistory } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { lockClosed, lockClosedOutline } from "ionicons/icons";
-
+import { lockClosed, lockClosedOutline, lockOpenOutline } from "ionicons/icons";
+import { denyAccess } from "../../data/users";
 interface MainMenuListItemProps {
   menuLink: MenuLink;
   closeMenu?: () => void;
@@ -17,17 +17,12 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
   const history = useHistory();
   const itemRef = useRef<HTMLIonItemElement>(null);
   const { currentUser } = useCurrentUser();
-  // const [activeItem, setActiveItem] = useState("");
 
   const freeTrial = menuLink.pro && currentUser?.free_trial;
-  // const isActive = history.location.pathname.includes(menuLink.slug);
-  // const isActive = () => {
-  //   return history.location.pathname.includes(menuLink.slug);
-  // };
+
   const [isActive, setIsActive] = useState(false);
   const premiumFeatures = ["menus", "child-accounts", "teams"];
   const shouldDisable = (slug?: string) => {
-    // return false;
     if (!slug) {
       return false;
     }
@@ -36,7 +31,9 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
       return false;
     }
     if (freeTrial) {
+      console.log("free trial");
       if (premiumFeatures.includes(slug)) {
+        console.log("premium features");
         return true;
       }
       return false;
@@ -65,8 +62,18 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
     }
   }, []);
 
+  const denyLinkAccess = (slug: string) => {
+    if (!currentUser) {
+      return true;
+    }
+    if (denyAccess(currentUser) && premiumFeatures.includes(slug)) {
+      return true;
+    }
+    return false;
+  };
+
   const handleClick = (slug: string, endpoint: string) => () => {
-    if (shouldDisable()) {
+    if (denyLinkAccess(slug)) {
       alert(
         "Your trial has ended. Please upgrade to continue using this feature."
       );
@@ -75,25 +82,30 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
     if (closeMenu) {
       closeMenu();
     }
-    console.log("slug", slug);
     history.push(endpoint ?? "");
   };
 
   const classNameForActive = () => {
-    let x = `hover:cursor-pointer `;
+    let x = `hover:cursor-${
+      denyLinkAccess(menuLink.slug) ? "not-allowed" : "pointer"
+    } `;
     x += freeTrial || shouldDisable() ? "text-red-700" : "";
-    x += shouldDisable() ? " opacity-50" : "";
+    x += denyAccess(currentUser) ? " opacity-60" : "";
     x += isActive ? " font-bold text-lg" : "";
 
     return x;
   };
 
-  // const iconToUse = shouldDisable(menuLink.slug) ? lockClosed : menuLink.icon;
-
   const iconToUse = () => {
     if (shouldDisable(menuLink.slug)) {
-      console.log("lockClosed", menuLink.slug);
-      return lockClosedOutline;
+      if (!currentUser?.trial_days_left) {
+        console.log("no trial days left");
+        return lockClosed;
+      }
+      if (denyAccess(currentUser)) {
+        return lockClosed;
+      }
+      return lockOpenOutline;
     }
     if (isActive) {
       return menuLink.icon;
@@ -114,10 +126,10 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
         icon={iconToUse()}
         className={`mr-5 ${shouldDisable(menuLink.slug) ? "text-red-700" : ""}`}
       />
-      <IonLabel className="ml-5">
+      <IonLabel className="">
         {menuLink.name}
         <span className="text-xs font-light font-mono ml-3">
-          {freeTrial ? "Free Trial" : ""}
+          {freeTrial && !denyAccess ? "Free Trial" : ""}
         </span>
       </IonLabel>
     </IonItem>

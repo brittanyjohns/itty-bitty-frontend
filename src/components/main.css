@@ -193,7 +193,7 @@ select {
 }
 
 ion-menu::part(backdrop) {
-  background-color: rgba(255, 0, 255, 0.5);
+  background-color: rgba(20, 126, 188, 0.5);
 }
 
 ion-menu::part(container) {

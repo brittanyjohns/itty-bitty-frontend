@@ -80,6 +80,10 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   };
 
   const handleImageClick = async (image: Image) => {
+    if (currentUser?.settings?.disable_audit_logging) {
+      console.log("Audit logging is disabled");
+      return;
+    }
     const text = image.label;
     if (previousLabel === text) {
       console.log("Same label clicked", text);
