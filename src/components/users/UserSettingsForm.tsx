@@ -120,46 +120,56 @@ const UserSettingsForm: React.FC<UserSettingsFormProps> = ({
   const { currentUser } = useCurrentUser();
 
   return (
-    <form onSubmit={handleSubmit} className="p-4">
+    <form onSubmit={handleSubmit} className="p-2">
       <div className="">
         <div className="text-justify">
-          <IonLabel>Settings</IonLabel>
+          <h1 className="text-2xl font-bold">Settings</h1>
           {settingsConfig.map((setting) => (
-            <IonItem key={setting.key} lines="none" className="mt-2 p-2 border">
-              <IonLabel>{setting.label}</IonLabel>
+            <div
+              key={setting.key}
+              // lines="none"
+              className=""
+            >
               {setting.type === "select" && (
-                <IonSelect
-                  aria-label="Select Voice"
-                  value={getNestedProperty(settings, setting.key, "")}
-                  onIonChange={(e) => handleChange(setting.key, e.detail.value)}
-                  placeholder={`Select ${setting.label}`}
-                  disabled={denyAccess(currentUser)}
-                  className={`${classNameForInput(currentUser)} ml-4`}
-                >
-                  {setting.options &&
-                    setting.options.map((option: any) => (
-                      <IonSelectOption key={option} value={option}>
-                        {option}
-                      </IonSelectOption>
-                    ))}
-                </IonSelect>
+                <div className="p-3 flex border w-full md:w-2/3 justify-between items-center mx-auto">
+                  <p className="text-xs font-light">{setting.label}</p>
+                  <div>
+                    <IonSelect
+                      aria-label="Select Voice"
+                      value={getNestedProperty(settings, setting.key, "")}
+                      onIonChange={(e) =>
+                        handleChange(setting.key, e.detail.value)
+                      }
+                      placeholder={`Select ${setting.label}`}
+                      disabled={denyAccess(currentUser)}
+                      className={`${classNameForInput(currentUser)}`}
+                    >
+                      {setting.options &&
+                        setting.options.map((option: any) => (
+                          <IonSelectOption key={option} value={option}>
+                            {option}
+                          </IonSelectOption>
+                        ))}
+                    </IonSelect>
+                  </div>
+                </div>
               )}
               {setting.type === "toggle" && (
-                <>
-                  <IonToggle
-                    aria-label={setting.label}
-                    className="mt-2 ml-4"
-                    checked={getNestedProperty(settings, setting.key, false)}
-                    onIonChange={(e) =>
-                      handleChange(setting.key, e.detail.checked)
-                    }
-                  />
-                  <p className="text-xs mt-2 ml-2 font-light">
-                    {setting.description}
-                  </p>
-                </>
+                <div className="p-3 flex border w-full md:w-2/3 justify-between items-center mx-auto">
+                  <p className="text-xs font-light">{setting.label}</p>
+                  <div>
+                    <IonToggle
+                      aria-label={setting.label}
+                      className="ml-4"
+                      checked={getNestedProperty(settings, setting.key, false)}
+                      onIonChange={(e) =>
+                        handleChange(setting.key, e.detail.checked)
+                      }
+                    />
+                  </div>
+                </div>
               )}
-            </IonItem>
+            </div>
           ))}
         </div>
       </div>

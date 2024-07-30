@@ -241,6 +241,6 @@ export const denyAccess = (currentUser: User | null) => {
   return (
     currentUser?.free_trial === true &&
     currentUser?.trial_days_left != undefined &&
-    currentUser?.trial_days_left <= 0
+    currentUser?.trial_days_left <= 5
   );
 };

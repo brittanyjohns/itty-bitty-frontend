@@ -20,7 +20,6 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 import UserSettingsForm from "../../components/users/UserSettingsForm";
 import { User, UserSetting, updateUserSettings } from "../../data/users";
 import { useEffect, useState } from "react";
-import { set } from "react-hook-form";
 import UserForm from "../../components/users/UserForm";
 import { useHistory } from "react-router";
 
@@ -36,6 +35,7 @@ const SettingsPage: React.FC = () => {
 
   const handleSubmit = (submittedUserSetting: UserSetting) => {
     console.log("handle submit: submittedUserSetting", submittedUserSetting);
+
     setUserSetting(submittedUserSetting);
 
     saveSettings(submittedUserSetting, `${currentUser?.id}`);
@@ -57,6 +57,7 @@ const SettingsPage: React.FC = () => {
       setIsOpen(true);
       setToastMessage("Error saving settings");
     }
+    window.location.reload();
   };
 
   useEffect(() => {
