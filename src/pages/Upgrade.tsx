@@ -12,10 +12,10 @@ import {
 import MainMenu from "../components/main_menu/MainMenu";
 import Tabs from "../components/utils/Tabs";
 import { useCurrentUser } from "../hooks/useCurrentUser";
-import SubscriptionLink from "../components/stripe/SubscriptionLink";
+import PricingTable from "../components/utils/PricingTable";
 
 const Upgrade: React.FC = () => {
-  const { isWideScreen } = useCurrentUser();
+  const { isWideScreen, currentUser } = useCurrentUser();
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
@@ -27,19 +27,25 @@ const Upgrade: React.FC = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="start">
-              {!isWideScreen && <IonMenuButton></IonMenuButton>}
-            </IonButtons>
-            <IonTitle>Upgrade</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+        {!isWideScreen && (
+          <IonHeader className="bg-inherit shadow-none">
+            <IonToolbar>
+              <IonButtons slot="start">
+                <IonMenuButton></IonMenuButton>
+              </IonButtons>
+              <IonTitle>Upgrade</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+        )}
         <IonContent>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <SubscriptionLink />
+          <div className="">
+            {currentUser && currentUser?.plan_type === "free" && (
+              <PricingTable showHeader={false} />
+            )}
+          </div>
         </IonContent>
       </IonPage>
       <Tabs />

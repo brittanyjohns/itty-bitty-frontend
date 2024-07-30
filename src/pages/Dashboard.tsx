@@ -23,6 +23,7 @@ import PricingTable from "../components/utils/PricingTable";
 import WordNetworkGraph from "../components/utils/WordNetworkGraph";
 import { WordEvent, fetchWordEvents } from "../data/word_event";
 import WordCloudChart from "../components/utils/WordCloudChart";
+
 const Dashboard: React.FC = () => {
   const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
 
@@ -78,11 +79,6 @@ const Dashboard: React.FC = () => {
                   <AccountLink />
                 </>
               ))}
-            <div className="">
-              {currentUser && currentUser?.plan_type === "free" && (
-                <PricingTable />
-              )}
-            </div>
             <div className="mt-3 w-full md:w-5/6 mx-auto">
               {currentUser && (
                 <div className="p-4">

@@ -3,6 +3,7 @@ import {
   IonCard,
   IonContent,
   IonHeader,
+  IonInput,
   IonItem,
   IonList,
   IonMenuButton,
@@ -108,6 +109,10 @@ const SettingsPage: React.FC = () => {
               <IonList>
                 <IonItem>
                   <IonText> Name: {currentUser && currentUser.name}</IonText>
+                  <IonInput
+                    value={name}
+                    onIonChange={(e) => setName(e.detail.value!)}
+                  ></IonInput>
                 </IonItem>
                 <IonItem>
                   <IonText> Email: {currentUser && currentUser.email}</IonText>

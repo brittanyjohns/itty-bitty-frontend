@@ -59,6 +59,7 @@ const ImagesScreen: React.FC = () => {
 
   const fetchUserImages = async () => {
     const fetchedUserImages = await getUserImages();
+    console.log("Fetched user images: ", fetchedUserImages);
     setUserImages(fetchedUserImages);
   };
 

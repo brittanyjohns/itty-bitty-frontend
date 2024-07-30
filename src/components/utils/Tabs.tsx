@@ -23,6 +23,13 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { openMenu } from "../main_menu/MainMenu";
 const Tabs: React.FC = () => {
   const { isWideScreen } = useCurrentUser();
+  const openMainMenu = () => {
+    const menu = document.querySelector("#main-menu");
+    console.log("menu", menu);
+    if (menu) {
+      menu.classList.remove("hidden");
+    }
+  };
   return (
     <>
       {!isWideScreen && (
@@ -47,7 +54,7 @@ const Tabs: React.FC = () => {
             <IonIcon icon={peopleCircleOutline} />
             <IonLabel>Accounts</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="settings" onClick={openMenu}>
+          <IonTabButton tab="settings" onClick={openMainMenu}>
             <IonIcon icon={menuSharp} />
             <IonLabel>Settings</IonLabel>
           </IonTabButton>

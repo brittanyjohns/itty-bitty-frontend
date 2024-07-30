@@ -27,13 +27,16 @@ declare global {
     }
   }
 }
-function PricingTable() {
+interface PricingTableProps {
+  showHeader?: boolean;
+}
+function PricingTable({ showHeader = true }: PricingTableProps) {
   const { currentUser } = useCurrentUser();
   const history = useHistory();
   // Paste the stripe-pricing-table snippet in your React component
   return (
     <div className="relative fixed-bg">
-      {
+      {showHeader && (
         <div className="text-cente bg-black bg-opacity-90 p-4 py-9 font-sanserif text-center">
           <h1 className="text-xl md:text-2xl font-bold text-white">
             Find the plan that's right for you.
@@ -43,7 +46,7 @@ function PricingTable() {
             with SpeakAnyWay.
           </p>
         </div>
-      }
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-3">
         {currentUser && currentUser.plan_type === "free" && (
           <IonCard className="h-fit">

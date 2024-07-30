@@ -1,4 +1,3 @@
-import { useEffect, useRef } from "react";
 import { updateBoard } from "../../data/boards";
 import {
   IonButton,
@@ -14,7 +13,8 @@ import {
 import { Board } from "../../data/boards";
 import { useHistory } from "react-router";
 import React from "react";
-import { set } from "react-hook-form";
+import { denyAccess } from "../../data/users";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 interface BoardFormProps {
   board: Board;
   setBoard: (board: Board) => void;
@@ -30,6 +30,7 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   const [voice, setVoice] = React.useState(board.voice);
   const [toastMessage, setToastMessage] = React.useState("");
   const [showLoading, setShowLoading] = React.useState(false);
+  const { currentUser } = useCurrentUser();
 
   const handleGridSizeChange = (event: CustomEvent) => {
     setGridSize(event.detail.value);
@@ -113,6 +114,7 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
             placeholder="Select Voice"
             name="voice"
             className="mr-2"
+            disabled={denyAccess(currentUser)}
             onIonChange={handleVoiceChange}
             value={voice}
           >

@@ -81,7 +81,6 @@ import SignInPage from "./pages/SignInPage";
 import AccountSignOutScreen from "./pages/accounts/AccountSignOutScreen";
 import ViewChildBoardScreen from "./pages/childBoards/ViewChildBoardScreen";
 import { AndroidFullScreen } from "@awesome-cordova-plugins/android-full-screen";
-import FullscreenToggle from "./components/utils/FullscreenToggle";
 
 const UserRoutes: React.FC = () => (
   <UserProvider>

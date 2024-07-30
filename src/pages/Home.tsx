@@ -16,8 +16,8 @@ import Tabs from "../components/utils/Tabs";
 import MainPageContent from "./MainPageContent";
 import MainHeader from "./MainHeader";
 import { useEffect, useState } from "react";
-import { getImageUrl } from "../data/utils";
 import BoardGrid from "../components/boards/BoardGrid";
+import PricingTable from "../components/utils/PricingTable";
 
 const Home: React.FC = () => {
   const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
@@ -51,8 +51,13 @@ const Home: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
+          <div className="">
+            {currentUser && currentUser?.plan_type === "free" && (
+              <PricingTable showHeader={false} />
+            )}
+          </div>
 
-          {!currentAccount && <MainPageContent ipAddr={ip} />}
+          {!currentUser && !currentAccount && <MainPageContent ipAddr={ip} />}
           {currentAccount && (
             <BoardGrid
               gridType={"child"}

@@ -15,6 +15,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { arrowBackCircleOutline } from "ionicons/icons";
 import React, { useEffect, useRef } from "react";
 import MainMenu from "../../components/main_menu/MainMenu";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { denyAccess } from "../../data/users";
+import BoardForm from "../../components/boards/BoardForm";
 
 const NewBoard: React.FC = (props: any) => {
   const {
@@ -31,6 +34,8 @@ const NewBoard: React.FC = (props: any) => {
   const scenarioBtnRef = useRef<HTMLIonButtonElement>(null);
   const scratchFormRef = useRef<HTMLFormElement>(null);
   const scratchBtnRef = useRef<HTMLIonButtonElement>(null);
+
+  const { currentUser } = useCurrentUser();
 
   const handleCreateFromScratch = () => {
     scratchBtnRef.current?.classList.toggle("hidden");
@@ -71,9 +76,11 @@ const NewBoard: React.FC = (props: any) => {
               onClick={handleCreateFromScratch}
               ref={scratchBtnRef}
             >
-              Create from scratch
+              <span className="font-bold text-lg block">
+                Create from scratch
+              </span>
             </IonButton>
-            <form
+            {/* <form
               className="hidden"
               onSubmit={handleSubmit(onSubmit)}
               ref={scratchFormRef}
@@ -87,14 +94,28 @@ const NewBoard: React.FC = (props: any) => {
               <IonButton className="" type="submit" expand="block">
                 Create
               </IonButton>
-            </form>
+            </form> */}
+            <BoardForm board={board} setBoard={setBoard} onSubmit={loadPage} />
 
             <IonButton
               routerLink="/scenarios/new"
               expand="block"
               ref={scenarioBtnRef}
+              color={denyAccess(currentUser) ? "danger" : "primary"}
+              disabled={denyAccess(currentUser)}
             >
-              Create from scenario
+              <div className="text-md font-md">
+                {!denyAccess(currentUser) ? (
+                  "Create from scenario"
+                ) : (
+                  <>
+                    <span className="font-bold text-lg block">
+                      Free Trial Expired{" "}
+                    </span>
+                    You need to upgrade to create from scenario
+                  </>
+                )}
+              </div>
             </IonButton>
           </div>
         </IonContent>

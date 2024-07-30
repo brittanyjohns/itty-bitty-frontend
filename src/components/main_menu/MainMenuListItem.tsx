@@ -4,7 +4,7 @@ import { useHistory } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { lockClosed, lockClosedOutline, lockOpenOutline } from "ionicons/icons";
-import { denyAccess } from "../../data/users";
+import { User, denyAccess } from "../../data/users";
 interface MainMenuListItemProps {
   menuLink: MenuLink;
   closeMenu?: () => void;
@@ -31,9 +31,7 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
       return false;
     }
     if (freeTrial) {
-      console.log("free trial");
       if (premiumFeatures.includes(slug)) {
-        console.log("premium features");
         return true;
       }
       return false;
@@ -85,12 +83,11 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
     history.push(endpoint ?? "");
   };
 
-  const classNameForActive = () => {
+  const classNameForActive = (currentUser: User | null) => {
     let x = `hover:cursor-${
       denyLinkAccess(menuLink.slug) ? "not-allowed" : "pointer"
     } `;
-    x += freeTrial || shouldDisable() ? "text-red-700" : "";
-    x += denyAccess(currentUser) ? " opacity-60" : "";
+    x += freeTrial || shouldDisable(menuLink.slug) ? "text-red-700" : "";
     x += isActive ? " font-bold text-lg" : "";
 
     return x;
@@ -99,7 +96,6 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
   const iconToUse = () => {
     if (shouldDisable(menuLink.slug)) {
       if (!currentUser?.trial_days_left) {
-        console.log("no trial days left");
         return lockClosed;
       }
       if (denyAccess(currentUser)) {
@@ -117,7 +113,7 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
     <IonItem
       key={menuLink.id}
       onClick={handleClick(menuLink.slug, menuLink.endpoint)}
-      className={classNameForActive()}
+      className={classNameForActive(currentUser)}
       lines="none"
       detail={false}
       ref={itemRef}
@@ -129,7 +125,7 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
       <IonLabel className="">
         {menuLink.name}
         <span className="text-xs font-light font-mono ml-3">
-          {freeTrial && !denyAccess ? "Free Trial" : ""}
+          {freeTrial && !denyAccess(currentUser) ? "Free Trial" : ""}
         </span>
       </IonLabel>
     </IonItem>
