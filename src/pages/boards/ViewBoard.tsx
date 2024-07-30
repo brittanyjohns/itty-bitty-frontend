@@ -30,6 +30,7 @@ import Tabs from "../../components/utils/Tabs";
 import MainMenu from "../../components/main_menu/MainMenu";
 import BoardView from "../../components/boards/BoardView";
 import { addCircleOutline } from "ionicons/icons";
+import { set } from "d3";
 
 const ViewBoard: React.FC<any> = () => {
   const [board, setBoard] = useState<Board>();
@@ -89,19 +90,20 @@ const ViewBoard: React.FC<any> = () => {
 
   const handleClone = async () => {
     try {
+      setShowLoading(true);
       const clonedBoard = await cloneBoard(params.id);
       if (clonedBoard && clonedBoard.id) {
         const updatedBoard = await rearrangeImages(clonedBoard.id);
         setBoard(updatedBoard);
       }
+      setShowLoading(false);
       window.location.href = `/boards/${clonedBoard.id}`;
     } catch (error) {
       console.error("Error cloning board: ", error);
       alert("Error cloning board");
+      setShowLoading(false);
     }
   };
-
-  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>

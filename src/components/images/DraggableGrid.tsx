@@ -9,8 +9,7 @@ import "react-resizable/css/styles.css";
 import ImageGalleryItem from "./ImageGalleryItem";
 import { Board, updateBoard } from "../../data/boards";
 import { Image } from "../../data/images";
-import { IonButton, IonIcon, IonLabel } from "@ionic/react";
-import { createOutline } from "ionicons/icons";
+
 interface DraggableGridProps {
   columns: number;
   images: any;
@@ -75,9 +74,8 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
 
       const savedBoard = await updateBoard(updatingBoard);
       console.log("Saved board: ", savedBoard);
-      window.location.reload();
-      // alert("Response: " + savedBoard);
-      // setBoard(savedBoard);
+      // window.location.reload();
+      alert("Response: " + JSON.stringify(savedBoard));
     }
   };
   return (

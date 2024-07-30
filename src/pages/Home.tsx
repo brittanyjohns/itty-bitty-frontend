@@ -42,6 +42,16 @@ const Home: React.FC = () => {
     }, 3000);
   };
 
+  useEffect(() => {
+    // Set up the interval to fetch board data every 30 seconds
+    const intervalId = setInterval(() => {
+      getData();
+    }, 3000); // 30000 milliseconds = 30 seconds
+
+    // Clear the interval when the component is unmounted
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
     <>
       <MainMenu />
