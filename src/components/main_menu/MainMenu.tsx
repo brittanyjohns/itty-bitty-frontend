@@ -1,12 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  IonContent,
-  IonItem,
-  IonIcon,
-  IonList,
-  IonMenu,
-  useIonViewWillLeave,
-} from "@ionic/react";
+import { IonContent, IonItem, IonIcon, IonList, IonMenu } from "@ionic/react";
 import { MenuLink, getMenu } from "../../data/menu";
 import MenuListItem from "./MainMenuListItem";
 import { useCurrentUser } from "../../hooks/useCurrentUser";

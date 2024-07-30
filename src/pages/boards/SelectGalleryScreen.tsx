@@ -94,7 +94,7 @@ const SelectGalleryScreen: React.FC = () => {
     const updatedBoard = await rearrangeImages(id);
     setBoard(updatedBoard);
     setShowLoading(false);
-    window.location.reload();
+    // window.location.reload();
   };
 
   const fetchBoard = async () => {
@@ -121,6 +121,7 @@ const SelectGalleryScreen: React.FC = () => {
 
   const handleSearchInput = async (event: CustomEvent) => {
     const query = event.detail.value.toLowerCase();
+    console.log("Query: ", query);
     setSearchInput(query);
     setPage(1); // Reset to first page on new search
   };
@@ -137,8 +138,8 @@ const SelectGalleryScreen: React.FC = () => {
   };
 
   useIonViewWillEnter(() => {
-    setSearchInput("");
-    setPage(1);
+    // setSearchInput("");
+    // setPage(1);
   });
 
   useEffect(() => {
@@ -225,7 +226,7 @@ const SelectGalleryScreen: React.FC = () => {
       const response = await addImageToBoard(board.id, image.id);
       let message = "";
       if (response["board"]) {
-        message = `Image added to board: ${response["board"]["name"]}`;
+        message = `${response["label"]} added to board: ${response["board"]["name"]}`;
         setToastMessage(message);
       } else {
         message = `${response["error"]}`;
