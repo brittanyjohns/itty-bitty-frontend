@@ -48,7 +48,7 @@ const WordCloudChart: React.FC<WordCloudChartProps> = ({ wordEvents }) => {
     const customColors = scaleOrdinal(schemeCategory10);
 
     const layout = cloud()
-      .size([800, 600])
+      .size([600, 600])
       .words(words)
       .padding(5)
       .rotate(() => ~~(Math.random() * 2) * 90)

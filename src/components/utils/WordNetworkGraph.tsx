@@ -82,7 +82,7 @@ const WordNetworkGraph: React.FC<WordNetworkGraphProps> = ({ wordEvents }) => {
     }
   }, [wordEvents]);
 
-  return <div ref={networkRef} style={{ height: "600px" }} />;
+  return <div ref={networkRef} style={{ height: "600px" }}></div>;
 };
 
 export default WordNetworkGraph;

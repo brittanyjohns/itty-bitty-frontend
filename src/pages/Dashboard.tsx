@@ -21,7 +21,11 @@ import { Subscription, getSubscriptions } from "../data/subscriptions";
 import AccountLink from "../components/stripe/AccountLink";
 import PricingTable from "../components/utils/PricingTable";
 import WordNetworkGraph from "../components/utils/WordNetworkGraph";
-import { WordEvent, fetchWordEvents } from "../data/word_event";
+import {
+  WordEvent,
+  fetchWordEvents,
+  fetchWordEventsByUserId,
+} from "../data/word_event";
 import WordCloudChart from "../components/utils/WordCloudChart";
 
 const Dashboard: React.FC = () => {
@@ -45,7 +49,16 @@ const Dashboard: React.FC = () => {
 
   const loadWordEvents = async () => {
     setLoading(true);
-    const events = await fetchWordEvents();
+    if (!currentUser) {
+      setLoading(false);
+      console.log("No current user");
+      return;
+    }
+    let events: WordEvent[] = [];
+    if (currentUser?.admin) {
+      events = await fetchWordEvents();
+    }
+    events = await fetchWordEventsByUserId(currentUser.id || 0);
     setLoading(false);
     console.log("events", events);
     setWordEvents(events);
@@ -55,7 +68,8 @@ const Dashboard: React.FC = () => {
     if (currentUser) {
       loadSubscriptions();
     }
-  }, []);
+    loadWordEvents();
+  }, [currentUser]);
 
   return (
     <>
@@ -65,7 +79,22 @@ const Dashboard: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
+          <h1 className="text-2xl">Dashboard</h1>
+
           <div className="">
+            <IonButtons slot="start">
+              <IonButton
+                color={isWideScreen ? "primary" : "secondary"}
+                fill="outline"
+                routerLink="/settings"
+              >
+                Settings
+              </IonButton>
+            </IonButtons>
+            <p className="text-md my-3">
+              This is your dashboard. Here you can see user activity, word usage
+              & more.
+            </p>
             {currentAccount && (
               <h2 className="text-xl font-semibold">
                 {currentAccount?.name || currentAccount?.username}'s Dashboard
@@ -79,31 +108,23 @@ const Dashboard: React.FC = () => {
                   <AccountLink />
                 </>
               ))}
-            <div className="mt-3 w-full md:w-5/6 mx-auto">
+            <div className="">
               {currentUser && (
                 <div className="p-4">
-                  <IonButtons slot="start" className="mt-4">
-                    <IonButton
-                      fill="outline"
-                      color="primary"
-                      expand="block"
-                      size="large"
-                      onClick={loadWordEvents}
-                    >
-                      Load Graphs
-                    </IonButton>
-                  </IonButtons>
                   {loading && <IonSpinner />}
-                  <div className="">
-                    <div className="w-full md:w-5/6 mx-auto my-4">
+                  <div className="flex justify-between">
+                    <div className="w-full md:w-1/2">
                       <h1 className="text-2xl mt-4">Word Usage Word Cloud</h1>
-
-                      <WordCloudChart wordEvents={wordEvents} />
+                      <div className=" border overflow-hidden m-1">
+                        <WordCloudChart wordEvents={wordEvents} />
+                      </div>
                     </div>
-                    <div className="w-full md:w-5/6 mx-auto my-4">
+                    <div className="w-full md:w-1/2">
                       <h1 className="text-2xl">Word Relationships </h1>
 
-                      <WordNetworkGraph wordEvents={wordEvents} />
+                      <div className=" border m-1">
+                        <WordNetworkGraph wordEvents={wordEvents} />
+                      </div>
                     </div>
                   </div>
                 </div>

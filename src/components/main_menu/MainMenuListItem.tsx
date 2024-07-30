@@ -62,7 +62,7 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
 
   const denyLinkAccess = (slug: string) => {
     if (!currentUser) {
-      return true;
+      return false;
     }
     if (denyAccess(currentUser) && premiumFeatures.includes(slug)) {
       return true;

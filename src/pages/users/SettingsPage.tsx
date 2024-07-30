@@ -1,4 +1,5 @@
 import {
+  IonBackButton,
   IonButtons,
   IonCard,
   IonContent,
@@ -99,6 +100,9 @@ const SettingsPage: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <div className="w-full md:w-4/5 mx-auto p-4 border mt-4">
+            <IonButtons slot="start">
+              <IonBackButton defaultHref="/" />
+            </IonButtons>
             <IonCard className="p-4 text-center w-full md:w-4/5 mx-auto">
               <h1 className="text-2xl">User Settings</h1>
               <p className="text-lg mb-3">
