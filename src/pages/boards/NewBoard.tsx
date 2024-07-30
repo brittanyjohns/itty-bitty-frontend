@@ -80,7 +80,7 @@ const NewBoard: React.FC = (props: any) => {
                 Create from scratch
               </span>
             </IonButton>
-            {/* <form
+            <form
               className="hidden"
               onSubmit={handleSubmit(onSubmit)}
               ref={scratchFormRef}
@@ -94,8 +94,8 @@ const NewBoard: React.FC = (props: any) => {
               <IonButton className="" type="submit" expand="block">
                 Create
               </IonButton>
-            </form> */}
-            <BoardForm board={board} setBoard={setBoard} onSubmit={loadPage} />
+            </form>
+            {/* <BoardForm board={board} setBoard={setBoard} onSubmit={loadPage} /> */}
 
             <IonButton
               routerLink="/scenarios/new"
