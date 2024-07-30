@@ -105,10 +105,6 @@ const ViewImageScreen: React.FC = () => {
     }
   };
 
-  // useIonViewWillEnter(() => {
-  //   setupData();
-  // });
-
   useEffect(() => {
     setupData();
   }, []);
@@ -226,10 +222,6 @@ const ViewImageScreen: React.FC = () => {
         window.location.reload();
       }, 15000);
     }
-  };
-
-  const onGenerateClick = () => {
-    handleGenerate();
   };
 
   const handleSegmentChange = (e: CustomEvent) => {
@@ -399,7 +391,7 @@ const ViewImageScreen: React.FC = () => {
                 )}
               </IonItem>
               <IonItem className="mt-2">
-                <IonButton className="w-full text-lg" onClick={onGenerateClick}>
+                <IonButton className="w-full text-lg" onClick={handleGenerate}>
                   Generate Image
                 </IonButton>
               </IonItem>

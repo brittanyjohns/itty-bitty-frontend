@@ -128,13 +128,14 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
       }
     }
     if (createResult) {
-      if (boardId) {
-        history.push(`/boards/${boardId}`);
-        return;
-      } else {
-        history.push("/images");
-        window.location.reload();
-      }
+      // if (boardId) {
+      //   history.push(`/boards/${boardId}`);
+      //   window.location.reload();
+      //   return;
+      // } else {
+      history.push(`/images/${createResult.id}`);
+      window.location.reload();
+      // }
     } else {
       alert("An error occurred. Please try again.");
     }
@@ -227,9 +228,6 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
               alt="Source"
               style={{ display: "none" }}
             />
-            <div className="mt-4">
-              <p className="text-center">Select the area to crop</p>
-            </div>
           </>
         )}
         <IonButtons className="mt-4">
