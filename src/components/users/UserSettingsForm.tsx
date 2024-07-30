@@ -124,6 +124,7 @@ const UserSettingsForm: React.FC<UserSettingsFormProps> = ({
       <div className="">
         <div className="text-justify">
           <h1 className="text-2xl font-bold">Settings</h1>
+
           {settingsConfig.map((setting) => (
             <div
               key={setting.key}
@@ -131,8 +132,13 @@ const UserSettingsForm: React.FC<UserSettingsFormProps> = ({
               className=""
             >
               {setting.type === "select" && (
-                <div className="p-3 flex border w-full md:w-2/3 justify-between items-center mx-auto">
-                  <p className="text-xs font-light">{setting.label}</p>
+                <div className="p-2 flex border w-full md:w-3/4 justify-between items-center mx-auto mt-2">
+                  <p className="text-md font-bold mr-2">{setting.label}</p>
+                  {denyAccess(currentUser) && (
+                    <p className="font-mono text-xs text-red-500 text-center p-1 mx-3">
+                      Upgrade to customize voice settings
+                    </p>
+                  )}
                   <div>
                     <IonSelect
                       aria-label="Select Voice"
@@ -155,8 +161,8 @@ const UserSettingsForm: React.FC<UserSettingsFormProps> = ({
                 </div>
               )}
               {setting.type === "toggle" && (
-                <div className="p-3 flex border w-full md:w-2/3 justify-between items-center mx-auto">
-                  <p className="text-xs font-light">{setting.label}</p>
+                <div className="p-3 flex border w-full md:w-2/3 justify-between items-center mx-auto mt-2">
+                  <p className="text-md font-bold">{setting.label}</p>
                   <div>
                     <IonToggle
                       aria-label={setting.label}

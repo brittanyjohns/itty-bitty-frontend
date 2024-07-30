@@ -163,19 +163,13 @@ export const getCurrentUser = async () => {
   }
 };
 
-export const updatePlan = (plan: string, userId?: number) => {
-  console.log("updatePlan", plan);
-  console.log("userId", userId);
-  const planJson = {
-    plan_type: plan,
-  };
-
+export const updateUser = (user: User, userId?: number) => {
   const endpoint = `${BASE_URL}users/${userId}`;
 
   const userSetting = fetch(endpoint, {
     headers: userHeaders,
     method: "PUT",
-    body: JSON.stringify(planJson),
+    body: JSON.stringify(user),
   })
     .then((response) => response.json())
     .then((result) => {
@@ -241,6 +235,6 @@ export const denyAccess = (currentUser: User | null) => {
   return (
     currentUser?.free_trial === true &&
     currentUser?.trial_days_left != undefined &&
-    currentUser?.trial_days_left <= 5
+    currentUser?.trial_days_left <= 0
   );
 };

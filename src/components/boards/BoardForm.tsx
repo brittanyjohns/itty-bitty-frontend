@@ -11,7 +11,6 @@ import {
   IonToast,
 } from "@ionic/react";
 import { Board } from "../../data/boards";
-import { useHistory } from "react-router";
 import React from "react";
 import { denyAccess } from "../../data/users";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
@@ -22,7 +21,6 @@ interface BoardFormProps {
   onSubmit?: any;
 }
 const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
-  const history = useHistory();
   const [gridSize, setGridSize] = React.useState<number>(
     board.number_of_columns
   );

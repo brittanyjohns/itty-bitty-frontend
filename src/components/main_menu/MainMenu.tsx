@@ -126,15 +126,15 @@ const MainMenu: React.FC<MainMenuProps> = () => {
         if (currentUser.role === "admin") {
           return links.filter((link) => adminLinks.includes(link.slug ?? ""));
         }
-        if (currentUser.plan_type === "Free") {
+        if (currentUser.plan_type === "free") {
           return links.filter((link) => freeLinks.includes(link.slug ?? ""));
         }
-        if (currentUser.plan_type === "Pro") {
+        if (currentUser.plan_type === "free") {
           return links.filter((link) => proLinks.includes(link.slug ?? ""));
         }
         if (
-          currentUser.plan_type === "Professional Plus" ||
-          currentUser.plan_type === "Premium"
+          currentUser.plan_type === "professional plus" ||
+          currentUser.plan_type === "premium"
         ) {
           return links.filter((link) =>
             professionalProLinks.includes(link.slug ?? "")

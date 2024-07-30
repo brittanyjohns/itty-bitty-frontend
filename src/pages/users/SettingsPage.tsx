@@ -5,6 +5,7 @@ import {
   IonHeader,
   IonInput,
   IonItem,
+  IonLabel,
   IonList,
   IonMenuButton,
   IonPage,
@@ -32,7 +33,7 @@ const SettingsPage: React.FC = () => {
   const history = useHistory();
   const [toastMessage, setToastMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [planType, setPlanType] = useState<string>("Free");
+  const [planType, setPlanType] = useState<string>("free");
 
   const handleSubmit = (submittedUserSetting: UserSetting) => {
     console.log("handle submit: submittedUserSetting", submittedUserSetting);
@@ -62,7 +63,7 @@ const SettingsPage: React.FC = () => {
   };
 
   useEffect(() => {
-    const planTypeToSet = currentUser?.plan_type || planType || "Free";
+    const planTypeToSet = currentUser?.plan_type || planType || "free";
     setPlanType(planTypeToSet);
   }, [currentUser]);
 
@@ -98,67 +99,43 @@ const SettingsPage: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <div className="w-full md:w-4/5 mx-auto p-4 border mt-4">
-            <IonCard className="p-4 text-center">
+            <IonCard className="p-4 text-center w-full md:w-4/5 mx-auto">
               <h1 className="text-2xl">User Settings</h1>
-              <p className="text-lg">
+              <p className="text-lg mb-3">
                 This is where you can view your account information, manage your
                 subscriptions, and more.
               </p>
+
+              <UserForm user={currentUser} />
             </IonCard>
-            <div className="w-full md:w-5/6 mx-auto p-4">
-              <IonList>
-                <IonItem>
-                  <IonText> Name: {currentUser && currentUser.name}</IonText>
-                  <IonInput
-                    value={name}
-                    onIonChange={(e) => setName(e.detail.value!)}
-                  ></IonInput>
-                </IonItem>
-                <IonItem>
-                  <IonText> Email: {currentUser && currentUser.email}</IonText>
-                </IonItem>
-                <IonItem>
-                  <IonText>
-                    {" "}
-                    Role: {currentUser && (currentUser.role || "Member")}
-                  </IonText>
-                </IonItem>
-                <IonItem>
-                  <IonText>
-                    {" "}
-                    Tokens: {currentUser && currentUser.tokens}
-                  </IonText>
-                </IonItem>
-                <IonItem>
-                  <IonText>
-                    {" "}
-                    Plan: {currentUser && currentUser.plan_type}
-                  </IonText>
-                </IonItem>
-                <IonItem>
-                  <IonText>
-                    {" "}
-                    Created At: {currentUser && currentUser.created_at}
-                  </IonText>
-                </IonItem>
-              </IonList>
-            </div>
+            {/* <div className="w-full md:w-2/3 mx-auto border p-4">
+              <h2 className="text-2xl">Account Information</h2>
+              <IonItem>
+                <IonLabel>Name:</IonLabel>
+                <IonInput
+                  value={name}
+                  placeholder="No Name Set"
+                  onIonChange={(e) => setName(e.detail.value!)}
+                ></IonInput>
+              </IonItem>
+              <IonItem>
+                <IonLabel>Email:</IonLabel>
+                <IonText>{currentUser && currentUser.email}</IonText>
+              </IonItem>
+              <IonItem>
+                <IonLabel>Plan Type:</IonLabel>
+                <IonText>{currentUser && currentUser.plan_type}</IonText>
+              </IonItem>
+              <IonItem>
+                <IonLabel>Trial Days Left:</IonLabel>
+                <IonText>{currentUser && currentUser.trial_days_left}</IonText>
+              </IonItem>
+            </div> */}
             <IonCard className="p-4 w-full md:w-4/5 mx-auto">
               <UserSettingsForm
                 onCancel={handleCancel}
                 onSave={handleSubmit}
                 existingUserSetting={currentUser?.settings}
-              />
-            </IonCard>
-
-            <IonCard className="p-4">
-              <h1 className="text-2xl">Account Info</h1>
-              <UserForm
-                onCancel={handleCancel}
-                onSave={handleSubmit}
-                planType={planType}
-                setPlanType={handleSetPlanType}
-                userId={currentUser?.id}
               />
             </IonCard>
           </div>
