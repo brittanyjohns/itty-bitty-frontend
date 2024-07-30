@@ -16,7 +16,6 @@ import { getImageUrl } from "../../data/utils";
 import { personCircleOutline, personOutline } from "ionicons/icons";
 import { useHistory } from "react-router";
 import "../../components/main.css";
-import LocationDisplay from "./LocationDisplay";
 
 export const hideMenu = () => {
   // const menu = document.querySelector("ion-menu");
