@@ -74,8 +74,9 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
 
       const savedBoard = await updateBoard(updatingBoard);
       console.log("Saved board: ", savedBoard);
-      // window.location.reload();
-      alert("Response: " + JSON.stringify(savedBoard));
+      window.location.reload();
+      // alert("Response: " + savedBoard);
+      // setBoard(savedBoard);
     }
   };
   return (

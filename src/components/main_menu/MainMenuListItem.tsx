@@ -1,6 +1,7 @@
 import { IonIcon, IonItem, IonLabel } from "@ionic/react";
 import { MenuLink } from "../../data/menu";
 import { useHistory } from "react-router";
+import { useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { lockClosed, lockClosedOutline, lockOpenOutline } from "ionicons/icons";
@@ -8,11 +9,13 @@ import { User, denyAccess } from "../../data/users";
 interface MainMenuListItemProps {
   menuLink: MenuLink;
   closeMenu?: () => void;
+  currentLocation?: string;
 }
 
 const MenuListItem: React.FC<MainMenuListItemProps> = ({
   menuLink,
   closeMenu,
+  currentLocation,
 }) => {
   const history = useHistory();
   const itemRef = useRef<HTMLIonItemElement>(null);
@@ -45,13 +48,15 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
     return false;
   };
 
+  const location = useLocation();
+
   useEffect(() => {
-    if (window.location.href.includes(menuLink.slug)) {
+    if (location.pathname.includes(menuLink.slug)) {
       setIsActive(true);
     } else {
       setIsActive(false);
     }
-  }, [window.location.href]);
+  }, [location]);
   useEffect(() => {
     if (window.location.href.includes(menuLink.slug)) {
       setIsActive(true);
