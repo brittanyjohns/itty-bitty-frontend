@@ -29,10 +29,6 @@ const Tabs: React.FC = () => {
             <IonIcon icon={imagesOutline} />
             <IonLabel>Images</IonLabel>
           </IonTabButton>
-          {/* <IonTabButton tab="menus" href="/menus">
-            <IonIcon icon={fastFoodOutline} />
-            <IonLabel>Menus</IonLabel>
-          </IonTabButton> */}
           <IonTabButton tab="accounts" href="/child-accounts">
             <IonIcon icon={peopleCircleOutline} />
             <IonLabel>Accounts</IonLabel>

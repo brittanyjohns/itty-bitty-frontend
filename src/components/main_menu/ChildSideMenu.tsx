@@ -1,16 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import {
-  IonList,
-  IonMenu,
-  IonTitle,
-  IonToolbar,
-  IonItem,
-  IonIcon,
-  IonLabel,
-} from "@ionic/react";
+import { IonItem, IonIcon, IonLabel } from "@ionic/react";
 import { MenuLink, getMenu } from "../../data/menu";
 import MenuListItem from "./MainMenuListItem";
-import { getImageUrl } from "../../data/utils";
 import { personCircleOutline } from "ionicons/icons";
 import "./menu.css";
 interface ChildSideMenuProps {

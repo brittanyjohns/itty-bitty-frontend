@@ -1,14 +1,8 @@
 import {
-  IonButtons,
   IonContent,
-  IonHeader,
-  IonItem,
-  IonMenuButton,
   IonPage,
   IonRefresher,
   IonRefresherContent,
-  IonTitle,
-  IonToolbar,
 } from "@ionic/react";
 import MainMenu from "../components/main_menu/MainMenu";
 import { useCurrentUser } from "../hooks/useCurrentUser";

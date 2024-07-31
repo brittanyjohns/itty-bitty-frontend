@@ -20,7 +20,6 @@ import { useState, useEffect } from "react";
 import SubscriptionList from "../components/stripe/SubscriptionList";
 import { Subscription, getSubscriptions } from "../data/subscriptions";
 import AccountLink from "../components/stripe/AccountLink";
-import PricingTable from "../components/utils/PricingTable";
 import WordNetworkGraph from "../components/utils/WordNetworkGraph";
 import {
   WordEvent,
@@ -28,7 +27,6 @@ import {
   fetchWordEventsByUserId,
 } from "../data/word_event";
 import WordCloudChart from "../components/utils/WordCloudChart";
-import { toggle } from "ionicons/icons";
 import { closeMainMenu } from "./MainHeader";
 
 const Dashboard: React.FC = () => {

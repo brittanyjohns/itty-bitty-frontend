@@ -32,9 +32,7 @@ import SelectImageGallery from "../../components/images/SelectImageGallery";
 import { useHistory } from "react-router";
 import Tabs from "../../components/utils/Tabs";
 import { addCircleOutline, imagesOutline, personOutline } from "ionicons/icons";
-import { set } from "react-hook-form";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { closeMainMenu } from "../MainHeader";
 
 const ImagesScreen: React.FC = () => {
   const { isWideScreen } = useCurrentUser();

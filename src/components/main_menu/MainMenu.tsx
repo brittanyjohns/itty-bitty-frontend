@@ -1,12 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { IonContent, IonItem, IonIcon, IonList, IonMenu } from "@ionic/react";
 import { MenuLink, getMenu } from "../../data/menu";
-import MenuListItem from "./MainMenuListItem";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import SideMenu from "./SideMenu";
-import ChildSideMenu from "./ChildSideMenu";
 import { getImageUrl } from "../../data/utils";
-import { personCircleOutline, personOutline } from "ionicons/icons";
 import { useHistory } from "react-router";
 import "../../components/main.css";
 

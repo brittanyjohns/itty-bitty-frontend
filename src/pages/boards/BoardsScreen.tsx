@@ -1,5 +1,4 @@
 import {
-  IonBackButton,
   IonButton,
   IonButtons,
   IonContent,
@@ -15,21 +14,13 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import MainMenu, { toggleMainMenu } from "../../components/main_menu/MainMenu";
 import Tabs from "../../components/utils/Tabs";
 import { useEffect, useState } from "react";
 import { Board, getBoards } from "../../data/boards";
-import {
-  addCircleOutline,
-  albumsOutline,
-  gridOutline,
-  imagesOutline,
-  personOutline,
-} from "ionicons/icons";
+import { addCircleOutline, imagesOutline, personOutline } from "ionicons/icons";
 import BoardGrid from "../../components/boards/BoardGrid";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { ChildBoard } from "../../data/child_boards";
-import { set } from "react-hook-form";
 
 interface BoardsScreenProps {
   gridType: string;

@@ -1,16 +1,9 @@
 import {
-  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
-  IonInput,
-  IonItem,
-  IonLabel,
   IonMenuButton,
   IonPage,
-  IonRefresher,
-  IonRefresherContent,
-  IonTextarea,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
@@ -20,12 +13,6 @@ import { useCurrentUser } from "../hooks/useCurrentUser";
 import { getImageUrl } from "../data/utils";
 const About: React.FC = () => {
   const { isWideScreen } = useCurrentUser();
-
-  const refresh = (e: CustomEvent) => {
-    setTimeout(() => {
-      e.detail.complete();
-    }, 3000);
-  };
 
   return (
     <>

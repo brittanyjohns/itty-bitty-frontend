@@ -4,20 +4,14 @@ import { useHistory } from "react-router";
 import { useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { lockClosed, lockClosedOutline, lockOpenOutline } from "ionicons/icons";
+import { lockClosed, lockOpenOutline } from "ionicons/icons";
 import { User, denyAccess } from "../../data/users";
 import { closeMainMenu } from "../../pages/MainHeader";
 interface MainMenuListItemProps {
   menuLink: MenuLink;
-  // closeMenu?: () => void;
-  currentLocation?: string;
 }
 
-const MenuListItem: React.FC<MainMenuListItemProps> = ({
-  menuLink,
-  // closeMenu,
-  currentLocation,
-}) => {
+const MenuListItem: React.FC<MainMenuListItemProps> = ({ menuLink }) => {
   const history = useHistory();
   const itemRef = useRef<HTMLIonItemElement>(null);
   const { currentUser } = useCurrentUser();

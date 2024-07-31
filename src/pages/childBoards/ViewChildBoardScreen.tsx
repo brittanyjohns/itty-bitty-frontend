@@ -41,17 +41,11 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   const [showIcon, setShowIcon] = useState(false);
   const [showLoading, setShowLoading] = useState(true);
   const [imageCount, setImageCount] = useState(0);
-  const [gridSize, setGridSize] = useState(4);
   const { currentUser } = useCurrentUser();
-  const [gridLayout, setGrid] = useState<any>([]);
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [previousLabel, setPreviousLabel] = useState<string | undefined>(
     undefined
   );
-
-  // useEffect(() => {
-  //   closeChildMenu();
-  // }, []);
 
   useIonViewDidLeave(() => {
     inputRef.current?.value && clearInput();
@@ -71,7 +65,6 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
       setShowLoading(false);
       setBoard(board);
       setNumOfColumns(board.number_of_columns);
-      setGridSize(board.number_of_columns);
     }
   };
 
