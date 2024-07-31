@@ -17,8 +17,8 @@ const SubscriptionList: React.FC<SubscriptionListProps> = ({
   const { currentUser } = useCurrentUser();
 
   return (
-    <div className="container mx-auto my-8 p-4">
-      <h1 className="text-3xl text-center font-bold mb-6">Your Current Plan</h1>
+    <div className="mx-auto my-8 p-4">
+      <h1 className="text-3xl text-center font-bold my-6">Your Current Plan</h1>
       <IonCard className="w-full md:w-1/2 mx-auto">
         <div className="p-4">
           <div className="mb-2">
@@ -43,10 +43,10 @@ const SubscriptionList: React.FC<SubscriptionListProps> = ({
           </div>
         </div>
       </IonCard>
-      <h1 className="text-3xl text-center font-bold mb-6">
+      <h1 className="text-3xl text-center font-bold my-6">
         Your Subscriptions
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="w-full md:w-3/4 mx-auto">
         {subscriptions.map((sub) => (
           <div
             key={sub.id}

@@ -69,24 +69,11 @@ const ChildAccountsScreen: React.FC = () => {
       />
 
       <IonPage id="main-content">
-        {/* <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonMenuButton></IonMenuButton>
-            </IonButtons>
-            <IonTitle>ChildAccounts</IonTitle>
-            <IonButtons slot="end">
-              <IonButton routerLink="/child-accounts/new">
-                <IonIcon icon={addCircleOutline} />
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader> */}
         <MainHeader
           pageTitle="Accounts"
           isWideScreen={isWideScreen}
           endLink="/child-accounts/new"
-          showMenuButton={true}
+          showMenuButton={!isWideScreen}
         />
 
         <IonContent className="ion-padding">

@@ -125,8 +125,9 @@ const Dashboard: React.FC = () => {
               ))}
             <div className="">
               {currentUser && currentUser?.plan_type !== "free" && (
-                <div className="p-4">
+                <div className="p-4 text-center">
                   {loading && <IonSpinner />}
+                  <h1 className="text-3xl font-bold">Word Events</h1>
                   <div className="flex justify-between">
                     <div className="w-full md:w-1/2">
                       <h1 className="text-2xl mt-4">Word Usage Word Cloud</h1>

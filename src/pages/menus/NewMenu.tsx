@@ -4,6 +4,7 @@ import Tesseract from "tesseract.js";
 import {
   IonButton,
   IonButtons,
+  IonCard,
   IonContent,
   IonHeader,
   IonIcon,
@@ -12,6 +13,7 @@ import {
   IonLabel,
   IonLoading,
   IonPage,
+  IonTextarea,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
@@ -23,6 +25,7 @@ import ImagePasteHandler from "../../components/utils/ImagePasteHandler";
 import MainMenu from "../../components/main_menu/MainMenu";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
+import ImageCropper from "../../components/images/ImageCropper";
 
 type NewMenu = {
   name: string;
@@ -133,11 +136,16 @@ const NewMenu: React.FC = (props: any) => {
     }
   };
 
+  const handleCancel = () => {
+    window.location.reload();
+  };
+
   const handleFile = (file: File) => {
     let reader = new FileReader();
 
     reader.onload = (event: ProgressEvent<FileReader>) => {
-      const dataUrl = event.target?.result as string;
+      const dataUrl = event.target!.result as string;
+      setImageSrc(dataUrl);
 
       setShowLoading(true);
 
@@ -243,8 +251,47 @@ const NewMenu: React.FC = (props: any) => {
                   required
                 ></IonInput>
               </IonItem>
-              <ImagePasteHandler setFile={handlePaste} />
-
+              <IonCard className="p-4 m-4 border text-center">
+                <h2 className="text-xl font-bold">Paste an image</h2>
+                <p className="text-sm">Right-click and paste an image here</p>
+                <IonItem className="mt-4">
+                  <IonTextarea
+                    placeholder="Paste an image here"
+                    readonly
+                  ></IonTextarea>
+                  <ImagePasteHandler setFile={handlePaste} />
+                </IonItem>
+                {imageSrc && (
+                  <>
+                    <img
+                      ref={imageElementRef}
+                      src={imageSrc}
+                      alt="Source"
+                      style={{ display: "none" }}
+                    />
+                  </>
+                )}
+                <IonButtons className="mt-4">
+                  <IonButton
+                    type="submit"
+                    className="mt-4"
+                    color="secondary"
+                    fill="outline"
+                    expand="block"
+                  >
+                    Submit
+                  </IonButton>
+                  <IonButton
+                    onClick={handleCancel}
+                    className="mt-4"
+                    fill="outline"
+                    color="danger"
+                    expand="block"
+                  >
+                    Cancel
+                  </IonButton>
+                </IonButtons>
+              </IonCard>
               <IonButtons className="ion-margin-top">
                 <IonButton
                   className="ion-margin-top"
