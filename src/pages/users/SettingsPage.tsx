@@ -88,20 +88,24 @@ const SettingsPage: React.FC = () => {
   return (
     <>
       <MainMenu
-        pageTitle="Pricing"
+        pageTitle="Settings"
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
       />
       <StaticMenu
-        pageTitle="Pricing"
+        pageTitle="Settings"
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
       />
-      <MainHeader pageTitle="Pricing" isWideScreen={isWideScreen} />
 
       <IonPage id="main-content">
+        <MainHeader
+          pageTitle="Settings"
+          isWideScreen={isWideScreen}
+          showMenuButton={!isWideScreen}
+        />
         <IonContent className="ion-padding">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>

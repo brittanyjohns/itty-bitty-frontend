@@ -18,6 +18,8 @@ import MainMenu from "../../components/main_menu/MainMenu";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { denyAccess } from "../../data/users";
 import BoardForm from "../../components/boards/BoardForm";
+import StaticMenu from "../../components/main_menu/StaticMenu";
+import MainHeader from "../MainHeader";
 
 const NewBoard: React.FC = (props: any) => {
   const {
@@ -35,7 +37,7 @@ const NewBoard: React.FC = (props: any) => {
   const scratchFormRef = useRef<HTMLFormElement>(null);
   const scratchBtnRef = useRef<HTMLIonButtonElement>(null);
 
-  const { currentUser } = useCurrentUser();
+  const { currentUser, currentAccount, isWideScreen } = useCurrentUser();
 
   const handleCreateFromScratch = () => {
     scratchBtnRef.current?.classList.toggle("hidden");
@@ -55,19 +57,26 @@ const NewBoard: React.FC = (props: any) => {
 
   return (
     <>
-      <MainMenu />
-      <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonButton routerLink="/boards">
-                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
-              </IonButton>
-            </IonButtons>
-            <IonTitle>New Board</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+      <MainMenu
+        pageTitle="Menus"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Menus"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
 
+      <IonPage id="main-content">
+        <MainHeader
+          pageTitle="Menus"
+          isWideScreen={isWideScreen}
+          startLink="/menus"
+          endLink="/menus/new"
+        />
         <IonContent fullscreen scrollY={true}>
           <div className="w-1/2 mx-auto h-1/4 grid grid-rows-2 gap-8 mt-10">
             <IonButton

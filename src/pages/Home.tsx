@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import BoardGrid from "../components/boards/BoardGrid";
 import PricingTable from "../components/utils/PricingTable";
 import StaticMenu from "../components/main_menu/StaticMenu";
+import { logInOutline, personAddOutline } from "ionicons/icons";
 
 const Home: React.FC = () => {
   const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
@@ -63,9 +64,11 @@ const Home: React.FC = () => {
 
       <IonPage id="main-content">
         <MainHeader
-          pageTitle="SpeakAnyWay"
+          pageTitle={isWideScreen ? "" : currentUser ? "Home" : "SpeakAnyWay"}
           isWideScreen={isWideScreen}
-          endLink="/sign-up"
+          endIcon={currentUser ? logInOutline : personAddOutline}
+          endLink={currentUser ? "/settings" : "/sign-up"}
+          showMenuButton={!isWideScreen}
         />
         <IonContent className="text-justified" scrollY={true}>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>

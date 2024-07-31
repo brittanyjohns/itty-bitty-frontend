@@ -56,6 +56,7 @@ const SignInScreen: React.FC = () => {
           pageTitle="Sign In"
           isWideScreen={isWideScreen}
           endLink="/menus/new"
+          showMenuButton={!isWideScreen}
         />
         <IonContent className="">
           <div

@@ -62,6 +62,7 @@ const MenusScreen: React.FC = () => {
           pageTitle="Menus"
           isWideScreen={isWideScreen}
           endLink="/menus/new"
+          showMenuButton={!isWideScreen}
         />
         <IonContent className="ion-padding">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>

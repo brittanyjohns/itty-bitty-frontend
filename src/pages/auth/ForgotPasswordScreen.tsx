@@ -14,6 +14,8 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
 import { getImageUrl } from "../../data/utils";
+import StaticMenu from "../../components/main_menu/StaticMenu";
+import { logInOutline } from "ionicons/icons";
 
 const ForgotPasswordScreen: React.FC = () => {
   const history = useHistory();
@@ -23,7 +25,6 @@ const ForgotPasswordScreen: React.FC = () => {
   const { isWideScreen } = useCurrentUser();
   const [isOpen, setIsOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-
 
   const handleForgotPassword = async () => {
     if (!email) {
@@ -50,13 +51,24 @@ const ForgotPasswordScreen: React.FC = () => {
 
   return (
     <>
-    <MainMenu />
-    <IonPage id="main-content">
-        {!isWideScreen && <MainHeader />}
-        <div className="container p-4 bg-white bg-opacity-50 mx-auto shadow-lg">
+      <MainMenu pageTitle="Sign In" isWideScreen={isWideScreen} />
+      <StaticMenu pageTitle="Sign In" isWideScreen={isWideScreen} />
+
+      <IonPage id="main-content">
+        <MainHeader
+          pageTitle="Forgot Password"
+          isWideScreen={isWideScreen}
+          endLink="/sign-in"
+          endIcon={logInOutline}
+          showMenuButton={!isWideScreen}
+        />
+        <IonContent>
+          <div className="container p-4 bg-white bg-opacity-50 mx-auto shadow-lg">
             <div
               className="hero_main1 bg-cover bg-center  min-h-screen"
-              style={{ backgroundImage: `url(${getImageUrl("hero_main1", "webp")})` }}
+              style={{
+                backgroundImage: `url(${getImageUrl("hero_main1", "webp")})`,
+              }}
             >
               <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-50">
                 <h1 className="text-2xl md:text-5xl font-bold text-white">
@@ -67,7 +79,9 @@ const ForgotPasswordScreen: React.FC = () => {
                 </p>
               </div>
               <div className="max-w-md mx-auto bg-white bg-opacity-90 p-8 rounded-lg shadow-xl mt-20">
-                <h1 className="text-2xl font-bold text-center mb-3">Forgot Password</h1>
+                <h1 className="text-2xl font-bold text-center mb-3">
+                  Forgot Password
+                </h1>
                 <form onSubmit={(e) => e.preventDefault()}>
                   <IonItem lines="full" className="mb-4">
                     <IonInput
@@ -80,7 +94,11 @@ const ForgotPasswordScreen: React.FC = () => {
                       required
                     />
                   </IonItem>
-                  <IonButton expand="block" className="mt-6" onClick={handleForgotPassword}>
+                  <IonButton
+                    expand="block"
+                    className="mt-6"
+                    onClick={handleForgotPassword}
+                  >
                     Reset Password
                   </IonButton>
                 </form>
@@ -92,16 +110,17 @@ const ForgotPasswordScreen: React.FC = () => {
                   buttons={["OK"]}
                 />
               </div>
+            </div>
           </div>
-        </div>
-        <IonToast
-          isOpen={isOpen}
-          message={toastMessage}
-          onDidDismiss={() => setIsOpen(false)}
-          duration={2000}
-        ></IonToast>
-    </IonPage>
-  </>
+          <IonToast
+            isOpen={isOpen}
+            message={toastMessage}
+            onDidDismiss={() => setIsOpen(false)}
+            duration={2000}
+          ></IonToast>
+        </IonContent>
+      </IonPage>
+    </>
   );
 };
 

@@ -51,7 +51,11 @@ const ContactUs: React.FC = () => {
       />
 
       <IonPage id="main-content">
-        <MainHeader pageTitle="Contact Us" isWideScreen={isWideScreen} />
+        <MainHeader
+          pageTitle="Contact Us"
+          isWideScreen={isWideScreen}
+          showMenuButton={!isWideScreen}
+        />
 
         <IonContent className="flex flex-col items-center p-6 space-y-6 bg-gray-50">
           <div

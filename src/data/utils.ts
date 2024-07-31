@@ -183,7 +183,7 @@ export const getFilterList = (
     "admin-dashboard",
   ];
   const professionalLinks = [
-    // "home",
+    "home",
     "dashboard",
     "sign-out",
     "boards",
@@ -192,7 +192,7 @@ export const getFilterList = (
     "settings",
   ];
   const professionalProLinks = [
-    // "home",
+    "home",
     "dashboard",
     "sign-out",
     "boards",
@@ -203,7 +203,7 @@ export const getFilterList = (
     "settings",
   ];
   const proLinks = [
-    // "home",
+    "home",
     "dashboard",
     "sign-out",
     "boards",
@@ -214,7 +214,7 @@ export const getFilterList = (
     "settings",
   ];
   const freeLinks = [
-    // "home",
+    "home",
     "dashboard",
     "sign-out",
     "boards",

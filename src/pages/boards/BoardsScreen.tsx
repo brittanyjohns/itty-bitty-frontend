@@ -125,6 +125,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
         <MainHeader
           pageTitle="Boards"
           isWideScreen={isWideScreen}
+          showMenuButton={!isWideScreen}
           endLink="/boards/new"
         />
         <IonContent className="ion-padding">

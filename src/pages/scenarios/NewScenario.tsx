@@ -11,6 +11,9 @@ import {
 import NewScenarioForm from "../../components/scenarios/NewScenarioForm";
 import { useState } from "react";
 import MainMenu from "../../components/main_menu/MainMenu";
+import StaticMenu from "../../components/main_menu/StaticMenu";
+import MainHeader from "../MainHeader";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 const NewScenario: React.FC = (props: any) => {
   const [numOfImages, setNumOfImages] = useState(12); // [1]
@@ -21,6 +24,7 @@ const NewScenario: React.FC = (props: any) => {
     number_of_images: numOfImages,
     token_limit: numOfImages,
   };
+  const { currentUser, currentAccount, isWideScreen } = useCurrentUser();
   const onSubmit = async (data: Scenario) => {
     const newScenario = await createScenario(data);
     if (newScenario.errors && newScenario.errors.length > 0) {
@@ -34,16 +38,26 @@ const NewScenario: React.FC = (props: any) => {
   };
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="Menus"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Menus"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonBackButton defaultHref="/boards" />
-            </IonButtons>
-            <IonTitle>New Scenario</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+        <MainHeader
+          pageTitle="Menus"
+          isWideScreen={isWideScreen}
+          startLink="/menus"
+          endLink="/menus/new"
+        />
         <IonContent fullscreen scrollY={true} className="ion-padding">
           <NewScenarioForm
             onSave={onSubmit}

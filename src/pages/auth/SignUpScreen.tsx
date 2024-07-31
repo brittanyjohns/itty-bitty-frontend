@@ -108,6 +108,7 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
           isWideScreen={isWideScreen}
           endLink="/sign-in"
           endIcon={logInOutline}
+          showMenuButton={!isWideScreen}
         />
         <IonContent className="">
           <div

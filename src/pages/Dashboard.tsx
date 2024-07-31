@@ -92,9 +92,13 @@ const Dashboard: React.FC = () => {
         currentUser={currentUser}
         currentAccount={currentAccount}
       />
-      <MainHeader pageTitle="Dashboard" isWideScreen={isWideScreen} />
 
       <IonPage id="main-content">
+        <MainHeader
+          pageTitle="Dashboard"
+          isWideScreen={isWideScreen}
+          showMenuButton={!isWideScreen}
+        />
         <IonContent className="ion-padding">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>

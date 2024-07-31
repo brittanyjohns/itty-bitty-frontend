@@ -155,6 +155,7 @@ const ImagesScreen: React.FC = () => {
           pageTitle="Images"
           isWideScreen={isWideScreen}
           endLink="/images/add"
+          showMenuButton={!isWideScreen}
         />
 
         <IonContent className="ion-padding">

@@ -35,7 +35,11 @@ const PricingPage: React.FC = () => {
       />
 
       <IonPage id="main-content">
-        <MainHeader pageTitle="Pricing" isWideScreen={isWideScreen} />
+        <MainHeader
+          pageTitle="Pricing"
+          isWideScreen={isWideScreen}
+          showMenuButton={!isWideScreen}
+        />
         <IonContent>
           <PricingTable />
         </IonContent>

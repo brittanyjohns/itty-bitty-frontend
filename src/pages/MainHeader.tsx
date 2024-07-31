@@ -28,16 +28,19 @@ interface MainHeaderProps {
   endIcon?: string; // Ensure this is string type
   startLink?: string;
   startIcon?: string; // Ensure this is string type
+  showMenuButton?: boolean;
 }
 
 const MainHeader: React.FC<MainHeaderProps> = (props) => {
   const isWideScreen = props.isWideScreen;
   const history = useHistory();
+  const showMenuBtn = props.showMenuButton || !props.startLink;
+  const showHeader = !isWideScreen || (isWideScreen && showMenuBtn);
 
   console.log("isWideScreen main header", isWideScreen);
 
   const renderComponent = () => {
-    if (!isWideScreen) {
+    if (showHeader) {
       return (
         <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
@@ -48,19 +51,17 @@ const MainHeader: React.FC<MainHeaderProps> = (props) => {
                 </IonButton>
               </IonButtons>
             )}
-            {!props.startLink && (
-              <IonButtons slot="start">
-                <IonMenuButton menu="main-menu"></IonMenuButton>
-              </IonButtons>
+            {props.showMenuButton && (
+              <IonMenuButton slot="start" menu="main-menu"></IonMenuButton>
             )}
 
             <IonTitle className="text-center">
-              <img
+              {/* <img
                 src={getImageUrl("round_itty_bitty_logo_1", "png")}
                 className={`h-10 w-10 inline ${
                   props.pageTitle === "SpeakAnyWay" ? "" : ""
                 }`}
-              />
+              /> */}
               {props.pageTitle}
             </IonTitle>
             {props.endLink && (

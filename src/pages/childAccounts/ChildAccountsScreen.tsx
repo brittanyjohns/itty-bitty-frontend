@@ -86,6 +86,7 @@ const ChildAccountsScreen: React.FC = () => {
           pageTitle="Accounts"
           isWideScreen={isWideScreen}
           endLink="/child-accounts/new"
+          showMenuButton={true}
         />
 
         <IonContent className="ion-padding">

@@ -47,21 +47,17 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
 
   return (
     <IonContent className="w-96">
-      <IonHeader className="bg-inherit shadow-none">
-        <IonToolbar>
-          <div className="flex items-center">
-            <img slot="start" src={feature1Image} className="ml-4 h-10 w-10" />
-            <div
-              className="font-bold ml-2 hover:cursor-pointer"
-              onClick={() => {
-                window.location.href = "/";
-              }}
-            >
-              SpeakAnyWay
-            </div>
-          </div>
-        </IonToolbar>
-      </IonHeader>
+      <IonToolbar>
+        <img slot="start" src={feature1Image} className="ml-4 h-10 w-10" />
+        <div
+          className="font-bold ml-2 hover:cursor-pointer"
+          onClick={() => {
+            window.location.href = "/";
+          }}
+        >
+          SpeakAnyWay
+        </div>
+      </IonToolbar>
       <IonList>
         {filteredLinks.map((link) => (
           <IonItem key={link.id}>

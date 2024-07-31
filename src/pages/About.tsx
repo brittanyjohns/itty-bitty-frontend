@@ -32,7 +32,11 @@ const About: React.FC = () => {
       />
 
       <IonPage id="main-content">
-        <MainHeader pageTitle="About" isWideScreen={isWideScreen} />
+        <MainHeader
+          pageTitle="About"
+          isWideScreen={isWideScreen}
+          showMenuButton={!isWideScreen}
+        />
 
         <IonContent className="">
           <div

@@ -162,12 +162,6 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
 
         <IonContent scrollY={true}>
           <IonHeader className="bg-inherit shadow-none">
-            <IonToolbar>
-              <IonButtons slot="start">
-                <IonBackButton defaultHref="/menus" />
-              </IonButtons>
-              <IonTitle>{menu?.name}</IonTitle>
-            </IonToolbar>
             <IonSegment
               value={segmentType}
               onIonChange={handleSegmentChange}
