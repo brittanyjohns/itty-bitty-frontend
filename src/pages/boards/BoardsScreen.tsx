@@ -15,7 +15,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import MainMenu, { hideMenu } from "../../components/main_menu/MainMenu";
+import MainMenu, { toggleMainMenu } from "../../components/main_menu/MainMenu";
 import Tabs from "../../components/utils/Tabs";
 import { useEffect, useState } from "react";
 import { Board, getBoards } from "../../data/boards";
@@ -106,7 +106,6 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
     gridType: string,
     boardsToSet: Board[] | ChildBoard[]
   ) => {
-    console.log("Rendering board grid: ", boardsToSet);
     if (boardsToSet.length > 0) {
       return <BoardGrid gridType={gridType} boards={boardsToSet} />;
     }
@@ -148,9 +147,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
                 className="w-full bg-inherit"
               >
                 <IonSegmentButton value="preset">
-                  <IonLabel className="text-md lg:text-lg">
-                    Preset Boards
-                  </IonLabel>
+                  <IonLabel className="text-md lg:text-lg">Preset</IonLabel>
                   <IonIcon icon={imagesOutline} size="small" />
                 </IonSegmentButton>
                 <IonSegmentButton value="user">

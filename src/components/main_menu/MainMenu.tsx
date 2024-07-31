@@ -10,46 +10,12 @@ import { personCircleOutline, personOutline } from "ionicons/icons";
 import { useHistory } from "react-router";
 import "../../components/main.css";
 
-export const hideMenu = () => {
-  // const menu = document.querySelector("ion-menu");
-  // menu?.close();
-  const menu = document.querySelector("#main-menu");
-  menu?.classList.add("hidden");
-};
-
-export const openMenu = () => {
-  // const menu = document.querySelector("ion-menu");
-  // menu?.open();
-  const menu = document.querySelector("#main-menu");
-  menu?.classList.remove("hidden");
-};
-
-export const closeChildMenu = () => {
-  const menu = document.querySelector("#child-side-menu");
-  if (menu) {
-    menu.classList.add("hidden");
-  }
-};
-
-export const toggleMainMenu = () => {
-  const menu = document.querySelector("#main-menu");
-  if (menu) {
-    menu.classList.toggle("hidden");
-  }
-};
-
-export const openChildMenu = () => {
-  const menu = document.querySelector("#child-side-menu");
-  if (menu) {
-    menu.classList.remove("hidden");
-  }
-};
+import { closeMainMenu } from "../../pages/MainHeader";
 
 interface MainMenuProps {}
 
 const MainMenu: React.FC<MainMenuProps> = () => {
   const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
-  const [menuLinks, setMenuLinks] = useState<MenuLink[]>([]);
   const [filteredLinks, setFilteredLinks] = useState<MenuLink[]>([]);
   const history = useHistory();
 
@@ -147,7 +113,6 @@ const MainMenu: React.FC<MainMenuProps> = () => {
 
   const setUpMenu = useCallback(() => {
     const links = getMenu();
-    setMenuLinks(links);
     const filteredList = filterList(links);
     setFilteredLinks(filteredList ?? []);
   }, [filterList]);
@@ -157,111 +122,38 @@ const MainMenu: React.FC<MainMenuProps> = () => {
     console.log("MainMenu useEffect", isWideScreen);
   }, [setUpMenu]);
 
-  useEffect(() => {
-    toggleMainMenu();
-  }, [isWideScreen]);
+  // useEffect(() => {
+  //   toggleMainMenu();
+  // }, [isWideScreen]);
+
+  const goToDashboard = () => {
+    closeMainMenu();
+    // if (currentAccount) {
+    //   toggleChildMenu();
+    // } else {
+    //   toggleSideMenu();
+    // }
+    history.push("/home");
+  };
 
   const feature1Image = getImageUrl("round_itty_bitty_logo_1", "png");
 
   return (
     <>
       <div className="flex items-center">
-        <img slot="start" src={feature1Image} className="ml-4 h-10 w-10 mt-1" />
+        <img slot="start" src={feature1Image} className="ml-4 h-10 w-10" />
         <div
           className="font-bold ml-2 hover:cursor-pointer"
-          onClick={() => history.push("/")}
+          onClick={goToDashboard}
         >
           SpeakAnyWay
         </div>
       </div>
-      {isWideScreen && (
-        <>
-          {!currentAccount && (
-            <SideMenu filteredLinks={filteredLinks} currentUser={currentUser} />
-          )}
-
-          {currentAccount && isWideScreen && (
-            <ChildSideMenu
-              links={filteredLinks}
-              currentAccount={currentAccount}
-            />
-          )}
-        </>
-      )}
-
-      {!isWideScreen && (
-        <IonMenu
-          id="main-menu"
-          contentId="main-content"
-          side="start"
-          type="overlay"
-          swipeGesture={false}
-        >
-          <div className="flex items-center">
-            <img
-              slot="start"
-              src={getImageUrl("round_itty_bitty_logo_1", "png")}
-              className="ml-2 h-10 w-10 mt-1"
-            />
-            <div className="font-bold ml-2" onClick={() => history.push("/")}>
-              SpeakAnyWay
-            </div>
-          </div>
-          <IonContent>
-            {currentUser && !currentAccount && (
-              <IonItem
-                routerLink="/dashboard"
-                className="hover:cursor-pointer py-4"
-                lines="none"
-                detail={false}
-              >
-                <IonIcon icon={personCircleOutline} className="" />
-                <div className="ml-5 text-xs md:text-sm lg:text-base">
-                  <p className="mt-1 font-bold">
-                    {currentUser?.email ?? "Guest"}
-                  </p>
-                  <div className="justify-between flex">
-                    <p className="mt-1 text-xs md:text-sm lg:text-base">
-                      {currentUser?.plan_type ?? "free trial"} plan
-                    </p>
-                    <p className="mt-1 text-xs md:text-sm lg:text-base">
-                      {currentUser?.tokens ?? 0} tokens
-                    </p>
-                  </div>
-                </div>
-              </IonItem>
-            )}
-            {currentAccount && (
-              <IonItem
-                routerLink="/"
-                className="hover:cursor-pointer py-4"
-                lines="none"
-                detail={false}
-              >
-                <IonIcon icon={personOutline} className="" />
-                <div className="ml-5 text-xs">
-                  <p className="mt-1 font-bold">
-                    {currentAccount?.username ?? "Guest Account"}
-                  </p>
-                  <p className="mt-1 text-xs">
-                    User ID: {currentAccount?.user_id ?? "no user id"}
-                  </p>
-                </div>
-              </IonItem>
-            )}
-            <IonList>
-              {filteredLinks.map((menuLink) => (
-                <MenuListItem
-                  key={menuLink.id}
-                  menuLink={menuLink}
-                  closeMenu={hideMenu}
-                  currentLocation={location.pathname}
-                />
-              ))}
-            </IonList>
-          </IonContent>
-        </IonMenu>
-      )}
+      <SideMenu
+        filteredLinks={filteredLinks}
+        currentUser={currentUser}
+        goToDashboard={goToDashboard}
+      />
     </>
   );
 };

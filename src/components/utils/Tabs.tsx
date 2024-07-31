@@ -1,35 +1,18 @@
 // Tabs.tsx
 import React from "react";
-import {
-  IonTabBar,
-  IonTabButton,
-  IonIcon,
-  IonLabel,
-  IonTab,
-} from "@ionic/react";
+import { IonTabBar, IonTabButton, IonIcon, IonLabel } from "@ionic/react";
 import {
   home,
   imagesOutline,
   albumsOutline,
   peopleCircleOutline,
-  fastFoodOutline,
-  personCircleOutline,
-  ellipseOutline,
-  menuOutline,
   menuSharp,
-  gridSharp,
 } from "ionicons/icons";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { openMenu } from "../main_menu/MainMenu";
+import { toggleMainMenu } from "../../pages/MainHeader";
 const Tabs: React.FC = () => {
   const { isWideScreen } = useCurrentUser();
-  const openMainMenu = () => {
-    const menu = document.querySelector("#main-menu");
-    console.log("menu", menu);
-    if (menu) {
-      menu.classList.remove("hidden");
-    }
-  };
+
   return (
     <>
       {!isWideScreen && (
@@ -54,7 +37,7 @@ const Tabs: React.FC = () => {
             <IonIcon icon={peopleCircleOutline} />
             <IonLabel>Accounts</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="settings" onClick={openMainMenu}>
+          <IonTabButton tab="settings" onClick={toggleMainMenu}>
             <IonIcon icon={menuSharp} />
             <IonLabel>Settings</IonLabel>
           </IonTabButton>

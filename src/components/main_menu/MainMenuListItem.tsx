@@ -6,15 +6,16 @@ import { useEffect, useRef, useState } from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { lockClosed, lockClosedOutline, lockOpenOutline } from "ionicons/icons";
 import { User, denyAccess } from "../../data/users";
+import { closeMainMenu } from "../../pages/MainHeader";
 interface MainMenuListItemProps {
   menuLink: MenuLink;
-  closeMenu?: () => void;
+  // closeMenu?: () => void;
   currentLocation?: string;
 }
 
 const MenuListItem: React.FC<MainMenuListItemProps> = ({
   menuLink,
-  closeMenu,
+  // closeMenu,
   currentLocation,
 }) => {
   const history = useHistory();
@@ -82,9 +83,7 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({
       );
       return;
     }
-    if (closeMenu) {
-      closeMenu();
-    }
+    closeMainMenu();
     history.push(endpoint ?? "");
   };
 

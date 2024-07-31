@@ -31,10 +31,7 @@ import DraggableGrid from "../../components/images/DraggableGrid";
 import { playAudioList } from "../../data/utils";
 import { Image } from "../../data/images";
 import { clickWord } from "../../data/audits";
-import {
-  closeChildMenu,
-  openChildMenu,
-} from "../../components/main_menu/MainMenu";
+
 import FullscreenToggle from "../../components/utils/FullscreenToggle";
 
 const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
@@ -52,17 +49,17 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
     undefined
   );
 
-  useEffect(() => {
-    closeChildMenu();
-  }, []);
+  // useEffect(() => {
+  //   closeChildMenu();
+  // }, []);
 
   useIonViewDidLeave(() => {
     inputRef.current?.value && clearInput();
-    openChildMenu();
+    // openChildMenu();
   });
 
   const fetchBoard = async () => {
-    closeChildMenu();
+    // closeChildMenu();
 
     const board = await getChildBoard(Number(params.id));
     if (!board) {

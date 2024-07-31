@@ -11,6 +11,7 @@ import {
   IonSpinner,
   IonTitle,
   IonToolbar,
+  useIonViewWillEnter,
 } from "@ionic/react";
 import MainMenu from "../components/main_menu/MainMenu";
 import Tabs from "../components/utils/Tabs";
@@ -27,6 +28,8 @@ import {
   fetchWordEventsByUserId,
 } from "../data/word_event";
 import WordCloudChart from "../components/utils/WordCloudChart";
+import { toggle } from "ionicons/icons";
+import { closeMainMenu } from "./MainHeader";
 
 const Dashboard: React.FC = () => {
   const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
@@ -63,6 +66,11 @@ const Dashboard: React.FC = () => {
     console.log("events", events);
     setWordEvents(events);
   };
+
+  useIonViewWillEnter(() => {
+    console.log("useIonViewWillEnter");
+    closeMainMenu();
+  }, []);
 
   useEffect(() => {
     if (currentUser) {

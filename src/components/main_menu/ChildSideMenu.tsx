@@ -16,10 +16,12 @@ import "./menu.css";
 interface ChildSideMenuProps {
   links: MenuLink[];
   currentAccount?: any;
+  goToDashboard: () => void;
 }
 const ChildSideMenu: React.FC<ChildSideMenuProps> = ({
   links,
   currentAccount,
+  goToDashboard,
 }) => {
   return (
     <>
