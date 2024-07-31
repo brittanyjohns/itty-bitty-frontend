@@ -79,7 +79,6 @@ const SuccessfulSubscription: React.FC = () => {
             )}
           </div>
           <SubscriptionList subscriptions={subscriptions} />
-          {currentUser?.plan_status === "active" && <AccountLink />}
         </IonContent>
         {currentUser && <Tabs />}
       </IonPage>

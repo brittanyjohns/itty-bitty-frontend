@@ -33,7 +33,6 @@ const SideMenu: React.FC<SideMenuProps> = (props) => {
   useEffect(() => {
     const filtered = filterList();
     setFilteredLinks(filtered);
-    console.log("filtered", filtered);
   }, [filterList]);
 
   const goToDashboard = () => {

@@ -28,7 +28,7 @@ const AccountLink = ({ user }: AccountLinkProps) => {
   return (
     <>
       {stripeCustomerId && userSubscribed && (
-        <IonButton onClick={handleGoToBilling}>Go to billing portal</IonButton>
+        <IonButton onClick={handleGoToBilling}>Manage Subscription</IonButton>
       )}
     </>
   );

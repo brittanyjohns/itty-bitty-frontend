@@ -106,15 +106,6 @@ const Dashboard: React.FC = () => {
           <h1 className="text-2xl">Dashboard</h1>
 
           <div className="">
-            <IonButtons slot="start">
-              <IonButton
-                color={isWideScreen ? "primary" : "secondary"}
-                fill="outline"
-                routerLink="/settings"
-              >
-                Settings
-              </IonButton>
-            </IonButtons>
             <p className="text-md my-3">
               This is your dashboard. Here you can see user activity, word usage
               & more.
@@ -133,7 +124,7 @@ const Dashboard: React.FC = () => {
                 </>
               ))}
             <div className="">
-              {currentUser && (
+              {currentUser && currentUser?.plan_type !== "free" && (
                 <div className="p-4">
                   {loading && <IonSpinner />}
                   <div className="flex justify-between">

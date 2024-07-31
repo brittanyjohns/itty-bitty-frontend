@@ -237,6 +237,20 @@ const App: React.FC = () => {
     if (!trackingConsent) setShowTrackingConsent(true);
   }, []);
 
+  const canTrack = () => {
+    const trackingConsent = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("tracking_consent="));
+    return trackingConsent && trackingConsent.split("=")[1] === "true";
+  };
+
+  const canUseCookies = () => {
+    const cookiesConsent = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("cookies_consent="));
+    return cookiesConsent && cookiesConsent.split("=")[1] === "true";
+  };
+
   return (
     <IonApp>
       <UserRoutes />
@@ -254,6 +268,11 @@ const App: React.FC = () => {
           Withdraw Consent
         </button>
       </footer>
+      {/* Example of conditional functionality */}
+      {canTrack() && <div>Tracking Enabled Content</div>}
+      {!canTrack() && <div>Tracking Disabled Content</div>}
+      {canUseCookies() && <div>Cookies Enabled Content</div>}
+      {!canUseCookies() && <div>Cookies Disabled Content</div>}
     </IonApp>
   );
 };

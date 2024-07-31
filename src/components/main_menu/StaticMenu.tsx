@@ -26,7 +26,6 @@ interface StaticMenuProps {
 
 const StaticMenu: React.FC<StaticMenuProps> = (props) => {
   const [filteredLinks, setFilteredLinks] = useState<MenuLink[]>([]);
-  const history = useHistory();
   const { currentUser, currentAccount } = props;
 
   const filterList = useCallback(() => {
@@ -36,13 +35,8 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
   useEffect(() => {
     const filtered = filterList();
     setFilteredLinks(filtered);
-    console.log("filtered", filtered);
   }, [filterList]);
 
-  const goToDashboard = () => {
-    history.push("/dashboard");
-    console.log("goToDashboard");
-  };
   const feature1Image = getImageUrl("round_itty_bitty_logo_1", "png");
 
   return (
