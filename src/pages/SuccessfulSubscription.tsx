@@ -17,9 +17,11 @@ import { useEffect, useState } from "react";
 import { Subscription, getSubscriptions } from "../data/subscriptions";
 import SubscriptionList from "../components/stripe/SubscriptionList";
 import AccountLink from "../components/stripe/AccountLink";
+import StaticMenu from "../components/main_menu/StaticMenu";
+import MainHeader from "./MainHeader";
 
 const SuccessfulSubscription: React.FC = () => {
-  const { isWideScreen, currentUser } = useCurrentUser();
+  const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
 
   const refresh = (e: CustomEvent) => {
@@ -41,16 +43,21 @@ const SuccessfulSubscription: React.FC = () => {
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="Success"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Success"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <MainHeader pageTitle="Success" isWideScreen={isWideScreen} />
+
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="start">
-              {!isWideScreen && <IonMenuButton></IonMenuButton>}
-            </IonButtons>
-            <IonTitle>Success!!</IonTitle>
-          </IonToolbar>
-        </IonHeader>
         <IonContent>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
@@ -74,8 +81,8 @@ const SuccessfulSubscription: React.FC = () => {
           <SubscriptionList subscriptions={subscriptions} />
           {currentUser?.plan_status === "active" && <AccountLink />}
         </IonContent>
+        {currentUser && <Tabs />}
       </IonPage>
-      <Tabs />
     </>
   );
 };

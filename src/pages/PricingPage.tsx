@@ -14,16 +14,28 @@ import MainMenu from "../components/main_menu/MainMenu";
 import PricingTable from "../components/utils/PricingTable";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import MainHeader from "./MainHeader";
+import StaticMenu from "../components/main_menu/StaticMenu";
 
 const PricingPage: React.FC = () => {
-  const { isWideScreen } = useCurrentUser();
+  const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
 
   return (
     <>
-      <MainMenu />
-      <IonPage id="main-content">
-        <MainHeader />
+      <MainMenu
+        pageTitle="Pricing"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Pricing"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
 
+      <IonPage id="main-content">
+        <MainHeader pageTitle="Pricing" isWideScreen={isWideScreen} />
         <IonContent>
           <PricingTable />
         </IonContent>

@@ -25,9 +25,11 @@ import { User, UserSetting, updateUserSettings } from "../../data/users";
 import { useEffect, useState } from "react";
 import UserForm from "../../components/users/UserForm";
 import { useHistory } from "react-router";
+import StaticMenu from "../../components/main_menu/StaticMenu";
+import MainHeader from "../MainHeader";
 
 const SettingsPage: React.FC = () => {
-  const { currentUser } = useCurrentUser();
+  const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
   const [user, setUser] = useState<User | null>(currentUser || null);
   const [userSetting, setUserSetting] = useState<UserSetting | null>(null);
   const [name, setName] = useState<string | null>(currentUser?.name || null);
@@ -85,24 +87,26 @@ const SettingsPage: React.FC = () => {
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="Pricing"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Pricing"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <MainHeader pageTitle="Pricing" isWideScreen={isWideScreen} />
+
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonMenuButton></IonMenuButton>
-            </IonButtons>
-            <IonTitle>Settings</IonTitle>
-          </IonToolbar>
-        </IonHeader>
         <IonContent className="ion-padding">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <div className="w-full md:w-4/5 mx-auto p-4 border mt-4">
-            <IonButtons slot="start">
-              <IonBackButton defaultHref="/" />
-            </IonButtons>
+          <div className="w-full md:w-4/5 mx-auto">
             <IonCard className="p-4 text-center w-full md:w-4/5 mx-auto">
               <h1 className="text-2xl">User Settings</h1>
               <p className="text-lg mb-3">
@@ -151,7 +155,7 @@ const SettingsPage: React.FC = () => {
             duration={2000}
           ></IonToast>
         </IonContent>
-        <Tabs />
+        {currentUser && <Tabs />}
       </IonPage>
     </>
   );

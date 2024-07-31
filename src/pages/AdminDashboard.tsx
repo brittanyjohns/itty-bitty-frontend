@@ -15,7 +15,7 @@ import { useCurrentUser } from "../hooks/useCurrentUser";
 import { BetaRequest, fetchBetaRequests } from "../data/beta_requests";
 import { useEffect, useState } from "react";
 const AdminDashboard: React.FC = () => {
-  const { isWideScreen } = useCurrentUser();
+  const { isWideScreen, currentUser } = useCurrentUser();
   const [betaRequests, setBetaRequests] = useState<BetaRequest[]>([]);
 
   const refresh = (e: CustomEvent) => {
@@ -79,7 +79,7 @@ const AdminDashboard: React.FC = () => {
             </div>
           )}
         </IonContent>
-        <Tabs />
+        {currentUser && <Tabs />}
       </IonPage>
     </>
   );

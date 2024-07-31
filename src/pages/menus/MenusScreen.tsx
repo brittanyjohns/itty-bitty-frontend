@@ -8,17 +8,18 @@ import {
   IonPage,
   IonRefresher,
   IonRefresherContent,
-  IonTitle,
-  IonToolbar,
 } from "@ionic/react";
 import MainMenu from "../../components/main_menu/MainMenu";
 import Tabs from "../../components/utils/Tabs";
-import { addCircleOutline } from "ionicons/icons";
 import MenuGrid from "../../components/menus/MenuGrid";
 import { useEffect, useState } from "react";
 import { Menu, getMenus } from "../../data/menus";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import MainHeader from "../MainHeader";
+import StaticMenu from "../../components/main_menu/StaticMenu";
 const MenusScreen: React.FC = () => {
   const [menus, setMenus] = useState<Menu[]>([]);
+  const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
@@ -43,27 +44,25 @@ const MenusScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="Menus"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Menus"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonButton>
-                <IonMenuButton></IonMenuButton>
-              </IonButton>
-            </IonButtons>
-            <IonButtons slot="end">
-              <IonButton routerLink="/menus/new">
-                <IonIcon
-                  slot="icon-only"
-                  ios={addCircleOutline}
-                  md={addCircleOutline}
-                ></IonIcon>
-              </IonButton>
-            </IonButtons>
-            <IonTitle className="text-center">Menus</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+        <MainHeader
+          pageTitle="Menus"
+          isWideScreen={isWideScreen}
+          endLink="/menus/new"
+        />
         <IonContent className="ion-padding">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>

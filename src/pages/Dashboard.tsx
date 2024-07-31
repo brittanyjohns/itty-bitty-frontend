@@ -27,7 +27,8 @@ import {
   fetchWordEventsByUserId,
 } from "../data/word_event";
 import WordCloudChart from "../components/utils/WordCloudChart";
-import { closeMainMenu } from "./MainHeader";
+import MainHeader, { closeMainMenu } from "./MainHeader";
+import StaticMenu from "../components/main_menu/StaticMenu";
 
 const Dashboard: React.FC = () => {
   const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
@@ -79,7 +80,20 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="Dashboard"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Dashboard"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <MainHeader pageTitle="Dashboard" isWideScreen={isWideScreen} />
+
       <IonPage id="main-content">
         <IonContent className="ion-padding">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
@@ -138,7 +152,7 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
         </IonContent>
-        <Tabs />
+        {currentUser && <Tabs />}
       </IonPage>
     </>
   );

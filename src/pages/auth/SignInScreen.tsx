@@ -12,6 +12,7 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
 import { getImageUrl } from "../../data/utils";
+import StaticMenu from "../../components/main_menu/StaticMenu";
 
 const SignInScreen: React.FC = () => {
   const history = useHistory();
@@ -47,9 +48,15 @@ const SignInScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu />
+      <MainMenu pageTitle="Sign In" isWideScreen={isWideScreen} />
+      <StaticMenu pageTitle="Sign In" isWideScreen={isWideScreen} />
+
       <IonPage id="main-content">
-        <MainHeader />
+        <MainHeader
+          pageTitle="Sign In"
+          isWideScreen={isWideScreen}
+          endLink="/menus/new"
+        />
         <IonContent className="">
           <div
             className="hero_main1 bg-cover bg-center  min-h-screen"

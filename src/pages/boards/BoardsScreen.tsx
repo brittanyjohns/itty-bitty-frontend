@@ -28,6 +28,7 @@ interface BoardsScreenProps {
 import "./ViewBoard.css";
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
+import StaticMenu from "../../components/main_menu/StaticMenu";
 
 const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   const { currentAccount, currentUser, isWideScreen } = useCurrentUser();
@@ -107,28 +108,25 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="Boards"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Boards"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+
       <IonPage id="main-content">
-        {/* <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar className="bg-inherit shadow-none text-center">
-            <IonButtons slot="start">
-              <IonButton>
-                <IonMenuButton></IonMenuButton>
-              </IonButton>
-            </IonButtons>
-            <IonButtons slot="end">
-              <IonButton routerLink="/boards/new">
-                <IonIcon
-                  slot="icon-only"
-                  ios={addCircleOutline}
-                  md={addCircleOutline}
-                ></IonIcon>
-              </IonButton>
-            </IonButtons>
-            <IonTitle>{pageTitle}</IonTitle>
-          </IonToolbar>
-        </IonHeader> */}
-        <MainHeader />
+        <MainHeader
+          pageTitle="Boards"
+          isWideScreen={isWideScreen}
+          endLink="/boards/new"
+        />
         <IonContent className="ion-padding">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
@@ -157,7 +155,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
           {segmentType === "preset" && renderBoardGrid("preset", presetBoards)}
           {gridType === "child" && renderBoardGrid("child", childBoards)}
         </IonContent>
-        <Tabs />
+        {currentUser && <Tabs />}
       </IonPage>
     </>
   );

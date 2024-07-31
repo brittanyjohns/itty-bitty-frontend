@@ -28,6 +28,7 @@ import Tabs from "../../components/utils/Tabs";
 import { addCircleOutline, imagesOutline, personOutline } from "ionicons/icons";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import MainHeader from "../MainHeader";
+import StaticMenu from "../../components/main_menu/StaticMenu";
 
 const ImagesScreen: React.FC = () => {
   const [images, setImages] = useState<Image[]>([]);
@@ -43,6 +44,7 @@ const ImagesScreen: React.FC = () => {
   const [loadingMessage, setLoadingMessage] = useState("Loading images");
   const inputRef = createRef<HTMLIonInputElement>();
   const [showCreateBtn, setShowCreateBtn] = useState(false);
+  const { currentUser, currentAccount, isWideScreen } = useCurrentUser();
   const fetchImages = async () => {
     setShowLoading(true);
     await fetchAllImages();
@@ -135,26 +137,26 @@ const ImagesScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="Images"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Images"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+
       <IonPage id="main-content">
-        {/* <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonMenuButton slot="start" />
-            </IonButtons>
-            <IonButtons slot="end">
-              <IonButton routerLink="/images/add">
-                <IonIcon
-                  slot="icon-only"
-                  ios={addCircleOutline}
-                  md={addCircleOutline}
-                ></IonIcon>
-              </IonButton>
-            </IonButtons>
-            <IonTitle class="text-center">{pageTitle}</IonTitle>
-          </IonToolbar>
-        </IonHeader> */}
-        <MainHeader pageTitle={pageTitle} />
+        <MainHeader
+          pageTitle="Images"
+          isWideScreen={isWideScreen}
+          endLink="/images/add"
+        />
+
         <IonContent className="ion-padding">
           <IonSegment
             value={segmentType}
@@ -215,7 +217,7 @@ const ImagesScreen: React.FC = () => {
             message={loadingMessage}
           />
         </IonContent>
-        <Tabs />
+        {currentUser && <Tabs />}
       </IonPage>
     </>
   );

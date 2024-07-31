@@ -18,8 +18,10 @@ import Tabs from "../../components/utils/Tabs";
 import { useEffect, useState } from "react";
 // import { useHistory } from "react-router";
 import { addCircleOutline } from "ionicons/icons";
+import MainHeader from "../MainHeader";
+import StaticMenu from "../../components/main_menu/StaticMenu";
 const ChildAccountsScreen: React.FC = () => {
-  const { currentUser, setCurrentUser } = useCurrentUser();
+  const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
   // const history = useHistory();
   const [childAccounts, setChildAccounts] = useState<any>([]);
   // const [pageTitle, setPageTitle] = useState("Your ChildAccounts");
@@ -53,10 +55,21 @@ const ChildAccountsScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="Accounts"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Accounts"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
 
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
+        {/* <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
             <IonButtons slot="start">
               <IonMenuButton></IonMenuButton>
@@ -68,14 +81,20 @@ const ChildAccountsScreen: React.FC = () => {
               </IonButton>
             </IonButtons>
           </IonToolbar>
-        </IonHeader>
+        </IonHeader> */}
+        <MainHeader
+          pageTitle="Accounts"
+          isWideScreen={isWideScreen}
+          endLink="/child-accounts/new"
+        />
+
         <IonContent className="ion-padding">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <ChildAccountList childAccounts={childAccounts} />
         </IonContent>
-        <Tabs />
+        {currentUser && <Tabs />}
       </IonPage>
     </>
   );

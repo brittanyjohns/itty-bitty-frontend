@@ -27,15 +27,7 @@ const Demo: React.FC = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        {/* <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="start">
-              {!isWideScreen && <IonMenuButton></IonMenuButton>}
-            </IonButtons>
-            <IonTitle>Demo</IonTitle>
-          </IonToolbar>
-        </IonHeader> */}
-        <MainHeader />
+        <MainHeader pageTitle="Demo" isWideScreen={isWideScreen} />
         <IonContent>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
@@ -58,7 +50,6 @@ const Demo: React.FC = () => {
           </div>
         </IonContent>
       </IonPage>
-      <Tabs />
     </>
   );
 };

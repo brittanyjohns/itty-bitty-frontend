@@ -183,13 +183,13 @@ select {
 }
 
 /* In your global styles or component-specific styles */
-/* @media (min-width: 768px) {
+@media (min-width: 768px) {
   #main-content {
     margin-left: var(--ion-menu-width, 256px);
     padding-right: 256px;
     padding-left: 25px;
   }
-} */
+}
 
 ion-menu::part(backdrop) {
   background-color: rgba(20, 126, 188, 0.5);

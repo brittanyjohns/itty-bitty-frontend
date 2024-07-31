@@ -49,6 +49,8 @@ import ImageCropper from "../../components/images/ImageCropper";
 import { Board, getBoards } from "../../data/boards";
 import { generatePlaceholderImage } from "../../data/utils";
 import { set } from "react-hook-form";
+import StaticMenu from "../../components/main_menu/StaticMenu";
+import Tabs from "../../components/utils/Tabs";
 
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -64,7 +66,7 @@ const ViewImageScreen: React.FC = () => {
   const imageGridWrapper = useRef<HTMLDivElement>(null);
   const deleteImageWrapper = useRef<HTMLDivElement>(null);
   const [pageTitle, setPageTitle] = useState("");
-  const { currentUser, isWideScreen } = useCurrentUser();
+  const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
   const [boardId, setBoardId] = useState<string | null>(null);
   const [nextImageWords, setNextImageWords] = useState<string[]>([]);
   const [boards, setBoards] = useState<Board[]>([]);
@@ -308,44 +310,62 @@ const ViewImageScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="Images"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Images"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+
       <IonPage id="main-content">
-        {!isWideScreen && <MainHeader />}
-        <IonHeader className="bg-inherit shadow-none">
-          <IonSegment
-            value={segmentType}
-            onIonChange={handleSegmentChange}
-            className="w-full bg-inherit my-5"
-          >
-            <IonSegmentButton value="gallery">
-              <IonLabel className="sm:text-sm md:text-md lg:text-lg">
-                Gallery
-              </IonLabel>
-              <IonIcon icon={gridOutline} />
-            </IonSegmentButton>
-            <IonSegmentButton value="upload">
-              <IonLabel className="sm:text-sm md:text-md lg:text-lg">
-                Upload
-              </IonLabel>
-              <IonIcon icon={cloudUploadOutline} />
-            </IonSegmentButton>
-            <IonSegmentButton value="generate">
-              <IonLabel className="sm:text-sm md:text-md lg:text-lg">
-                Generate
-              </IonLabel>
-              <IonIcon icon={refreshCircleOutline} />
-            </IonSegmentButton>
-            {showHardDelete && (
-              <IonSegmentButton value="delete">
-                <IonLabel className="sm:text-sm md:text-md lg:text-lg">
-                  Delete
-                </IonLabel>
-                <IonIcon icon={trashBinOutline} />
-              </IonSegmentButton>
-            )}
-          </IonSegment>
-        </IonHeader>
+        <MainHeader
+          pageTitle="Images"
+          isWideScreen={isWideScreen}
+          startLink="/images"
+          endLink="/images/add"
+        />
+
         <IonContent className="ion-padding">
+          <IonHeader className="bg-inherit shadow-none">
+            <IonSegment
+              value={segmentType}
+              onIonChange={handleSegmentChange}
+              className="w-full bg-inherit my-5"
+            >
+              <IonSegmentButton value="gallery">
+                <IonLabel className="sm:text-sm md:text-md lg:text-lg">
+                  Gallery
+                </IonLabel>
+                <IonIcon icon={gridOutline} />
+              </IonSegmentButton>
+              <IonSegmentButton value="upload">
+                <IonLabel className="sm:text-sm md:text-md lg:text-lg">
+                  Upload
+                </IonLabel>
+                <IonIcon icon={cloudUploadOutline} />
+              </IonSegmentButton>
+              <IonSegmentButton value="generate">
+                <IonLabel className="sm:text-sm md:text-md lg:text-lg">
+                  Generate
+                </IonLabel>
+                <IonIcon icon={refreshCircleOutline} />
+              </IonSegmentButton>
+              {showHardDelete && (
+                <IonSegmentButton value="delete">
+                  <IonLabel className="sm:text-sm md:text-md lg:text-lg">
+                    Delete
+                  </IonLabel>
+                  <IonIcon icon={trashBinOutline} />
+                </IonSegmentButton>
+              )}
+            </IonSegment>
+          </IonHeader>
           <div className="ion-justify-content-center ion-align-items-center ion-text-center pt-1">
             <IonText className="font-bold text-2xl">{pageTitle}</IonText>
             <div className="mt-4">
@@ -592,6 +612,7 @@ const ViewImageScreen: React.FC = () => {
             )}
           </div>
         </IonContent>
+        <Tabs />
       </IonPage>
     </>
   );

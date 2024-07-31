@@ -19,8 +19,9 @@ import Tabs from "../components/utils/Tabs";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { getImageUrl } from "../data/utils";
 import MainHeader from "./MainHeader";
+import StaticMenu from "../components/main_menu/StaticMenu";
 const ContactUs: React.FC = () => {
-  const { isWideScreen } = useCurrentUser();
+  const { isWideScreen, currentAccount, currentUser } = useCurrentUser();
 
   const feature1Image = getImageUrl("feature_1", "webp");
 
@@ -36,9 +37,22 @@ const ContactUs: React.FC = () => {
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="Contact Us"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Contact Us"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+
       <IonPage id="main-content">
-        <MainHeader />
+        <MainHeader pageTitle="Contact Us" isWideScreen={isWideScreen} />
+
         <IonContent className="flex flex-col items-center p-6 space-y-6 bg-gray-50">
           <div
             className="hero_main1 bg-cover bg-center  h-full w-full"
@@ -82,7 +96,7 @@ const ContactUs: React.FC = () => {
           </div>
         </IonContent>
       </IonPage>
-      <Tabs />
+      {currentUser && <Tabs />}
     </>
   );
 };

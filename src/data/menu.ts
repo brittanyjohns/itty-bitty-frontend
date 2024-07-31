@@ -1,4 +1,3 @@
-
 export interface MenuLink {
   endpoint: string;
   name: string;
@@ -20,123 +19,138 @@ import {
   lockClosedOutline,
   pricetagOutline,
   bookOutline,
+  phoneLandscapeOutline,
+  callOutline,
 } from "ionicons/icons";
 import { set } from "react-hook-form";
 const menuLinks: MenuLink[] = [
-  
   {
-    endpoint: '/home',
-    name: 'Home',
-    slug: 'home',
+    endpoint: "/home",
+    name: "Home",
+    slug: "home",
     icon: homeOutline,
-    id: 0
+    id: 0,
   },
-  {endpoint: '/pricing',
-  name: 'Pricing',
-  slug: 'pricing',
-  icon: pricetagOutline,
-  id: 1
+  {
+    endpoint: "/pricing",
+    name: "Pricing",
+    slug: "pricing",
+    icon: pricetagOutline,
+    id: 1,
   },
 
   {
-    endpoint: '/about',
-    name: 'About Us',
-    slug: 'about',
+    endpoint: "/about",
+    name: "About Us",
+    slug: "about",
     icon: bookOutline,
-    id: 2
+    id: 2,
+  },
+  {
+    endpoint: "/contact-us",
+    name: "Contact Us",
+    slug: "contact",
+    icon: callOutline,
+    id: 21212121,
+  },
 
+  {
+    endpoint: "/dashboard",
+    name: "Dashboard",
+    slug: "dashboard",
+    icon: peopleCircleOutline,
+    id: 333333,
   },
   {
-    endpoint: '/boards',
-    name: 'Boards',
-    slug: 'boards',
+    endpoint: "/boards",
+    name: "Boards",
+    slug: "boards",
     icon: gridOutline,
-    id: 3
+    id: 3,
   },
   {
-    endpoint: '/menus',
-    name: 'Menus',
-    slug: 'menus',
+    endpoint: "/menus",
+    name: "Menus",
+    slug: "menus",
     icon: fastFoodOutline,
     pro: true,
-    id: 4
+    id: 4,
   },
   {
-    endpoint: '/images',
-    name: 'Images',
-    slug: 'images',
+    endpoint: "/images",
+    name: "Images",
+    slug: "images",
     icon: imageOutline,
-    id: 5
+    id: 5,
   },
   {
-    endpoint: '/child-accounts',
-    name: 'Child Accounts',
-    slug: 'child-accounts',
+    endpoint: "/child-accounts",
+    name: "Child Accounts",
+    slug: "child-accounts",
     icon: peopleCircleOutline,
     pro: true,
-    id: 33
+    id: 33,
   },
   {
-    endpoint: '/sign-in',
-    name: 'Sign In',
-    slug: 'sign-in',
+    endpoint: "/sign-in",
+    name: "Sign In",
+    slug: "sign-in",
     icon: logInOutline,
-    id: 7
+    id: 7,
   },
   {
-    endpoint: '/sign-up',
-    name: 'Sign Up',
-    slug: 'sign-up',
+    endpoint: "/sign-up",
+    name: "Sign Up",
+    slug: "sign-up",
     icon: logInOutline,
-    id: 8
+    id: 8,
   },
   {
-    endpoint: '/teams',
-    name: 'Teams',
-    slug: 'teams',
+    endpoint: "/teams",
+    name: "Teams",
+    slug: "teams",
     pro: true,
     icon: peopleCircleOutline,
-    id: 12654654
+    id: 12654654,
   },
   {
-    endpoint: '/settings',
-    name: 'Settings',
-    slug: 'settings',
+    endpoint: "/settings",
+    name: "Settings",
+    slug: "settings",
     icon: settingsOutline,
-    id: 9997
+    id: 9997,
   },
   {
-    endpoint: '/predictive',
-    name: 'Predictive',
-    slug: 'predictive',
+    endpoint: "/predictive",
+    name: "Predictive",
+    slug: "predictive",
     icon: sunnyOutline,
     pro: false,
-    id: 10
+    id: 10,
   },
   {
-    endpoint: '/admin/dashboard',
-    name: 'Admin Dashboard',
-    slug: 'admin-dashboard',
+    endpoint: "/admin/dashboard",
+    name: "Admin Dashboard",
+    slug: "admin-dashboard",
     icon: lockClosedOutline,
-    id: 9998
+    id: 9998,
   },
   {
-    endpoint: '/users/sign-out',
-    name: 'Sign Out',
-    slug: 'sign-out',
+    endpoint: "/users/sign-out",
+    name: "Sign Out",
+    slug: "sign-out",
     icon: logOutOutline,
-    id: 9999
+    id: 9999,
   },
   {
-    endpoint: '/child-accounts/sign-out',
-    name: 'Sign Out',
-    slug: 'child-sign-out',
+    endpoint: "/child-accounts/sign-out",
+    name: "Sign Out",
+    slug: "child-sign-out",
     icon: logOutOutline,
-    id: 9996
-  }
-  
+    id: 9996,
+  },
 ];
 
 export const getMenu = () => menuLinks;
 
-export const getMenuLink = (id: number) => menuLinks.find(m => m.id === id);
+export const getMenuLink = (id: number) => menuLinks.find((m) => m.id === id);

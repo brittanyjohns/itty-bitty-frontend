@@ -12,14 +12,28 @@ import Tabs from "../components/utils/Tabs";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { getImageUrl } from "../data/utils";
 import MainHeader from "./MainHeader";
+import StaticMenu from "../components/main_menu/StaticMenu";
 const About: React.FC = () => {
-  const { isWideScreen } = useCurrentUser();
+  const { isWideScreen, currentAccount, currentUser } = useCurrentUser();
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="About"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="About"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+
       <IonPage id="main-content">
-        <MainHeader />
+        <MainHeader pageTitle="About" isWideScreen={isWideScreen} />
+
         <IonContent className="">
           <div
             className="hero_main1 bg-cover bg-center h-full w-full pt-10 pb-20"
@@ -73,8 +87,8 @@ const About: React.FC = () => {
             </div>
           </div>
         </IonContent>
+        {currentUser && <Tabs />}
       </IonPage>
-      <Tabs />
     </>
   );
 };

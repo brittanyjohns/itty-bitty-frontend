@@ -6,65 +6,69 @@ import {
   IonItem,
   IonIcon,
   IonLabel,
+  IonList,
 } from "@ionic/react";
 import { personCircleOutline } from "ionicons/icons";
 import { MenuLink } from "../../data/menu";
 import MenuListItem from "./MainMenuListItem";
-import { getFilterList } from "../../data/utils";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { getFilterList, getImageUrl } from "../../data/utils";
 import { useHistory } from "react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { User } from "../../data/users";
+import { ChildAccount } from "../../data/child_accounts";
 
 interface StaticMenuProps {
-  //   filteredLinks: MenuLink[];
-  //   goToDashboard?: () => void;
+  pageTitle?: string;
+  isWideScreen?: boolean;
+  currentUser?: User | null;
+  currentAccount?: ChildAccount | null;
 }
 
-const StaticMenu: React.FC<StaticMenuProps> = (
-  {
-    //   filteredLinks,
-    //   goToDashboard,
-  }
-) => {
-  const { currentUser, currentAccount } = useCurrentUser();
+const StaticMenu: React.FC<StaticMenuProps> = (props) => {
   const [filteredLinks, setFilteredLinks] = useState<MenuLink[]>([]);
   const history = useHistory();
-  const filterList = getFilterList(currentUser, currentAccount);
+  const { currentUser, currentAccount } = props;
 
-  const setUpList = () => {
-    setFilteredLinks(filterList);
-  };
+  const filterList = useCallback(() => {
+    return getFilterList(currentUser, currentAccount);
+  }, [currentUser, currentAccount]);
+
+  useEffect(() => {
+    const filtered = filterList();
+    setFilteredLinks(filtered);
+    console.log("filtered", filtered);
+  }, [filterList]);
+
   const goToDashboard = () => {
     history.push("/dashboard");
     console.log("goToDashboard");
   };
+  const feature1Image = getImageUrl("round_itty_bitty_logo_1", "png");
 
-  useEffect(() => {
-    setUpList();
-  }, []);
   return (
-    <IonContent className="bg-inherit w-64">
-      <IonHeader>
+    <IonContent className="w-96">
+      <IonHeader className="bg-inherit shadow-none">
         <IonToolbar>
-          <IonTitle>StaticMenu</IonTitle>
+          <div className="flex items-center">
+            <img slot="start" src={feature1Image} className="ml-4 h-10 w-10" />
+            <div
+              className="font-bold ml-2 hover:cursor-pointer"
+              onClick={() => {
+                window.location.href = "/";
+              }}
+            >
+              SpeakAnyWay
+            </div>
+          </div>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
-        <IonItem
-          button
-          onClick={() => {
-            if (goToDashboard) {
-              goToDashboard();
-            }
-          }}
-        >
-          <IonIcon slot="start" icon={personCircleOutline} />
-          <IonLabel>Dashboard</IonLabel>
-        </IonItem>
+      <IonList>
         {filteredLinks.map((link) => (
-          <MenuListItem key={link.slug} menuLink={link} />
+          <IonItem key={link.id}>
+            <MenuListItem menuLink={link} />
+          </IonItem>
         ))}
-      </IonContent>
+      </IonList>
     </IonContent>
   );
 };

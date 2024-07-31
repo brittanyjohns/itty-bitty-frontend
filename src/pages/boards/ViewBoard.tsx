@@ -31,6 +31,8 @@ import MainMenu from "../../components/main_menu/MainMenu";
 import BoardView from "../../components/boards/BoardView";
 import { addCircleOutline } from "ionicons/icons";
 import { set } from "d3";
+import StaticMenu from "../../components/main_menu/StaticMenu";
+import MainHeader from "../MainHeader";
 
 const ViewBoard: React.FC<any> = () => {
   const [board, setBoard] = useState<Board>();
@@ -39,10 +41,9 @@ const ViewBoard: React.FC<any> = () => {
   const [showIcon, setShowIcon] = useState(false);
   const [showLoading, setShowLoading] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
-  const { currentUser } = useCurrentUser();
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [currentUserTeams, setCurrentUserTeams] = useState<Team[]>();
-  const { isWideScreen } = useCurrentUser();
+  const { isWideScreen, currentAccount, currentUser } = useCurrentUser();
 
   const fetchBoard = async () => {
     const board = await getBoard(params.id);
@@ -107,28 +108,27 @@ const ViewBoard: React.FC<any> = () => {
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="Boards"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Boards"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
 
       <IonPage id="main-content">
-        <IonHeader className="">
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonButton>
-                <IonMenuButton></IonMenuButton>
-              </IonButton>
-            </IonButtons>
-            <IonTitle>{board?.name || "Board"}</IonTitle>
-            <IonButtons slot="end">
-              <IonButton routerLink="/boards/new">
-                <IonIcon
-                  slot="icon-only"
-                  ios={addCircleOutline}
-                  md={addCircleOutline}
-                ></IonIcon>
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
+        <MainHeader
+          pageTitle={board?.name || "Board"}
+          isWideScreen={isWideScreen}
+          startLink="/boards"
+          endLink="/boards/new"
+        />
+
         <IonContent>
           <IonLoading message="Please wait..." isOpen={showLoading} />
           {board && (

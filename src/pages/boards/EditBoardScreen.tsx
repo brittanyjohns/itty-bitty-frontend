@@ -57,6 +57,8 @@ import ImageCropper from "../../components/images/ImageCropper";
 import ConfirmDeleteAlert from "../../components/utils/ConfirmDeleteAlert";
 import AddToTeamForm from "../../components/teams/AddToTeamForm";
 import { Team } from "../../data/teams";
+import StaticMenu from "../../components/main_menu/StaticMenu";
+import MainHeader from "../MainHeader";
 
 interface EditBoardScreenProps {}
 const EditBoardScreen: React.FC = () => {
@@ -75,14 +77,12 @@ const EditBoardScreen: React.FC = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("Loading board");
-  const { currentUser, isWideScreen } = useCurrentUser();
+  const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
   const [gridLayout, setGridLayout] = useState([]);
-  const [showCreateBtn, setShowCreateBtn] = useState(false);
   const [numberOfColumns, setNumberOfColumns] = useState(4); // Default number of columns
   const [showEdit, setShowEdit] = useState(false);
   const params = useParams<{ id: string }>();
   const addToTeamRef = useRef<HTMLDivElement>(null);
-  const [currentUserTeams, setCurrentUserTeams] = useState<Team[]>();
 
   const initialImage = {
     id: "",
@@ -251,20 +251,29 @@ const EditBoardScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="Boards"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Boards"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+
       <IonPage id="main-content">
+        <MainHeader
+          pageTitle="Boards"
+          isWideScreen={isWideScreen}
+          endIcon={imagesOutline}
+          endLink={`/boards/${board?.id}/gallery`}
+          startIcon={arrowBackCircleOutline}
+          startLink={`/boards/${board?.id}`}
+        />
         <IonContent className="ion-padding">
-          <div className="flex justify-center items-center">
-            <div ref={addToTeamRef} className="p-4 hidden">
-              {currentUserTeams && (
-                <AddToTeamForm
-                  onSubmit={handleAddToTeam}
-                  toggleAddToTeam={toggleAddToTeam}
-                  currentUserTeams={currentUserTeams}
-                />
-              )}
-            </div>
-          </div>
           <div className="flex justify-between items-center px-4 w-full md:w-11/12 mx-auto">
             <IonButtons className="mr-3" slot="start">
               <IonButton routerLink={`/boards/${board?.id}`}>

@@ -21,6 +21,8 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/utils/Tabs";
 import ImagePasteHandler from "../../components/utils/ImagePasteHandler";
 import MainMenu from "../../components/main_menu/MainMenu";
+import StaticMenu from "../../components/main_menu/StaticMenu";
+import MainHeader from "../MainHeader";
 
 type NewMenu = {
   name: string;
@@ -37,7 +39,7 @@ const NewMenu: React.FC = (props: any) => {
   });
   const [showLoading, setShowLoading] = useState<boolean>(false);
 
-  const { currentUser } = useCurrentUser();
+  const { currentUser, currentAccount, isWideScreen } = useCurrentUser();
   const imageElementRef = useRef<HTMLImageElement>(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [name, setName] = useState<string>("");
@@ -157,18 +159,25 @@ const NewMenu: React.FC = (props: any) => {
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="New Menu"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="New Menu"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonButton routerLink="/menus">
-                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
-              </IonButton>
-            </IonButtons>
-            <IonTitle>New Menu</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+        <MainHeader
+          pageTitle="New Menu"
+          isWideScreen={isWideScreen}
+          startLink="/menus"
+        />
 
         <IonContent>
           <IonLoading
@@ -176,18 +185,19 @@ const NewMenu: React.FC = (props: any) => {
             isOpen={showLoading}
           />
 
-          <div className="w-full md:w-3/4 lg:w-1/2 mx-auto border shadow-lg">
+          <div className="w-full md:w-3/4 lg:w-1/2 mx-auto">
             <IonItem
               lines="none"
-              className="ion-margin-bottom ion-margin-top mx-auto w-3/4 md:w-1/2 text-xl md:text-2xl font-bold"
+              className="ion-margin-bottom ion-margin-top mx-auto"
             >
-              <h1 className="text-center">Create a new menu board</h1>
+              <h1 className="text-center text-xl md:text-2xl font-bold">
+                Create a new menu board
+              </h1>
             </IonItem>
             <IonItem lines="none" className="ion-margin-bottom mx-4">
-              <h1 className="text-center">
-                Browse for an image or paste an image to create a new menu
+              <h1 className="text-center text-md">
+                Upload or paste an image to create a new menu
               </h1>
-              <IonIcon icon={cameraOutline} size="large" className="mx-auto" />
             </IonItem>
             <form
               className="ion-padding"

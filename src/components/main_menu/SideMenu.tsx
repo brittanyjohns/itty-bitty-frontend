@@ -11,18 +11,37 @@ import {
 import { MenuLink, getMenu } from "../../data/menu";
 import MenuListItem from "./MainMenuListItem";
 import { personCircleOutline } from "ionicons/icons";
-import { getImageUrl } from "../../data/utils";
+import { getFilterList, getImageUrl } from "../../data/utils";
+import { useState, useCallback, useEffect } from "react";
+import { useHistory } from "react-router";
 const feature1Image = getImageUrl("round_itty_bitty_logo_1", "png");
 interface SideMenuProps {
   filteredLinks: MenuLink[];
   currentUser?: any;
   goToDashboard: () => void;
+  currentAccount?: any;
 }
-const SideMenu: React.FC<SideMenuProps> = ({
-  filteredLinks,
-  currentUser,
-  goToDashboard,
-}) => {
+const SideMenu: React.FC<SideMenuProps> = (props) => {
+  const [filteredLinks, setFilteredLinks] = useState<MenuLink[]>([]);
+  const history = useHistory();
+  const { currentUser, currentAccount } = props;
+
+  const filterList = useCallback(() => {
+    return getFilterList(currentUser, currentAccount);
+  }, [currentUser, currentAccount]);
+
+  useEffect(() => {
+    const filtered = filterList();
+    setFilteredLinks(filtered);
+    console.log("filtered", filtered);
+  }, [filterList]);
+
+  const goToDashboard = () => {
+    history.push("/dashboard");
+    console.log("goToDashboard");
+  };
+  const feature1Image = getImageUrl("round_itty_bitty_logo_1", "png");
+
   return (
     <IonMenu menuId="main-menu" contentId="main-content">
       <IonHeader>

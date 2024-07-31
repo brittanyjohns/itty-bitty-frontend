@@ -28,6 +28,8 @@ import { Team } from "../../data/teams";
 import Tabs from "../../components/utils/Tabs";
 import { text } from "ionicons/icons";
 import { set } from "react-hook-form";
+import StaticMenu from "../../components/main_menu/StaticMenu";
+import MainHeader from "../MainHeader";
 interface ViewMenuScreenProps {
   id: string;
 }
@@ -40,7 +42,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
   const menuTab = useRef<HTMLDivElement>(null);
   const [images, setImages] = useState<Image[]>([]);
   const history = useHistory();
-  const { currentUser } = useCurrentUser();
+  const { currentUser, currentAccount, isWideScreen } = useCurrentUser();
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [currentUserTeams, setCurrentUserTeams] = useState<Team[]>();
   const [showIcon, setShowIcon] = useState(false);
@@ -137,29 +139,48 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="Menus"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Menus"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonBackButton defaultHref="/menus" />
-            </IonButtons>
-            <IonTitle>{menu?.name}</IonTitle>
-          </IonToolbar>
-          <IonSegment
-            value={segmentType}
-            onIonChange={handleSegmentChange}
-            className="w-full bg-inherit my-2 p-2"
-          >
-            <IonSegmentButton value="menuTab">
-              <IonLabel className="text-md lg:text-lg">Menu</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="boardTab">
-              <IonLabel className="text-md lg:text-lg">Board</IonLabel>
-            </IonSegmentButton>
-          </IonSegment>
-        </IonHeader>
+        <MainHeader
+          pageTitle="Menus"
+          isWideScreen={isWideScreen}
+          startLink="/menus"
+          endLink="/menus/new"
+        />
+
         <IonContent scrollY={true}>
+          <IonHeader className="bg-inherit shadow-none">
+            <IonToolbar>
+              <IonButtons slot="start">
+                <IonBackButton defaultHref="/menus" />
+              </IonButtons>
+              <IonTitle>{menu?.name}</IonTitle>
+            </IonToolbar>
+            <IonSegment
+              value={segmentType}
+              onIonChange={handleSegmentChange}
+              className="w-full bg-inherit my-2 p-2"
+            >
+              <IonSegmentButton value="menuTab">
+                <IonLabel className="text-md lg:text-lg">Menu</IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="boardTab">
+                <IonLabel className="text-md lg:text-lg">Board</IonLabel>
+              </IonSegmentButton>
+            </IonSegment>
+          </IonHeader>
           <div className="hidden" ref={menuTab}>
             {menu && menu.displayImage && (
               <div className="w-7/8 md:w-1/3 lg:w-1/4 mx-auto">

@@ -47,8 +47,8 @@ const Upgrade: React.FC = () => {
             )}
           </div>
         </IonContent>
+        {currentUser && <Tabs />}
       </IonPage>
-      <Tabs />
     </>
   );
 };

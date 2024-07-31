@@ -12,6 +12,7 @@ import MainHeader from "./MainHeader";
 import { useEffect, useState } from "react";
 import BoardGrid from "../components/boards/BoardGrid";
 import PricingTable from "../components/utils/PricingTable";
+import StaticMenu from "../components/main_menu/StaticMenu";
 
 const Home: React.FC = () => {
   const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
@@ -19,7 +20,6 @@ const Home: React.FC = () => {
   const [ip, setIP] = useState("");
 
   const getData = async () => {
-    // const res = await axios.get("https://api.ipify.org/?format=json");
     const res = await fetch("https://api.ipify.org/?format=json");
     const resData = await res.json();
     setIP(resData.ip);
@@ -48,9 +48,25 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="SpeakAnyWay"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="SpeakAnyWay"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+
       <IonPage id="main-content">
-        <MainHeader pageTitle="SpeakAnyWay" />
+        <MainHeader
+          pageTitle="SpeakAnyWay"
+          isWideScreen={isWideScreen}
+          endLink="/sign-up"
+        />
         <IonContent className="text-justified" scrollY={true}>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>

@@ -33,6 +33,9 @@ import ChildBoardDropdown from "../../components/boards/ChildBoardDropdown";
 import MainMenu from "../../components/main_menu/MainMenu";
 import ChildAccountForm from "../../components/childAccounts/ChildAccountForm";
 import { User } from "../../data/users";
+import MainHeader from "../MainHeader";
+import StaticMenu from "../../components/main_menu/StaticMenu";
+import Tabs from "../../components/utils/Tabs";
 
 const ViewChildAccountScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -44,7 +47,7 @@ const ViewChildAccountScreen: React.FC = () => {
   const [userBoards, setUserBoards] = useState<Board[]>([]);
   const [loading, setLoading] = useState(false);
   const history = useHistory();
-  const { currentUser } = useCurrentUser();
+  const { currentUser, currentAccount, isWideScreen } = useCurrentUser();
 
   const fetchChildAccount = async () => {
     if (!currentUser?.id) {
@@ -157,15 +160,27 @@ const ViewChildAccountScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="Accounts"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Accounts"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonBackButton defaultHref="/child-accounts" />
-            </IonButtons>
-            <IonTitle>{childAccount?.name || "New Account"}</IonTitle>
-          </IonToolbar>
+        <MainHeader
+          pageTitle="Accounts"
+          isWideScreen={isWideScreen}
+          startLink="/child-accounts"
+        />
+
+        <IonContent className="ion-padding" scrollY={true}>
           {childAccount && (
             <IonSegment
               value={segmentType}
@@ -195,8 +210,6 @@ const ViewChildAccountScreen: React.FC = () => {
               </IonSegmentButton>
             </IonSegment>
           )}
-        </IonHeader>
-        <IonContent className="ion-padding" scrollY={true}>
           {segmentType === "childAccountTab" && (
             <div>
               {childAccount && (
@@ -254,6 +267,7 @@ const ViewChildAccountScreen: React.FC = () => {
             </div>
           )}
         </IonContent>
+        <Tabs />
       </IonPage>
     </>
   );

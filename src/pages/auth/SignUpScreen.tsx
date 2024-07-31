@@ -16,6 +16,8 @@ import MainMenu from "../../components/main_menu/MainMenu";
 import { getImageUrl } from "../../data/utils";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import MainHeader from "../MainHeader";
+import StaticMenu from "../../components/main_menu/StaticMenu";
+import { logInOutline } from "ionicons/icons";
 
 interface SignUpScreenProps {
   plan: string;
@@ -27,7 +29,7 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
-  const { isWideScreen } = useCurrentUser();
+  const { isWideScreen, currentAccount, currentUser } = useCurrentUser();
 
   const getQueryParams = (search: string) => {
     return new URLSearchParams(search);
@@ -87,9 +89,26 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="Sign Up"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Sign Up"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+
       <IonPage id="main-content">
-        <MainHeader />
+        <MainHeader
+          pageTitle="Sign Up"
+          isWideScreen={isWideScreen}
+          endLink="/sign-in"
+          endIcon={logInOutline}
+        />
         <IonContent className="">
           <div
             className="hero_main1 bg-cover bg-center min-h-screen pb-5"

@@ -1,18 +1,5 @@
-import {
-  IonBackButton,
-  IonButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonMenuButton,
-  IonPage,
-  IonRefresher,
-  IonRefresherContent,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
+import { IonButton, IonContent, IonPage } from "@ionic/react";
 import MainMenu from "../components/main_menu/MainMenu";
-import Tabs from "../components/utils/Tabs";
 import MainHeader from "./MainHeader";
 import { getImageUrl } from "../data/utils";
 import { useCurrentUser } from "../hooks/useCurrentUser";
@@ -24,7 +11,7 @@ const SignInPage: React.FC = () => {
       <MainMenu />
       <IonPage id="main-content">
         <div className="h-full">
-          <MainHeader />
+          <MainHeader pageTitle="Sign In" isWideScreen={isWideScreen} />
           <div
             className="hero_main1 bg-cover bg-center  min-h-screen"
             style={{

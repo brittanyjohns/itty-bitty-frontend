@@ -14,24 +14,35 @@ import { createImage, cropImage } from "../../data/images";
 import { useHistory } from "react-router";
 import { arrowBackCircleOutline } from "ionicons/icons";
 import MainMenu from "../../components/main_menu/MainMenu";
+import StaticMenu from "../../components/main_menu/StaticMenu";
+import MainHeader from "../MainHeader";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 const NewImage: React.FC = () => {
-  const history = useHistory();
+  const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="Images"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Images"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonButton onClick={() => history.goBack()}>
-                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
-              </IonButton>
-            </IonButtons>
-            <IonTitle>New Image</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+        <MainHeader
+          pageTitle="Images"
+          isWideScreen={isWideScreen}
+          startLink="/images"
+        />
+
         <IonContent className="ion-padding">
           <div className="w-full md:w-1/2 lg:w-1/2 mx-auto">
             <ImageCropper />
