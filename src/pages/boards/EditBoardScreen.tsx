@@ -252,13 +252,13 @@ const EditBoardScreen: React.FC = () => {
   return (
     <>
       <MainMenu
-        pageTitle="Boards"
+        pageTitle={`Edit ${board?.name}`}
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
       />
       <StaticMenu
-        pageTitle="Boards"
+        pageTitle={`Edit ${board?.name}`}
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
@@ -266,7 +266,7 @@ const EditBoardScreen: React.FC = () => {
 
       <IonPage id="main-content">
         <MainHeader
-          pageTitle="Boards"
+          pageTitle={`Edit ${board?.name}`}
           isWideScreen={isWideScreen}
           endIcon={imagesOutline}
           endLink={`/boards/${board?.id}/gallery`}
@@ -274,28 +274,7 @@ const EditBoardScreen: React.FC = () => {
           startLink={`/boards/${board?.id}`}
         />
         <IonContent className="ion-padding">
-          <div className="flex justify-between items-center px-4 w-full md:w-11/12 mx-auto">
-            <IonButtons className="mr-3" slot="start">
-              <IonButton routerLink={`/boards/${board?.id}`}>
-                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
-              </IonButton>
-            </IonButtons>
-            <IonText className="font-bold text-2xl">
-              {board && board.name}{" "}
-            </IonText>
-            <IonButtons className="mr-3" slot="start">
-              <IonButton routerLink={`/boards/${board?.id}/gallery`}>
-                <IonIcon slot="icon-only" icon={imagesOutline} />
-              </IonButton>
-            </IonButtons>
-          </div>
-
           <div className=" " ref={editForm}>
-            <div className="m-2">
-              <IonText className="text-sm text-gray-500">
-                Voice: {board?.voice}
-              </IonText>
-            </div>
             <div className="w-11/12 lg:w-1/2 mx-auto">
               {board && (
                 <BoardForm
@@ -304,6 +283,13 @@ const EditBoardScreen: React.FC = () => {
                   onSubmit={loadPage}
                 />
               )}
+              <div>
+                <div className="m-2">
+                  <IonText className="text-sm text-gray-500">
+                    Voice: {board?.voice}
+                  </IonText>
+                </div>
+              </div>
             </div>
             <div className="mt-6 px-4 lg:px-12">
               {board && board.images && board.images.length > 0 && (

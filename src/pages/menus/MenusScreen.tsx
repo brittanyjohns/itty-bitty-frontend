@@ -33,7 +33,6 @@ const MenusScreen: React.FC = () => {
       console.error("Error fetching menus");
       return;
     }
-    console.log("allMenus", allMenus);
     const menus = allMenus;
     setMenus(menus);
   };

@@ -20,6 +20,7 @@ import { denyAccess } from "../../data/users";
 import BoardForm from "../../components/boards/BoardForm";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
+import Tabs from "../../components/utils/Tabs";
 
 const NewBoard: React.FC = (props: any) => {
   const {
@@ -58,13 +59,13 @@ const NewBoard: React.FC = (props: any) => {
   return (
     <>
       <MainMenu
-        pageTitle="Menus"
+        pageTitle="New Board"
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
       />
       <StaticMenu
-        pageTitle="Menus"
+        pageTitle="New Board"
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
@@ -72,10 +73,9 @@ const NewBoard: React.FC = (props: any) => {
 
       <IonPage id="main-content">
         <MainHeader
-          pageTitle="Menus"
+          pageTitle="New Board"
           isWideScreen={isWideScreen}
-          startLink="/menus"
-          endLink="/menus/new"
+          startLink="/boards"
         />
         <IonContent fullscreen scrollY={true}>
           <div className="w-1/2 mx-auto h-1/4 grid grid-rows-2 gap-8 mt-10">
@@ -128,6 +128,7 @@ const NewBoard: React.FC = (props: any) => {
             </IonButton>
           </div>
         </IonContent>
+        <Tabs />
       </IonPage>
     </>
   );

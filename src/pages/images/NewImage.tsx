@@ -1,18 +1,5 @@
-import {
-  IonButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-  IonLoading,
-} from "@ionic/react";
+import { IonContent, IonPage } from "@ionic/react";
 import ImageCropper from "../../components/images/ImageCropper";
-import { createImage, cropImage } from "../../data/images";
-import { useHistory } from "react-router";
-import { arrowBackCircleOutline } from "ionicons/icons";
 import MainMenu from "../../components/main_menu/MainMenu";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";

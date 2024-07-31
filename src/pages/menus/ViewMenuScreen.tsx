@@ -202,7 +202,6 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
             <IonList lines="none" className="text-center">
               {currentUser?.role === "admin" && (
                 <IonItem>
-                  <IonButton onClick={handleRerun}>Rerun</IonButton>
                   <IonLabel position="stacked">Description</IonLabel>
                   <IonText>{menu?.description}</IonText>
                 </IonItem>
@@ -218,6 +217,16 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
                   onIonChange={handleLimitChange}
                 />
                 <IonButton onClick={handleUpdateMenu}>Update</IonButton>
+                {menu?.token_limit &&
+                  menu?.board?.cost &&
+                  menu?.board?.cost - menu?.token_limit < 0 && (
+                    <IonButton
+                      disabled={menu?.token_limit - menu?.board?.cost < 0}
+                      onClick={handleRerun}
+                    >
+                      Rerun
+                    </IonButton>
+                  )}
               </IonCard>
             </IonList>
           </div>

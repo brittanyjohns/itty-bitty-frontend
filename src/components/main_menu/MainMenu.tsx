@@ -36,7 +36,6 @@ const MainMenu: React.FC<MainMenuProps> = (props) => {
 
   useEffect(() => {
     setUpMenu();
-    console.log("MainMenu useEffect", isWideScreen);
   }, [setUpMenu]);
 
   const goToDashboard = () => {

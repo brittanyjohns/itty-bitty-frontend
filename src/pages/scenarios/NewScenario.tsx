@@ -14,6 +14,7 @@ import MainMenu from "../../components/main_menu/MainMenu";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import Tabs from "../../components/utils/Tabs";
 
 const NewScenario: React.FC = (props: any) => {
   const [numOfImages, setNumOfImages] = useState(12); // [1]
@@ -39,13 +40,13 @@ const NewScenario: React.FC = (props: any) => {
   return (
     <>
       <MainMenu
-        pageTitle="Menus"
+        pageTitle="New Scenario"
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
       />
       <StaticMenu
-        pageTitle="Menus"
+        pageTitle="New Scenario"
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
@@ -53,10 +54,9 @@ const NewScenario: React.FC = (props: any) => {
 
       <IonPage id="main-content">
         <MainHeader
-          pageTitle="Menus"
+          pageTitle="New Scenario"
           isWideScreen={isWideScreen}
-          startLink="/menus"
-          endLink="/menus/new"
+          startLink="/boards/new"
         />
         <IonContent fullscreen scrollY={true} className="ion-padding">
           <NewScenarioForm
@@ -65,6 +65,7 @@ const NewScenario: React.FC = (props: any) => {
             scenario={initialScenario}
           />
         </IonContent>
+        <Tabs />
       </IonPage>
     </>
   );

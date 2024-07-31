@@ -7,8 +7,6 @@ import {
   IonButton,
   IonIcon,
 } from "@ionic/react";
-import { getImageUrl } from "../data/utils";
-import { useCurrentUser } from "../hooks/useCurrentUser";
 import { useHistory } from "react-router";
 import { menuController } from "@ionic/core/components";
 import { addCircleOutline, arrowBackCircleOutline } from "ionicons/icons";
@@ -33,11 +31,8 @@ interface MainHeaderProps {
 
 const MainHeader: React.FC<MainHeaderProps> = (props) => {
   const isWideScreen = props.isWideScreen;
-  const history = useHistory();
   const showMenuBtn = props.showMenuButton || !props.startLink;
   const showHeader = !isWideScreen || (isWideScreen && showMenuBtn);
-
-  console.log("isWideScreen main header", isWideScreen);
 
   const renderComponent = () => {
     if (showHeader) {
@@ -47,7 +42,10 @@ const MainHeader: React.FC<MainHeaderProps> = (props) => {
             {props.startLink && (
               <IonButtons slot="start">
                 <IonButton routerLink={props.startLink}>
-                  <IonIcon icon={props.startIcon || arrowBackCircleOutline} />
+                  <IonIcon
+                    slot="icon-only"
+                    icon={props.startIcon || arrowBackCircleOutline}
+                  />
                 </IonButton>
               </IonButtons>
             )}
@@ -55,19 +53,14 @@ const MainHeader: React.FC<MainHeaderProps> = (props) => {
               <IonMenuButton slot="start" menu="main-menu"></IonMenuButton>
             )}
 
-            <IonTitle className="text-center">
-              {/* <img
-                src={getImageUrl("round_itty_bitty_logo_1", "png")}
-                className={`h-10 w-10 inline ${
-                  props.pageTitle === "SpeakAnyWay" ? "" : ""
-                }`}
-              /> */}
-              {props.pageTitle}
-            </IonTitle>
+            <IonTitle className="text-center">{props.pageTitle}</IonTitle>
             {props.endLink && (
               <IonButtons slot="end">
                 <IonButton routerLink={props.endLink}>
-                  <IonIcon icon={props.endIcon || addCircleOutline} />
+                  <IonIcon
+                    icon={props.endIcon || addCircleOutline}
+                    slot="icon-only"
+                  />
                 </IonButton>
               </IonButtons>
             )}
@@ -75,7 +68,6 @@ const MainHeader: React.FC<MainHeaderProps> = (props) => {
         </IonHeader>
       );
     } else {
-      console.log("StaticMenu props", isWideScreen);
       return <></>;
     }
   };
