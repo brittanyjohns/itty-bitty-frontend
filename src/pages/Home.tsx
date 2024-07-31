@@ -50,18 +50,21 @@ const Home: React.FC = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        {!isWideScreen && <MainHeader />}
+        <MainHeader pageTitle="SpeakAnyWay" />
         <IonContent className="text-justified" scrollY={true}>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <div className="">
+          <div className="w-full">
             {currentUser && currentUser?.plan_type === "free" && (
               <PricingTable showHeader={false} />
             )}
           </div>
+          {currentUser && currentUser?.plan_type !== "free" && (
+            <MainPageContent ipAddr={ip} />
+          )}
+          {!currentUser && <MainPageContent ipAddr={ip} />}
 
-          {!currentUser && !currentAccount && <MainPageContent ipAddr={ip} />}
           {currentAccount && (
             <BoardGrid
               gridType={"child"}

@@ -11,6 +11,7 @@ import MainMenu from "../components/main_menu/MainMenu";
 import Tabs from "../components/utils/Tabs";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { getImageUrl } from "../data/utils";
+import MainHeader from "./MainHeader";
 const About: React.FC = () => {
   const { isWideScreen } = useCurrentUser();
 
@@ -18,24 +19,15 @@ const About: React.FC = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        {!isWideScreen && (
-          <IonHeader className="bg-inherit shadow-none">
-            <IonToolbar>
-              <IonButtons slot="start">
-                <IonMenuButton></IonMenuButton>
-              </IonButtons>
-              <IonTitle>About Us</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-        )}
-        <IonContent className="ion-padding">
+        <MainHeader />
+        <IonContent className="">
           <div
             className="hero_main1 bg-cover bg-center h-full w-full pt-10 pb-20"
             style={{
               backgroundImage: `url(${getImageUrl("feature_2", "webp")})`,
             }}
           >
-            <div className="mt-5 text-center bg-white text-black bg-opacity-90 py-8 w-full">
+            <div className="text-center bg-white text-black bg-opacity-90 py-8 w-full">
               <h1 className="text-4xl font-bold text-center ">
                 What is SpeakAnyWay?
               </h1>

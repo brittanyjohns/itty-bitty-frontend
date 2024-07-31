@@ -13,6 +13,7 @@ import {
 import MainMenu from "../components/main_menu/MainMenu";
 import PricingTable from "../components/utils/PricingTable";
 import { useCurrentUser } from "../hooks/useCurrentUser";
+import MainHeader from "./MainHeader";
 
 const PricingPage: React.FC = () => {
   const { isWideScreen } = useCurrentUser();
@@ -21,16 +22,8 @@ const PricingPage: React.FC = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        {!isWideScreen && (
-          <IonHeader className="bg-inherit shadow-none">
-            <IonToolbar>
-              <IonButtons slot="start">
-                <IonMenuButton></IonMenuButton>
-              </IonButtons>
-              <IonTitle>Pricing</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-        )}
+        <MainHeader />
+
         <IonContent>
           <PricingTable />
         </IonContent>

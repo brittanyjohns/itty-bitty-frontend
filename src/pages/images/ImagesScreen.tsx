@@ -33,6 +33,7 @@ import { useHistory } from "react-router";
 import Tabs from "../../components/utils/Tabs";
 import { addCircleOutline, imagesOutline, personOutline } from "ionicons/icons";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import MainHeader from "../MainHeader";
 
 const ImagesScreen: React.FC = () => {
   const { isWideScreen } = useCurrentUser();
@@ -143,11 +144,10 @@ const ImagesScreen: React.FC = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
+        {/* <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>
             <IonButtons slot="start">
-              {isWideScreen && <IonBackButton defaultHref="/dashboard" />}
-              {!isWideScreen && <IonMenuButton slot="start" />}
+              <IonMenuButton slot="start" />
             </IonButtons>
             <IonButtons slot="end">
               <IonButton routerLink="/images/add">
@@ -160,7 +160,8 @@ const ImagesScreen: React.FC = () => {
             </IonButtons>
             <IonTitle class="text-center">{pageTitle}</IonTitle>
           </IonToolbar>
-        </IonHeader>
+        </IonHeader> */}
+        <MainHeader pageTitle={pageTitle} />
         <IonContent className="ion-padding">
           <IonSegment
             value={segmentType}

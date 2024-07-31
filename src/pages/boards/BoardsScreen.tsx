@@ -26,6 +26,8 @@ interface BoardsScreenProps {
   gridType: string;
 }
 import "./ViewBoard.css";
+import MainMenu from "../../components/main_menu/MainMenu";
+import MainHeader from "../MainHeader";
 
 const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   const { currentAccount, currentUser, isWideScreen } = useCurrentUser();
@@ -107,7 +109,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
+        {/* <IonHeader className="bg-inherit shadow-none">
           <IonToolbar className="bg-inherit shadow-none text-center">
             <IonButtons slot="start">
               <IonButton>
@@ -125,7 +127,8 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
             </IonButtons>
             <IonTitle>{pageTitle}</IonTitle>
           </IonToolbar>
-        </IonHeader>
+        </IonHeader> */}
+        <MainHeader />
         <IonContent className="ion-padding">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>

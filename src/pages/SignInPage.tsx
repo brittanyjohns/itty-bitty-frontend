@@ -24,16 +24,7 @@ const SignInPage: React.FC = () => {
       <MainMenu />
       <IonPage id="main-content">
         <div className="h-full">
-          {!isWideScreen && (
-            <IonHeader className="bg-inherit shadow-none">
-              <IonToolbar>
-                <IonButtons slot="start">
-                  <IonMenuButton></IonMenuButton>
-                </IonButtons>
-                <IonTitle>Sign In</IonTitle>
-              </IonToolbar>
-            </IonHeader>
-          )}
+          <MainHeader />
           <div
             className="hero_main1 bg-cover bg-center  min-h-screen"
             style={{

@@ -16,6 +16,7 @@ import { ChildAccount, signIn } from "../../data/child_accounts";
 import { getImageUrl } from "../../data/utils";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import MainMenu from "../../components/main_menu/MainMenu";
+import MainHeader from "../MainHeader";
 
 const AccountSignInScreen: React.FC = () => {
   const history = useHistory();
@@ -70,16 +71,8 @@ const AccountSignInScreen: React.FC = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        {!isWideScreen && (
-          <IonHeader className="bg-inherit shadow-none">
-            <IonToolbar>
-              <IonButtons slot="start">
-                <IonMenuButton></IonMenuButton>
-              </IonButtons>
-              <IonTitle>Child Sign In</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-        )}
+        <MainHeader />
+
         <div className="h-full">
           <div
             className="hero_main1 bg-cover bg-center  min-h-screen"

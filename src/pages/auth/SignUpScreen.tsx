@@ -89,17 +89,7 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        {/* {!isWideScreen && <MainHeader />} */}
-        {!isWideScreen && (
-          <IonHeader className="bg-inherit shadow-none">
-            <IonToolbar>
-              <IonButtons slot="start">
-                <IonMenuButton></IonMenuButton>
-              </IonButtons>
-              <IonTitle>Sign Up</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-        )}
+        <MainHeader />
         <IonContent className="">
           <div
             className="hero_main1 bg-cover bg-center min-h-screen pb-5"

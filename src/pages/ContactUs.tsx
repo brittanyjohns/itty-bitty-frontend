@@ -18,6 +18,7 @@ import MainMenu from "../components/main_menu/MainMenu";
 import Tabs from "../components/utils/Tabs";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { getImageUrl } from "../data/utils";
+import MainHeader from "./MainHeader";
 const ContactUs: React.FC = () => {
   const { isWideScreen } = useCurrentUser();
 
@@ -37,20 +38,13 @@ const ContactUs: React.FC = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="start">
-              {!isWideScreen && <IonMenuButton></IonMenuButton>}
-            </IonButtons>
-            <IonTitle>Contact Us</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+        <MainHeader />
         <IonContent className="flex flex-col items-center p-6 space-y-6 bg-gray-50">
           <div
             className="hero_main1 bg-cover bg-center  h-full w-full"
             style={style}
           >
-            <div className="mt-5 text-center py-8 shadow-overlay">
+            <div className="text-center py-8 shadow-overlay">
               <h1 className="text-2xl font-bold text-center">
                 Get in touch with SpeakAnyWay
               </h1>

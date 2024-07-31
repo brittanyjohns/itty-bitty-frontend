@@ -49,7 +49,7 @@ const SignInScreen: React.FC = () => {
     <>
       <MainMenu />
       <IonPage id="main-content">
-        {!isWideScreen && <MainHeader />}
+        <MainHeader />
         <IonContent className="">
           <div
             className="hero_main1 bg-cover bg-center  min-h-screen"
