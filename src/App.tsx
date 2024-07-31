@@ -77,12 +77,17 @@ import AccountSignInScreen from "./pages/accounts/AccountSignInScreen";
 import SignInPage from "./pages/SignInPage";
 import AccountSignOutScreen from "./pages/accounts/AccountSignOutScreen";
 import ViewChildBoardScreen from "./pages/childBoards/ViewChildBoardScreen";
+import ActivityTrackingConsent from "./components/utils/ActivityTrackingConsent";
+import CookiesConsent from "./components/utils/CookieConsent";
+import { useState, useEffect } from "react";
+import PrivacyPolicy from "./pages/utils/PrivacyPolicy";
 
 const UserRoutes: React.FC = () => (
   <UserProvider>
     <IonReactRouter>
       <IonRouterOutlet>
         <Route path="/" component={Home} exact={true} />
+        <Route path="/privacy-policy" component={PrivacyPolicy} exact={true} />
 
         <Route path="/home" exact={true}>
           <Home />
@@ -209,9 +214,47 @@ const UserRoutes: React.FC = () => (
     </IonReactRouter>
   </UserProvider>
 );
-const App: React.FC = () => (
-  <IonApp>
-    <UserRoutes />
-  </IonApp>
-);
+// const App: React.FC = () => (
+//   <IonApp>
+//     <UserRoutes />
+//     <CookiesConsent />
+//     <ActivityTrackingConsent />
+//   </IonApp>
+// );
+const App: React.FC = () => {
+  const [showCookiesConsent, setShowCookiesConsent] = useState(false);
+  const [showTrackingConsent, setShowTrackingConsent] = useState(false);
+
+  useEffect(() => {
+    const cookiesConsent = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("cookies_consent="));
+    const trackingConsent = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("tracking_consent="));
+
+    if (!cookiesConsent) setShowCookiesConsent(true);
+    if (!trackingConsent) setShowTrackingConsent(true);
+  }, []);
+
+  return (
+    <IonApp>
+      <UserRoutes />
+      {/* Other components */}
+      {showCookiesConsent && <CookiesConsent />}
+      {showTrackingConsent && <ActivityTrackingConsent />}
+      <footer>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <button
+          onClick={() => {
+            setShowCookiesConsent(true);
+            setShowTrackingConsent(true);
+          }}
+        >
+          Withdraw Consent
+        </button>
+      </footer>
+    </IonApp>
+  );
+};
 export default App;
