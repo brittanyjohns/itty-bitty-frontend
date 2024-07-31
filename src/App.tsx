@@ -49,9 +49,7 @@ import NewTeamScreen from "./pages/teams/NewTeamScreen";
 import Demo from "./pages/Demo";
 import ForgotPasswordScreen from "./pages/auth/ForgotPasswordScreen";
 import ResetPasswordScreen from "./pages/auth/ResetPasswordScreen ";
-AndroidFullScreen.isImmersiveModeSupported()
-  .then(() => AndroidFullScreen.immersiveMode())
-  .catch(console.warn);
+
 setupIonicReact({
   platform: {
     /** The default `desktop` function returns false for devices with a touchscreen.
