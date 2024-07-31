@@ -1,23 +1,17 @@
 import { createRef, useEffect, useState } from "react";
 import {
-  IonBackButton,
   IonButton,
-  IonButtons,
   IonContent,
-  IonHeader,
   IonIcon,
   IonItem,
   IonLabel,
   IonList,
   IonLoading,
-  IonMenuButton,
   IonPage,
   IonSearchbar,
   IonSegment,
   IonSegmentButton,
   IonText,
-  IonTitle,
-  IonToolbar,
   useIonViewWillEnter,
 } from "@ionic/react";
 import {
@@ -36,7 +30,6 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 import MainHeader from "../MainHeader";
 
 const ImagesScreen: React.FC = () => {
-  const { isWideScreen } = useCurrentUser();
   const [images, setImages] = useState<Image[]>([]);
   const history = useHistory();
   const [searchInput, setSearchInput] = useState("");

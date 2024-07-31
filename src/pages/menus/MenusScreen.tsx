@@ -4,7 +4,6 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonLabel,
   IonMenuButton,
   IonPage,
   IonRefresher,
@@ -12,7 +11,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import MainMenu, { hideMenu } from "../../components/main_menu/MainMenu";
+import MainMenu from "../../components/main_menu/MainMenu";
 import Tabs from "../../components/utils/Tabs";
 import { addCircleOutline } from "ionicons/icons";
 import MenuGrid from "../../components/menus/MenuGrid";

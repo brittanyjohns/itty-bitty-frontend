@@ -47,7 +47,6 @@ import ViewTeamScreen from "./pages/teams/ViewTeamScreen";
 import ViewLockedBoard from "./pages/boards/ViewLockedBoard";
 import NewTeamScreen from "./pages/teams/NewTeamScreen";
 import Demo from "./pages/Demo";
-import { forgotPassword } from "./data/users";
 import ForgotPasswordScreen from "./pages/auth/ForgotPasswordScreen";
 import ResetPasswordScreen from "./pages/auth/ResetPasswordScreen ";
 AndroidFullScreen.isImmersiveModeSupported()
@@ -80,7 +79,6 @@ import AccountSignInScreen from "./pages/accounts/AccountSignInScreen";
 import SignInPage from "./pages/SignInPage";
 import AccountSignOutScreen from "./pages/accounts/AccountSignOutScreen";
 import ViewChildBoardScreen from "./pages/childBoards/ViewChildBoardScreen";
-import { AndroidFullScreen } from "@awesome-cordova-plugins/android-full-screen";
 
 const UserRoutes: React.FC = () => (
   <UserProvider>
