@@ -10,6 +10,8 @@ import {
 import { useHistory } from "react-router";
 import { menuController } from "@ionic/core/components";
 import { addCircleOutline, arrowBackCircleOutline } from "ionicons/icons";
+import { useEffect, useState } from "react";
+import { set } from "d3";
 
 export const toggleMainMenu = async () => {
   await menuController.toggle("main-menu");
@@ -31,8 +33,17 @@ interface MainHeaderProps {
 
 const MainHeader: React.FC<MainHeaderProps> = (props) => {
   const isWideScreen = props.isWideScreen;
-  const showMenuBtn = props.showMenuButton || !props.startLink;
-  const showHeader = !isWideScreen || (isWideScreen && showMenuBtn);
+  // const showMenuBtn = props.showMenuButton || !props.startLink;
+
+  const [showMenuBtn, setShowMenuBtn] = useState(
+    props.showMenuButton || !props.startLink
+  );
+  const showHeader = !props.isWideScreen || (props.isWideScreen && showMenuBtn);
+
+  useEffect(() => {
+    console.log("MainHeader props", props);
+    setShowMenuBtn(props.showMenuButton || !props.startLink);
+  }, [props.isWideScreen]);
 
   const renderComponent = () => {
     if (showHeader) {
@@ -49,13 +60,17 @@ const MainHeader: React.FC<MainHeaderProps> = (props) => {
                 </IonButton>
               </IonButtons>
             )}
-            {props.showMenuButton && (
-              <IonMenuButton slot="start" menu="main-menu"></IonMenuButton>
+            {!props.startLink && !isWideScreen && (
+              <IonMenuButton
+                className="text-white"
+                slot="start"
+                menu="main-menu"
+              ></IonMenuButton>
             )}
 
             <IonTitle className="text-center">{props.pageTitle}</IonTitle>
             {props.endLink && (
-              <IonButtons slot="end">
+              <IonButtons class="p-0" slot="end">
                 <IonButton routerLink={props.endLink}>
                   <IonIcon
                     icon={props.endIcon || addCircleOutline}

@@ -38,9 +38,11 @@ import PredictiveImageGallery from "../../components/predictive/PredictiveImageG
 import { clickWord } from "../../data/audits";
 import { playAudioList } from "../../data/utils";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import MainHeader from "../MainHeader";
+import StaticMenu from "../../components/main_menu/StaticMenu";
 
 const PredictiveImagesScreen: React.FC = () => {
-  const { currentUser } = useCurrentUser();
+  const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
   const startingImageId = useParams<{ id: string }>().id;
   const [initialImages, setImages] = useState<Image[]>([]);
   const inputRef = useRef<HTMLIonInputElement>(null);
@@ -177,24 +179,42 @@ const PredictiveImagesScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="Predictive - beta"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Predictive - beta"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="start">
+        <MainHeader
+          pageTitle="Predictive - beta"
+          isWideScreen={isWideScreen}
+          showMenuButton={!isWideScreen}
+        />
+
+        <IonContent className="ion-padding">
+          <IonItem className="w-full my-2" lines="none">
+            <IonButtons slot="start" className="ml-0">
               <IonButton routerLink="/boards">
                 <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
               </IonButton>
             </IonButtons>
             <IonItem slot="start" className="w-full" lines="none">
               <IonInput
-                placeholder="Predictive Images - BETA"
+                placeholder="Click on images to speak"
                 ref={inputRef}
                 readonly={true}
-                className="w-full text-md md:text-lg lg:text-xl text-justify bg-inherit"
+                className="w-full text-md md:text-lg lg:text-xl text-justify bg-inherit mr-0"
               ></IonInput>
             </IonItem>
-            <IonButtons slot="start">
+            <IonButtons slot="start" className="ml-0">
               {showIcon && (
                 <IonButton size="small" onClick={handlePlayAudioList}>
                   <IonIcon
@@ -213,8 +233,6 @@ const PredictiveImagesScreen: React.FC = () => {
                   ></IonIcon>
                 </IonButton>
               )}
-            </IonButtons>
-            <IonButtons slot="end">
               {showIcon && (
                 <IonButton size="small" onClick={() => clearInput()}>
                   <IonIcon
@@ -225,9 +243,7 @@ const PredictiveImagesScreen: React.FC = () => {
                 </IonButton>
               )}
             </IonButtons>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent className="ion-padding">
+          </IonItem>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent />
           </IonRefresher>

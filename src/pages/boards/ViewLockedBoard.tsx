@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Board, getBoard } from "../../data/boards";
 import {
   IonButton,
@@ -27,15 +27,14 @@ import {
 import { useParams } from "react-router";
 import "./ViewBoard.css";
 import React from "react";
-import { TextToSpeech } from "@capacitor-community/text-to-speech";
 import FloatingWordsBtn from "../../components/utils/FloatingWordsBtn";
-import BoardGridDropdown from "../../components/boards/BoardGridDropdown";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import DraggableGrid from "../../components/images/DraggableGrid";
 import { playAudioList } from "../../data/utils";
 import { Image } from "../../data/images";
 import { clickWord } from "../../data/audits";
 import FullscreenToggle from "../../components/utils/FullscreenToggle";
+import ActivityTrackingConsent from "../../components/utils/ActivityTrackingConsent";
 
 const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();
@@ -43,11 +42,8 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const inputRef = useRef<HTMLIonInputElement>(null);
   const [showIcon, setShowIcon] = useState(false);
   const [showLoading, setShowLoading] = useState(true);
-  const [showEdit, setShowEdit] = useState(false);
   const [imageCount, setImageCount] = useState(0);
-  const [gridSize, setGridSize] = useState(4);
   const { currentUser } = useCurrentUser();
-  const [gridLayout, setGrid] = useState<any>([]);
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [previousLabel, setPreviousLabel] = useState<string | undefined>(
     undefined
@@ -62,20 +58,16 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
       const imgCount = board?.images?.length;
       setImageCount(imgCount as number);
       setShowLoading(false);
-      const userCanEdit = board.can_edit || currentUser?.role === "admin";
-      console.log("User can edit: ", userCanEdit);
-      setShowEdit(userCanEdit);
 
       setBoard(board);
       setNumOfColumns(board.number_of_columns);
-      setGridSize(board.number_of_columns);
 
-      // if (board?.status === "pending") {
-      //   setShowLoading(true);
-      //   setTimeout(() => {
-      //     window.location.reload();
-      //   }, 4000);
-      // }
+      if (board?.status === "pending") {
+        console.log("Board is pending");
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+      }
     }
   };
 
@@ -117,6 +109,16 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
     }
     fetchData();
   }, []);
+
+  // const [showTrackingConsent, setShowTrackingConsent] = useState(false);
+
+  // useEffect(() => {
+  //   const trackingConsent = document.cookie
+  //     .split("; ")
+  //     .find((row) => row.startsWith("tracking_consent="));
+
+  //   if (!trackingConsent) setShowTrackingConsent(true);
+  // }, []);
 
   const [audioList, setAudioList] = useState<string[]>([]);
 
@@ -217,6 +219,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
           </div>
         )}
         <FloatingWordsBtn inputRef={inputRef} words={board?.floating_words} />
+        <ActivityTrackingConsent />
       </IonContent>
     </IonPage>
   );

@@ -260,3 +260,17 @@ export const getFilterList = (
     return links.filter((link) => signedOutLinks.includes(link.slug ?? ""));
   }
 };
+
+export const canTrack = () => {
+  const trackingConsent = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("tracking_consent="));
+  return trackingConsent && trackingConsent.split("=")[1] === "true";
+};
+
+export const canUseCookies = () => {
+  const cookiesConsent = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("cookies_consent="));
+  return cookiesConsent && cookiesConsent.split("=")[1] === "true";
+};

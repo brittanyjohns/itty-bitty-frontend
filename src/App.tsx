@@ -214,13 +214,7 @@ const UserRoutes: React.FC = () => (
     </IonReactRouter>
   </UserProvider>
 );
-// const App: React.FC = () => (
-//   <IonApp>
-//     <UserRoutes />
-//     <CookiesConsent />
-//     <ActivityTrackingConsent />
-//   </IonApp>
-// );
+
 const App: React.FC = () => {
   const [showCookiesConsent, setShowCookiesConsent] = useState(false);
   const [showTrackingConsent, setShowTrackingConsent] = useState(false);
@@ -237,42 +231,10 @@ const App: React.FC = () => {
     if (!trackingConsent) setShowTrackingConsent(true);
   }, []);
 
-  const canTrack = () => {
-    const trackingConsent = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("tracking_consent="));
-    return trackingConsent && trackingConsent.split("=")[1] === "true";
-  };
-
-  const canUseCookies = () => {
-    const cookiesConsent = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("cookies_consent="));
-    return cookiesConsent && cookiesConsent.split("=")[1] === "true";
-  };
-
   return (
     <IonApp>
       <UserRoutes />
-      {/* Other components */}
       {showCookiesConsent && <CookiesConsent />}
-      {showTrackingConsent && <ActivityTrackingConsent />}
-      <footer>
-        <a href="/privacy-policy">Privacy Policy</a>
-        <button
-          onClick={() => {
-            setShowCookiesConsent(true);
-            setShowTrackingConsent(true);
-          }}
-        >
-          Withdraw Consent
-        </button>
-      </footer>
-      {/* Example of conditional functionality */}
-      {canTrack() && <div>Tracking Enabled Content</div>}
-      {!canTrack() && <div>Tracking Disabled Content</div>}
-      {canUseCookies() && <div>Cookies Enabled Content</div>}
-      {!canUseCookies() && <div>Cookies Disabled Content</div>}
     </IonApp>
   );
 };

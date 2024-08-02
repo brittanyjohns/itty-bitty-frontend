@@ -41,6 +41,10 @@ const SubscriptionList: React.FC<SubscriptionListProps> = ({
             <span className="font-semibold">Free days left:</span>{" "}
             {currentUser?.trial_days_left}
           </div>
+          <div className="mb-2">
+            <span className="font-semibold">Tokens Remaining:</span>{" "}
+            {currentUser?.tokens}
+          </div>
         </div>
       </IonCard>
       <h1 className="text-3xl text-center font-bold my-6">

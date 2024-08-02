@@ -15,15 +15,15 @@
 }
 
 ion-toolbar {
-  --background: #266795;
+  --background: #18547e;
   --color: rgb(238, 238, 238);
 
   --border-color: #255380;
   --border-width: 2px 0;
   --border-style: double;
   --min-height: 80px;
-  --padding-top: 20px;
-  --padding-bottom: 20px;
+  /* --padding-top: 20px;
+  --padding-bottom: 20px; */
 }
 
 ion-toolbar ion-title {
@@ -40,7 +40,7 @@ ion-toolbar ion-buttons ion-button {
   --color: rgb(238, 238, 238);
 }
 
-/* ion-toolbar ion-buttons ion-button:hover {
+ion-toolbar ion-buttons ion-button:hover {
   --color: rgb(238, 238, 238);
 }
 
@@ -50,7 +50,7 @@ ion-toolbar ion-buttons ion-button:active {
 
 ion-toolbar ion-buttons ion-button:focus {
   --color: rgb(238, 238, 238);
-}*/
+}
 
 ion-toolbar ion-buttons ion-menu-button {
   --color: rgb(238, 238, 238);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   IonModal,
   IonButton,
@@ -21,6 +21,14 @@ const ActivityTrackingConsent: React.FC = () => {
     document.cookie = "tracking_consent=false; path=/";
     setShowModal(false);
   };
+
+  useEffect(() => {
+    const trackingConsent = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("tracking_consent="));
+
+    if (!trackingConsent) setShowModal(true);
+  }, []);
 
   return (
     <IonModal isOpen={showModal}>

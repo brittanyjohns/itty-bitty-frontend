@@ -75,10 +75,6 @@ const SettingsPage: React.FC = () => {
     history.push("/");
   };
 
-  const handleSetPlanType = (name: string) => {
-    setPlanType(name);
-  };
-
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
       e.detail.complete();
