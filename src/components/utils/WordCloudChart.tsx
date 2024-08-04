@@ -43,8 +43,6 @@ const WordCloudChart: React.FC<WordCloudChartProps> = ({ wordEvents }) => {
       size: Math.log2(wordFrequencyMap[word] + 1) * 10,
     }));
 
-    console.log("Words for word cloud:", words);
-
     const customColors = scaleOrdinal(schemeCategory10);
 
     const layout = cloud()
@@ -59,7 +57,6 @@ const WordCloudChart: React.FC<WordCloudChartProps> = ({ wordEvents }) => {
     layout.start();
 
     function draw(words: any) {
-      console.log("Drawing word cloud with words:", words);
       if (wordCloudRef.current) {
         const svg = d3
           .select(wordCloudRef.current)

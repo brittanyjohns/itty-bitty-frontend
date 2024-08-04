@@ -4,6 +4,7 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonLabel,
   IonMenuButton,
   IonPage,
   IonRefresher,
@@ -67,7 +68,6 @@ const Dashboard: React.FC = () => {
   };
 
   useIonViewWillEnter(() => {
-    console.log("useIonViewWillEnter");
     closeMainMenu();
   }, []);
 
@@ -99,7 +99,7 @@ const Dashboard: React.FC = () => {
           isWideScreen={isWideScreen}
           showMenuButton={!isWideScreen}
         />
-        <IonContent className="ion-padding">
+        <IonContent className="">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
@@ -123,24 +123,26 @@ const Dashboard: React.FC = () => {
                   <AccountLink />
                 </>
               ))}
-            <div className="">
+            <div className="flex flex-col">
               {currentUser && currentUser?.plan_type !== "free" && (
-                <div className="p-4 text-center">
+                <div className="p-2 text-center border">
+                  <IonLabel className="text-2xl text-gray-500">
+                    BETA Features below - Word Events & Word Relationships
+                  </IonLabel>
                   {loading && <IonSpinner />}
-                  <h1 className="text-3xl font-bold">Word Events</h1>
+                  <h1 className="text-xl font-bold">Word Events</h1>
+
                   <div className="flex justify-between">
                     <div className="w-full md:w-1/2">
-                      <h1 className="text-2xl mt-4">Word Usage Word Cloud</h1>
+                      <h1 className="text-xl mt-4">Word Usage Cloud</h1>
                       <div className=" border overflow-hidden m-1">
                         <WordCloudChart wordEvents={wordEvents} />
                       </div>
                     </div>
-                    <div className="w-full md:w-1/2">
-                      <h1 className="text-2xl">Word Relationships </h1>
+                    <h1 className="text-2xl">Word Relationships </h1>
 
-                      <div className=" border m-1">
-                        <WordNetworkGraph wordEvents={wordEvents} />
-                      </div>
+                    <div className=" border m-1">
+                      <WordNetworkGraph wordEvents={wordEvents} />
                     </div>
                   </div>
                 </div>
