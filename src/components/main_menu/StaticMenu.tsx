@@ -54,18 +54,22 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
       </IonToolbar>
       <IonList>
         {currentUser && (
-          <>
-            <IonItem
-              slot="header"
-              routerLink="/dashboard"
-              detail={true}
-              className=""
-              lines="none"
-            >
-              <IonIcon icon={personCircleOutline} className="mr-3"></IonIcon>
-              <IonLabel className="text-xs">{currentUser?.email}</IonLabel>
-            </IonItem>
-          </>
+          <IonItem
+            slot="header"
+            routerLink="/dashboard"
+            detail={true}
+            className=""
+            lines="none"
+          >
+            <IonIcon icon={personCircleOutline} className="mr-3"></IonIcon>
+            <IonLabel className="text-xs">
+              {currentUser?.email}
+              <br></br>
+              <span className="text-gray-500 text-xs">
+                {currentUser?.plan_type} - {currentUser?.tokens} tokens
+              </span>
+            </IonLabel>
+          </IonItem>
         )}
         {filteredLinks.map((link) => (
           <IonItem key={link.id}>
