@@ -26,6 +26,7 @@ const MainMenu: React.FC<MainMenuProps> = (props) => {
 
   useEffect(() => {
     const filtered = filterList();
+    console.log("filtered", filtered);
     setFilteredLinks(filtered);
   }, [filterList]);
 

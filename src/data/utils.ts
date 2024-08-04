@@ -1,11 +1,3 @@
-// function getImageUrl(name: string, ent: string) {
-//     return new URL(`../assets/images/${name}.${ent}`, import.meta.url).href;
-//   }
-//   function getIconUrl(name: string, ent: string) {
-//     return new URL(`../assets/icons/${name}.${ent}`, import.meta.url).href;
-//   }
-
-import { useCallback } from "react";
 import { MenuLink } from "./menu";
 
 export const getImageUrl = (name: string, ent: string) => {

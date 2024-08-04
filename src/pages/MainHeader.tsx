@@ -41,7 +41,6 @@ const MainHeader: React.FC<MainHeaderProps> = (props) => {
   const showHeader = !props.isWideScreen || (props.isWideScreen && showMenuBtn);
 
   useEffect(() => {
-    console.log("MainHeader props", props);
     setShowMenuBtn(props.showMenuButton || !props.startLink);
   }, [props.isWideScreen]);
 

@@ -53,6 +53,20 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
         </div>
       </IonToolbar>
       <IonList>
+        {currentUser && (
+          <>
+            <IonItem
+              slot="header"
+              routerLink="/dashboard"
+              detail={true}
+              className=""
+              lines="none"
+            >
+              <IonIcon icon={personCircleOutline} className="mr-3"></IonIcon>
+              <IonLabel className="text-xs">{currentUser?.email}</IonLabel>
+            </IonItem>
+          </>
+        )}
         {filteredLinks.map((link) => (
           <IonItem key={link.id}>
             <MenuListItem menuLink={link} />

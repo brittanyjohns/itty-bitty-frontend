@@ -127,8 +127,20 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
             </div>
             <div className="relative h-80 md:h-96 lg:h-96 w-full">
               <div className="p-2 bg-white absolute bottom-0 left-0 right-0 mt-5">
-                <h2 className="text-2xl font-bold">Join the Beta</h2>
-                <IonItem className="w-full md:w-2/3 mx-auto">
+                <IonToast
+                  isOpen={isOpen}
+                  message={toastMessage}
+                  onDidDismiss={() => setIsOpen(false)}
+                  duration={2000}
+                ></IonToast>
+                <p className="text-xl font-bold text-gray-600 text-center my-2">
+                  Stay updated on all things SpeakAnyWay!
+                </p>
+                <p className="text-center text-sm text-gray-600">
+                  We're working on mobile apps for Android and iOS{" "}
+                </p>
+                <p className="mt-2 font-bold">Stay tuned for updates!</p>
+                <IonItem className="w-full md:w-2/3 mx-auto border">
                   <IonInput
                     type="email"
                     value={email}
@@ -141,23 +153,9 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
                     onClick={handleSubmitEmail}
                     disabled={!email}
                   >
-                    Join Beta
+                    Go
                   </IonButton>
                 </IonItem>
-                <IonToast
-                  isOpen={isOpen}
-                  message={toastMessage}
-                  onDidDismiss={() => setIsOpen(false)}
-                  duration={2000}
-                ></IonToast>
-                <p className="text-xl font-bold text-gray-600 text-center">
-                  Be the first to experience SpeakAnyWay!
-                </p>
-                <p className="text-center text-sm text-gray-600">
-                  We're working on mobile apps for Android and iOS{" "}
-                </p>
-                <p className="mt-2 font-bold">Stay tuned for updates!</p>
-                <div className="w-full">{/* Form component goes here */}</div>
               </div>
             </div>
             <div className="relative  h-80 md:h-96 lg:h-96">
