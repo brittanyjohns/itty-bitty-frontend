@@ -63,7 +63,6 @@ const Dashboard: React.FC = () => {
     }
     events = await fetchWordEventsByUserId(currentUser.id || 0);
     setLoading(false);
-    console.log("events", events);
     setWordEvents(events);
   };
 

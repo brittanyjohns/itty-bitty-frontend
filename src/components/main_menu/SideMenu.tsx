@@ -37,7 +37,6 @@ const SideMenu: React.FC<SideMenuProps> = (props) => {
 
   const goToDashboard = () => {
     history.push("/dashboard");
-    console.log("goToDashboard");
   };
   const feature1Image = getImageUrl("round_itty_bitty_logo_1", "png");
 
