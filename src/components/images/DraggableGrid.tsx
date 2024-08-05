@@ -1,14 +1,14 @@
 import GridLayout, { WidthProvider } from "react-grid-layout";
-
-const ResponsiveGridLayout = WidthProvider(GridLayout);
 import React, { useEffect, useState } from "react";
-
 import "./../main.css";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import ImageGalleryItem from "./ImageGalleryItem";
-import { Board, updateBoard } from "../../data/boards";
+import { Board, getBoard, updateBoard } from "../../data/boards";
 import { Image } from "../../data/images";
+import { get } from "react-hook-form";
+
+const ResponsiveGridLayout = WidthProvider(GridLayout);
 
 interface DraggableGridProps {
   columns: number;
@@ -25,6 +25,7 @@ interface DraggableGridProps {
   viewOnClick?: boolean;
   showRemoveBtn?: boolean;
 }
+
 const DraggableGrid: React.FC<DraggableGridProps> = ({
   images,
   onLayoutChange,
@@ -42,11 +43,14 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
 }) => {
   const [width, setWidth] = useState(window.innerWidth);
   const [rowHeight, setRowHeight] = useState(180);
+  const [currentBoard, setCurrentBoard] = useState<Board | undefined>(board);
+
   const updateRowHeight = () => {
     const adjustWidth = width - 50;
     const dynamicRowHeight = Math.floor(adjustWidth / columns);
     setRowHeight(dynamicRowHeight);
   };
+
   useEffect(() => {
     updateRowHeight();
   }, [width, columns]);
@@ -68,17 +72,42 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   }, []);
 
   const handleSetDisplayImage = async (image: Image) => {
-    if (board) {
+    if (currentBoard) {
       console.log("Setting display image: ", image);
-      const updatingBoard: Board = { ...board, display_image_url: image.src };
+      const updatingBoard: Board = {
+        ...currentBoard,
+        display_image_url: image.src,
+      };
 
       const savedBoard = await updateBoard(updatingBoard);
       console.log("Saved board: ", savedBoard);
       window.location.reload();
-      // alert("Response: " + savedBoard);
-      // setBoard(savedBoard);
     }
   };
+
+  const handleImageClick = async (image: Image) => {
+    console.log("Image mode: ", image);
+    if (image.mode === "predictive" && image.predictive_board_id) {
+      console.log("Drag - Predictive image clicked", image);
+      // Fetch the new board using the predictive_board_id
+      const newBoard = await fetchBoard(image.predictive_board_id);
+      console.log("New board: ", newBoard);
+      // Rerender the DraggableGrid with the new board
+      setCurrentBoard(newBoard);
+      return;
+    }
+
+    if (onImageClick) {
+      onImageClick(image);
+    }
+  };
+
+  const fetchBoard = async (boardId: string): Promise<Board> => {
+    const response = await getBoard(boardId);
+    console.log("Fetched board: ", response);
+    return response;
+  };
+
   return (
     <ResponsiveGridLayout
       className="layout"
@@ -88,33 +117,35 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
       onLayoutChange={onLayoutChange}
       margin={[10, 2]}
     >
-      {images.map((img: any, index: number) => (
-        <div
-          key={Number(img.id)}
-          data-grid={{
-            ...img.layout,
-            isResizable: enableResize,
-            isBounded: true,
-            allowOverlap: false,
-            static: disableReorder,
-          }}
-          className="relative cursor-pointer"
-        >
-          <ImageGalleryItem
-            key={index}
-            image={img}
-            board={board}
-            setShowIcon={setShowIcon}
-            inputRef={inputRef}
-            mute={mute}
-            onPlayAudioList={onPlayAudioList}
-            onImageClick={onImageClick}
-            viewOnClick={viewOnClick}
-            showRemoveBtn={showRemoveBtn}
-            onSetDisplayImage={handleSetDisplayImage}
-          />
-        </div>
-      ))}
+      {currentBoard &&
+        currentBoard?.images &&
+        currentBoard?.images.map((img: Image, index: number) => (
+          <div
+            key={Number(img.id)}
+            data-grid={{
+              ...img.layout,
+              isResizable: enableResize,
+              isBounded: true,
+              allowOverlap: false,
+              static: disableReorder,
+            }}
+            className="relative cursor-pointer"
+          >
+            <ImageGalleryItem
+              key={index}
+              image={img}
+              board={currentBoard}
+              setShowIcon={setShowIcon}
+              inputRef={inputRef}
+              mute={mute}
+              onPlayAudioList={onPlayAudioList}
+              onImageClick={handleImageClick}
+              viewOnClick={viewOnClick}
+              showRemoveBtn={showRemoveBtn}
+              onSetDisplayImage={handleSetDisplayImage}
+            />
+          </div>
+        ))}
     </ResponsiveGridLayout>
   );
 };

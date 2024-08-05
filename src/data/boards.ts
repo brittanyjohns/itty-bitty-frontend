@@ -90,6 +90,7 @@ export const getUserBoards = () => {
 };
 
 export const getBoard = (id: string) => {
+  console.log("getBoard", id);
   const board = fetch(`${BASE_URL}boards/${id}`, { headers: userHeaders }) // `localhostboards
     .then((response) => response.json())
     .then((data) => data)

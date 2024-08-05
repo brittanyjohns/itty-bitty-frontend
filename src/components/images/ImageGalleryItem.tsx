@@ -1,13 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import {
-  IonAlert,
-  IonIcon,
-  IonImg,
-  useIonViewDidLeave,
-  useIonViewWillEnter,
-} from "@ionic/react";
+import { IonAlert, IonIcon, IonImg } from "@ionic/react";
 import { Image } from "../../data/images";
-import { Board, removeImageFromBoard, updateBoard } from "../../data/boards";
+import { Board, removeImageFromBoard } from "../../data/boards";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { starOutline, starSharp, trashBinOutline } from "ionicons/icons";
@@ -21,10 +15,10 @@ interface ImageGalleryItemProps {
   inputRef?: React.RefObject<HTMLInputElement>;
   mute?: boolean;
   onPlayAudioList?: any;
-  onImageClick?: any;
+  onImageClick?: (image: Image) => void;
   viewOnClick?: boolean;
   showRemoveBtn?: boolean;
-  onSetDisplayImage?: any;
+  onSetDisplayImage?: (image: Image) => void;
 }
 
 const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
@@ -59,7 +53,14 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     }
   };
 
-  const handleImageClick = (image: Image) => {
+  const handleImageClick = async (image: Image) => {
+    if (image.mode === "predictive" && image.predictive_board_id) {
+      if (onImageClick) {
+        onImageClick(image);
+      }
+      return;
+    }
+
     if (onImageClick) {
       onImageClick(image);
     }
@@ -175,7 +176,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
           slot="icon-only"
           icon={imageStarIcon(image)}
           size="x-small"
-          onClick={() => onSetDisplayImage(image)}
+          onClick={() => onSetDisplayImage && onSetDisplayImage(image)}
           color="secondary"
           className="absolute top-0 right-0 m-1 shadow-md bg-white bg-opacity-90 rounded-full p-1"
         />
