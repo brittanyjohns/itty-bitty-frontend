@@ -233,7 +233,7 @@ export const denyAccess = (currentUser: User | null) => {
   }
 
   return (
-    // currentUser?.free_trial === true &&
+    currentUser?.pro !== true &&
     currentUser?.trial_days_left != undefined &&
     currentUser?.trial_days_left <= 0
   );
