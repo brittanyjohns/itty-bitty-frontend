@@ -40,6 +40,10 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({ menuLink }) => {
     if (currentUser?.pro) {
       return false;
     }
+
+    if (premiumFeatures.includes(slug)) {
+      return true;
+    }
     return false;
   };
 
@@ -61,9 +65,9 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({ menuLink }) => {
   }, []);
 
   const denyLinkAccess = (slug: string) => {
-    if (!currentUser) {
-      return false;
-    }
+    // if (!currentUser) {
+    //   return false;
+    // }
     if (denyAccess(currentUser) && premiumFeatures.includes(slug)) {
       return true;
     }
@@ -81,7 +85,7 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({ menuLink }) => {
     history.push(endpoint ?? "");
   };
 
-  const classNameForActive = (currentUser: User | null) => {
+  const classNameForActive = () => {
     let x = `hover:cursor-${
       denyLinkAccess(menuLink.slug) ? "not-allowed" : "pointer"
     } `;
@@ -111,9 +115,7 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({ menuLink }) => {
     <IonItem
       key={menuLink.id}
       onClick={handleClick(menuLink.slug, menuLink.endpoint)}
-      className={`text-sm md:text-md lg:text-lg ${classNameForActive(
-        currentUser
-      )} w-full`}
+      className={`text-sm md:text-md lg:text-lg ${classNameForActive} w-full`}
       lines="none"
       detail={false}
       ref={itemRef}

@@ -221,7 +221,7 @@ export const classNameForInput = (currentUser: User | null) => {
   if (!currentUser) {
     return "";
   }
-  let x = `${denyAccess(currentUser) ? "text-gray-400" : ""} `;
+  let x = `${denyAccess(currentUser) ? "text-red-700 " : ""} `;
   x += currentUser?.free_trial ? "text-red-700" : "";
 
   return x;
@@ -233,7 +233,7 @@ export const denyAccess = (currentUser: User | null) => {
   }
 
   return (
-    currentUser?.free_trial === true &&
+    // currentUser?.free_trial === true &&
     currentUser?.trial_days_left != undefined &&
     currentUser?.trial_days_left <= 0
   );
