@@ -504,7 +504,7 @@ const ViewImageScreen: React.FC = () => {
                   )}
               </div>
             )}
-            {currentUser?.role === "admin" && (
+            {currentUser?.admin && (
               <div className="mt-10 w-full">
                 <IonButtons className="flex justify-between">
                   {!image?.no_next && (
@@ -525,7 +525,6 @@ const ViewImageScreen: React.FC = () => {
                   <IonButton
                     onClick={createSymbol}
                     className="text-sm font-mono"
-                    slot="end"
                   >
                     Create Symbol
                   </IonButton>
