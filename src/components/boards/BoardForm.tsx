@@ -2,6 +2,7 @@ import { updateBoard } from "../../data/boards";
 import {
   IonButton,
   IonButtons,
+  IonCheckbox,
   IonInput,
   IonItem,
   IonList,
@@ -90,6 +91,17 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
             onIonInput={(e) => setBoard({ ...board, name: e.detail.value! })}
           ></IonInput>
         </IonItem>
+        {currentUser?.admin && (
+          <IonItem className="mb-4">
+            <IonCheckbox
+              checked={board?.predefined}
+              onIonChange={(e) =>
+                setBoard({ ...board, predefined: e.detail.checked })
+              }
+            />
+            <label className="ml-2">Predefined</label>
+          </IonItem>
+        )}
         <IonItem className="mb-4">
           <IonSelect
             label="Number of Columns:"
