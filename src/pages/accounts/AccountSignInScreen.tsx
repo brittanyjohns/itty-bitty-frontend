@@ -94,16 +94,6 @@ const AccountSignInScreen: React.FC = () => {
               </h1>
               <form onSubmit={(e) => e.preventDefault()}>
                 <IonInput
-                  label="ParentID"
-                  labelPlacement="stacked"
-                  value={parentId}
-                  fill="solid"
-                  className="mt-4"
-                  placeholder="Enter your ParentId"
-                  onIonInput={(e) => setParentId(e.detail.value!)}
-                  clearInput
-                />
-                <IonInput
                   label="Username"
                   labelPlacement="stacked"
                   value={username}
@@ -129,6 +119,7 @@ const AccountSignInScreen: React.FC = () => {
                   expand="block"
                   className="mt-6"
                   onClick={handleSignIn}
+                  type="submit"
                 >
                   Sign In
                 </IonButton>

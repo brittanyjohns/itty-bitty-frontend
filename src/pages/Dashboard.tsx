@@ -150,7 +150,7 @@ const Dashboard: React.FC = () => {
                   </IonLabel>
                   {loading && <IonSpinner />}
                   <div className="relative grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
-                    <div className="border ion-padding">
+                    <div className="border ion-padding overflow-hidden">
                       <h1 className="text-2xl mt-4">Word Usage Cloud</h1>
                       <WordCloudChart wordEvents={wordEvents} />
                     </div>
