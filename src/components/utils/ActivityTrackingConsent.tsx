@@ -10,7 +10,7 @@ import {
 } from "@ionic/react";
 
 const ActivityTrackingConsent: React.FC = () => {
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   const handleAccept = () => {
     document.cookie = "tracking_consent=true; path=/";
@@ -23,11 +23,19 @@ const ActivityTrackingConsent: React.FC = () => {
   };
 
   useEffect(() => {
-    const trackingConsent = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("tracking_consent="));
+    console.log("Checking tracking consent", document.cookie.split("; "));
+    const trackingConsent = document.cookie.split("; ").find((row) => {
+      console.log("Row", row);
+      return row.startsWith("tracking_consent=true");
+    });
+    console.log("Tracking consent", trackingConsent);
 
-    if (!trackingConsent) setShowModal(true);
+    if (!trackingConsent) {
+      console.log("No tracking consent found");
+      setShowModal(true);
+    } else {
+      setShowModal(false);
+    }
   }, []);
 
   return (

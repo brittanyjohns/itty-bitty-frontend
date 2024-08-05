@@ -86,7 +86,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
       width={width}
       rowHeight={rowHeight}
       onLayoutChange={onLayoutChange}
-      margin={[10, 2]}
+      margin={[10, 5]}
     >
       {images.map((img: any, index: number) => (
         <div
@@ -98,7 +98,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
             allowOverlap: false,
             static: disableReorder,
           }}
-          className="relative cursor-pointer"
+          className={`relative items-center cursor-pointer`}
         >
           <ImageGalleryItem
             key={index}

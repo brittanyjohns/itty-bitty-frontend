@@ -219,18 +219,16 @@ const UserRoutes: React.FC = () => (
 
 const App: React.FC = () => {
   const [showCookiesConsent, setShowCookiesConsent] = useState(false);
-  const [showTrackingConsent, setShowTrackingConsent] = useState(false);
 
   useEffect(() => {
     const cookiesConsent = document.cookie
       .split("; ")
-      .find((row) => row.startsWith("cookies_consent="));
-    const trackingConsent = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("tracking_consent="));
+      .find((row) => row.startsWith("cookies_consent=true"));
 
-    if (!cookiesConsent) setShowCookiesConsent(true);
-    if (!trackingConsent) setShowTrackingConsent(true);
+    if (!cookiesConsent) {
+      console.log("No cookies consent found");
+      setShowCookiesConsent(true);
+    }
   }, []);
 
   return (

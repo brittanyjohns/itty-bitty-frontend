@@ -141,7 +141,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       ref={imgRef}
       className={`relative cursor-pointer ${
         image.bg_color || "bg-white"
-      } rounded-sm p-1`}
+      } rounded-sm p-2`}
     >
       <IonImg
         src={image.src || placeholderUrl}
