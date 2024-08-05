@@ -77,7 +77,6 @@ import AccountSignInScreen from "./pages/accounts/AccountSignInScreen";
 import SignInPage from "./pages/SignInPage";
 import AccountSignOutScreen from "./pages/accounts/AccountSignOutScreen";
 import ViewChildBoardScreen from "./pages/childBoards/ViewChildBoardScreen";
-import ActivityTrackingConsent from "./components/utils/ActivityTrackingConsent";
 import CookiesConsent from "./components/utils/CookieConsent";
 import { useState, useEffect } from "react";
 import PrivacyPolicy from "./pages/utils/PrivacyPolicy";
@@ -101,6 +100,9 @@ const UserRoutes: React.FC = () => (
         />
 
         <Route path="/dashboard" component={Dashboard} exact={true} />
+        <Route path="/account-dashboard">
+          <Dashboard childAccountSignedIn={true} />
+        </Route>
         <Route
           path="/admin/dashboard"
           component={AdminDashboard}

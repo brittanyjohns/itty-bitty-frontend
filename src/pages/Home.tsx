@@ -66,7 +66,7 @@ const Home: React.FC = () => {
         <MainHeader
           pageTitle={isWideScreen ? "" : currentUser ? "Home" : "SpeakAnyWay"}
           isWideScreen={isWideScreen}
-          endIcon={currentUser ? logInOutline : personAddOutline}
+          endIcon={logInOutline}
           endLink={currentUser ? "/settings" : "/sign-up"}
           showMenuButton={!isWideScreen}
         />

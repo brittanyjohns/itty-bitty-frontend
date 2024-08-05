@@ -203,7 +203,7 @@ const SelectGalleryScreen: React.FC = () => {
           endLink="/boards/new"
         />
         <IonContent>
-          <div className="mt-6 py-3 px-1 hidden" ref={uploadForm}>
+          <div className="mt-3 py-3 px-1 hidden" ref={uploadForm}>
             <p className="text-sm md:text-md lg:text-lg text-center">
               Upload your own image
             </p>

@@ -230,21 +230,6 @@ const EditBoardScreen: React.FC = () => {
     history.push(`/boards/${board?.id}`);
   };
 
-  const handleAddToTeam = async (teamId: string) => {
-    if (!board) {
-      console.error("Board is missing");
-      return;
-    }
-    const boardId = board.id;
-    if (!teamId || !boardId) {
-      return;
-    }
-    const response = await addToTeam(boardId, teamId);
-    if (response) {
-      history.push("/teams/" + teamId);
-    }
-  };
-
   const toggleAddToTeam = () => {
     addToTeamRef.current?.classList.toggle("hidden");
   };
@@ -276,6 +261,19 @@ const EditBoardScreen: React.FC = () => {
         <IonContent className="ion-padding">
           <div className=" " ref={editForm}>
             <div className="w-11/12 lg:w-1/2 mx-auto">
+              <div className=" mt-5 text-center">
+                <IonButton
+                  size="large"
+                  fill="clear"
+                  routerLink={`/boards/${id}`}
+                >
+                  {" "}
+                  <p className="font-bold my-2">Return to board</p>
+                </IonButton>
+              </div>
+              <h1 className="text-center text-2xl font-bold">
+                Editing {board?.name || "Board"}
+              </h1>
               {board && (
                 <BoardForm
                   board={board}

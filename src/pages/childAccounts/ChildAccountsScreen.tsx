@@ -27,10 +27,7 @@ const ChildAccountsScreen: React.FC = () => {
   // const [pageTitle, setPageTitle] = useState("Your ChildAccounts");
 
   const fetchChildAccounts = async () => {
-    if (!currentUser?.id) {
-      console.error("No current user");
-      return;
-    }
+    console.log("fetchChildAccounts");
     const fetchedChildAccounts = currentUser?.child_accounts;
     if (!fetchedChildAccounts) {
       console.error("Error fetching childAccounts");

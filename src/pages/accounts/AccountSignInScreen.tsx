@@ -39,7 +39,7 @@ const AccountSignInScreen: React.FC = () => {
       console.log("Account Sign In response", response);
       if (response.token) {
         localStorage.setItem("child_token", response.token);
-        history.push("/home");
+        history.push("/account-dashboard");
         // alert("ChildAccount signed in");
         window.location.reload();
       } else if (response.error) {

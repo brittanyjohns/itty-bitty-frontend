@@ -30,8 +30,11 @@ import {
 import WordCloudChart from "../components/utils/WordCloudChart";
 import MainHeader, { closeMainMenu } from "./MainHeader";
 import StaticMenu from "../components/main_menu/StaticMenu";
-
-const Dashboard: React.FC = () => {
+import BoardGrid from "../components/boards/BoardGrid";
+interface DashboardProps {
+  childAccountSignedIn?: boolean;
+}
+const Dashboard: React.FC = (props: DashboardProps) => {
   const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
 
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
@@ -98,49 +101,66 @@ const Dashboard: React.FC = () => {
           isWideScreen={isWideScreen}
           showMenuButton={!isWideScreen}
         />
-        <IonContent className="">
+        <IonContent className="ion-padding">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <h1 className="text-2xl">Dashboard</h1>
 
           <div className="">
-            <p className="text-md my-3">
-              This is your dashboard. Here you can see user activity, word usage
-              & more.
-            </p>
             {currentAccount && (
-              <h2 className="text-xl font-semibold">
-                {currentAccount?.name || currentAccount?.username}'s Dashboard
-                🚀
-              </h2>
+              <>
+                <h2 className="text-xl font-semibold">
+                  {currentAccount?.name || currentAccount?.username}'s Dashboard
+                  🚀
+                </h2>
+                <div className="flex flex-col">
+                  <div className="m-1">
+                    <BoardGrid
+                      gridType={"child"}
+                      boards={currentAccount.boards || []}
+                    />
+                  </div>
+                </div>
+              </>
             )}
             {(currentUser && currentUser?.admin) ||
               (currentUser && currentUser?.plan_type !== "free" && (
                 <>
+                  <h1 className="text-2xl">Dashboard</h1>
+
                   <SubscriptionList subscriptions={subscriptions} />
                   <AccountLink />
                 </>
               ))}
-            <div className="flex flex-col">
-              {currentUser && currentUser?.plan_type !== "free" && (
-                <div className="p-2 text-center border">
+            <div className="ion-padding flex flex-col">
+              <p className="text-md mb-3 font-bold">
+                This is your dashboard. Here you can see user activity, word
+                usage & more.
+              </p>
+
+              <hr></hr>
+              {currentUser && (
+                <div className="ion-padding border">
                   <IonLabel className="text-2xl text-gray-500">
-                    BETA Features below - Word Events & Word Relationships
+                    🚧 BETA Features 🚧 <br></br>{" "}
+                    <span className="text-md font-bold">
+                      Under Construction
+                    </span>
+                    <br></br>{" "}
+                    <span className="text-sm">
+                      Word Events & Word Relationships
+                    </span>
                   </IonLabel>
                   {loading && <IonSpinner />}
-                  <h1 className="text-xl font-bold">Word Events</h1>
-
-                  <div className="flex justify-between">
-                    <div className="w-full md:w-1/2">
-                      <h1 className="text-xl mt-4">Word Usage Cloud</h1>
-                      <div className=" border overflow-hidden m-1">
-                        <WordCloudChart wordEvents={wordEvents} />
-                      </div>
+                  <div className="relative grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
+                    <div className="border ion-padding">
+                      <h1 className="text-2xl mt-4">Word Usage Cloud</h1>
+                      <WordCloudChart wordEvents={wordEvents} />
                     </div>
-                    <h1 className="text-2xl">Word Relationships </h1>
 
-                    <div className=" border m-1">
+                    <div className="border ion-padding">
+                      <h1 className="text-2xl mt-4">Word Relationships </h1>
+
                       <WordNetworkGraph wordEvents={wordEvents} />
                     </div>
                   </div>
