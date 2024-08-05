@@ -31,10 +31,7 @@ import WordCloudChart from "../components/utils/WordCloudChart";
 import MainHeader, { closeMainMenu } from "./MainHeader";
 import StaticMenu from "../components/main_menu/StaticMenu";
 import BoardGrid from "../components/boards/BoardGrid";
-interface DashboardProps {
-  childAccountSignedIn?: boolean;
-}
-const Dashboard: React.FC = (props: DashboardProps) => {
+const Dashboard: React.FC = () => {
   const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
 
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);

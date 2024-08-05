@@ -101,7 +101,7 @@ const UserRoutes: React.FC = () => (
 
         <Route path="/dashboard" component={Dashboard} exact={true} />
         <Route path="/account-dashboard">
-          <Dashboard childAccountSignedIn={true} />
+          <Dashboard />
         </Route>
         <Route
           path="/admin/dashboard"
