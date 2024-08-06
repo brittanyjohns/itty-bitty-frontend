@@ -48,7 +48,8 @@ const BoardGroupView: React.FC<BoardViewProps> = ({
 }) => {
   const { currentUser } = useCurrentUser();
 
-  const shouldShowRemoveBtn = currentUser?.role === "admin";
+  const shouldShowRemoveBtn =
+    currentUser?.role === "admin" || currentUser?.id === boardGroup?.user_id;
 
   const handlePlayAudioList = (audioList: string[]) => {
     console.log("handlePlayAudioList: ", audioList);

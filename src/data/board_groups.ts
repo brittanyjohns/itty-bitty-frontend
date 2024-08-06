@@ -5,6 +5,7 @@ export interface BoardGroup {
   id: string;
   name: string;
   boards?: Board[];
+  user_id?: string;
   boardIds?: string[];
   predefined: boolean;
   display_image_url?: string | null;
