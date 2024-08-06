@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { MenuLink, getMenu } from "../../data/menu";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { MenuLink } from "../../data/menu";
 import SideMenu from "./SideMenu";
-import { getImageUrl, getFilterList } from "../../data/utils";
+import { getFilterList } from "../../data/utils";
 import { useHistory } from "react-router";
 import "../../components/main.css";
 
@@ -19,19 +18,17 @@ const MainMenu: React.FC<MainMenuProps> = (props) => {
   const [filteredLinks, setFilteredLinks] = useState<MenuLink[]>([]);
   const history = useHistory();
   const filteredList = getFilterList();
-  const { isWideScreen, currentUser, currentAccount, pageTitle } = props;
+  const { currentUser, currentAccount } = props;
   const filterList = useCallback(() => {
     return getFilterList(currentUser, currentAccount);
   }, [currentUser, currentAccount]);
 
   useEffect(() => {
     const filtered = filterList();
-    console.log("filtered", filtered);
     setFilteredLinks(filtered);
   }, [filterList]);
 
   const setUpMenu = useCallback(() => {
-    // const links = getMenu();
     setFilteredLinks(filteredList ?? []);
   }, []);
 

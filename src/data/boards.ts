@@ -2,7 +2,7 @@ import { Image } from "./images";
 import { BASE_URL, userHeaders } from "./constants";
 
 export interface Board {
-  id?: string;
+  id: string;
   name: string;
   description?: string;
   predefined?: boolean;
@@ -21,6 +21,8 @@ export interface Board {
   has_generating_images?: boolean;
   user_id?: string;
   layout?: any;
+  bg_color?: string;
+  audio_url?: string;
 }
 
 export interface PredictiveBoard {

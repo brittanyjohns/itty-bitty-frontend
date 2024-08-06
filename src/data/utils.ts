@@ -163,6 +163,7 @@ export const getFilterList = (
   const links = getMenu();
   const adminLinks = [
     "home",
+    "groups",
     "dashboard",
     "sign-out",
     "boards",
@@ -176,6 +177,7 @@ export const getFilterList = (
   ];
   const professionalLinks = [
     "home",
+    "groups",
     "dashboard",
     "sign-out",
     "boards",
@@ -185,6 +187,7 @@ export const getFilterList = (
   ];
   const professionalProLinks = [
     "home",
+    "groups",
     "dashboard",
     "sign-out",
     "boards",
@@ -196,6 +199,7 @@ export const getFilterList = (
   ];
   const proLinks = [
     "home",
+    "groups",
     "dashboard",
     "sign-out",
     "boards",
@@ -207,6 +211,7 @@ export const getFilterList = (
   ];
   const freeLinks = [
     "home",
+    "groups",
     "dashboard",
     "sign-out",
     "boards",
@@ -225,7 +230,12 @@ export const getFilterList = (
     "about",
     "contact",
   ];
-  const childAccountLinks = ["home", "child-boards", "child-sign-out"];
+  const childAccountLinks = [
+    "home",
+    "child-boards",
+    "child-groups",
+    "child-sign-out",
+  ];
 
   if (currentUser) {
     if (currentUser.role === "admin") {

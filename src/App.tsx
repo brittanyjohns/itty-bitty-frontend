@@ -80,6 +80,10 @@ import ViewChildBoardScreen from "./pages/childBoards/ViewChildBoardScreen";
 import CookiesConsent from "./components/utils/CookieConsent";
 import { useState, useEffect } from "react";
 import PrivacyPolicy from "./pages/utils/PrivacyPolicy";
+import BoardGroupsScreen from "./pages/board_groups/BoardGroupsScreen";
+import NewBoardGroup from "./pages/board_groups/NewBoardGroup";
+import ViewBoardGroup from "./pages/board_groups/ViewBoardGroup";
+import EditBoardGroupScreen from "./pages/board_groups/EditBoardGroupScreen";
 
 const UserRoutes: React.FC = () => (
   <UserProvider>
@@ -110,6 +114,31 @@ const UserRoutes: React.FC = () => (
         />
         <Route path="/demo" component={Demo} exact={true} />
         <Route path="/faq" component={Dashboard} exact={true} />
+
+        <Route
+          path="/board-groups/:id"
+          component={ViewBoardGroup}
+          exact={true}
+        />
+        <Route
+          path="/board-groups/new"
+          component={NewBoardGroup}
+          exact={true}
+        />
+        <Route
+          path="/board-groups/:id/edit"
+          component={EditBoardGroupScreen}
+          exact={true}
+        />
+        <Route path="/board-groups/:id/locked" exact={true}>
+          <ViewBoardGroup locked={true} />
+        </Route>
+        {/* <Route path="/board-groups/:id/edit" component={EditBoardGroup} exact={true} /> */}
+        <Route
+          path="/board-groups"
+          component={BoardGroupsScreen}
+          exact={true}
+        />
         <Route path="/boards/:id" component={ViewBoard} exact={true} />
         <Route
           path="/boards/:id/locked"

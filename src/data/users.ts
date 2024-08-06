@@ -93,7 +93,6 @@ export const signOut = () => {
     },
   });
   localStorage.removeItem("token");
-  console.log("User signed out", response);
   return response;
 };
 
@@ -117,7 +116,6 @@ export const resetPassword = (
   password: string,
   password_confirmation: string
 ) => {
-  console.log("resetPassword", reset_password_token);
   const response = fetch(`${BASE_URL}v1/reset_password`, {
     method: "POST",
     headers: {
@@ -151,7 +149,6 @@ export const getCurrentUser = async () => {
     });
     const data = await response.json();
     const currentTime = new Date().getTime();
-    console.log("Current User", data, currentTime);
     if (response.ok) {
       return data.user; // Assuming the response structure is { user: currentUser }
     } else {
@@ -191,9 +188,6 @@ export const updateUserSettings = (
   userSetting: UserSetting,
   userId?: string
 ) => {
-  console.log("updateUserSettings", userSetting);
-  console.log("userId", userId);
-
   const endpoint = `${BASE_URL}users/${userId}/update_settings`;
 
   const userSettingRequest = fetch(endpoint, {
