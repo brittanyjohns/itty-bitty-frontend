@@ -10,11 +10,14 @@ import { useHistory } from "react-router";
 import {
   IonButton,
   IonButtons,
+  IonCheckbox,
   IonInput,
   IonItem,
   IonLabel,
+  IonSelect,
+  IonSelectOption,
 } from "@ionic/react";
-import { image } from "ionicons/icons";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 interface BoardGroupFormProps {
   boardGroup?: BoardGroup | null;
   editMode?: boolean;
@@ -23,7 +26,29 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({ boardGroup }) => {
   const [boards, setBoards] = useState<Board[]>(boardGroup?.boards || []);
   const [name, setName] = useState(boardGroup?.name || "");
   const [selectedBoardIds, setSelectedBoardIds] = useState<string[]>([]);
+  const [gridSize, setGridSize] = useState(boardGroup?.number_of_columns);
+  const gridSizeOptions = [1, 2, 3, 4, 5, 6];
+  const [predefined, setPredefined] = useState(boardGroup?.predefined || false);
+  const [currentBoardGroup, setBoardGroup] = useState<BoardGroup | null>(
+    boardGroup || null
+  );
   const history = useHistory();
+  const { currentUser } = useCurrentUser();
+
+  const handleGridSizeChange = (event: CustomEvent) => {
+    setGridSize(event.detail.value);
+    handleAfterAction();
+  };
+
+  const handleAfterAction = () => {
+    if (!boardGroup) {
+      console.error("No board found");
+      return;
+    }
+    console.log("After action", gridSize);
+    const updatedBoardGroup = { ...boardGroup, number_of_columns: gridSize };
+    setBoardGroup(updatedBoardGroup);
+  };
 
   useEffect(() => {
     // fetchBoardGroups();
@@ -66,6 +91,8 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({ boardGroup }) => {
           ...boardGroup,
           name,
           boardIds: selectedBoardIds,
+          number_of_columns: gridSize,
+          predefined,
         });
         history.push(`/board-groups/${boardGroup.id}`);
         return;
@@ -92,6 +119,22 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({ boardGroup }) => {
     setName(value);
   };
 
+  const handleCheckboxChange = (key: string, value: boolean) => {
+    console.log("Checkbox change: ", key, value);
+
+    if (!boardGroup) {
+      console.error("No board group found");
+      return;
+    }
+    if (key === "predefined") {
+      console.log("Setting predefined: ", value);
+      setPredefined(value);
+    }
+    const updatedBoardGroup = { ...boardGroup, [key]: value };
+    console.log("Updated board group: ", updatedBoardGroup);
+    setBoardGroup(updatedBoardGroup);
+  };
+
   return (
     <div>
       <IonItem lines="none" className="my-2">
@@ -104,6 +147,34 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({ boardGroup }) => {
           placeholder="Enter group name"
           onIonInput={handleNameInput}
         ></IonInput>
+      </IonItem>
+      {currentUser?.admin && (
+        <IonItem className="mb-4">
+          <IonCheckbox
+            checked={predefined}
+            value={predefined}
+            onIonChange={(e) =>
+              handleCheckboxChange("predefined", e.detail.checked)
+            }
+          />
+          <label className="ml-2">Predefined</label>
+        </IonItem>
+      )}
+      <IonItem className="mb-4">
+        <IonSelect
+          label="Number of Columns:"
+          placeholder="Select # of columns"
+          name="number_of_columns"
+          className="mr-2"
+          onIonChange={handleGridSizeChange}
+          value={gridSize}
+        >
+          {gridSizeOptions.map((size) => (
+            <IonSelectOption key={size} value={size}>
+              {size}
+            </IonSelectOption>
+          ))}
+        </IonSelect>
       </IonItem>
       <div className="p-3 border border-gray-300 w-full md:w-3/4 mx-auto">
         <h2 className="text-lg font-bold">Select Boards</h2>

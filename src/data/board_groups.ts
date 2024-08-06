@@ -65,6 +65,8 @@ export async function updateBoardGroup(
     audio_url,
     bg_color,
     board_ids: boardIds,
+    number_of_columns: boardGroup.number_of_columns,
+    predefined: boardGroup.predefined,
   };
   const response = await fetch(`${BASE_URL}board_groups/${id}`, {
     method: "PUT",
