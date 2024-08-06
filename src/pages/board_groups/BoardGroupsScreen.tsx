@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import { BoardGroup, getBoardGroups } from "../../data/board_groups";
 import BoardGroupGrid from "../../components/board_groups/BoardGroupGrid";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { ChildBoard } from "../../data/child_boards";
 
 import "./ViewBoard.css";
 import MainMenu from "../../components/main_menu/MainMenu";

@@ -96,10 +96,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
     }
   }, [segmentType, userBoards, presetBoards]);
 
-  const renderBoardGrid = (
-    gridType: string,
-    boardsToSet: Board[] | ChildBoard[]
-  ) => {
+  const renderBoardGrid = (gridType: string, boardsToSet: Board[]) => {
     if (boardsToSet.length > 0) {
       return <BoardGrid gridType={gridType} boards={boardsToSet} />;
     }
