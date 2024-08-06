@@ -20,7 +20,7 @@ const BoardGroupsScreen: React.FC = () => {
   const { currentAccount, currentUser, isWideScreen } = useCurrentUser();
   const [boardGroups, setBoardGroups] = useState<BoardGroup[]>([]);
 
-  const [pageTitle, setPageTitle] = useState("Your BoardGroups");
+  const [pageTitle, setPageTitle] = useState("Your Board Groups");
 
   const fetchBoardGroups = async () => {
     const fetchedBoardGroups = await getBoardGroups();
@@ -31,6 +31,9 @@ const BoardGroupsScreen: React.FC = () => {
   useEffect(() => {
     fetchBoardGroups();
   }, []);
+  useEffect(() => {
+    fetchBoardGroups();
+  }, [currentUser]);
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {

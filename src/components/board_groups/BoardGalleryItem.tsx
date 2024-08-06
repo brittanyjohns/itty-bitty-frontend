@@ -66,23 +66,27 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
   };
 
   const handleBoardClick = (board: Board) => {
-    if (onBoardClick) {
-      onBoardClick(board);
-    }
-
+    console.log("handleBoardClick: ", board);
+    let playAudioList = false;
     if (mute) {
       if (viewOnClick) {
         if (boardGroup?.id) {
           history.push(`/boards/${board.id}?boardGroupId=${boardGroup.id}`);
-          return;
+          // return;
         }
         history.push(`/boards/${board.id}`);
-        return;
+        // return;
       }
-      return;
+      // return;
+    } else {
+      playAudioList = true;
     }
     const audioSrc = board.audio_url;
-    onPlayAudioList(audioSrc);
+    if (!audioSrc) {
+      console.log("No audio for board: ", board);
+    } else {
+      onPlayAudioList(audioSrc);
+    }
     const name = board.name;
     if (inputRef?.current) {
       inputRef.current.value += ` ${name}`;
@@ -100,15 +104,19 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
     const waitToSpeak = currentUser?.settings?.wait_to_speak || false;
 
     if (!audioSrc) {
+      console.log("No audio for board: ", board);
       if (!waitToSpeak) {
+        console.log("No audio, speaking name: ", name);
         speak(name);
       }
-      return;
+    } else {
+      if (!waitToSpeak) {
+        playAudioList = true;
+      }
     }
-    setAudioList([...audioList, audioSrc]);
-
-    console.log("Playing audio: ", audioSrc);
-    console.log("waitToSpeak ", waitToSpeak);
+    if (playAudioList && audioSrc && audioList) {
+      setAudioList([...audioList, audioSrc]);
+    }
     const audio = new Audio(audioSrc);
     if (!waitToSpeak) {
       const promise = audio.play();
@@ -120,14 +128,29 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
           });
       }
     }
-    if (viewLockOnClick) {
-      console.log("viewLockOnClick: ", viewLockOnClick);
+    console.log("viewOnClick: ", viewOnClick);
+    console.log("viewLockOnClick: ", viewLockOnClick);
+    if (viewOnClick) {
       if (boardGroup?.id) {
         history.push(`/boards/${board.id}?boardGroupId=${boardGroup.id}`);
         return;
       }
       history.push(`/boards/${board.id}`);
       return;
+    }
+    if (viewLockOnClick) {
+      console.log("viewLockOnClick: ", viewLockOnClick);
+      if (boardGroup?.id) {
+        history.push(
+          `/boards/${board.id}/locked?boardGroupId=${boardGroup.id}`
+        );
+        return;
+      }
+      history.push(`/boards/${board.id}`);
+      return;
+    }
+    if (onBoardClick) {
+      onBoardClick(board);
     }
   };
 
@@ -171,16 +194,6 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
         className="ion-img-contain mx-auto"
         onClick={() => handleBoardClick(board)}
       />
-      {/* {!board.is_placeholder && (
-        <span
-          onClick={() => handleBoardClick(board)}
-          className="bg-white bg-opacity-90 w-full font-medium tracking-tighter leading-tight text-xs md:text-sm lg:text-sm absolute bottom-0 left-0 shadow-md"
-        >
-          {board.name.length > 15
-            ? `${board.name.substring(0, 10)}...`
-            : board.name}
-        </span>
-      )} */}
       {board && board.audio_url && <audio src={board.audio_url} />}
       {showRemoveBtn && (
         <IonIcon

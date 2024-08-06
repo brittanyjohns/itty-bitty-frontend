@@ -35,7 +35,7 @@ interface BoardViewProps {
   locked?: boolean;
 }
 
-const BoardView: React.FC<BoardViewProps> = ({
+const BoardGroupView: React.FC<BoardViewProps> = ({
   boardGroup,
   showEdit,
   inputRef,
@@ -56,6 +56,10 @@ const BoardView: React.FC<BoardViewProps> = ({
 
   const handleBoardClick = (boardId: string) => {
     console.log("handleBoardClick: ", boardId);
+    if (locked) {
+      console.log("Board is locked", boardId);
+      return;
+    }
   };
 
   return (
@@ -106,7 +110,7 @@ const BoardView: React.FC<BoardViewProps> = ({
             setShowIcon={setShowIcon}
             inputRef={inputRef}
             columns={numOfColumns}
-            disableReorder={locked}
+            disableReorder={true}
             mute={locked}
             viewOnClick={!locked}
             onBoardClick={handleBoardClick}
@@ -126,4 +130,4 @@ const BoardView: React.FC<BoardViewProps> = ({
   );
 };
 
-export default BoardView;
+export default BoardGroupView;

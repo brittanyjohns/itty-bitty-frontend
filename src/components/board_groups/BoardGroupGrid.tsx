@@ -1,4 +1,4 @@
-import { createRef, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import { BoardGroup } from "../../data/board_groups";
 import { IonButton } from "@ionic/react";
 import BoardGroupGridItem from "./BoardGroupGridItem";
@@ -16,6 +16,10 @@ const BoardGroupGrid = ({ boardGroups }: BoardGridProps) => {
     console.log("BoardGroup clicked: ", boardGroup);
     // setBoardGroupId(boardGroup.id as string);
   };
+
+  useEffect(() => {
+    console.log("useEffect -- boardGroups: ", boardGroups);
+  }, [boardGroups]);
 
   return (
     <div
@@ -37,7 +41,7 @@ const BoardGroupGrid = ({ boardGroups }: BoardGridProps) => {
         <div className="text-center">
           <p className="text-lg">No boardGroups found</p>
 
-          <IonButton routerLink="/boardGroups/new" color="primary">
+          <IonButton routerLink="/board-groups/new" color="primary">
             Create a new boardGroup
           </IonButton>
         </div>
