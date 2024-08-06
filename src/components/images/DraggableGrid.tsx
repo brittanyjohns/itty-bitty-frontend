@@ -9,6 +9,7 @@ import "react-resizable/css/styles.css";
 import ImageGalleryItem from "./ImageGalleryItem";
 import { Board, updateBoard } from "../../data/boards";
 import { Image } from "../../data/images";
+import { ChildBoard } from "../../data/child_boards";
 
 interface DraggableGridProps {
   columns: number;
@@ -16,7 +17,7 @@ interface DraggableGridProps {
   onLayoutChange?: any;
   disableReorder?: boolean;
   enableResize?: boolean;
-  board?: Board;
+  board?: Board | ChildBoard;
   setShowIcon?: any;
   inputRef?: any;
   mute?: boolean;
@@ -70,7 +71,10 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   const handleSetDisplayImage = async (image: Image) => {
     if (board) {
       console.log("Setting display image: ", image);
-      const updatingBoard: Board = { ...board, display_image_url: image.src };
+      const updatingBoard: Board | ChildBoard = {
+        ...board,
+        display_image_url: image.src,
+      };
 
       const savedBoard = await updateBoard(updatingBoard);
       console.log("Saved board: ", savedBoard);

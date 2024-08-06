@@ -151,7 +151,6 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
           </div>
           {segmentType === "user" && renderBoardGrid("user", boards)}
           {segmentType === "preset" && renderBoardGrid("preset", presetBoards)}
-          {gridType === "child" && renderBoardGrid("child", childBoards)}
         </IonContent>
         {currentUser && <Tabs />}
       </IonPage>

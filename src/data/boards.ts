@@ -1,5 +1,6 @@
 import { Image } from "./images";
 import { BASE_URL, userHeaders } from "./constants";
+import { ChildBoard } from "./child_boards";
 
 export interface Board {
   id: string;
@@ -135,7 +136,7 @@ export const createBoard = (board: Board, word_list?: string[]) => {
   return newBoard;
 };
 
-export const updateBoard = (board: Board) => {
+export const updateBoard = (board: Board | ChildBoard) => {
   const updatedBoard = fetch(`${BASE_URL}boards/${board.id}`, {
     method: "PUT",
     headers: userHeaders,
