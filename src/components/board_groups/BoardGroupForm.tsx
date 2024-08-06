@@ -27,7 +27,9 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({ boardGroup }) => {
   const [name, setName] = useState(boardGroup?.name || "");
   const [selectedBoardIds, setSelectedBoardIds] = useState<string[]>([]);
   const [gridSize, setGridSize] = useState(boardGroup?.number_of_columns);
-  const gridSizeOptions = [1, 2, 3, 4, 5, 6];
+  const gridSizeOptions = [
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+  ];
   const [predefined, setPredefined] = useState(boardGroup?.predefined || false);
   const [currentBoardGroup, setBoardGroup] = useState<BoardGroup | null>(
     boardGroup || null
@@ -136,7 +138,7 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({ boardGroup }) => {
   };
 
   return (
-    <div>
+    <div className="p-2 border border-gray-300 rounded-lg w-full md:w-3/4 mx-auto">
       <IonItem lines="none" className="my-2">
         <IonLabel className="text-lg mb-2 mr-2 font-bold">Group Name</IonLabel>
         <IonInput
@@ -176,7 +178,7 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({ boardGroup }) => {
           ))}
         </IonSelect>
       </IonItem>
-      <div className="p-3 border border-gray-300 w-full md:w-3/4 mx-auto">
+      <div className="w-full md:w-3/4 mx-auto">
         <h2 className="text-lg font-bold">Select Boards</h2>
         {boards &&
           boards.map((board) => (

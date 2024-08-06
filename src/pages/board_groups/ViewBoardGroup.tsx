@@ -61,7 +61,7 @@ const ViewBoardGroup: React.FC<ViewBoardGroupProps> = ({ locked }) => {
       setBoardGroup(boardGroup);
     }
 
-    // setNumOfColumns(boardGroup.number_of_columns);
+    setNumOfColumns(boardGroup.number_of_columns || 6);
     setShowLoading(false);
   };
 
