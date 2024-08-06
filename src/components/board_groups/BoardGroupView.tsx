@@ -50,6 +50,14 @@ const BoardView: React.FC<BoardViewProps> = ({
 
   const shouldShowRemoveBtn = currentUser?.role === "admin";
 
+  const handlePlayAudioList = (audioList: string[]) => {
+    console.log("handlePlayAudioList: ", audioList);
+  };
+
+  const handleBoardClick = (boardId: string) => {
+    console.log("handleBoardClick: ", boardId);
+  };
+
   return (
     <>
       <div className="flex justify-center items-center my-3">
@@ -99,9 +107,12 @@ const BoardView: React.FC<BoardViewProps> = ({
             inputRef={inputRef}
             columns={numOfColumns}
             disableReorder={locked}
-            mute={!locked}
+            mute={locked}
             viewOnClick={!locked}
+            onBoardClick={handleBoardClick}
+            viewLockOnClick={locked}
             showRemoveBtn={!locked && shouldShowRemoveBtn}
+            onPlayAudioList={handlePlayAudioList}
           />
         )}
       </div>

@@ -26,6 +26,7 @@ interface BoardGalleryItemProps {
   viewOnClick?: boolean;
   showRemoveBtn?: boolean;
   onSetDisplayBoard?: any;
+  viewLockOnClick?: boolean;
 }
 
 const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
@@ -39,6 +40,7 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
   viewOnClick,
   showRemoveBtn,
   onSetDisplayBoard,
+  viewLockOnClick,
 }) => {
   const { currentUser } = useCurrentUser();
   const imgRef = useRef<HTMLDivElement>(null);
@@ -93,6 +95,8 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
       }
     }
 
+    console.log("clicking board: ", board);
+
     const waitToSpeak = currentUser?.settings?.wait_to_speak || false;
 
     if (!audioSrc) {
@@ -115,6 +119,15 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
             speak(name);
           });
       }
+    }
+    if (viewLockOnClick) {
+      console.log("viewLockOnClick: ", viewLockOnClick);
+      if (boardGroup?.id) {
+        history.push(`/boards/${board.id}?boardGroupId=${boardGroup.id}`);
+        return;
+      }
+      history.push(`/boards/${board.id}`);
+      return;
     }
   };
 

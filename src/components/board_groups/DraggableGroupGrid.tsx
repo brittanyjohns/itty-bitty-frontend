@@ -25,6 +25,7 @@ interface DraggableGroupGridProps {
   onBoardClick?: any;
   viewOnClick?: boolean;
   showRemoveBtn?: boolean;
+  viewLockOnClick?: boolean;
 }
 const DraggableGroupGrid: React.FC<DraggableGroupGridProps> = ({
   boards,
@@ -40,6 +41,7 @@ const DraggableGroupGrid: React.FC<DraggableGroupGridProps> = ({
   onBoardClick,
   viewOnClick,
   showRemoveBtn,
+  viewLockOnClick,
 }) => {
   const [width, setWidth] = useState(window.innerWidth);
   const [rowHeight, setRowHeight] = useState(180);
@@ -114,6 +116,7 @@ const DraggableGroupGrid: React.FC<DraggableGroupGridProps> = ({
               onPlayAudioList={onPlayAudioList}
               onBoardClick={onBoardClick}
               viewOnClick={viewOnClick}
+              viewLockOnClick={viewLockOnClick}
               showRemoveBtn={showRemoveBtn}
               onSetDisplayBoard={handleSetDisplayBoard}
             />
