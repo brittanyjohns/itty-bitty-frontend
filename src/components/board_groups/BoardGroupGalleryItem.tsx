@@ -71,6 +71,8 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
       onBoardClick(board);
     }
 
+    console.log("Board clicked: ", board);
+
     if (mute) {
       if (viewOnClick) {
         if (board?.can_edit === true) {

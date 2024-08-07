@@ -45,6 +45,10 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({
     handleAfterAction();
   };
 
+  const [userBoards, setUserBoards] = useState<Board[]>([]);
+  const [scenarioBoards, setScenarioBoards] = useState<Board[]>([]);
+  const [presetBoards, setPresetBoards] = useState<Board[]>([]);
+
   const handleAfterAction = () => {
     if (!boardGroup) {
       console.error("No board found");
@@ -64,8 +68,12 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({
 
   const fetchBoards = async () => {
     try {
-      const response = await getBoards();
-      setBoards(response["boards"]);
+      const fetchedBoards = await getBoards();
+      setBoards(fetchedBoards["boards"]);
+      setUserBoards(fetchedBoards["boards"]);
+      setScenarioBoards(fetchedBoards["scenarios"]);
+      setPresetBoards(fetchedBoards["predefined_boards"]);
+      setBoards(fetchedBoards["boards"]);
     } catch (error) {
       console.error("Error fetching boards:", error);
     }
@@ -80,8 +88,9 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({
       alert("Please select at least one board");
       return;
     }
+    console.log("Creating board group with boards:", selectedBoardIds);
     try {
-      if (boardGroup && editMode) {
+      if (boardGroup?.id && editMode) {
         // Update board group
         await updateBoardGroup({
           ...boardGroup,
@@ -90,15 +99,23 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({
           number_of_columns: gridSize,
           predefined,
         });
+        history.push(`/board-groups/${boardGroup.id}`);
         return;
       } else {
         const newGroup = await createBoardGroup(name, selectedBoardIds);
         setName("");
         setSelectedBoardIds([]);
-        history.push(`/board-groups/${newGroup.id}`);
+        if (newGroup?.id) {
+          history.push(`/board-groups/${newGroup.id}`);
+        } else {
+          console.error("Error creating board group", newGroup);
+          history.push("/board-groups");
+        }
       }
     } catch (error) {
       console.error("Error creating board group:", error);
+      alert(`Error creating board group: ${error}`);
+      return;
     }
   };
 
@@ -170,18 +187,40 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({
       </IonItem>
       <div className="w-full md:w-3/4 mx-auto">
         <h2 className="text-lg font-bold">Select Boards</h2>
-        {boards &&
-          boards.map((board) => (
-            <div key={board.id} className="flex items-center">
-              <input
-                type="checkbox"
-                className="mr-2"
-                checked={selectedBoardIds.includes(board.id)}
-                onChange={() => handleBoardSelect(board.id)}
-              />
-              {board.name}
-            </div>
-          ))}
+        <div className="">
+          <div className="">
+            <h2 className="text-lg font-bold">Your Boards</h2>
+
+            {userBoards &&
+              userBoards.map((board) => (
+                <div key={board.id} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    className="mr-2"
+                    checked={selectedBoardIds.includes(board.id)}
+                    onChange={() => handleBoardSelect(board.id)}
+                  />
+                  {board.name}
+                </div>
+              ))}
+          </div>
+          <div className="">
+            <h2 className="text-lg font-bold">Preset Boards</h2>
+
+            {presetBoards &&
+              presetBoards.map((board) => (
+                <div key={board.id} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    className="mr-2"
+                    checked={selectedBoardIds.includes(board.id)}
+                    onChange={() => handleBoardSelect(board.id)}
+                  />
+                  {board.name}
+                </div>
+              ))}
+          </div>
+        </div>
         <div className="mt-3">
           <IonButton onClick={handleCreateBoardGroup}>
             Save Board Group

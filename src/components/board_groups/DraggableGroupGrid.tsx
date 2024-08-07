@@ -78,6 +78,9 @@ const DraggableGroupGrid: React.FC<DraggableGroupGridProps> = ({
     if (boardGroup && board) {
       boardGroup.display_image_url = board.display_image_url;
       const response = await updateBoardGroup(boardGroup);
+      if (response) {
+        console.log("Display board updated: ", response);
+      }
       history.push(`/board-groups/${boardGroup.id}`);
     }
   };

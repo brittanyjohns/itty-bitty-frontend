@@ -276,3 +276,17 @@ export const canUseCookies = () => {
     .find((row) => row.startsWith("cookies_consent="));
   return cookiesConsent && cookiesConsent.split("=")[1] === "true";
 };
+
+export const checkCurrentUserTokens = (
+  currentUser: User,
+  numberOfTokens: number = 1
+) => {
+  if (
+    currentUser &&
+    currentUser.tokens &&
+    currentUser.tokens >= numberOfTokens
+  ) {
+    return true;
+  }
+  return false;
+};

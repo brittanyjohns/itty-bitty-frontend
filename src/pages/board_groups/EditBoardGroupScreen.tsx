@@ -68,15 +68,9 @@ const EditBoardGroupScreen: React.FC<EditBoardGroupProps> = ({
     layout: [],
   };
   const [image, setImage] = useState<Image | null>(initialImage);
-  const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
-    if (
-      currentUser &&
-      currentUser.tokens &&
-      currentUser.tokens >= numberOfTokens
-    ) {
-      return true;
-    }
-    return false;
+
+  const handleLayoutChange = (layout: any) => {
+    setGridLayout(layout);
   };
 
   const handleRearrangeBoards = async () => {
@@ -97,11 +91,13 @@ const EditBoardGroupScreen: React.FC<EditBoardGroupProps> = ({
 
   const loadPage = async () => {
     setShowLoading(true);
-    const boardToSet = await fetchBoardGroup();
+    const boardGroupToSet = await fetchBoardGroup();
+    setBoardGroup(boardGroupToSet);
     // fetchRemaining(boardToSet.id, 1);
     toggleForms(segmentType);
     const userCanEdit =
-      currentUser?.role === "admin" || currentUser?.id === boardToSet.user_id;
+      currentUser?.role === "admin" ||
+      currentUser?.id === boardGroupToSet.user_id;
     setShowEdit(userCanEdit);
     setShowLoading(false);
   };
@@ -109,6 +105,10 @@ const EditBoardGroupScreen: React.FC<EditBoardGroupProps> = ({
   useEffect(() => {
     loadPage();
   }, []);
+
+  useIonViewWillEnter(() => {
+    loadPage();
+  });
 
   const toggleForms = (segmentType: string) => {
     if (segmentType === "edit") {
@@ -209,7 +209,7 @@ const EditBoardGroupScreen: React.FC<EditBoardGroupProps> = ({
                         boards={boardGroup.boards}
                         boardGroup={boardGroup}
                         setShowIcon={setShowIcon}
-                        onLayoutChange={setGridLayout}
+                        onLayoutChange={handleLayoutChange}
                         columns={numberOfColumns}
                         disableReorder={false}
                         mute={true}

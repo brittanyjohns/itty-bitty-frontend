@@ -67,7 +67,6 @@ const ViewBoardGroup: React.FC<ViewBoardGroupProps> = ({ locked }) => {
 
   useEffect(() => {
     fetchBoardGroup();
-    console.log("useEffect -- fetchBoardGroup", locked);
   }, [params.id]);
 
   useIonViewDidLeave(() => {

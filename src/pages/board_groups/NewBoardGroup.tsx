@@ -13,13 +13,13 @@ const NewBoard: React.FC = () => {
   return (
     <>
       <MainMenu
-        pageTitle="New BoardGroup"
+        pageTitle="New Board Group"
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
       />
       <StaticMenu
-        pageTitle="New BoardGroup"
+        pageTitle="New Board Group"
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
@@ -27,13 +27,13 @@ const NewBoard: React.FC = () => {
 
       <IonPage id="main-content">
         <MainHeader
-          pageTitle="New BoardGroup"
+          pageTitle="New Board Group"
           isWideScreen={isWideScreen}
           startLink="/board-groups"
         />
         <IonContent fullscreen scrollY={true}>
           <div className="ion-padding">
-            <h1>Create a new BoardGroup</h1>
+            <h1>Create a New Board Group</h1>
             <BoardGroupForm />
           </div>
         </IonContent>
