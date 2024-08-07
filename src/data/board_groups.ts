@@ -109,6 +109,9 @@ export async function removeBoardFromGroup(
 }
 
 export async function rearrangeBoards(boardGroupId: string): Promise<any> {
+  if (!boardGroupId) {
+    return;
+  }
   const response = await fetch(
     `${BASE_URL}board_groups/${boardGroupId}/rearrange_boards`,
     {

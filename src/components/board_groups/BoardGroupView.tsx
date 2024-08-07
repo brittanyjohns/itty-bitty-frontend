@@ -102,7 +102,7 @@ const BoardGroupView: React.FC<BoardViewProps> = ({
 
       <div>
         <h1 className="text-center text-2xl font-bold">
-          {boardGroup && boardGroup.name} - {locked ? "Locked" : "Unlocked"}
+          {boardGroup && boardGroup.name}
         </h1>
         {boardGroup && (
           <DraggableGroupGrid

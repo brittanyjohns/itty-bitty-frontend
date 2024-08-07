@@ -3,6 +3,7 @@ import {
   IonPage,
   IonRefresher,
   IonRefresherContent,
+  useIonViewDidEnter,
 } from "@ionic/react";
 import Tabs from "../../components/utils/Tabs";
 import { useEffect, useState } from "react";
@@ -23,16 +24,18 @@ const BoardGroupsScreen: React.FC = () => {
 
   const fetchBoardGroups = async () => {
     const fetchedBoardGroups = await getBoardGroups();
-    console.log("fetchedBoardGroups: ", fetchedBoardGroups);
+    console.log("SCREEN fetchedBoardGroups: ", fetchedBoardGroups);
     setBoardGroups(fetchedBoardGroups);
   };
 
   useEffect(() => {
     fetchBoardGroups();
   }, []);
-  useEffect(() => {
+
+  useIonViewDidEnter(() => {
+    console.log("View did enter");
     fetchBoardGroups();
-  }, [currentUser]);
+  }, []);
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {

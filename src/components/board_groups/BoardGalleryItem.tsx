@@ -184,8 +184,8 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
       } rounded-sm p-1`}
     >
       <IonLabel className="text-center text-xs md:text-sm lg:text-sm">
-        {board.name.length > 15
-          ? `${board.name.substring(0, 10)}...`
+        {board.name.length > 25
+          ? `${board.name.substring(0, 25)}...`
           : board.name}
       </IonLabel>
       <IonImg
@@ -202,7 +202,7 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
           size="small"
           onClick={() => setIsOpen(true)}
           color="danger"
-          className="tiny absolute bottom-0 right-0"
+          className="tiny absolute bottom-0 right-0 bg-white rounded-md p-1"
         />
       )}
       {showRemoveBtn && (
