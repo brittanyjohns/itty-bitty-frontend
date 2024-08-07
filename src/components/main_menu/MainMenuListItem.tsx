@@ -19,7 +19,7 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({ menuLink }) => {
   const freeTrial = menuLink.pro && currentUser?.free_trial;
 
   const [isActive, setIsActive] = useState(false);
-  const premiumFeatures = ["menus", "child-accounts", "teams"];
+  const premiumFeatures = ["menus", "child-accounts", "teams", "groups"];
   const shouldDisable = (slug?: string) => {
     if (!slug) {
       return false;

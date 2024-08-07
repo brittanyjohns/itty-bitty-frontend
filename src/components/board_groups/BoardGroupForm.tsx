@@ -22,7 +22,10 @@ interface BoardGroupFormProps {
   boardGroup?: BoardGroup | null;
   editMode?: boolean;
 }
-const BoardGroupForm: React.FC<BoardGroupFormProps> = ({ boardGroup }) => {
+const BoardGroupForm: React.FC<BoardGroupFormProps> = ({
+  boardGroup,
+  editMode,
+}) => {
   const [boards, setBoards] = useState<Board[]>(boardGroup?.boards || []);
   const [name, setName] = useState(boardGroup?.name || "");
   const [selectedBoardIds, setSelectedBoardIds] = useState<string[]>([]);
@@ -57,6 +60,7 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({ boardGroup }) => {
     fetchBoards();
     console.log("useEffect -- boardGroup: ", boardGroup);
     if (boardGroup && boardGroup?.boards) {
+      console.log("Setting selected board ids: ", boardGroup);
       const idsToSet = boardGroup.boards.map((board) => board.id);
       console.log("idsToSet: ", idsToSet);
       setSelectedBoardIds(idsToSet);
@@ -73,11 +77,8 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({ boardGroup }) => {
     }
   };
 
-  const handleSetName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
-
   const handleCreateBoardGroup = async () => {
+    console.log("Creating board group");
     if (!name) {
       alert("Please enter a name for the board group");
       return;
@@ -87,7 +88,8 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({ boardGroup }) => {
       return;
     }
     try {
-      if (boardGroup && boardGroup.id && boardGroup.id.length > 0) {
+      if (boardGroup && editMode) {
+        console.log("editMode Updating board group: ", boardGroup);
         // Update board group
         await updateBoardGroup({
           ...boardGroup,
@@ -98,11 +100,13 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({ boardGroup }) => {
         });
         history.push(`/board-groups/${boardGroup.id}`);
         return;
+      } else {
+        const newGroup = await createBoardGroup(name, selectedBoardIds);
+        console.log("Created NEW board group: ", newGroup);
+        setName("");
+        setSelectedBoardIds([]);
+        // history.push(`/board-groups/${newGroup.id}`);
       }
-      const newGroup = await createBoardGroup(name, selectedBoardIds);
-      setName("");
-      setSelectedBoardIds([]);
-      history.push(`/board-groups/${newGroup.id}`);
     } catch (error) {
       console.error("Error creating board group:", error);
     }

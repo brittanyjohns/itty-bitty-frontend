@@ -120,7 +120,8 @@ const EditBoardGroupScreen: React.FC<EditBoardGroupProps> = ({
     const boardToSet = await fetchBoardGroup();
     // fetchRemaining(boardToSet.id, 1);
     toggleForms(segmentType);
-    const userCanEdit = currentUser?.role === "admin";
+    const userCanEdit =
+      currentUser?.role === "admin" || currentUser?.id === boardToSet.user_id;
     setShowEdit(userCanEdit);
     setShowLoading(false);
   };
@@ -144,11 +145,11 @@ const EditBoardGroupScreen: React.FC<EditBoardGroupProps> = ({
 
   const handleSaveLayout = async () => {
     if (!boardGroup?.id) {
-      console.error("BoardGroup ID is missing");
+      console.error("Board Group ID is missing");
       return;
     }
     const updatedBoardGroup = await saveLayout(boardGroup.id, gridLayout);
-    const message = "BoardGroup layout saved";
+    const message = "Group layout saved";
     setToastMessage(message);
     setIsOpen(true);
     setBoardGroup(updatedBoardGroup);
@@ -208,7 +209,9 @@ const EditBoardGroupScreen: React.FC<EditBoardGroupProps> = ({
               <h1 className="text-center text-2xl font-bold">
                 Editing {boardGroup?.name || "Board Group"}
               </h1>
-              {boardGroup && <BoardGroupForm boardGroup={boardGroup} />}
+              {boardGroup && (
+                <BoardGroupForm boardGroup={boardGroup} editMode={true} />
+              )}
             </div>
             <div className="mt-6 px-4 lg:px-12">
               {boardGroup &&
@@ -216,8 +219,8 @@ const EditBoardGroupScreen: React.FC<EditBoardGroupProps> = ({
                 boardGroup.boards.length > 0 && (
                   <div className="">
                     <p className="text-center font-bold text-lg">
-                      This boardGroup currently has {boardGroup.boards.length}{" "}
-                      images.
+                      This group currently has {boardGroup.boards.length}{" "}
+                      boards.
                     </p>
                     <p className="text-center font-bold text-md">
                       Drag and drop to rearrange the layout.
@@ -236,13 +239,10 @@ const EditBoardGroupScreen: React.FC<EditBoardGroupProps> = ({
                         boardGroup={boardGroup}
                         setShowIcon={setShowIcon}
                         onLayoutChange={setGridLayout}
-                        // inputRef={inputRef}
                         columns={numberOfColumns}
                         disableReorder={false}
                         mute={true}
                         viewOnClick={false}
-
-                        // showRemoveBtn={shouldShowRemoveBtn}
                       />
                     )}
                   </div>
@@ -256,11 +256,6 @@ const EditBoardGroupScreen: React.FC<EditBoardGroupProps> = ({
                 )}
             </div>
             <div className="flex justify-between items-center px-4 mt-4">
-              {showEdit && (
-                <IonButton onClick={removeBoardGroup} className="mr-1 text-xs">
-                  Delete boardGroup
-                </IonButton>
-              )}
               <IonButton
                 className="text-xs md:text-md lg:text-lg font-bold text-center my-2 cursor-pointer mx-auto text-wrap"
                 onClick={handleRearrangeBoards}
