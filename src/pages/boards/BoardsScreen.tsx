@@ -37,7 +37,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   const [presetBoards, setPresetBoards] = useState<Board[]>([]);
   const [userBoards, setUserBoards] = useState<Board[]>([]);
   const [scenarioBoards, setScenarioBoards] = useState<Board[]>([]);
-  const [segmentType, setSegmentType] = useState("user");
+  const [segmentType, setSegmentType] = useState("preset");
   const [pageTitle, setPageTitle] = useState("Your Boards");
 
   const fetchBoards = async () => {
@@ -61,7 +61,6 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   };
 
   useEffect(() => {
-    console.log("Use effect -gridType: ", gridType);
     fetchBoards();
   }, [gridType, currentAccount, currentUser]);
 

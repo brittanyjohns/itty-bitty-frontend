@@ -82,23 +82,6 @@ const ViewBoardGroup: React.FC<ViewBoardGroupProps> = ({ locked }) => {
     fetchBoardGroup();
   }, []);
 
-  // const handleClone = async () => {
-  //   try {
-  //     setShowLoading(true);
-  //     const clonedBoardGroup = await cloneBoardGroup(params.id);
-  //     if (clonedBoardGroup && clonedBoardGroup.id) {
-  //       const updatedBoardGroup = await rearrangeBoards(clonedBoardGroup.id);
-  //       setBoardGroup(updatedBoardGroup);
-  //     }
-  //     setShowLoading(false);
-  //     window.location.href = `/boards/${clonedBoardGroup.id}`;
-  //   } catch (error) {
-  //     console.error("Error cloning boardGroup: ", error);
-  //     alert("Error cloning boardGroup");
-  //     setShowLoading(false);
-  //   }
-  // };
-
   return (
     <>
       <MainMenu
@@ -123,6 +106,11 @@ const ViewBoardGroup: React.FC<ViewBoardGroupProps> = ({ locked }) => {
         />
 
         <IonContent>
+          {isWideScreen && (
+            <h1 className="text-center text-2xl font-bold">
+              {boardGroup && boardGroup.name}
+            </h1>
+          )}
           <IonLoading message="Please wait..." isOpen={showLoading} />
           {boardGroup && (
             <BoardGroupView

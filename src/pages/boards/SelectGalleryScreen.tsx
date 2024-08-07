@@ -220,7 +220,11 @@ const SelectGalleryScreen: React.FC = () => {
             ref={imageGalleryWrapper}
           >
             <div className=" mt-5 text-center">
-              <IonButton size="large" fill="clear" routerLink={`/boards/${id}`}>
+              <IonButton
+                size="large"
+                fill="outline"
+                routerLink={`/boards/${id}`}
+              >
                 {" "}
                 <p className="font-bold">Return to board</p>
               </IonButton>

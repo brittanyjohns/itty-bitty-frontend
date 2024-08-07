@@ -131,6 +131,11 @@ const ViewBoard: React.FC<any> = () => {
 
         <IonContent>
           <IonLoading message="Please wait..." isOpen={showLoading} />
+          {isWideScreen && (
+            <div className="ml-4 mt-4 pl-4">
+              <h1>{board?.name || "View Board"}</h1>
+            </div>
+          )}
           {board && (
             <BoardView
               board={board}

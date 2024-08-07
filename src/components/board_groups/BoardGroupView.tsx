@@ -89,9 +89,6 @@ const BoardGroupView: React.FC<BoardViewProps> = ({
       </div>
 
       <div>
-        <h1 className="text-center text-2xl font-bold">
-          {boardGroup && boardGroup.name}
-        </h1>
         {boardGroup && (
           <DraggableGroupGrid
             boards={boardGroup.boards}

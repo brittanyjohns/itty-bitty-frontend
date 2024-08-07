@@ -264,7 +264,7 @@ const EditBoardScreen: React.FC = () => {
               <div className=" mt-5 text-center">
                 <IonButton
                   size="large"
-                  fill="clear"
+                  fill="outline"
                   routerLink={`/boards/${id}`}
                 >
                   {" "}
@@ -281,13 +281,6 @@ const EditBoardScreen: React.FC = () => {
                   onSubmit={loadPage}
                 />
               )}
-              <div>
-                <div className="m-2">
-                  <IonText className="text-sm text-gray-500">
-                    Voice: {board?.voice}
-                  </IonText>
-                </div>
-              </div>
             </div>
             <div className="mt-6 px-4 lg:px-12">
               {board && board.images && board.images.length > 0 && (
@@ -295,7 +288,7 @@ const EditBoardScreen: React.FC = () => {
                   <p className="text-center font-bold text-lg">
                     This board currently has {board.images.length} images.
                   </p>
-                  <p className="text-center font-bold text-md">
+                  <p className="text-center font-mono text-md">
                     Drag and drop to rearrange the layout.
                   </p>
 

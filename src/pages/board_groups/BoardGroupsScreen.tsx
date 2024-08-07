@@ -1,8 +1,12 @@
 import {
   IonContent,
+  IonIcon,
+  IonLabel,
   IonPage,
   IonRefresher,
   IonRefresherContent,
+  IonSegment,
+  IonSegmentButton,
   useIonViewDidEnter,
 } from "@ionic/react";
 import Tabs from "../../components/utils/Tabs";
@@ -15,17 +19,20 @@ import "./ViewBoard.css";
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
 import StaticMenu from "../../components/main_menu/StaticMenu";
+import { imagesOutline, personOutline } from "ionicons/icons";
 
 const BoardGroupsScreen: React.FC = () => {
   const { currentAccount, currentUser, isWideScreen } = useCurrentUser();
   const [boardGroups, setBoardGroups] = useState<BoardGroup[]>([]);
-
-  const [pageTitle, setPageTitle] = useState("Your Board Groups");
+  const [presetBoardGroups, setPresetBoardGroups] = useState<BoardGroup[]>([]);
+  const [userBoardGroups, setUserBoardGroups] = useState<BoardGroup[]>([]);
+  const [segmentType, setSegmentType] = useState("predefined");
 
   const fetchBoardGroups = async () => {
     const fetchedBoardGroups = await getBoardGroups();
-    console.log("SCREEN fetchedBoardGroups: ", fetchedBoardGroups);
-    setBoardGroups(fetchedBoardGroups);
+    setPresetBoardGroups(fetchedBoardGroups["predefined"]);
+    setUserBoardGroups(fetchedBoardGroups["user"]);
+    setBoardGroups(presetBoardGroups);
   };
 
   useEffect(() => {
@@ -44,16 +51,27 @@ const BoardGroupsScreen: React.FC = () => {
     }, 3000);
   };
 
+  const handleSegmentChange = (event: CustomEvent) => {
+    const segmentValue = event.detail.value;
+    console.log("Segment value: ", segmentValue);
+    setSegmentType(segmentValue);
+    if (segmentType === "user") {
+      setBoardGroups(userBoardGroups);
+    } else if (segmentType === "predefined") {
+      setBoardGroups(presetBoardGroups);
+    }
+  };
+
   return (
     <>
       <MainMenu
-        pageTitle="BoardGroups"
+        pageTitle="Board Groups"
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
       />
       <StaticMenu
-        pageTitle="BoardGroups"
+        pageTitle="Board Groups"
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
@@ -61,7 +79,7 @@ const BoardGroupsScreen: React.FC = () => {
 
       <IonPage id="main-content">
         <MainHeader
-          pageTitle="BoardGroups"
+          pageTitle="Board Groups"
           isWideScreen={isWideScreen}
           showMenuButton={!isWideScreen}
           endLink="/board-groups/new"
@@ -70,8 +88,33 @@ const BoardGroupsScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <h1 className="text-2xl font-bold text-center">{pageTitle}</h1>
-          <BoardGroupGrid boardGroups={boardGroups} />
+          <div className="bg-inherit shadow-none w-full md:w-2/3 lg:w-1/2 mx-auto my-3">
+            {currentUser && (
+              <IonSegment
+                value={segmentType}
+                onIonChange={handleSegmentChange}
+                className="w-full bg-inherit"
+              >
+                <IonSegmentButton value="predefined">
+                  <IonLabel className="text-md lg:text-lg">Preset</IonLabel>
+                  <IonIcon icon={imagesOutline} size="small" />
+                </IonSegmentButton>
+                <IonSegmentButton value="user">
+                  <IonLabel className="text-md lg:text-lg">
+                    Your Groups
+                  </IonLabel>
+                  <IonIcon icon={personOutline} size="small" />
+                </IonSegmentButton>
+              </IonSegment>
+            )}
+          </div>
+
+          {segmentType === "user" && (
+            <BoardGroupGrid boardGroups={userBoardGroups} />
+          )}
+          {segmentType === "predefined" && (
+            <BoardGroupGrid boardGroups={presetBoardGroups} />
+          )}
         </IonContent>
         {currentUser && <Tabs />}
       </IonPage>

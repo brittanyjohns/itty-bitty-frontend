@@ -170,11 +170,11 @@ const EditBoardGroupScreen: React.FC<EditBoardGroupProps> = ({
               <div className=" mt-5 text-center">
                 <IonButton
                   size="large"
-                  fill="clear"
+                  fill="outline"
                   routerLink={`/board-groups/${id}`}
                 >
                   {" "}
-                  <p className="font-bold my-2">Return</p>
+                  <p className="font-bold my-2">Return to group</p>
                 </IonButton>
               </div>
               <h1 className="text-center text-2xl font-bold">

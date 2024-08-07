@@ -71,12 +71,9 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
       if (viewOnClick) {
         if (boardGroup?.id) {
           history.push(`/boards/${board.id}?boardGroupId=${boardGroup.id}`);
-          // return;
         }
         history.push(`/boards/${board.id}`);
-        // return;
       }
-      // return;
     } else {
       playAudioList = true;
     }
@@ -84,7 +81,9 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
     if (!audioSrc) {
       console.log("No audio for board: ", board);
     } else {
-      onPlayAudioList(audioSrc);
+      if (onPlayAudioList) {
+        onPlayAudioList(audioSrc);
+      }
     }
     const name = board.name;
     if (inputRef?.current) {
@@ -176,10 +175,10 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
       ref={imgRef}
       className={`relative cursor-pointer ${
         board?.bg_color || "bg-white"
-      } rounded-sm p-1`}
+      } rounded-sm p-1 border`}
     >
-      <IonLabel className="text-center text-xs md:text-sm lg:text-sm">
-        {board.name.length > 25
+      <IonLabel className="text-center text-xs md:text-sm lg:text-sm font-medium">
+        {board.name.length > 20
           ? `${board.name.substring(0, 25)}...`
           : board.name}
       </IonLabel>

@@ -17,11 +17,16 @@ export interface BoardGroup {
   number_of_columns?: number;
 }
 
-export async function getBoardGroups(): Promise<BoardGroup[]> {
+interface BoardGroupsResponse {
+  predefined: BoardGroup[];
+  user: BoardGroup[];
+}
+
+export async function getBoardGroups(): Promise<BoardGroupsResponse> {
   const response = await fetch(`${BASE_URL}board_groups`, {
     headers: userHeaders,
   });
-  const boardGroups: BoardGroup[] = await response.json();
+  const boardGroups: BoardGroupsResponse = await response.json();
   return boardGroups;
 }
 
