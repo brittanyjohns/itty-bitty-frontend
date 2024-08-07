@@ -64,13 +64,13 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
             lines="none"
           >
             <IonIcon icon={personCircleOutline} className="mr-3"></IonIcon>
-            <IonLabel className="text-xs">
+            <p className="text-xs">
               {currentUser?.email}
               <br></br>
               <span className="text-gray-500 text-xs">
                 {currentUser?.plan_type} - {currentUser?.tokens} tokens
               </span>
-            </IonLabel>
+            </p>
           </IonItem>
         )}
         {filteredLinks.map((link) => (
