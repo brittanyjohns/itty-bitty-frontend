@@ -66,11 +66,26 @@ const ContactUs: React.FC = () => {
               <h1 className="text-2xl font-bold text-center">
                 Get in touch with SpeakAnyWay
               </h1>
-              <p className="my-4 text-sm md:text-xl">
+              <p className="my-4 text-sm md:text-lg">
                 We're here to help! Whether you have questions about our plans,
                 features, or anything else, our team is ready to answer all your
                 questions.
               </p>
+              <p className="my-4 text-sm md:text-lg">
+                Please fill out the form below and we will get back to you as
+                soon as possible.
+              </p>
+              <h3 className="text-lg md:text-2xl font-bold">
+                Or you can always email us at{" "}
+                <a
+                  href="mailto:hello@speakanyway.com"
+                  className="ml-2 text-lg md:text-2xl font-bold text-blue-400"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  hello@speakanyway.com
+                </a>
+              </h3>
             </div>
             <div className="mt-3 bv w-3/4 max-w-lg space-y-4 mx-auto p-6 bg-white shadow-lg rounded-lg bg-opacity-70">
               <IonItem className="w-full">
