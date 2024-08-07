@@ -87,7 +87,7 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({ boardGroup }) => {
       return;
     }
     try {
-      if (boardGroup) {
+      if (boardGroup && boardGroup.id && boardGroup.id.length > 0) {
         // Update board group
         await updateBoardGroup({
           ...boardGroup,
