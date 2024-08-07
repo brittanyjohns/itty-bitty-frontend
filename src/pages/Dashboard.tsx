@@ -31,6 +31,7 @@ import WordCloudChart from "../components/utils/WordCloudChart";
 import MainHeader, { closeMainMenu } from "./MainHeader";
 import StaticMenu from "../components/main_menu/StaticMenu";
 import BoardGrid from "../components/boards/BoardGrid";
+import AccountContent from "../components/utils/AccountContent";
 const Dashboard: React.FC = () => {
   const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
 
@@ -120,7 +121,7 @@ const Dashboard: React.FC = () => {
                 </div>
               </>
             )}
-            {(currentUser && currentUser?.admin) ||
+            {/* {(currentUser && currentUser?.admin) ||
               (currentUser && currentUser?.plan_type !== "free" && (
                 <>
                   <h1 className="text-2xl">Dashboard</h1>
@@ -128,7 +129,11 @@ const Dashboard: React.FC = () => {
                   <SubscriptionList subscriptions={subscriptions} />
                   <AccountLink />
                 </>
-              ))}
+              ))} */}
+            <AccountContent
+              subscriptions={subscriptions}
+              currentUser={currentUser}
+            />
             <div className="ion-padding flex flex-col">
               <p className="text-md mb-3 font-bold">
                 This is your dashboard. Here you can see user activity, word

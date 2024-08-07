@@ -24,16 +24,7 @@ const ColorKey: React.FC = () => {
   return (
     <div className="w-full mx-auto m-3">
       <IonButtons className="flex justify-between ml-4">
-        <IonButton
-          onClick={toggleColorKey}
-          className="text-xs"
-          //   style={{
-          //     fontSize: "12px",
-          //     padding: "4px 8px",
-          //     height: "fit-content",
-          //     minWidth: "auto",
-          //   }}
-        >
+        <IonButton onClick={toggleColorKey} className="text-xs">
           {isVisible && (
             <IonIcon icon={eyeOffOutline} className="mr-2"></IonIcon>
           )}{" "}

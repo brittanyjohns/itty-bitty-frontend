@@ -44,7 +44,7 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
   return (
     <IonContent className="w-96">
       <IonToolbar>
-        <img slot="start" src={feature1Image} className="ml-4 h-10 w-10" />
+        <img slot="start" src={feature1Image} className="ml-2 h-10 w-10" />
         <div
           className="font-bold ml-2 hover:cursor-pointer"
           onClick={() => {
