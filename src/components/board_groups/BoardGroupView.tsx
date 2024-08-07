@@ -51,18 +51,6 @@ const BoardGroupView: React.FC<BoardViewProps> = ({
   const shouldShowRemoveBtn =
     currentUser?.role === "admin" || currentUser?.id === boardGroup?.user_id;
 
-  const handlePlayAudioList = (audioList: string[]) => {
-    console.log("handlePlayAudioList: ", audioList);
-  };
-
-  const handleBoardClick = (boardId: string) => {
-    console.log("handleBoardClick: ", boardId);
-    if (locked) {
-      console.log("Board is locked", boardId);
-      return;
-    }
-  };
-
   return (
     <>
       <div className="flex justify-center items-center my-3">
@@ -114,10 +102,8 @@ const BoardGroupView: React.FC<BoardViewProps> = ({
             disableReorder={true}
             mute={locked}
             viewOnClick={!locked}
-            onBoardClick={handleBoardClick}
             viewLockOnClick={locked}
             showRemoveBtn={!locked && shouldShowRemoveBtn}
-            onPlayAudioList={handlePlayAudioList}
           />
         )}
       </div>

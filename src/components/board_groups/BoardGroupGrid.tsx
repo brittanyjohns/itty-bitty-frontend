@@ -8,18 +8,8 @@ interface BoardGridProps {
   boardGroups: BoardGroup[];
 }
 const BoardGroupGrid = ({ boardGroups }: BoardGridProps) => {
-  // const [boardGroupId, setBoardGroupId] = useState<string>("");
   const { currentUser } = useCurrentUser();
   const gridRef = createRef<HTMLDivElement>();
-
-  const handleBoardGroupClick = (boardGroup: BoardGroup) => {
-    console.log("BoardGroup clicked: ", boardGroup);
-    // setBoardGroupId(boardGroup.id as string);
-  };
-
-  useEffect(() => {
-    console.log("useEffect -- boardGroups: ", boardGroups);
-  }, [boardGroups]);
 
   return (
     <div
@@ -31,7 +21,6 @@ const BoardGroupGrid = ({ boardGroups }: BoardGridProps) => {
           <div
             id={boardGroup.id}
             className="rounded-md flex relative p-2"
-            onClick={() => handleBoardGroupClick(boardGroup)}
             key={boardGroup.id}
           >
             <BoardGroupGridItem boardGroup={boardGroup} />

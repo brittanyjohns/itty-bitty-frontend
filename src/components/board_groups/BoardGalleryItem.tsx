@@ -66,7 +66,6 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
   };
 
   const handleBoardClick = (board: Board) => {
-    console.log("handleBoardClick: ", board);
     let playAudioList = false;
     if (mute) {
       if (viewOnClick) {
@@ -99,8 +98,6 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
       }
     }
 
-    console.log("clicking board: ", board);
-
     const waitToSpeak = currentUser?.settings?.wait_to_speak || false;
 
     if (!audioSrc) {
@@ -128,8 +125,7 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
           });
       }
     }
-    console.log("viewOnClick: ", viewOnClick);
-    console.log("viewLockOnClick: ", viewLockOnClick);
+
     if (viewOnClick) {
       if (boardGroup?.id) {
         history.push(`/boards/${board.id}?boardGroupId=${boardGroup.id}`);
@@ -139,7 +135,6 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
       return;
     }
     if (viewLockOnClick) {
-      console.log("viewLockOnClick: ", viewLockOnClick);
       if (boardGroup?.id) {
         history.push(
           `/boards/${board.id}/locked?boardGroupId=${boardGroup.id}`

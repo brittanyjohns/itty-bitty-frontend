@@ -44,13 +44,6 @@ const BoardGroupsScreen: React.FC = () => {
     }, 3000);
   };
 
-  // const renderBoardGroupGrid = (boardGroupsToSet: BoardGroup[]) => {
-  //   if (boardGroupsToSet.length > 0) {
-  //     return <BoardGroupGrid boardGroups={boardGroupsToSet} />;
-  //   }
-  //   return;
-  // };
-
   return (
     <>
       <MainMenu

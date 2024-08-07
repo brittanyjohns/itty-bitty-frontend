@@ -14,15 +14,11 @@ import {
   appsOutline,
   arrowBackCircleOutline,
   imagesOutline,
-  shareOutline,
 } from "ionicons/icons";
 import { saveLayout, rearrangeBoards } from "../../data/board_groups";
-import { createImage, generateImage, getMoreImages } from "../../data/images";
 import { Image } from "../../data/images";
-import BoardForm from "../../components/boards/BoardForm";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/utils/Tabs";
-import DraggableGrid from "../../components/images/DraggableGrid";
 import MainMenu from "../../components/main_menu/MainMenu";
 import ImageCropper from "../../components/images/ImageCropper";
 import ConfirmDeleteAlert from "../../components/utils/ConfirmDeleteAlert";
@@ -50,9 +46,6 @@ const EditBoardGroupScreen: React.FC<EditBoardGroupProps> = ({
   const uploadForm = useRef<HTMLDivElement>(null);
   const generateForm = useRef<HTMLDivElement>(null);
   const editForm = useRef<HTMLDivElement>(null);
-  const [remainingImages, setRemainingImages] = useState<Image[]>(); // State for the remaining images
-  const [searchInput, setSearchInput] = useState("");
-  const [page, setPage] = useState(1);
   const history = useHistory();
   const [toastMessage, setToastMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -86,19 +79,6 @@ const EditBoardGroupScreen: React.FC<EditBoardGroupProps> = ({
     return false;
   };
 
-  const removeBoardGroup = async () => {
-    try {
-      const boardGroupId = params.id;
-      console.log("Removing boardGroup: ", boardGroupId);
-      // Implement delete boardGroup logic
-      await deleteBoardGroup(boardGroupId);
-      window.location.href = "/board-groups";
-    } catch (error) {
-      console.error("Error removing boardGroup: ", error);
-      alert("Error removing boardGroup");
-    }
-  };
-
   const handleRearrangeBoards = async () => {
     setShowLoading(true);
     const updatedBoard = await rearrangeBoards(id);
@@ -126,11 +106,6 @@ const EditBoardGroupScreen: React.FC<EditBoardGroupProps> = ({
     setShowLoading(false);
   };
 
-  useIonViewWillEnter(() => {
-    setSearchInput("");
-    setPage(1);
-  });
-
   useEffect(() => {
     loadPage();
   }, []);
@@ -154,10 +129,6 @@ const EditBoardGroupScreen: React.FC<EditBoardGroupProps> = ({
     setIsOpen(true);
     setBoardGroup(updatedBoardGroup);
     history.push(`/board-groups/${boardGroup?.id}`);
-  };
-
-  const toggleAddToTeam = () => {
-    addToTeamRef.current?.classList.toggle("hidden");
   };
 
   const handleDelete = async () => {

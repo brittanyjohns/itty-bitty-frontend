@@ -50,19 +50,14 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({
       console.error("No board found");
       return;
     }
-    console.log("After action", gridSize);
     const updatedBoardGroup = { ...boardGroup, number_of_columns: gridSize };
     setBoardGroup(updatedBoardGroup);
   };
 
   useEffect(() => {
-    // fetchBoardGroups();
     fetchBoards();
-    console.log("useEffect -- boardGroup: ", boardGroup);
     if (boardGroup && boardGroup?.boards) {
-      console.log("Setting selected board ids: ", boardGroup);
       const idsToSet = boardGroup.boards.map((board) => board.id);
-      console.log("idsToSet: ", idsToSet);
       setSelectedBoardIds(idsToSet);
     }
   }, []);
@@ -70,7 +65,6 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({
   const fetchBoards = async () => {
     try {
       const response = await getBoards();
-      console.log("response: ", response);
       setBoards(response["boards"]);
     } catch (error) {
       console.error("Error fetching boards:", error);
@@ -78,7 +72,6 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({
   };
 
   const handleCreateBoardGroup = async () => {
-    console.log("Creating board group");
     if (!name) {
       alert("Please enter a name for the board group");
       return;
@@ -89,7 +82,6 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({
     }
     try {
       if (boardGroup && editMode) {
-        console.log("editMode Updating board group: ", boardGroup);
         // Update board group
         await updateBoardGroup({
           ...boardGroup,
@@ -98,14 +90,12 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({
           number_of_columns: gridSize,
           predefined,
         });
-        history.push(`/board-groups/${boardGroup.id}`);
         return;
       } else {
         const newGroup = await createBoardGroup(name, selectedBoardIds);
-        console.log("Created NEW board group: ", newGroup);
         setName("");
         setSelectedBoardIds([]);
-        // history.push(`/board-groups/${newGroup.id}`);
+        history.push(`/board-groups/${newGroup.id}`);
       }
     } catch (error) {
       console.error("Error creating board group:", error);
@@ -126,18 +116,14 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({
   };
 
   const handleCheckboxChange = (key: string, value: boolean) => {
-    console.log("Checkbox change: ", key, value);
-
     if (!boardGroup) {
       console.error("No board group found");
       return;
     }
     if (key === "predefined") {
-      console.log("Setting predefined: ", value);
       setPredefined(value);
     }
     const updatedBoardGroup = { ...boardGroup, [key]: value };
-    console.log("Updated board group: ", updatedBoardGroup);
     setBoardGroup(updatedBoardGroup);
   };
 

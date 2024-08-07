@@ -59,7 +59,6 @@ export async function updateBoardGroup(
 ): Promise<BoardGroup> {
   const { id, name, display_image_url, audio_url, bg_color, boardIds } =
     boardGroup;
-  console.log("updating boardGroup: ", boardGroup);
   const payload = {
     name,
     display_image_url,
