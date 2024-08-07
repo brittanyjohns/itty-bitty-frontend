@@ -54,7 +54,6 @@ const ImagesScreen: React.FC = () => {
 
   const fetchUserImages = async () => {
     const fetchedUserImages = await getUserImages();
-    console.log("Fetched user images: ", fetchedUserImages);
     setUserImages(fetchedUserImages);
   };
 
@@ -65,7 +64,6 @@ const ImagesScreen: React.FC = () => {
   };
 
   useIonViewWillEnter(() => {
-    console.log("fetching images");
     fetchImages();
   }, []);
 
@@ -99,7 +97,6 @@ const ImagesScreen: React.FC = () => {
 
   const handleSegmentChange = (e: CustomEvent): void => {
     setSegmentType(e.detail.value);
-    console.log("Handle Segment type changed to: ", e.detail.value);
 
     if (e.detail.value === "all") {
       fetchAllImages();
@@ -123,7 +120,6 @@ const ImagesScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log("Segment type changed to: ", segmentType);
     if (segmentType === "all") {
       setOnlyUserImages(false);
       setImages(allImages);

@@ -122,11 +122,11 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({ menuLink }) => {
     >
       <IonIcon
         icon={iconToUse()}
-        className={`mr-5 ${shouldDisable(menuLink.slug) ? "text-red-700" : ""}`}
+        className={`mr-2 ${shouldDisable(menuLink.slug) ? "text-red-700" : ""}`}
       />
       <IonLabel className="">
         {menuLink.name}
-        <span className="text-xs font-light font-mono ml-3">
+        <span className="text-xs font-light font-mono ml-2">
           {freeTrial && !denyAccess(currentUser) ? "Free Trial" : ""}
         </span>
       </IonLabel>

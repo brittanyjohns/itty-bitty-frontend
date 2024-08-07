@@ -42,7 +42,6 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
 
   const fetchBoards = async () => {
     if (gridType === "child" && currentAccount) {
-      console.log("Fetching child boards", gridType);
       const fetchedBoards = currentAccount.boards; // Replace with actual fetching logic
       if (fetchedBoards) {
         setChildBoards(fetchedBoards);
@@ -50,12 +49,10 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
         console.error("No child boards found");
       }
     } else if (gridType === "user" && currentUser) {
-      console.log("Fetching user boards", gridType);
       const fetchedBoards = await getBoards();
       setUserBoards(fetchedBoards["boards"]);
       setScenarioBoards(fetchedBoards["scenarios"]);
       setPresetBoards(fetchedBoards["predefined_boards"]);
-      console.log("Set preset boards: ", fetchedBoards["predefined_boards"]);
       setBoards(fetchedBoards["boards"]);
     }
   };
@@ -73,7 +70,6 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
 
   const handleSegmentChange = (event: CustomEvent) => {
     const segmentValue = event.detail.value;
-    console.log("Segment value: ", segmentValue);
     setSegmentType(segmentValue);
     // setPageTitle(segmentValue === "user" ? "Your Boards" : "Preset Boards");
     if (segmentType === "user") {
