@@ -14,6 +14,7 @@ import { personCircleOutline } from "ionicons/icons";
 import { getFilterList, getImageUrl } from "../../data/utils";
 import { useState, useCallback, useEffect } from "react";
 import { useHistory } from "react-router";
+import ColorKey from "../utils/ColorKey";
 const feature1Image = getImageUrl("round_itty_bitty_logo_1", "png");
 interface SideMenuProps {
   filteredLinks: MenuLink[];
@@ -81,6 +82,7 @@ const SideMenu: React.FC<SideMenuProps> = (props) => {
                 <MenuListItem menuLink={menuLink} />
               </div>
             ))}
+          {currentUser && <ColorKey />}
         </div>
       </IonContent>
     </IonMenu>

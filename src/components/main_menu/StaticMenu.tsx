@@ -16,6 +16,8 @@ import { useHistory } from "react-router";
 import { useEffect, useState, useCallback } from "react";
 import { User } from "../../data/users";
 import { ChildAccount } from "../../data/child_accounts";
+import ColorKey from "../utils/ColorKey";
+import { color } from "d3";
 
 interface StaticMenuProps {
   pageTitle?: string;
@@ -76,6 +78,7 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
             <MenuListItem menuLink={link} />
           </IonItem>
         ))}
+        {currentUser && <ColorKey />}
       </IonList>
     </IonContent>
   );
