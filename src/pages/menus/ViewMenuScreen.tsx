@@ -176,30 +176,51 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
             </IonSegment>
           </IonHeader>
           <div className="hidden" ref={menuTab}>
+            <h1 className="text-2xl md:text-3xl font-bold my-6 text-center">
+              {menu?.name}
+            </h1>
+            {menu && menu.status && menu.status !== "complete" && (
+              <IonList className=" text-xl" style={{ marginTop: "20px" }}>
+                <IonItem lines="none" className="">
+                  <p className="text-xl md:text-2xl">
+                    This menu is currently being processed. Please wait a few
+                    seconds and refresh the page.
+                  </p>
+                </IonItem>
+              </IonList>
+            )}
+            {menu && menu.status && menu.status === "complete" && (
+              <div className="w-7/8 md:w-2/3 lg:w-3/4 mx-auto text-center mb-4">
+                <p className="text-xl md:text-2xl">
+                  This menu board is ready for viewing.
+                </p>
+                <p className="text-xl md:text-2xl">
+                  Click the <strong>Board</strong> tab to start speaking.
+                </p>
+              </div>
+            )}
+
             {menu && menu.displayImage && (
               <div className="w-7/8 md:w-2/3 lg:w-3/4 mx-auto">
                 <IonImg src={menu.displayImage} alt={menu.name} />
               </div>
             )}
             {boardError && (
-              <IonList
-                className="text-center text-xl"
-                style={{ marginTop: "20px" }}
-              >
-                <IonItem lines="none" className="text-center">
-                  <IonText color={"danger"} className="text-center text-2xl">
+              <IonList className=" text-xl" style={{ marginTop: "20px" }}>
+                <IonItem lines="none" className="">
+                  <IonText color={"danger"} className=" text-2xl">
                     An error has occured while creating your board. Please try
                     again.
                   </IonText>
                 </IonItem>
                 <IonItem lines="none">
-                  <IonText color={"danger"} className="text-center text-xl">
+                  <IonText color={"danger"} className=" text-xl">
                     If this error persists, please try a different image.
                   </IonText>
                 </IonItem>
               </IonList>
             )}
-            <IonList lines="none" className="text-center">
+            <IonList lines="none" className="">
               {currentUser?.role === "admin" && (
                 <IonCard className="p-4 w-1/2 md:w-1/3 lg:w-1/4 mx-auto">
                   <IonItem>

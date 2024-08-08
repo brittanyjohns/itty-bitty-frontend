@@ -52,11 +52,6 @@ const BoardView: React.FC<BoardViewProps> = ({
   return (
     <>
       <div className="flex justify-center items-center my-3">
-        {currentUser?.admin && board && board?.status && (
-          <IonItem lines="none">
-            <IonText color="success">{`Status: ${board?.status}`}</IonText>
-          </IonItem>
-        )}
         <IonButtons slot="end">
           {board && (
             <IonButton

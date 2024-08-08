@@ -13,6 +13,7 @@ export interface Menu {
   board: Board;
   token_limit?: number;
   can_edit?: boolean;
+  status?: string;
 }
 
 export const getMenus = () => {
