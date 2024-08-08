@@ -30,7 +30,7 @@ import {
 const MenusScreen: React.FC = () => {
   const [menus, setMenus] = useState<Menu[]>([]);
   const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
-  const [segmentType, setSegmentType] = useState("all");
+  const [segmentType, setSegmentType] = useState("preset");
   const [presetMenus, setPresetMenus] = useState<Menu[]>([]);
   const [userMenus, setUserMenus] = useState<Menu[]>([]);
 
