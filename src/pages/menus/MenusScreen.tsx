@@ -72,6 +72,7 @@ const MenusScreen: React.FC = () => {
   };
 
   useEffect(() => {
+    console.log("Fetching menus");
     fetchMenus();
   }, []);
 
@@ -115,7 +116,7 @@ const MenusScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <MenuGrid menus={menus} />
+          {menus && <MenuGrid menus={menus} />}
         </IonContent>
         <Tabs />
       </IonPage>
