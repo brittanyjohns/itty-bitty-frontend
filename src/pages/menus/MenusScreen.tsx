@@ -63,14 +63,16 @@ const MenusScreen: React.FC = () => {
   };
 
   const handleSegmentChange = (e: CustomEvent) => {
-    console.log("Segment change", e.detail.value);
-    setSegmentType(e.detail.value as string);
+    const segmentValue = e.detail.value as string;
+    console.log("Segment changed", segmentValue);
+    setSegmentType(segmentValue);
+    toggleMenus(segmentValue);
   };
 
-  useEffect(() => {
-    console.log("Component mounted or segmentType changed");
-    toggleMenus(segmentType);
-  }, [segmentType]);
+  // useEffect(() => {
+  //   console.log("Component mounted or segmentType changed");
+  //   toggleMenus(segmentType);
+  // }, [segmentType]);
 
   const toggleMenus = (segmentType: string) => {
     console.log("Toggling menus", segmentType);
