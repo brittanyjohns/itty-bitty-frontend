@@ -41,15 +41,25 @@ const MenusScreen: React.FC = () => {
   };
 
   const fetchMenus = async () => {
-    const allMenus = await getMenus();
-    console.log("All Menus", allMenus);
-    if (!allMenus) {
-      console.error("Error fetching menus");
-      return;
+    try {
+      const allMenus = await getMenus();
+      console.log("All Menus", allMenus);
+
+      if (!allMenus || !allMenus["user"] || !allMenus["predefined"]) {
+        console.error("Error fetching menus: Invalid data structure", allMenus);
+        return;
+      }
+
+      setUserMenus(Array.isArray(allMenus["user"]) ? allMenus["user"] : []);
+      setPresetMenus(
+        Array.isArray(allMenus["predefined"]) ? allMenus["predefined"] : []
+      );
+      setMenus(
+        Array.isArray(allMenus["predefined"]) ? allMenus["predefined"] : []
+      );
+    } catch (error) {
+      console.error("Error fetching menus", error);
     }
-    setUserMenus(allMenus["user"]);
-    setPresetMenus(allMenus["predefined"]);
-    setMenus(allMenus["predefined"]);
   };
 
   const handleSegmentChange = (e: CustomEvent) => {
