@@ -177,7 +177,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
           </IonHeader>
           <div className="hidden" ref={menuTab}>
             {menu && menu.displayImage && (
-              <div className="w-7/8 md:w-1/3 lg:w-1/4 mx-auto">
+              <div className="w-7/8 md:w-2/3 lg:w-3/4 mx-auto">
                 <IonImg src={menu.displayImage} alt={menu.name} />
               </div>
             )}
@@ -186,7 +186,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
                 className="text-center text-xl"
                 style={{ marginTop: "20px" }}
               >
-                <IonItem lines="none">
+                <IonItem lines="none" className="text-center">
                   <IonText color={"danger"} className="text-center text-2xl">
                     An error has occured while creating your board. Please try
                     again.
@@ -201,40 +201,39 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
             )}
             <IonList lines="none" className="text-center">
               {currentUser?.role === "admin" && (
-                <IonItem>
-                  <IonLabel position="stacked">Description</IonLabel>
-                  <IonText>{menu?.description}</IonText>
-                </IonItem>
+                <IonCard className="p-4 w-1/2 md:w-1/3 lg:w-1/4 mx-auto">
+                  <IonItem>
+                    <IonLabel position="stacked">Description</IonLabel>
+                    <IonText>{menu?.description}</IonText>
+                  </IonItem>
+                  <IonText>Current Cost: {menu?.board?.cost}</IonText>
+                  <IonInput
+                    type="number"
+                    value={menu?.token_limit}
+                    label="Token Limit"
+                    labelPlacement="fixed"
+                    onIonChange={handleLimitChange}
+                  />
+                  <IonButton onClick={handleUpdateMenu}>Update</IonButton>
+                  {menu?.token_limit &&
+                    menu?.board?.cost &&
+                    menu?.board?.cost - menu?.token_limit < 0 && (
+                      <IonButton
+                        disabled={menu?.token_limit - menu?.board?.cost < 0}
+                        onClick={handleRerun}
+                      >
+                        Rerun
+                      </IonButton>
+                    )}
+                </IonCard>
               )}
-
-              <IonCard className="p-4 w-1/2 md:w-1/3 lg:w-1/4 mx-auto">
-                <IonText>Current Cost: {menu?.board?.cost}</IonText>
-                <IonInput
-                  type="number"
-                  value={menu?.token_limit}
-                  label="Token Limit"
-                  labelPlacement="fixed"
-                  onIonChange={handleLimitChange}
-                />
-                <IonButton onClick={handleUpdateMenu}>Update</IonButton>
-                {menu?.token_limit &&
-                  menu?.board?.cost &&
-                  menu?.board?.cost - menu?.token_limit < 0 && (
-                    <IonButton
-                      disabled={menu?.token_limit - menu?.board?.cost < 0}
-                      onClick={handleRerun}
-                    >
-                      Rerun
-                    </IonButton>
-                  )}
-              </IonCard>
             </IonList>
           </div>
           <div className="hidden" ref={boardTab}>
             {board && (
               <BoardView
                 board={board}
-                showEdit={true}
+                showEdit={menu?.can_edit || false}
                 currentUserTeams={currentUserTeams}
                 setShowIcon={setShowIcon}
                 showShare={false} // Temporarily set to false
