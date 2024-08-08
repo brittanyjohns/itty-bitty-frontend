@@ -39,7 +39,7 @@ const ViewBoard: React.FC<any> = () => {
   const params = useParams<{ id: string }>();
   const inputRef = useRef<HTMLIonInputElement>(null);
   const [showIcon, setShowIcon] = useState(false);
-  const [showLoading, setShowLoading] = useState(true);
+  const [showLoading, setShowLoading] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [currentUserTeams, setCurrentUserTeams] = useState<Team[]>();

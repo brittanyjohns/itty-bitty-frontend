@@ -211,9 +211,12 @@ const ViewChildAccountScreen: React.FC = () => {
             </IonSegment>
           )}
           {segmentType === "childAccountTab" && (
-            <div>
+            <div className="mt-4">
+              <h1 className="text-2xl text-center">
+                {childAccount?.name || childAccount?.username}'s Account
+              </h1>
               {childAccount && (
-                <div className="w-full md:w-1/2 mx-auto">
+                <div className="w-full md:w-5/6 mx-auto">
                   <IonList>
                     <IonItem className="flex justify-between">
                       <IonLabel className="text-2xl"> Name</IonLabel>
@@ -224,20 +227,26 @@ const ViewChildAccountScreen: React.FC = () => {
                       <IonText>{childAccount.username}</IonText>
                     </IonItem>
                     <IonItem>
-                      <IonLabel> User ID</IonLabel>
-                      <IonText>{childAccount.user_id}</IonText>
-                    </IonItem>
-                    <IonItem>
                       <IonLabel># of Boards</IonLabel>
                       <IonText>{childAccount.boards?.length}</IonText>
                     </IonItem>
-                    <IonItem className="mt-4" lines="none">
+                    <IonItem lines="none" className="mt-4">
+                      <h1 className="text-xl font-bold">
+                        Select which boards this account can access
+                      </h1>
+                    </IonItem>
+                    <ChildBoardDropdown
+                      childAccount={childAccount}
+                      boards={userBoards}
+                      onSuccess={fetchChildAccount}
+                    />
+                    {/* <IonItem className="mt-4" lines="none">
                       <ChildBoardDropdown
                         childAccount={childAccount}
                         boards={userBoards}
                         onSuccess={fetchChildAccount}
                       />
-                    </IonItem>
+                    </IonItem> */}
                   </IonList>
                 </div>
               )}
