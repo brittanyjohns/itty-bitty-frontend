@@ -19,34 +19,7 @@ const SubscriptionList: React.FC<SubscriptionListProps> = ({
   return (
     <div className="mx-auto my-8 p-2">
       <h1 className="text-3xl text-center font-bold my-6">Your Current Plan</h1>
-      <IonCard className="w-full md:w-1/2 mx-auto">
-        <div className="p-4">
-          <div className="mb-2">
-            <span className="font-semibold">Plan Type:</span>{" "}
-            {currentUser?.plan_type}
-          </div>
-          <div className="mb-2">
-            <span className="font-semibold">Plan Status:</span>{" "}
-            {currentUser?.plan_status}
-          </div>
-          <div className="mb-2">
-            <span className="font-semibold">Plan Expires At:</span>{" "}
-            {currentUser?.plan_expires_at}
-          </div>
-          <div className="mb-2">
-            <span className="font-semibold">Free Trial?:</span>{" "}
-            {currentUser?.free_trial ? "Yes" : "No"}
-          </div>
-          <div className={`mb-2 ${currentUser?.free_trial ? "" : "hidden"}`}>
-            <span className="font-semibold">Free days left:</span>{" "}
-            {currentUser?.trial_days_left}
-          </div>
-          <div className="mb-2">
-            <span className="font-semibold">Tokens Remaining:</span>{" "}
-            {currentUser?.tokens}
-          </div>
-        </div>
-      </IonCard>
+
       <h1 className="text-3xl text-center font-bold my-6">
         Your Subscriptions
       </h1>

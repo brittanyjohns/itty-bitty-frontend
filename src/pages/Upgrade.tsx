@@ -13,9 +13,11 @@ import MainMenu from "../components/main_menu/MainMenu";
 import Tabs from "../components/utils/Tabs";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import PricingTable from "../components/utils/PricingTable";
+import StaticMenu from "../components/main_menu/StaticMenu";
+import MainHeader from "./MainHeader";
 
 const Upgrade: React.FC = () => {
-  const { isWideScreen, currentUser } = useCurrentUser();
+  const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
@@ -25,18 +27,25 @@ const Upgrade: React.FC = () => {
 
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="Upgrade"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Upgrade"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+
       <IonPage id="main-content">
-        {!isWideScreen && (
-          <IonHeader className="bg-inherit shadow-none">
-            <IonToolbar>
-              <IonButtons slot="start">
-                <IonMenuButton></IonMenuButton>
-              </IonButtons>
-              <IonTitle>Upgrade</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-        )}
+        <MainHeader
+          pageTitle="Upgrade"
+          isWideScreen={isWideScreen}
+          showMenuButton={!isWideScreen}
+        />
         <IonContent>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>

@@ -1,26 +1,20 @@
 import {
-  IonBackButton,
   IonButton,
-  IonButtons,
+  IonCard,
   IonContent,
-  IonHeader,
   IonLabel,
-  IonMenuButton,
   IonPage,
   IonRefresher,
   IonRefresherContent,
   IonSpinner,
-  IonTitle,
-  IonToolbar,
   useIonViewWillEnter,
 } from "@ionic/react";
+import "../components/main.css";
 import MainMenu from "../components/main_menu/MainMenu";
 import Tabs from "../components/utils/Tabs";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { useState, useEffect } from "react";
-import SubscriptionList from "../components/stripe/SubscriptionList";
 import { Subscription, getSubscriptions } from "../data/subscriptions";
-import AccountLink from "../components/stripe/AccountLink";
 import WordNetworkGraph from "../components/utils/WordNetworkGraph";
 import {
   WordEvent,
@@ -121,26 +115,70 @@ const Dashboard: React.FC = () => {
                 </div>
               </>
             )}
-            {/* {(currentUser && currentUser?.admin) ||
-              (currentUser && currentUser?.plan_type !== "free" && (
-                <>
-                  <h1 className="text-2xl">Dashboard</h1>
 
-                  <SubscriptionList subscriptions={subscriptions} />
-                  <AccountLink />
-                </>
-              ))} */}
             <AccountContent
               subscriptions={subscriptions}
               currentUser={currentUser}
+              isVisible={currentUser?.plan_type !== "free"}
             />
             <div className="ion-padding flex flex-col">
               <p className="text-md mb-3 font-bold">
                 This is your dashboard. Here you can see user activity, word
                 usage & more.
               </p>
+              {currentUser && currentUser?.plan_type === "free" && (
+                <div className="w-full md:w-1/2 mx-auto p-3">
+                  <p className="text-md mb-3 font-bold">
+                    To access more features, please upgrade your plan.
+                  </p>
+                  <IonButton
+                    routerLink="/account"
+                    color="success"
+                    expand="block"
+                    size="large"
+                  >
+                    Upgrade Plan
+                  </IonButton>
+                </div>
+              )}
 
               <hr></hr>
+              {loading && <IonSpinner />}
+              {currentUser && (
+                <IonCard className="w-full md:w-1/2 mx-auto">
+                  <div className="p-4">
+                    <div className="mb-2">
+                      <span className="font-semibold">Plan Type:</span>{" "}
+                      {currentUser?.plan_type}
+                    </div>
+                    <div className="mb-2">
+                      <span className="font-semibold">Plan Status:</span>{" "}
+                      {currentUser?.plan_status}
+                    </div>
+                    <div className="mb-2">
+                      <span className="font-semibold">Plan Expires At:</span>{" "}
+                      {currentUser?.plan_expires_at}
+                    </div>
+                    <div className="mb-2">
+                      <span className="font-semibold">Free Trial?:</span>{" "}
+                      {currentUser?.free_trial ? "Yes" : "No"}
+                    </div>
+                    <div
+                      className={`mb-2 ${
+                        currentUser?.free_trial ? "" : "hidden"
+                      }`}
+                    >
+                      <span className="font-semibold">Free days left:</span>{" "}
+                      {currentUser?.trial_days_left}
+                    </div>
+                    <div className="mb-2">
+                      <span className="font-semibold">Tokens Remaining:</span>{" "}
+                      {currentUser?.tokens}
+                    </div>
+                  </div>
+                </IonCard>
+              )}
+
               {currentUser && (
                 <div className="ion-padding border">
                   <IonLabel className="text-2xl text-gray-500">
