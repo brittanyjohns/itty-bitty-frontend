@@ -43,7 +43,11 @@ const UserForm: React.FC<UsersFormProps> = ({
       console.error("No user id found");
       return;
     }
-    const userToSave = { name: name || "", plan_type: planType || "free" };
+    const userToSave = {
+      ...user,
+      name: name || "",
+      plan_type: planType || "free",
+    };
     const updatedUser = await updateUser(userToSave, userId);
     console.log("updatedUser", updatedUser);
   };
