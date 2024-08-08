@@ -8,7 +8,7 @@ export interface NewUser {
 export interface User {
   id?: number;
   uuid?: string;
-  email?: string;
+  email: string;
   password?: string;
   name?: string;
   tokens?: number;

@@ -68,10 +68,9 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
     },
   ];
 
-  const [email, setEmail] = useState("");
   const [toastMessage, setToastMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-
+  const [email, setEmail] = useState("");
   const handleSubmitEmail = () => {
     console.log("Email submitted: ", email);
     const betaRequest: BetaRequest = { email, ip: ipAddr }; // Create a betaRequest object

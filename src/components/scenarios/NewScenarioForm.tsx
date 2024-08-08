@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  IonContent,
-  IonPage,
-  IonLabel,
   IonSelect,
   IonSelectOption,
   IonTextarea,

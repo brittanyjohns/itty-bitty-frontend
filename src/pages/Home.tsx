@@ -18,6 +18,8 @@ import Dashboard from "./Dashboard";
 import SubscriptionList from "../components/stripe/SubscriptionList";
 import { Subscription, getSubscriptions } from "../data/subscriptions";
 import AccountLink from "../components/stripe/AccountLink";
+import UserHome from "../components/utils/UserHome";
+import { BetaRequest, createBetaRequest } from "../data/beta_requests";
 
 const Home: React.FC = () => {
   const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
@@ -98,6 +100,12 @@ const Home: React.FC = () => {
               <AccountLink />
             </>
           )} */}
+          {currentUser && (
+            <UserHome
+              userName={currentUser?.name || currentUser.email}
+              ipAddr={ip}
+            />
+          )}
           {!currentUser && <MainPageContent ipAddr={ip} />}
 
           {currentAccount && (
