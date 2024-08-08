@@ -26,7 +26,7 @@ import {
   personOutline,
   pizzaOutline,
 } from "ionicons/icons";
-import { set } from "d3";
+
 const MenusScreen: React.FC = () => {
   const [menus, setMenus] = useState<Menu[]>([]);
   const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
@@ -35,54 +35,56 @@ const MenusScreen: React.FC = () => {
   const [userMenus, setUserMenus] = useState<Menu[]>([]);
 
   const refresh = (e: CustomEvent) => {
+    console.log("Refresh triggered");
     setTimeout(() => {
+      console.log("Refresh completed");
       e.detail.complete();
     }, 3000);
   };
 
   const fetchMenus = async () => {
+    console.log("Fetching menus"); // Log before fetching
     try {
       const allMenus = await getMenus();
       console.log("All Menus", allMenus);
-
-      if (!allMenus || !allMenus["user"] || !allMenus["predefined"]) {
+      if (!allMenus || !allMenus.user || !allMenus.predefined) {
         console.error("Error fetching menus: Invalid data structure", allMenus);
         return;
       }
 
-      setUserMenus(Array.isArray(allMenus["user"]) ? allMenus["user"] : []);
+      setUserMenus(Array.isArray(allMenus.user) ? allMenus.user : []);
       setPresetMenus(
-        Array.isArray(allMenus["predefined"]) ? allMenus["predefined"] : []
+        Array.isArray(allMenus.predefined) ? allMenus.predefined : []
       );
-      setMenus(
-        Array.isArray(allMenus["predefined"]) ? allMenus["predefined"] : []
-      );
+      setMenus(Array.isArray(allMenus.predefined) ? allMenus.predefined : []);
     } catch (error) {
       console.error("Error fetching menus", error);
     }
   };
 
   const handleSegmentChange = (e: CustomEvent) => {
-    console.log(e.detail.value);
+    console.log("Segment change", e.detail.value);
     setSegmentType(e.detail.value as string);
   };
 
   useEffect(() => {
+    console.log("Component mounted or segmentType changed");
     toggleMenus(segmentType);
   }, [segmentType]);
 
   const toggleMenus = (segmentType: string) => {
     console.log("Toggling menus", segmentType);
-    if (segmentType === "preset") {
+    if (segmentType === "preset" && Array.isArray(presetMenus)) {
       setMenus(presetMenus);
-    }
-    if (segmentType === "user") {
+    } else if (segmentType === "user" && Array.isArray(userMenus)) {
       setMenus(userMenus);
+    } else {
+      console.error("Invalid segmentType or menus are not arrays");
     }
   };
 
   useEffect(() => {
-    console.log("Fetching menus");
+    console.log("Fetching menus on component mount");
     fetchMenus();
   }, []);
 
@@ -126,7 +128,7 @@ const MenusScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          {menus && <MenuGrid menus={menus} />}
+          {menus && Array.isArray(menus) && <MenuGrid menus={menus} />}
         </IonContent>
         <Tabs />
       </IonPage>
