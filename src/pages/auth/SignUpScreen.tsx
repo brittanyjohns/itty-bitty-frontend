@@ -72,13 +72,13 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
         localStorage.setItem("token", response.token); // Store the token
         if (plan === "free") {
           // history.push("/predictive");
-          window.location.href = "/predictive";
+          window.location.href = "/welcome";
         } else if (plan === "pro") {
           // history.push("/upgrade");
-          window.location.href = "/upgrade";
+          window.location.href = "/welcome";
         } else {
           // history.push("/dashboard");
-          window.location.href = "/dashboard";
+          window.location.href = "/welcome";
         }
       }
     } catch (error) {

@@ -1,22 +1,26 @@
 import {
-  IonButtons,
   IonContent,
-  IonHeader,
-  IonMenuButton,
   IonPage,
   IonRefresher,
   IonRefresherContent,
-  IonTitle,
-  IonToolbar,
 } from "@ionic/react";
 import MainMenu from "../components/main_menu/MainMenu";
-import Tabs from "../components/utils/Tabs";
 import { useCurrentUser } from "../hooks/useCurrentUser";
-import { getDemoUrl, getImageUrl } from "../data/utils";
 import MainHeader from "./MainHeader";
 import StaticMenu from "../components/main_menu/StaticMenu";
+import UserHome from "../components/utils/UserHome";
+import { useEffect, useState } from "react";
 const Demo: React.FC = () => {
   const { isWideScreen, currentAccount, currentUser } = useCurrentUser();
+  const [ip, setIP] = useState("");
+
+  useEffect(() => {
+    fetch("https://api.ipify.org?format=json")
+      .then((res) => res.json())
+      .then((data) => {
+        setIP(data.ip);
+      });
+  }, []);
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
@@ -27,13 +31,13 @@ const Demo: React.FC = () => {
   return (
     <>
       <MainMenu
-        pageTitle="Dashboard"
+        pageTitle="Welcome"
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
       />
       <StaticMenu
-        pageTitle="Dashboard"
+        pageTitle="Welcome"
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
@@ -41,7 +45,7 @@ const Demo: React.FC = () => {
 
       <IonPage id="main-content">
         <MainHeader
-          pageTitle="Dashboard"
+          pageTitle="Welcome"
           isWideScreen={isWideScreen}
           showMenuButton={!isWideScreen}
         />
@@ -50,20 +54,14 @@ const Demo: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <div>
-            <h1 className="text-center text-2xl mt-10">
-              Scenrios Boards Demo +
-            </h1>
-            <p className="text-center mt-5">
-              Build a custom communication board based on any real life scenario
-              & more!
-            </p>
-            <div className="p-4 font-mono">
-              <video
-                className="w-full md:w-3/4 mx-auto"
-                controls
-                src="https://itty-bitty-boards-development.s3.amazonaws.com/demo071424.mp4"
-              ></video>
-            </div>
+            {currentUser && (
+              <UserHome
+                userName={currentUser?.name || currentUser.email}
+                ipAddr={ip}
+                trialDaysLeft={currentUser?.trial_days_left}
+                freeAccount={currentUser?.plan_type === "free"}
+              />
+            )}
           </div>
         </IonContent>
       </IonPage>

@@ -132,7 +132,7 @@ const Dashboard: React.FC = () => {
                     To access more features, please upgrade your plan.
                   </p>
                   <IonButton
-                    routerLink="/account"
+                    routerLink="/upgrade"
                     color="success"
                     expand="block"
                     size="large"

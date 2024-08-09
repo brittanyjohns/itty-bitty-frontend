@@ -84,6 +84,7 @@ import BoardGroupsScreen from "./pages/board_groups/BoardGroupsScreen";
 import NewBoardGroup from "./pages/board_groups/NewBoardGroup";
 import ViewBoardGroup from "./pages/board_groups/ViewBoardGroup";
 import EditBoardGroupScreen from "./pages/board_groups/EditBoardGroupScreen";
+import Welcome from "./pages/Welcome";
 
 const UserRoutes: React.FC = () => (
   <UserProvider>
@@ -95,6 +96,7 @@ const UserRoutes: React.FC = () => (
         <Route path="/home" exact={true}>
           <Home />
         </Route>
+        <Route path="/welcome" component={Welcome} exact={true} />
         <Route path="/sign-in" component={SignInPage} exact={true} />
         {/* <Route path="/users/password/edit/:reset_password_token" component={ResetPasswordScreen} exact={true} /> */}
         <Route

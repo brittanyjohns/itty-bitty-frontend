@@ -87,9 +87,19 @@ const Home: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <div className="w-full">
+          {/* <div className="w-full">
             {currentUser && currentUser?.plan_type === "free" && (
               <PricingTable showHeader={false} />
+            )}
+          </div> */}
+          <div>
+            {currentUser && (
+              <UserHome
+                userName={currentUser?.name || currentUser.email}
+                ipAddr={ip}
+                trialDaysLeft={currentUser?.trial_days_left}
+                freeAccount={currentUser?.plan_type === "free"}
+              />
             )}
           </div>
           {/* {currentUser && currentUser?.plan_type !== "free" && (
@@ -100,12 +110,12 @@ const Home: React.FC = () => {
               <AccountLink />
             </>
           )} */}
-          {currentUser && (
+          {/* {currentUser && (
             <UserHome
               userName={currentUser?.name || currentUser.email}
               ipAddr={ip}
             />
-          )}
+          )} */}
           {!currentUser && <MainPageContent ipAddr={ip} />}
 
           {currentAccount && (

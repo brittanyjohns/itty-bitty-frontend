@@ -30,7 +30,7 @@ const SignInScreen: React.FC = () => {
       if (response && response.token) {
         localStorage.setItem("token", response.token);
         setCurrentUser(response.user);
-        history.push("/boards");
+        history.push("/welcome");
         window.location.reload();
       } else if (response && response.error) {
         setErrorMessage(response.error);

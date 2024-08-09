@@ -12,14 +12,20 @@ import {
   IonToast,
 } from "@ionic/react";
 import { Board } from "../../data/boards";
-import React from "react";
+import React, { useEffect } from "react";
 import { denyAccess } from "../../data/users";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { getSampleVoices } from "../../data/images";
 interface BoardFormProps {
   board: Board;
   setBoard: (board: Board) => void;
   onGridSizeChange?: any;
   onSubmit?: any;
+}
+interface SampleVoiceResponse {
+  id: number;
+  label: string;
+  url: string;
 }
 const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   const [gridSize, setGridSize] = React.useState<number>(
@@ -31,6 +37,20 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   const [showLoading, setShowLoading] = React.useState(false);
   const { currentUser } = useCurrentUser();
 
+  const [sampleVoices, setSampleVoices] = React.useState<SampleVoiceResponse[]>(
+    []
+  );
+
+  const fetchSampleVoices = async () => {
+    const voices = await getSampleVoices();
+    console.log("Voices", voices);
+    setSampleVoices(voices);
+  };
+
+  useEffect(() => {
+    fetchSampleVoices();
+  }, []);
+
   const handleGridSizeChange = (event: CustomEvent) => {
     setGridSize(event.detail.value);
     handleAfterAction();
@@ -41,7 +61,6 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
       console.error("No board found");
       return;
     }
-    console.log("After action", gridSize);
     const updatedBoard = { ...board, number_of_columns: gridSize };
     setBoard(updatedBoard);
   };
@@ -67,12 +86,27 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
     22, 23, 24,
   ];
 
-  const voiceOptions = ["alloy", "shimmer", "onyx", "fable", "nova"];
+  const voiceOptions = ["alloy", "shimmer", "onyx", "fable", "nova", "echo"];
 
   const handleVoiceChange = (event: CustomEvent) => {
-    setVoice(event.detail.value);
+    const voice = event.detail.value;
+    setVoice(voice);
+    playSampleVoice(voice);
     const updateBoard = { ...board, voice: event.detail.value };
     setBoard(updateBoard);
+  };
+
+  const playSampleVoice = (voice: string) => {
+    const file = sampleVoices.find((v: SampleVoiceResponse) =>
+      v.label.includes(voice)
+    );
+    if (!file) {
+      console.error("No voice file found");
+      return;
+    }
+    console.log("Playing voice", file);
+    const audio = new Audio(file.url);
+    audio.play();
   };
 
   return (

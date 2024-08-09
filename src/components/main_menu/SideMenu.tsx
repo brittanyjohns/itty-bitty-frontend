@@ -59,7 +59,7 @@ const SideMenu: React.FC<SideMenuProps> = (props) => {
           {currentUser && (
             <IonItem
               slot="header"
-              routerLink="/dashboard"
+              routerLink="/welcome"
               detail={true}
               className=""
               lines="none"
