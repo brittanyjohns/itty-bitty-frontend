@@ -37,7 +37,7 @@ const SideMenu: React.FC<SideMenuProps> = (props) => {
   }, [filterList]);
 
   const goToDashboard = () => {
-    history.push("/dashboard");
+    history.push("/home");
   };
   const feature1Image = getImageUrl("round_itty_bitty_logo_1", "png");
 
@@ -59,7 +59,7 @@ const SideMenu: React.FC<SideMenuProps> = (props) => {
           {currentUser && (
             <IonItem
               slot="header"
-              routerLink="/welcome"
+              routerLink="/settings"
               detail={true}
               className=""
               lines="none"

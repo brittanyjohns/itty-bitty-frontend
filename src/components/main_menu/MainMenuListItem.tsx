@@ -115,7 +115,7 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({ menuLink }) => {
     <IonItem
       key={menuLink.id}
       onClick={handleClick(menuLink.slug, menuLink.endpoint)}
-      className={`text-sm md:text-md lg:text-lg ${classNameForActive()} w-full`}
+      className={`text-xs md:text-sm lg:text-md ${classNameForActive()} w-full`}
       lines="none"
       detail={false}
       ref={itemRef}

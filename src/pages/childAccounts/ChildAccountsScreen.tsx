@@ -1,6 +1,7 @@
 import {
   IonButton,
   IonButtons,
+  IonCard,
   IonContent,
   IonHeader,
   IonIcon,
@@ -53,13 +54,13 @@ const ChildAccountsScreen: React.FC = () => {
   return (
     <>
       <MainMenu
-        pageTitle="Accounts"
+        pageTitle=" Child Accounts"
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
       />
       <StaticMenu
-        pageTitle="Accounts"
+        pageTitle=" Child Accounts"
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
@@ -67,7 +68,7 @@ const ChildAccountsScreen: React.FC = () => {
 
       <IonPage id="main-content">
         <MainHeader
-          pageTitle="Accounts"
+          pageTitle=" Child Accounts"
           isWideScreen={isWideScreen}
           endLink="/child-accounts/new"
           showMenuButton={!isWideScreen}
@@ -77,6 +78,54 @@ const ChildAccountsScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
+          <div className="p-1 w-full md:w-3/4 mx-auto">
+            {currentUser && childAccounts?.length === 0 && (
+              <div className="p-1 w-full md:w-3/4 mx-auto border">
+                <h2 className="text-2xl font-semibold text-center">
+                  Get Started
+                </h2>
+                <p className="text-lg md:text-xl font-bold mt-5 text-center">
+                  Manage your child accounts here.
+                </p>
+                <p className="ml-3 my-5 text-md md:text-lg flex items-center">
+                  <IonIcon icon={addCircleOutline} className="mr-2" />
+                  Create a new child account.
+                </p>
+                <p className="ml-3 my-5 text-md md:text-lg flex items-center">
+                  <IonIcon icon={addCircleOutline} className="mr-2" />
+                  Choose a username & password.
+                </p>
+                <p className="ml-3 my-5 text-md md:text-lg flex items-center">
+                  <IonIcon icon={addCircleOutline} className="mr-2" />
+                  Assign boards and track progress.
+                </p>
+                <p className="ml-3 my-5 text-md md:text-lg flex items-center">
+                  <IonIcon icon={addCircleOutline} className="mr-2" />
+                  Set up your child's account in minutes.
+                </p>
+              </div>
+            )}
+            <div className="mt-5">
+              <p className="text-sm md:text-md mt-5 text-center">
+                Changes made to shared boards will be reflected in the child
+                account in real-time.
+              </p>
+              {currentUser && childAccounts?.length === 0 && (
+                <div className="mt-5 text-center">
+                  <p>No Accounts found</p>
+                  <IonButton
+                    fill="clear"
+                    expand="block"
+                    routerLink="/child-accounts/new"
+                  >
+                    <IonIcon icon={addCircleOutline} slot="start" />
+                    Create New Child Account
+                  </IonButton>
+                </div>
+              )}
+            </div>
+          </div>
+
           <ChildAccountList childAccounts={childAccounts} />
         </IonContent>
         {currentUser && <Tabs />}

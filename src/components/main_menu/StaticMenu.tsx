@@ -12,12 +12,10 @@ import { personCircleOutline } from "ionicons/icons";
 import { MenuLink } from "../../data/menu";
 import MenuListItem from "./MainMenuListItem";
 import { getFilterList, getImageUrl } from "../../data/utils";
-import { useHistory } from "react-router";
 import { useEffect, useState, useCallback } from "react";
 import { User } from "../../data/users";
 import { ChildAccount } from "../../data/child_accounts";
 import ColorKey from "../utils/ColorKey";
-import { color } from "d3";
 
 interface StaticMenuProps {
   pageTitle?: string;
@@ -58,7 +56,7 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
         {currentUser && (
           <IonItem
             slot="header"
-            routerLink="/welcome"
+            routerLink="/dashboard"
             detail={true}
             className=""
             lines="none"

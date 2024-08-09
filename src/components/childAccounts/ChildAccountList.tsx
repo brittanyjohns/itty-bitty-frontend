@@ -38,16 +38,6 @@ const ChildAccountList = ({ childAccounts }: ChildAccountListProps) => {
               </div>
             </IonItem>
           ))}
-        {currentUser && childAccounts?.length === 0 && (
-          <IonCard className="p-4 w-full md:w-1/2 mx-auto">
-            <div className="text-center">
-              <p>No Accounts found</p>
-              <IonButton routerLink="/child-accounts/new" color="primary">
-                Create a new childAccount
-              </IonButton>
-            </div>
-          </IonCard>
-        )}
       </IonList>
     </div>
   );

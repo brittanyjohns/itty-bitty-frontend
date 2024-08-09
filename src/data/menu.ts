@@ -59,13 +59,13 @@ const menuLinks: MenuLink[] = [
     id: 21212121,
   },
 
-  {
-    endpoint: "/dashboard",
-    name: "Dashboard",
-    slug: "dashboard",
-    icon: speedometerOutline,
-    id: 333333,
-  },
+  // {
+  //   endpoint: "/dashboard",
+  //   name: "Dashboard",
+  //   slug: "dashboard",
+  //   icon: speedometerOutline,
+  //   id: 333333,
+  // },
   {
     endpoint: "/board-groups",
     name: "Groups",
@@ -126,13 +126,13 @@ const menuLinks: MenuLink[] = [
     icon: peopleCircleOutline,
     id: 12654654,
   },
-  {
-    endpoint: "/settings",
-    name: "Settings",
-    slug: "settings",
-    icon: settingsOutline,
-    id: 9997,
-  },
+  // {
+  //   endpoint: "/settings",
+  //   name: "Settings",
+  //   slug: "settings",
+  //   icon: settingsOutline,
+  //   id: 9997,
+  // },
   {
     endpoint: "/predictive",
     name: "Predictive",

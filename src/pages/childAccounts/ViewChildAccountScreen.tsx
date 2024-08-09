@@ -231,7 +231,7 @@ const ViewChildAccountScreen: React.FC = () => {
                       <IonText>{childAccount.boards?.length}</IonText>
                     </IonItem>
                     <IonItem lines="none" className="mt-4">
-                      <h1 className="text-xl font-bold">
+                      <h1 className="text-sm md:text-md text-center">
                         Select which boards this account can access
                       </h1>
                     </IonItem>
@@ -240,13 +240,6 @@ const ViewChildAccountScreen: React.FC = () => {
                       boards={userBoards}
                       onSuccess={fetchChildAccount}
                     />
-                    {/* <IonItem className="mt-4" lines="none">
-                      <ChildBoardDropdown
-                        childAccount={childAccount}
-                        boards={userBoards}
-                        onSuccess={fetchChildAccount}
-                      />
-                    </IonItem> */}
                   </IonList>
                 </div>
               )}
