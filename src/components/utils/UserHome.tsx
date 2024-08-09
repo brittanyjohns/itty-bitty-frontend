@@ -61,7 +61,7 @@ const UserHome: React.FC<UserHomeProps> = ({
         </section>
       )}
 
-      <div className="p-3 w-full md:w-2/3 mx-auto">
+      <div className="p-1 w-full md:w-3/4 mx-auto">
         <section className="mb-2">
           <h4 className="text-2xl font-semibold mb-2">Getting Started</h4>
 
@@ -105,7 +105,7 @@ const UserHome: React.FC<UserHomeProps> = ({
               </ul>
             </li>
           </ol>
-          <div className="mt-2 font-md border p-4">
+          <div className="mt-2 font-md border p-2">
             <h1 className="text-md font-bold mt-2 text-left ml-2">
               What's a token?
             </h1>
@@ -126,7 +126,7 @@ const UserHome: React.FC<UserHomeProps> = ({
           </div>
         </section>
 
-        <section className="mb-4 p-2 ">
+        <section className="mb-4 p-1 ">
           <h4 className="text-2xl font-semibold mb-2">Features Overview</h4>
           <ul className="list-disc ">
             <li className="mb-2 ml-3">
@@ -198,7 +198,7 @@ const UserHome: React.FC<UserHomeProps> = ({
           </p>
         </section>
 
-        <section className="mb-2 p-2">
+        <section className="mb-6 p-2">
           <h4 className="text-lg font-semibold mb-2">Need Help?</h4>
           <p className="text-md text-left">
             If you have any questions or need assistance, please reach out to
