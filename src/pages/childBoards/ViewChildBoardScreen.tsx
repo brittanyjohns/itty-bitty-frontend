@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { ChildBoard, getChildBoard } from "../../data/child_boards";
+import {
+  ChildBoard,
+  getChildBoard,
+  REFRESH_RATE,
+} from "../../data/child_boards";
 import {
   IonButton,
   IonButtons,
@@ -41,7 +45,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   const [showIcon, setShowIcon] = useState(false);
   const [showLoading, setShowLoading] = useState(true);
   const [imageCount, setImageCount] = useState(0);
-  const { currentUser } = useCurrentUser();
+  const { currentUser, currentAccount } = useCurrentUser();
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [previousLabel, setPreviousLabel] = useState<string | undefined>(
     undefined
@@ -67,19 +71,6 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
       setNumOfColumns(board.number_of_columns);
     }
   };
-
-  useEffect(() => {
-    // Fetch board data on component mount
-    fetchBoard();
-
-    // Set up the interval to fetch board data every 30 seconds
-    const intervalId = setInterval(() => {
-      fetchBoard();
-    }, 30000); // 30000 milliseconds = 30 seconds
-
-    // Clear the interval when the component is unmounted
-    return () => clearInterval(intervalId);
-  }, []);
 
   const handleImageClick = async (image: Image) => {
     if (currentUser?.settings?.disable_audit_logging) {
@@ -114,12 +105,15 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
     inputRef.current?.value && clearInput();
   });
 
-  useIonViewWillEnter(() => {
-    async function fetchData() {
-      await fetchBoard();
-    }
-    fetchData();
-  }, []);
+  useEffect(() => {
+    fetchBoard();
+
+    const intervalId = setInterval(() => {
+      fetchBoard();
+      console.log("Fetching child boards...");
+    }, REFRESH_RATE); // Fetch child boards every 45 seconds
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
+  }, [currentAccount]);
 
   const [audioList, setAudioList] = useState<string[]>([]);
 

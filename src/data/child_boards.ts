@@ -1,6 +1,6 @@
 import { Image } from "./images";
 import { BASE_URL, userHeaders } from "./constants";
-
+export const REFRESH_RATE = 45000;
 export interface ChildBoard {
   id?: string;
   name: string;
