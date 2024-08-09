@@ -159,7 +159,7 @@ const UserHome: React.FC<UserHomeProps> = ({
               <li className="text-sm mt-2 text-left">
                 We offer a limited number of free tokens to get you started.
               </li>
-              <li className="text-sm text-left">
+              <li className="text-sm mt-2 text-left">
                 When you subscribe, you'll receive additional tokens each month.
               </li>
             </ul>
