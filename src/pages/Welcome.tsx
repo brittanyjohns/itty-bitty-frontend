@@ -57,7 +57,6 @@ const Demo: React.FC = () => {
             {currentUser && (
               <UserHome
                 userName={currentUser?.name || currentUser.email}
-                ipAddr={ip}
                 trialDaysLeft={currentUser?.trial_days_left}
                 freeAccount={currentUser?.plan_type === "free"}
                 tokens={currentUser?.tokens ? currentUser.tokens : 0}
