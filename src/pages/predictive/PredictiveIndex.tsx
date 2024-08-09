@@ -93,10 +93,7 @@ const PredictiveImagesScreen: React.FC = () => {
       return;
     }
     handleUpdateAudioList(audioSrc);
-    // setAudioList([...audioList, audioSrc as string]);
-    // const audio = new Audio(audioSrc);
-    // audio.play();
-    console.log("Playing audio: ", audioSrc);
+
     const audio = new Audio(audioSrc);
 
     const promise = audio.play();

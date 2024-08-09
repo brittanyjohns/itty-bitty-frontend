@@ -74,6 +74,24 @@ const SideMenu: React.FC<SideMenuProps> = (props) => {
               </p>
             </IonItem>
           )}
+          {currentAccount && (
+            <IonItem
+              slot="header"
+              routerLink="/settings"
+              detail={true}
+              className=""
+              lines="none"
+            >
+              <IonIcon icon={personCircleOutline} className="mr-3"></IonIcon>
+              <p className="text-xs">
+                {currentAccount.username}
+                <br></br>
+                <span className="text-gray-500 text-xs">
+                  {currentAccount?.boards?.length} Boards
+                </span>
+              </p>
+            </IonItem>
+          )}
 
           {filteredLinks
             .sort((a, b) => a.id - b.id)

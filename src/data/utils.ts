@@ -231,7 +231,8 @@ export const getFilterList = (
     "contact",
   ];
   const childAccountLinks = [
-    "home",
+    // "home",
+    "account-dashboard",
     "child-boards",
     "child-groups",
     "child-sign-out",

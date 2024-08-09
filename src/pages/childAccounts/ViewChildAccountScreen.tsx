@@ -29,7 +29,7 @@ import {
   pencilOutline,
 } from "ionicons/icons";
 import BoardGrid from "../../components/boards/BoardGrid";
-import ChildBoardDropdown from "../../components/boards/ChildBoardDropdown";
+import ChildBoardDropdown from "../../components/childBoards/ChildBoardDropdown";
 import MainMenu from "../../components/main_menu/MainMenu";
 import ChildAccountForm from "../../components/childAccounts/ChildAccountForm";
 import { User } from "../../data/users";

@@ -59,13 +59,13 @@ const menuLinks: MenuLink[] = [
     id: 21212121,
   },
 
-  // {
-  //   endpoint: "/dashboard",
-  //   name: "Dashboard",
-  //   slug: "dashboard",
-  //   icon: speedometerOutline,
-  //   id: 333333,
-  // },
+  {
+    endpoint: "/account-dashboard",
+    name: "Dashboard",
+    slug: "account-dashboard",
+    icon: speedometerOutline,
+    id: 333333,
+  },
   {
     endpoint: "/board-groups",
     name: "Groups",

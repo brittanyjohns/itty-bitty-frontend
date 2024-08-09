@@ -85,6 +85,7 @@ import NewBoardGroup from "./pages/board_groups/NewBoardGroup";
 import ViewBoardGroup from "./pages/board_groups/ViewBoardGroup";
 import EditBoardGroupScreen from "./pages/board_groups/EditBoardGroupScreen";
 import Welcome from "./pages/Welcome";
+import AccountDashboard from "./pages/accounts/AccountDashboard";
 
 const UserRoutes: React.FC = () => (
   <UserProvider>
@@ -107,7 +108,7 @@ const UserRoutes: React.FC = () => (
 
         <Route path="/dashboard" component={Dashboard} exact={true} />
         <Route path="/account-dashboard">
-          <Dashboard />
+          <AccountDashboard />
         </Route>
         <Route
           path="/admin/dashboard"

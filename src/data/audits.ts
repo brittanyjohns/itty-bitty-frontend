@@ -11,7 +11,7 @@ interface WordClickPayload {
 export async function clickWord(payload: WordClickPayload): Promise<any> {
   const requestInfo = {
     method: "POST",
-    headers: userHeaders,
+    headers: signedInHeaders,
     body: JSON.stringify(payload),
   };
   const response = await fetch(`${BASE_URL}word_click`, requestInfo);

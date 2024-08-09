@@ -147,7 +147,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
       <IonHeader className="bg-inherit shadow-none">
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton routerLink={`/home`} fill="clear">
+            <IonButton routerLink={`/account-dashboard`} fill="clear">
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
           </IonButtons>

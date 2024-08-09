@@ -108,8 +108,6 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
     }
     setAudioList([...audioList, audioSrc]);
 
-    console.log("Playing audio: ", audioSrc);
-    console.log("waitToSpeak ", waitToSpeak);
     const audio = new Audio(audioSrc);
     if (!waitToSpeak) {
       const promise = audio.play();

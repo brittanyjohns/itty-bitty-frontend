@@ -16,6 +16,7 @@ import { useEffect, useState, useCallback } from "react";
 import { User } from "../../data/users";
 import { ChildAccount } from "../../data/child_accounts";
 import ColorKey from "../utils/ColorKey";
+import { useHistory } from "react-router";
 
 interface StaticMenuProps {
   pageTitle?: string;
@@ -27,6 +28,7 @@ interface StaticMenuProps {
 const StaticMenu: React.FC<StaticMenuProps> = (props) => {
   const [filteredLinks, setFilteredLinks] = useState<MenuLink[]>([]);
   const { currentUser, currentAccount } = props;
+  const history = useHistory();
 
   const filterList = useCallback(() => {
     return getFilterList(currentUser, currentAccount);
@@ -46,7 +48,9 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
         <div
           className="font-bold ml-2 hover:cursor-pointer"
           onClick={() => {
-            window.location.href = "/";
+            currentAccount
+              ? history.push("/account-dashboard")
+              : history.push("/dashboard");
           }}
         >
           SpeakAnyWay
@@ -67,6 +71,24 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
               <br></br>
               <span className="text-gray-500 text-xs">
                 {currentUser?.plan_type} - {currentUser?.tokens} tokens
+              </span>
+            </p>
+          </IonItem>
+        )}
+        {currentAccount && (
+          <IonItem
+            slot="header"
+            routerLink="/account-dashboard"
+            detail={true}
+            className=""
+            lines="none"
+          >
+            <IonIcon icon={personCircleOutline} className="mr-3"></IonIcon>
+            <p className="text-xs">
+              {currentAccount.username}
+              <br></br>
+              <span className="text-gray-500 text-xs">
+                {currentAccount?.boards?.length} Boards
               </span>
             </p>
           </IonItem>

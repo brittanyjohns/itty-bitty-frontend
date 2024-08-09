@@ -26,7 +26,8 @@ import MainHeader, { closeMainMenu } from "./MainHeader";
 import StaticMenu from "../components/main_menu/StaticMenu";
 import BoardGrid from "../components/boards/BoardGrid";
 import AccountContent from "../components/utils/AccountContent";
-const Dashboard: React.FC = () => {
+interface DashboardProps {}
+const Dashboard: React.FC<DashboardProps> = () => {
   const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
 
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
