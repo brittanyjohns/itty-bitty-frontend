@@ -60,6 +60,7 @@ const Demo: React.FC = () => {
                 ipAddr={ip}
                 trialDaysLeft={currentUser?.trial_days_left}
                 freeAccount={currentUser?.plan_type === "free"}
+                tokens={currentUser?.tokens ? currentUser.tokens : 0}
               />
             )}
           </div>

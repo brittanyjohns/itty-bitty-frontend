@@ -424,28 +424,6 @@ const ViewImageScreen: React.FC = () => {
                 <p className="text-sm">This will cost you 1 token.</p>
               </IonItem>
             </IonList>
-            <div className="mt-2 font-mono">
-              <p className="text-md font-bold">
-                You currently have {currentUser?.tokens} tokens.
-              </p>
-              <h1 className="text-md font-bold mt-2 text-left ml-2">
-                What's a token?
-              </h1>
-              <ul className="list-disc ml-4">
-                <li className="text-sm">
-                  A token is a unit of currency used to generate images.
-                </li>
-                <li className="text-sm text-left">
-                  Each image costs 1 token to generate.
-                </li>
-                <li className="text-sm text-left">
-                  You can purchase tokens in the shop.
-                </li>
-                <li className="text-sm text-left">
-                  {`OR - in the future, you can earn tokens by completing tasks. <3`}
-                </li>
-              </ul>
-            </div>
           </div>
 
           <div className="mt-6 hidden" ref={imageGridWrapper}>
