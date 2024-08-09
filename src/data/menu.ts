@@ -70,6 +70,7 @@ const menuLinks: MenuLink[] = [
     endpoint: "/board-groups",
     name: "Groups",
     slug: "groups",
+    pro: true,
     icon: layersOutline,
     id: 3,
   },

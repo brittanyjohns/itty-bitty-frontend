@@ -29,13 +29,17 @@ const UserHome: React.FC<UserHomeProps> = ({
         <section className="mb-8">
           {trialDaysLeft && trialDaysLeft > 0 && (
             <div
-              className="mb-4 text-2xl p-4 bg-green-100 text-green-900 rounded-lg cursor-pointer hover:bg-green-200 w-full md:w-3/4 mx-auto"
+              className="mb-4 text-xl p-4 bg-green-100 text-green-900 rounded-lg cursor-pointer hover:bg-green-200 w-full md:w-3/4 mx-auto"
               onClick={() => history.push("/upgrade")}
             >
               <span className="font-mono font-bold block">
-                14 days of Free Access:
-              </span>{" "}
+                14 days of Free Access:{" "}
+              </span>
               Enjoy all the features of SpeakAnyWay for free.
+              <span className="mt-3 text-sm font-bold block">
+                You have {trialDaysLeft} days left in your free trial. Click to
+                upgrade now!
+              </span>
             </div>
           )}
           {trialDaysLeft && trialDaysLeft <= 0 && (

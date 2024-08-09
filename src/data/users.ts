@@ -229,10 +229,11 @@ export const denyAccess = (currentUser: User | null) => {
   if (currentUser?.admin || currentUser?.pro) {
     return false;
   }
-
-  return (
-    currentUser?.pro !== true &&
+  if (
     currentUser?.trial_days_left != undefined &&
     currentUser?.trial_days_left <= 0
-  );
+  ) {
+    return true;
+  }
+  return false;
 };
