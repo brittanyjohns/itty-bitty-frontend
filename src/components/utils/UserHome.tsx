@@ -70,7 +70,7 @@ const UserHome: React.FC<UserHomeProps> = ({
               <span className="font-bold">Personalize Your Experience:</span>
               <ul className="list-disc list-inside ml-3">
                 <li
-                  onClick={() => history.push("/settiings")}
+                  onClick={() => history.push("/settings")}
                   className="cursor-pointer hover:underline text-blue-700"
                 >
                   Customize your profile and preferences.
