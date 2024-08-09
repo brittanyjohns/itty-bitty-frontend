@@ -16,6 +16,7 @@ export interface ChildAccount {
   boards?: Board[];
   settings?: any; // TODO: Define Settings interface
   error?: string;
+  parent_name?: string;
 }
 
 export async function createChildAccount(

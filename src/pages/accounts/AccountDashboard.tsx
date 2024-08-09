@@ -66,13 +66,17 @@ const AccountDashboard: React.FC<DashboardProps> = () => {
   return (
     <>
       <MainMenu
-        pageTitle=" Child Dashboard"
+        pageTitle={`${
+          currentAccount?.name || currentAccount?.username
+        }'s Dashboard`}
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
       />
       <StaticMenu
-        pageTitle="Child Dashboard"
+        pageTitle={`${
+          currentAccount?.name || currentAccount?.username
+        }'s Dashboard`}
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
@@ -80,7 +84,9 @@ const AccountDashboard: React.FC<DashboardProps> = () => {
 
       <IonPage id="main-content">
         <MainHeader
-          pageTitle="Child Dashboard"
+          pageTitle={`${
+            currentAccount?.name || currentAccount?.username
+          }'s Dashboard`}
           isWideScreen={isWideScreen}
           showMenuButton={!isWideScreen}
         />
@@ -92,10 +98,6 @@ const AccountDashboard: React.FC<DashboardProps> = () => {
           <div className="">
             {currentAccount && (
               <>
-                <h2 className="text-xl font-semibold">
-                  {currentAccount?.name || currentAccount?.username}'s Dashboard
-                  🚀
-                </h2>
                 <div className="flex flex-col">
                   {childBoards && childBoards.length > 0 && (
                     <ChildBoardGrid

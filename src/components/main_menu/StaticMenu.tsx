@@ -8,7 +8,13 @@ import {
   IonLabel,
   IonList,
 } from "@ionic/react";
-import { personCircleOutline } from "ionicons/icons";
+import {
+  arrowForward,
+  arrowForwardCircleOutline,
+  informationCircleOutline,
+  logOutOutline,
+  personCircleOutline,
+} from "ionicons/icons";
 import { MenuLink } from "../../data/menu";
 import MenuListItem from "./MainMenuListItem";
 import { getFilterList, getImageUrl } from "../../data/utils";
@@ -60,7 +66,7 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
         {currentUser && (
           <IonItem
             slot="header"
-            routerLink="/dashboard"
+            routerLink="/settings"
             detail={true}
             className=""
             lines="none"
@@ -76,29 +82,78 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
           </IonItem>
         )}
         {currentAccount && (
-          <IonItem
-            slot="header"
-            routerLink="/account-dashboard"
-            detail={true}
-            className=""
-            lines="none"
-          >
-            <IonIcon icon={personCircleOutline} className="mr-3"></IonIcon>
-            <p className="text-xs">
-              {currentAccount.username}
-              <br></br>
-              <span className="text-gray-500 text-xs">
-                {currentAccount?.boards?.length} Boards
-              </span>
-            </p>
-          </IonItem>
+          <>
+            <IonItem
+              slot="header"
+              routerLink="/account-dashboard"
+              className=""
+              lines="none"
+            >
+              <IonIcon icon={personCircleOutline} className="mr-3"></IonIcon>
+              <p className="text-xs">
+                {currentAccount.name}
+                <br></br>
+                <span className="text-gray-500 text-xs">
+                  username: {currentAccount.username}
+                </span>
+              </p>
+            </IonItem>
+            <IonItem
+              slot="header"
+              routerLink="/account-dashboard"
+              className=""
+              lines="none"
+            >
+              <IonIcon
+                size="small"
+                icon={arrowForward}
+                className="mr-2 ml-3"
+              ></IonIcon>
+              <p className="text-xs">
+                <span className="text-gray-500 text-xs">
+                  You have {currentAccount.boards?.length || 0} board
+                  {currentAccount.boards?.length === 1 ? "" : "s"}
+                </span>
+                <br></br>
+                <span className="text-gray-500 text-xs">
+                  Parent account: {currentAccount.parent_name}
+                </span>
+              </p>
+            </IonItem>
+          </>
         )}
         {filteredLinks.map((link) => (
-          <IonItem key={link.id}>
+          <IonItem key={link.id} lines={currentAccount ? "none" : "full"}>
             <MenuListItem menuLink={link} />
           </IonItem>
         ))}
-        {currentUser && <ColorKey />}
+        <IonItem lines="none">
+          {(currentUser || currentAccount) && <ColorKey />}
+        </IonItem>
+        <IonItem lines="none">
+          {currentAccount && (
+            <MenuListItem
+              menuLink={{
+                id: 0,
+                name: "Sign Out",
+                slug: "child-sign-out",
+                icon: arrowForwardCircleOutline,
+                endpoint: "/child-accounts/sign-out",
+              }}
+            />
+          )}
+          {currentUser && (
+            <MenuListItem
+              menuLink={{
+                id: 0,
+                name: "Sign Out",
+                slug: "sign-out",
+                icon: logOutOutline,
+                endpoint: "/users/sign-out",
+              }}
+            />
+          )}
+        </IonItem>
       </IonList>
     </IonContent>
   );

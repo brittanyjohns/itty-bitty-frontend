@@ -32,13 +32,9 @@ const Tabs: React.FC = () => {
             <IonLabel>Images</IonLabel>
           </IonTabButton>
 
-          {/* <IonTabButton tab="accounts" href="/child-accounts">
+          <IonTabButton tab="accounts" href="/child-accounts">
             <IonIcon icon={peopleCircleOutline} />
             <IonLabel>Accounts</IonLabel>
-          </IonTabButton> */}
-          <IonTabButton tab="settings" href="/settings">
-            <IonIcon icon={settingsOutline} />
-            <IonLabel>Settings</IonLabel>
           </IonTabButton>
           <IonTabButton tab="settings" onClick={toggleMainMenu}>
             <IonIcon icon={menuSharp} />

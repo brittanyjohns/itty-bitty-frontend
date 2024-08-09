@@ -7,10 +7,16 @@ import {
   IonMenu,
   IonTitle,
   IonToolbar,
+  IonList,
 } from "@ionic/react";
 import { MenuLink, getMenu } from "../../data/menu";
 import MenuListItem from "./MainMenuListItem";
-import { personCircleOutline } from "ionicons/icons";
+import {
+  arrowForward,
+  arrowForwardCircleOutline,
+  logOutOutline,
+  personCircleOutline,
+} from "ionicons/icons";
 import { getFilterList, getImageUrl } from "../../data/utils";
 import { useState, useCallback, useEffect } from "react";
 import { useHistory } from "react-router";
@@ -23,22 +29,22 @@ interface SideMenuProps {
   currentAccount?: any;
 }
 const SideMenu: React.FC<SideMenuProps> = (props) => {
-  const [filteredLinks, setFilteredLinks] = useState<MenuLink[]>([]);
+  // const [filteredLinks, setFilteredLinks] = useState<MenuLink[]>([]);
   const history = useHistory();
-  const { currentUser, currentAccount } = props;
+  const { currentUser, currentAccount, filteredLinks, goToDashboard } = props;
 
-  const filterList = useCallback(() => {
-    return getFilterList(currentUser, currentAccount);
-  }, [currentUser, currentAccount]);
+  // const filterList = useCallback(() => {
+  //   return getFilterList(currentUser, currentAccount);
+  // }, [currentUser, currentAccount]);
 
-  useEffect(() => {
-    const filtered = filterList();
-    setFilteredLinks(filtered);
-  }, [filterList]);
+  // useEffect(() => {
+  //   const filtered = filterList();
+  //   setFilteredLinks(filtered);
+  // }, [filterList]);
 
-  const goToDashboard = () => {
-    history.push("/home");
-  };
+  // const goToDashboard = () => {
+  //   history.push("/home");
+  // };
   const feature1Image = getImageUrl("round_itty_bitty_logo_1", "png");
 
   return (
@@ -56,51 +62,102 @@ const SideMenu: React.FC<SideMenuProps> = (props) => {
       </IonHeader>
       <IonContent className="ion-padding">
         <div className="h-full">
-          {currentUser && (
-            <IonItem
-              slot="header"
-              routerLink="/settings"
-              detail={true}
-              className=""
-              lines="none"
-            >
-              <IonIcon icon={personCircleOutline} className="mr-3"></IonIcon>
-              <p className="text-xs">
-                {currentUser?.email}
-                <br></br>
-                <span className="text-gray-500 text-xs">
-                  {currentUser?.plan_type} - {currentUser?.tokens} tokens
-                </span>
-              </p>
-            </IonItem>
-          )}
-          {currentAccount && (
-            <IonItem
-              slot="header"
-              routerLink="/settings"
-              detail={true}
-              className=""
-              lines="none"
-            >
-              <IonIcon icon={personCircleOutline} className="mr-3"></IonIcon>
-              <p className="text-xs">
-                {currentAccount.username}
-                <br></br>
-                <span className="text-gray-500 text-xs">
-                  {currentAccount?.boards?.length} Boards
-                </span>
-              </p>
-            </IonItem>
-          )}
-
-          {filteredLinks
-            .sort((a, b) => a.id - b.id)
-            .map((menuLink) => (
-              <div key={menuLink.id} className="text-white">
-                <MenuListItem menuLink={menuLink} />
-              </div>
+          <IonList>
+            {currentUser && (
+              <IonItem
+                slot="header"
+                routerLink="/settings"
+                detail={true}
+                className=""
+                lines="none"
+              >
+                <IonIcon icon={personCircleOutline} className="mr-3"></IonIcon>
+                <p className="text-xs">
+                  {currentUser?.email}
+                  <br></br>
+                  <span className="text-gray-500 text-xs">
+                    {currentUser?.plan_type} - {currentUser?.tokens} tokens
+                  </span>
+                </p>
+              </IonItem>
+            )}
+            {currentAccount && (
+              <>
+                <IonItem
+                  slot="header"
+                  routerLink="/account-dashboard"
+                  className=""
+                  lines="none"
+                >
+                  <IonIcon
+                    icon={personCircleOutline}
+                    className="mr-3"
+                  ></IonIcon>
+                  <p className="text-xs">
+                    {currentAccount.name}
+                    <br></br>
+                    <span className="text-gray-500 text-xs">
+                      username: {currentAccount.username}
+                    </span>
+                  </p>
+                </IonItem>
+                <IonItem
+                  slot="header"
+                  routerLink="/account-dashboard"
+                  className=""
+                  lines="none"
+                >
+                  <IonIcon
+                    size="small"
+                    icon={arrowForward}
+                    className="mr-2 ml-3"
+                  ></IonIcon>
+                  <p className="text-xs">
+                    <span className="text-gray-500 text-xs">
+                      You have {currentAccount.boards?.length || 0} board
+                      {currentAccount.boards?.length === 1 ? "" : "s"}
+                    </span>
+                    <br></br>
+                    <span className="text-gray-500 text-xs">
+                      Parent account: {currentAccount.parent_name}
+                    </span>
+                  </p>
+                </IonItem>
+              </>
+            )}
+            {filteredLinks.map((link) => (
+              <IonItem key={link.id} lines={currentAccount ? "none" : "full"}>
+                <MenuListItem menuLink={link} />
+              </IonItem>
             ))}
-          {currentUser && <ColorKey />}
+            <IonItem lines="none">
+              {(currentUser || currentAccount) && <ColorKey />}
+            </IonItem>
+            <IonItem lines="none">
+              {currentAccount && (
+                <MenuListItem
+                  menuLink={{
+                    id: 0,
+                    name: "Sign Out",
+                    slug: "child-sign-out",
+                    icon: arrowForwardCircleOutline,
+                    endpoint: "/child-accounts/sign-out",
+                  }}
+                />
+              )}
+              {currentUser && (
+                <MenuListItem
+                  menuLink={{
+                    id: 0,
+                    name: "Sign Out",
+                    slug: "sign-out",
+                    icon: logOutOutline,
+                    endpoint: "/users/sign-out",
+                  }}
+                />
+              )}
+            </IonItem>
+          </IonList>
         </div>
       </IonContent>
     </IonMenu>

@@ -73,7 +73,9 @@ const settingsConfig = [
 ];
 
 const getNestedProperty = (obj: any, path: string, defaultValue: any) => {
-  return path.split(".").reduce((o, p) => (o ? o[p] : defaultValue), obj);
+  return path
+    .split(".")
+    .reduce((o, p) => (o && o[p] !== undefined ? o[p] : defaultValue), obj);
 };
 
 const setNestedProperty = (obj: any, path: string, value: any) => {
@@ -126,11 +128,7 @@ const UserSettingsForm: React.FC<UserSettingsFormProps> = ({
           <h1 className="text-2xl font-bold">Settings</h1>
 
           {settingsConfig.map((setting) => (
-            <div
-              key={setting.key}
-              // lines="none"
-              className=""
-            >
+            <div key={setting.key} className="">
               {setting.type === "select" && (
                 <div className="p-2 flex border w-full md:w-3/4 justify-between items-center mx-auto mt-2">
                   <p className="text-md font-bold mr-2">{setting.label}</p>
@@ -141,7 +139,7 @@ const UserSettingsForm: React.FC<UserSettingsFormProps> = ({
                   )}
                   <div>
                     <IonSelect
-                      aria-label="Select Voice"
+                      aria-label={`Select ${setting.label}`}
                       value={getNestedProperty(settings, setting.key, "")}
                       onIonChange={(e) =>
                         handleChange(setting.key, e.detail.value)

@@ -46,6 +46,7 @@ const MainMenu: React.FC<MainMenuProps> = (props) => {
       <SideMenu
         filteredLinks={filteredLinks}
         currentUser={currentUser}
+        currentAccount={currentAccount}
         goToDashboard={goToDashboard}
       />
     </>

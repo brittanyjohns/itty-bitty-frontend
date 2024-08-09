@@ -148,20 +148,20 @@ const menuLinks: MenuLink[] = [
     icon: lockClosedOutline,
     id: 9998,
   },
-  {
-    endpoint: "/users/sign-out",
-    name: "Sign Out",
-    slug: "sign-out",
-    icon: logOutOutline,
-    id: 9999,
-  },
-  {
-    endpoint: "/child-accounts/sign-out",
-    name: "Sign Out",
-    slug: "child-sign-out",
-    icon: logOutOutline,
-    id: 9996,
-  },
+  // {
+  //   endpoint: "/users/sign-out",
+  //   name: "Sign Out",
+  //   slug: "sign-out",
+  //   icon: logOutOutline,
+  //   id: 9999,
+  // },
+  // {
+  //   endpoint: "/child-accounts/sign-out",
+  //   name: "Sign Out",
+  //   slug: "child-sign-out",
+  //   icon: logOutOutline,
+  //   id: 9996,
+  // },
 ];
 
 export const getMenu = () => menuLinks;
