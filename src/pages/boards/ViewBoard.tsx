@@ -44,6 +44,7 @@ const ViewBoard: React.FC<any> = () => {
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [currentUserTeams, setCurrentUserTeams] = useState<Team[]>();
   const { isWideScreen, currentAccount, currentUser } = useCurrentUser();
+  const history = useHistory();
 
   const fetchBoard = async () => {
     const board = await getBoard(params.id);
@@ -105,9 +106,13 @@ const ViewBoard: React.FC<any> = () => {
       } else {
         console.error("Error cloning board", clonedBoard);
         alert("Error cloning board");
-        window.location.href = "/boards";
+        setShowLoading(false);
+        history.push("/boards");
+
+        // window.location.href = "/boards";
       }
       setShowLoading(false);
+      history.push(`/boards/${clonedBoard.id}`);
       // window.location.href = `/boards/${clonedBoard.id}`;
     } catch (error) {
       console.error("Error cloning board: ", error);

@@ -49,11 +49,11 @@ const Demo: React.FC = () => {
           isWideScreen={isWideScreen}
           showMenuButton={!isWideScreen}
         />
-        <IonContent className="ion-padding">
+        <IonContent className="">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <div>
+          <div className="bg-inherit shadow-none w-full md:w-2/3 lg:w-1/2 mx-auto">
             {currentUser && (
               <UserHome
                 userName={currentUser?.name || currentUser.email}

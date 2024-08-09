@@ -17,44 +17,66 @@ import React, { useEffect, useRef } from "react";
 import MainMenu from "../../components/main_menu/MainMenu";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { denyAccess } from "../../data/users";
-import BoardForm from "../../components/boards/BoardForm";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import Tabs from "../../components/utils/Tabs";
-
+import { NewBoardPayload } from "../../data/boards";
 const NewBoard: React.FC = (props: any) => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<Board>();
-  const onSubmit: SubmitHandler<Board> = (data) => {
-    createBoard(data);
-    props.history.push("/boards");
-    window.location.reload();
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   handleOnSubmit();
+  // };
+  const handleOnSubmit = async () => {
+    if (!name) {
+      alert("Please enter a name");
+      return;
+    }
+    const boardToCreate: NewBoardPayload = {
+      name,
+    };
+    const newBoard = await createBoard(boardToCreate);
+    if (!newBoard) {
+      console.error("Error creating board");
+      return;
+    }
+    if (newBoard.id) {
+      props.history.push(`/boards/${newBoard.id}`);
+    }
+    setName("");
+    return;
   };
+
+  useIonViewDidLeave(() => {
+    setName("");
+  });
+
   const scenarioBtnRef = useRef<HTMLIonButtonElement>(null);
-  const scratchFormRef = useRef<HTMLFormElement>(null);
+  const scratchDivRef = useRef<HTMLDivElement>(null);
   const scratchBtnRef = useRef<HTMLIonButtonElement>(null);
+
+  const [name, setName] = React.useState("");
 
   const { currentUser, currentAccount, isWideScreen } = useCurrentUser();
 
   const handleCreateFromScratch = () => {
     scratchBtnRef.current?.classList.toggle("hidden");
-    scratchFormRef.current?.classList.toggle("hidden");
+    scratchDivRef.current?.classList.toggle("hidden");
     scenarioBtnRef.current?.classList.toggle("hidden");
   };
 
   useIonViewDidLeave(() => {
     scratchBtnRef.current?.classList.remove("hidden");
-    scratchFormRef.current?.classList.add("hidden");
+    scratchDivRef.current?.classList.add("hidden");
     scenarioBtnRef.current?.classList.remove("hidden");
   });
 
   useEffect(() => {
-    scratchFormRef.current?.classList.add("hidden");
+    scratchDivRef.current?.classList.add("hidden");
   }, []);
+
+  const handleNameChange = (e: CustomEvent) => {
+    setName(e.detail.value);
+  };
 
   return (
     <>
@@ -77,8 +99,8 @@ const NewBoard: React.FC = (props: any) => {
           isWideScreen={isWideScreen}
           startLink="/boards"
         />
-        <IonContent fullscreen scrollY={true}>
-          <div className="w-1/2 mx-auto h-1/4 grid grid-rows-2 gap-8 mt-10">
+        <IonContent className="ion-padding">
+          <div className="w-1/2 mx-auto h-1/4 grid grid-rows-2 gap-4">
             <IonButton
               className=""
               expand="block"
@@ -89,22 +111,22 @@ const NewBoard: React.FC = (props: any) => {
                 Create from scratch
               </span>
             </IonButton>
-            <form
-              className="hidden"
-              onSubmit={handleSubmit(onSubmit)}
-              ref={scratchFormRef}
-            >
+            <div className="hidden" ref={scratchDivRef}>
               <IonInput
                 aria-label="Name"
                 placeholder="Name"
-                defaultValue=""
-                {...register("name", { required: true })}
+                value={name}
+                onIonInput={handleNameChange}
               />
-              <IonButton className="" type="submit" expand="block">
+              <IonButton
+                className=""
+                type="submit"
+                expand="block"
+                onClick={handleOnSubmit}
+              >
                 Create
               </IonButton>
-            </form>
-            {/* <BoardForm board={board} setBoard={setBoard} onSubmit={loadPage} /> */}
+            </div>
 
             <IonButton
               routerLink="/scenarios/new"

@@ -1,4 +1,4 @@
-import { IonIcon } from "@ionic/react";
+import { IonIcon, useIonViewWillEnter } from "@ionic/react";
 import { logoFacebook } from "ionicons/icons";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -17,51 +17,91 @@ const UserHome: React.FC<UserHomeProps> = ({
   tokens,
 }) => {
   const history = useHistory();
+  useIonViewWillEnter(() => {});
 
   return (
-    <div className="ion-padding bg-gray-100 text-gray-900">
-      <h1 className="text-4xl font-bold mb-4 text-center">
-        Welcome to SpeakAnyWay!
-      </h1>
-      <h2 className="text-2xl font-semibold mb-4 text-center">
-        Empowering Communication Through Technology
-      </h2>
+    <div className="bg-gray-100 text-gray-900">
+      <div className="p-2">
+        <h1 className="text-4xl font-bold mb-4 text-center">
+          Welcome to SpeakAnyWay!
+        </h1>
+        <h2 className="text-2xl font-semibold mb-4 text-center">
+          Empowering Communication Through Technology
+        </h2>
+      </div>
       <h3 className="text-lg my-6 text-center">
         Hi {userName}, we're thrilled to have you here!
       </h3>
 
       {freeAccount && (
-        <section className="mb-8 text-center">
+        <section className="mb-2 text-center  cursor-pointer">
           {trialDaysLeft && trialDaysLeft > 0 && (
-            <div
-              className="mb-4 text-xl p-4 bg-green-100 text-green-900 rounded-lg cursor-pointer hover:bg-green-200 w-full md:w-3/4 mx-auto"
-              onClick={() => history.push("/upgrade")}
-            >
-              <span className="font-mono font-bold block">
-                14 days of Free Access:{" "}
-              </span>
-              Enjoy all the features of SpeakAnyWay for free.
-              <span className="mt-3 text-sm font-bold block">
-                You have {trialDaysLeft} days left in your free trial. Click to
-                upgrade now!
-              </span>
-            </div>
+            <>
+              <div
+                className="text-xl p-4 bg-green-100 text-green-900 rounded-lg hover:bg-green-200 w-full md:w-3/4 mx-auto"
+                onClick={() => history.push("/upgrade")}
+              >
+                <span className="font-bold block mb-2">
+                  14 days of Free Access:{" "}
+                </span>
+                <span className="text-2xl">
+                  Enjoy all the <strong>premium</strong> features of SpeakAnyWay
+                  for free.
+                </span>
+                <span className="my-3 text-sm font-bold block">
+                  You have {trialDaysLeft} days left in your free trial. Click
+                  to upgrade now!
+                </span>
+              </div>
+              <div
+                className="mb-4 text-sm p-2 bg-green-100 text-green-900 rounded-lg hover:bg-green-200 w-full md:w-3/4 mx-auto"
+                onClick={() => history.push("/upgrade")}
+              >
+                <span className="font-bold block">Reminder:</span> Upgrade to
+                continue using our <strong>premium</strong> features.
+                <span className="mt-3 text-lg font-bold block">
+                  After your trial ends, you'll still have access to our{" "}
+                  <strong>all</strong> other features FREE!
+                </span>
+                <span className="mt-3 text-sm font-md block">
+                  You'll still be able to create boards, upload images, and
+                  more!
+                </span>
+              </div>
+            </>
           )}
           {trialDaysLeft && trialDaysLeft <= 0 && (
-            <div
-              className="text-center mb-4 text-2xl p-4 bg-red-100 text-red-900 rounded-lg cursor-pointer hover:bg-red-200 w-full md:w-3/4 mx-auto"
-              onClick={() => history.push("/upgrade")}
-            >
-              <span className="font-mono font-bold block">
-                Free Trial Expired:
-              </span>{" "}
-              Subscribe to continue using our premium features.
-            </div>
+            <>
+              <div
+                className="text-center text-2xl p-4 bg-red-100 text-red-900 rounded-lg cursor-pointer hover:bg-red-200 w-full md:w-3/4 mx-auto"
+                onClick={() => history.push("/upgrade")}
+              >
+                <span className="font-mono font-bold block">
+                  Free Trial Expired:
+                </span>{" "}
+                Subscribe to continue using our premium features.
+              </div>
+              <div
+                className="text-center mb-4 text-2xl p-4 bg-red-100 text-red-900 rounded-lg cursor-pointer hover:bg-red-200 w-full md:w-3/4 mx-auto"
+                onClick={() => history.push("/upgrade")}
+              >
+                <span className="font-bold block">
+                  {" "}
+                  Upgrade to continue using our premium features.
+                </span>
+                <span className="mt-3 text-sm font-bold block">
+                  Remember, you still have access to all other features.
+                </span>
+                <span className="mt-3 text-sm font-md block">
+                  You can create boards, upload images, and more!
+                </span>
+              </div>
+            </>
           )}
         </section>
       )}
 
-      <div className="p-1 w-full md:w-3/4 mx-auto">
+      <div className="px-2 w-full md:w-3/4 mx-auto">
         <section className="mb-2">
           <h4 className="text-2xl font-semibold mb-2">Getting Started</h4>
 
@@ -127,8 +167,8 @@ const UserHome: React.FC<UserHomeProps> = ({
         </section>
 
         <section className="mb-4 p-1 ">
-          <h4 className="text-2xl font-semibold mb-2">Features Overview</h4>
-          <ul className="list-disc ">
+          <h4 className="text-2xl font-semibold mb-3">Features Overview</h4>
+          <ul className="list-[square] space-y-2">
             <li className="mb-2 ml-3">
               <span className="font-bold block">Communication Boards:</span>{" "}
               <span className="ml-3">

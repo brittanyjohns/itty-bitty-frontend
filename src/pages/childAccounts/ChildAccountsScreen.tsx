@@ -28,7 +28,6 @@ const ChildAccountsScreen: React.FC = () => {
   // const [pageTitle, setPageTitle] = useState("Your ChildAccounts");
 
   const fetchChildAccounts = async () => {
-    console.log("fetchChildAccounts");
     const fetchedChildAccounts = currentUser?.child_accounts;
     if (!fetchedChildAccounts) {
       console.error("Error fetching childAccounts");
@@ -46,7 +45,6 @@ const ChildAccountsScreen: React.FC = () => {
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
-      console.log("Async operation has ended");
       e.detail.complete();
     }, 3000);
   };

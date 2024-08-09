@@ -16,6 +16,7 @@ import React, { useEffect } from "react";
 import { denyAccess } from "../../data/users";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { getSampleVoices } from "../../data/images";
+import { useHistory } from "react-router";
 interface BoardFormProps {
   board: Board;
   setBoard: (board: Board) => void;
@@ -36,6 +37,7 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   const [toastMessage, setToastMessage] = React.useState("");
   const [showLoading, setShowLoading] = React.useState(false);
   const { currentUser } = useCurrentUser();
+  const history = useHistory();
 
   const [sampleVoices, setSampleVoices] = React.useState<SampleVoiceResponse[]>(
     []
@@ -43,7 +45,6 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
 
   const fetchSampleVoices = async () => {
     const voices = await getSampleVoices();
-    console.log("Voices", voices);
     setSampleVoices(voices);
   };
 
@@ -72,13 +73,15 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
     }
     setShowLoading(true);
     const updatingBoard = { ...board, number_of_columns: gridSize };
+    alert("Board saved successfully");
 
     const savedBoard = await updateBoard(updatingBoard);
-    setBoard(savedBoard);
+    // setBoard(savedBoard);
     setShowLoading(false);
     setToastMessage("Board saved successfully");
     setIsOpen(true);
     // window.location.reload();
+    history.push(`/boards/${savedBoard.id}`);
   };
 
   const gridSizeOptions = [
@@ -104,7 +107,6 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
       console.error("No voice file found");
       return;
     }
-    console.log("Playing voice", file);
     const audio = new Audio(file.url);
     audio.play();
   };

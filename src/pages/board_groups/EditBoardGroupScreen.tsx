@@ -49,7 +49,7 @@ const EditBoardGroupScreen: React.FC<EditBoardGroupProps> = ({
   const history = useHistory();
   const [toastMessage, setToastMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState("Loading boardGroup");
+  const [loadingMessage, setLoadingMessage] = useState("Loading group...");
   const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
   const [gridLayout, setGridLayout] = useState([]);
   const [numberOfColumns, setNumberOfColumns] = useState(4); // Default number of columns
@@ -133,7 +133,7 @@ const EditBoardGroupScreen: React.FC<EditBoardGroupProps> = ({
 
   const handleDelete = async () => {
     if (!boardGroup?.id) {
-      console.error("BoardGroup ID is missing");
+      console.error("Board Group ID is missing");
       return;
     }
     await deleteBoardGroup(boardGroup.id);

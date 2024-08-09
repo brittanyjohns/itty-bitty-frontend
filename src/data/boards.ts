@@ -1,7 +1,12 @@
 import { Image } from "./images";
 import { BASE_URL, userHeaders } from "./constants";
 import { ChildBoard } from "./child_boards";
-
+export interface NewBoardPayload {
+  id?: string;
+  name: string;
+  description?: string;
+  number_of_columns?: number;
+}
 export interface Board {
   id: string;
   name: string;
@@ -112,29 +117,16 @@ export const getInitialImages = () => {
   return board;
 };
 
-export const createBoard = (board: Board, word_list?: string[]) => {
-  const payload = {
-    board: {
-      name: board.name,
-      description: board.description || "",
-      number_of_columns: board.number_of_columns,
-    },
-    word_list,
-  };
-  const newBoard = fetch(`${BASE_URL}boards`, {
+export async function createBoard(board: NewBoardPayload): Promise<Board> {
+  const requestInfo = {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-    body: JSON.stringify(payload),
-  })
-    .then((response) => response.json())
-    .then((data) => data)
-    .catch((error) => console.error("Error creating board: ", error));
-
+    headers: userHeaders,
+    body: JSON.stringify(board),
+  };
+  const response = await fetch(`${BASE_URL}boards`, requestInfo);
+  const newBoard: Board = await response.json();
   return newBoard;
-};
+}
 
 export const updateBoard = (board: Board | ChildBoard) => {
   const updatedBoard = fetch(`${BASE_URL}boards/${board.id}`, {
@@ -228,7 +220,6 @@ export async function removeImageFromBoard(
     requestInfo
   );
   const board: Board = await response.json();
-  console.log("removeImageFromBoard", board);
   return board;
 }
 

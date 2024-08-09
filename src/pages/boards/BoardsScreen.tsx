@@ -13,11 +13,18 @@ import {
   IonSegmentButton,
   IonTitle,
   IonToolbar,
+  useIonViewWillEnter,
+  useIonViewWillLeave,
 } from "@ionic/react";
 import Tabs from "../../components/utils/Tabs";
 import { useEffect, useState } from "react";
 import { Board, getBoards } from "../../data/boards";
-import { addCircleOutline, imagesOutline, personOutline } from "ionicons/icons";
+import {
+  addCircleOutline,
+  imagesOutline,
+  personOutline,
+  toggle,
+} from "ionicons/icons";
 import BoardGrid from "../../components/boards/BoardGrid";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { ChildBoard } from "../../data/child_boards";
@@ -41,15 +48,19 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   const [pageTitle, setPageTitle] = useState("Your Boards");
 
   const fetchBoards = async () => {
-    if (gridType === "child" && currentAccount) {
+    const fetchedBoards = await getBoards();
+    if (gridType === "child") {
+      if (!currentAccount) {
+        console.error("No current account found");
+        return;
+      }
       const fetchedBoards = currentAccount.boards; // Replace with actual fetching logic
       if (fetchedBoards) {
         setChildBoards(fetchedBoards);
       } else {
         console.error("No child boards found");
       }
-    } else if (gridType === "user" && currentUser) {
-      const fetchedBoards = await getBoards();
+    } else if (gridType === "user") {
       setUserBoards(fetchedBoards["boards"]);
       setScenarioBoards(fetchedBoards["scenarios"]);
       setPresetBoards(fetchedBoards["predefined_boards"]);
@@ -57,9 +68,20 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
     }
   };
 
+  useIonViewWillEnter(() => {
+    fetchBoards();
+    toggle(segmentType);
+  });
+
+  useIonViewWillLeave(() => {
+    setSegmentType("preset");
+    toggle("preset");
+  });
+
   useEffect(() => {
     fetchBoards();
-  }, [gridType, currentAccount, currentUser]);
+    toggle(segmentType);
+  }, []);
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
@@ -72,6 +94,10 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
     const segmentValue = event.detail.value;
     setSegmentType(segmentValue);
     // setPageTitle(segmentValue === "user" ? "Your Boards" : "Preset Boards");
+    toggle(segmentValue);
+  };
+
+  const toggle = (segmentType: string) => {
     if (segmentType === "user") {
       setBoards(userBoards);
       setPageTitle("Your Boards");
@@ -82,22 +108,43 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   };
 
   useEffect(() => {
-    if (segmentType === "user") {
-      setBoards(userBoards);
-      setPageTitle("Your Boards");
-    } else if (segmentType === "preset") {
-      setBoards(presetBoards);
-      setPageTitle("Preset Boards");
-    }
+    toggle(segmentType);
   }, [segmentType, userBoards, presetBoards]);
 
   const renderBoardGrid = (gridType: string, boardsToSet: Board[]) => {
+    if (gridType === "preset" && presetBoards.length === 0) {
+      return (
+        <>
+          <div className="flex flex-col items-center justify-center my-5">
+            <p className="text-xl font-semibold">No preset boards found.</p>
+          </div>
+        </>
+      );
+    }
+
     if (boardsToSet.length > 0) {
       return <BoardGrid gridType={gridType} boards={boardsToSet} />;
+    } else if (boardsToSet.length === 0 && gridType === "user") {
+      return (
+        <>
+          <div className="flex flex-col items-center justify-center my-5">
+            <p className="text-xl font-semibold">
+              You have no boards yet. Create one now!
+            </p>
+            <IonButton
+              routerLink="/boards/new"
+              className="mt-3"
+              fill="solid"
+              color="primary"
+            >
+              <IonIcon icon={addCircleOutline} slot="start" />
+              Create Board
+            </IonButton>
+          </div>
+        </>
+      );
     }
-    return;
   };
-
   return (
     <>
       <MainMenu
@@ -145,6 +192,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
             )}
           </div>
           {segmentType === "user" && renderBoardGrid("user", boards)}
+
           {segmentType === "preset" && renderBoardGrid("preset", presetBoards)}
         </IonContent>
         {currentUser && <Tabs />}

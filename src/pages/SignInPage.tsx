@@ -3,15 +3,44 @@ import MainMenu from "../components/main_menu/MainMenu";
 import MainHeader from "./MainHeader";
 import { getImageUrl } from "../data/utils";
 import { useCurrentUser } from "../hooks/useCurrentUser";
+import { logInOutline } from "ionicons/icons";
+import StaticMenu from "../components/main_menu/StaticMenu";
+import UserHome from "../components/utils/UserHome";
 
 const SignInPage: React.FC = () => {
-  const { isWideScreen } = useCurrentUser();
+  const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
   return (
     <>
-      <MainMenu />
+      <MainMenu
+        pageTitle="Sign Up"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Sign In"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+
       <IonPage id="main-content">
-        <div className="h-full">
-          <MainHeader pageTitle="Sign In" isWideScreen={isWideScreen} />
+        <MainHeader
+          pageTitle="Sign In"
+          isWideScreen={isWideScreen}
+          endLink="/sign-up"
+          endIcon={logInOutline}
+          showMenuButton={!isWideScreen}
+        />
+        <IonContent className="">
+          {currentUser && (
+            <>
+              <h1 className="text-2xl font-bold text-center mt-4">
+                You're already signed in.
+              </h1>
+              <UserHome userName={currentUser?.name || currentUser.email} />
+            </>
+          )}
           <div
             className="hero_main1 bg-cover bg-center  min-h-screen"
             style={{
@@ -44,8 +73,7 @@ const SignInPage: React.FC = () => {
               </IonButton>
             </div>
           </div>
-        </div>
-        <IonContent className="ion-padding"></IonContent>
+        </IonContent>
       </IonPage>
     </>
   );

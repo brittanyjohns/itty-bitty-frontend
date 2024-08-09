@@ -35,18 +35,14 @@ const MenusScreen: React.FC = () => {
   const [userMenus, setUserMenus] = useState<Menu[]>([]);
 
   const refresh = (e: CustomEvent) => {
-    console.log("Refresh triggered");
     setTimeout(() => {
-      console.log("Refresh completed");
       e.detail.complete();
     }, 3000);
   };
 
   const fetchMenus = async () => {
-    console.log("Fetching menus"); // Log before fetching
     try {
       const allMenus = await getMenus();
-      console.log("All Menus", allMenus);
       if (!allMenus || !allMenus.user || !allMenus.predefined) {
         console.error("Error fetching menus: Invalid data structure", allMenus);
         return;
@@ -64,18 +60,11 @@ const MenusScreen: React.FC = () => {
 
   const handleSegmentChange = (e: CustomEvent) => {
     const segmentValue = e.detail.value as string;
-    console.log("Segment changed", segmentValue);
     setSegmentType(segmentValue);
     toggleMenus(segmentValue);
   };
 
-  // useEffect(() => {
-  //   console.log("Component mounted or segmentType changed");
-  //   toggleMenus(segmentType);
-  // }, [segmentType]);
-
   const toggleMenus = (segmentType: string) => {
-    console.log("Toggling menus", segmentType);
     if (segmentType === "preset" && Array.isArray(presetMenus)) {
       setMenus(presetMenus);
     } else if (segmentType === "user" && Array.isArray(userMenus)) {
@@ -86,7 +75,6 @@ const MenusScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log("Fetching menus on component mount");
     fetchMenus();
   }, []);
 

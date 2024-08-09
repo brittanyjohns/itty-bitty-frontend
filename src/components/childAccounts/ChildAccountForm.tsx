@@ -76,14 +76,8 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
     setChildAccount(childAccount);
   }, [childAccount]);
 
-  useEffect(() => {
-    console.log("existingChildAccount", existingChildAccount);
-    console.log("childAccount", childAccount);
-  }, [childAccount]);
-
   const handleNameChange = (e: CustomEvent) => {
     setName(e.detail.value);
-    console.log("e.detail.value", e.detail.value);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
