@@ -1,39 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   IonButton,
-  IonButtons,
-  IonCard,
   IonContent,
-  IonHeader,
   IonIcon,
-  IonImg,
   IonInput,
   IonItem,
   IonLabel,
   IonList,
   IonLoading,
   IonPage,
-  IonSearchbar,
-  IonSegment,
-  IonSegmentButton,
   IonText,
   IonTextarea,
-  IonTitle,
   IonToast,
-  IonToolbar,
-  useIonViewDidEnter,
   useIonViewWillEnter,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
 import {
-  addCircleOutline,
   appsOutline,
   arrowBackCircleOutline,
-  cloudUploadOutline,
-  createOutline,
   imagesOutline,
-  refreshCircleOutline,
-  refreshOutline,
   shareOutline,
 } from "ionicons/icons";
 import {
@@ -44,9 +29,8 @@ import {
   saveLayout,
   rearrangeImages,
   deleteBoard,
-  addToTeam,
 } from "../../data/boards"; // Adjust imports based on actual functions
-import { createImage, generateImage, getMoreImages } from "../../data/images";
+import { generateImage } from "../../data/images";
 import { Image } from "../../data/images";
 import BoardForm from "../../components/boards/BoardForm";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
@@ -55,16 +39,12 @@ import DraggableGrid from "../../components/images/DraggableGrid";
 import MainMenu from "../../components/main_menu/MainMenu";
 import ImageCropper from "../../components/images/ImageCropper";
 import ConfirmDeleteAlert from "../../components/utils/ConfirmDeleteAlert";
-import AddToTeamForm from "../../components/teams/AddToTeamForm";
-import { Team } from "../../data/teams";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 
-interface EditBoardScreenProps {}
 const EditBoardScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [board, setBoard] = useState<Board | null>(null);
-  const boardGrid = useRef<HTMLDivElement>(null);
   const [showLoading, setShowLoading] = useState(false);
   const [segmentType, setSegmentType] = useState("edit");
   const uploadForm = useRef<HTMLDivElement>(null);
@@ -317,12 +297,12 @@ const EditBoardScreen: React.FC = () => {
               )}
             </div>
             <div className="flex justify-between items-center px-4 mt-4">
-              {showEdit && (
+              {/* {showEdit && (
                 <IonButton onClick={toggleAddToTeam} className="mr-1 text-xs">
                   <IonIcon icon={shareOutline} className="mx-2" />
                   <IonLabel>Share</IonLabel>
                 </IonButton>
-              )}
+              )} */}
               <IonButton
                 className="text-xs md:text-md lg:text-lg font-bold text-center my-2 cursor-pointer mx-auto text-wrap"
                 onClick={handleRearrangeImages}
