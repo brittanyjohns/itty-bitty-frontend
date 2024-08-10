@@ -30,21 +30,23 @@ const CookiesConsent: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        <IonText>
+        <IonText className="text-center">
           <h2 className="text-xl">Enhance Your Experience</h2>
-          <p className="text-left my-2">
+          <p className="text-center my-2">
             We use cookies to provide you with a better experience on
             SpeakAnyWay.
           </p>
-          <p className="font-bold">Cookies help us to:</p>
-          <ul className="list-disc list-inside mb-2">
-            <li>Understand your preferences for future visits</li>
-            <li>
-              Analyze site traffic and interactions to improve our services
-            </li>
-            <li>Offer personalized content and advertisements</li>
-          </ul>
-          <p>
+          <div className="text-left m-5">
+            <p className="font-bold">Cookies help us to:</p>
+            <ul className="list-disc list-inside mb-2">
+              <li>Understand your preferences for future visits</li>
+              <li>
+                Analyze site traffic and interactions to improve our services
+              </li>
+              <li>Offer personalized content and advertisements</li>
+            </ul>
+          </div>
+          <p className="mt-2">
             By clicking <span className="font-bold">"Accept"</span>, you consent
             to our use of cookies.
           </p>
@@ -53,7 +55,7 @@ const CookiesConsent: React.FC = () => {
             <a href="/privacy-policy">Privacy Policy</a>.
           </p>
         </IonText>
-        <div className="ion-padding-top">
+        <div className="ion-padding-top mt-5">
           <IonButton
             color={"primary"}
             fill="solid"

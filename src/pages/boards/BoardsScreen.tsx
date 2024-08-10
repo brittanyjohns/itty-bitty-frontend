@@ -44,7 +44,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   const [presetBoards, setPresetBoards] = useState<Board[]>([]);
   const [userBoards, setUserBoards] = useState<Board[]>([]);
   const [scenarioBoards, setScenarioBoards] = useState<Board[]>([]);
-  const [segmentType, setSegmentType] = useState("preset");
+  const [segmentType, setSegmentType] = useState("user");
   const [pageTitle, setPageTitle] = useState("Your Boards");
 
   const fetchBoards = async () => {
@@ -74,8 +74,8 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   });
 
   useIonViewWillLeave(() => {
-    setSegmentType("preset");
-    toggle("preset");
+    setSegmentType("user");
+    toggle("user");
   });
 
   useEffect(() => {
@@ -128,13 +128,32 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
       return (
         <>
           <div className="flex flex-col items-center justify-center my-5">
-            <p className="text-xl font-semibold">
+            <p className="text-2xl font-semibold m-4">
               You have no boards yet. Create one now!
+            </p>
+            <p className="text-lg w-3/4 text-center mb-5 md:w-1/2 font-md">
+              Boards are collections of images with natural language labels that
+              can be used to communicate with others.{" "}
+            </p>
+            <p className="text-xl text-center w-3/4 md:w-1/2 font-semibold my-4">
+              They simpliest way to get started is by choosing a{" "}
+              <span
+                onClick={() => setSegmentType("preset")}
+                className="font-bold text-blue-500 cursor-pointer"
+              >
+                preset board
+              </span>
+              , cloning it, and then editing it to suit your needs.
+            </p>
+            <p className="text-lg text-center w-3/4 md:w-1/2 font-md my-4">
+              You can also create a board from scratch by clicking the button
+              below.
             </p>
             <IonButton
               routerLink="/boards/new"
               className="mt-3"
               fill="solid"
+              size="large"
               color="primary"
             >
               <IonIcon icon={addCircleOutline} slot="start" />
@@ -148,13 +167,13 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   return (
     <>
       <MainMenu
-        pageTitle="Boards"
+        pageTitle={pageTitle}
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
       />
       <StaticMenu
-        pageTitle="Boards"
+        pageTitle={pageTitle}
         isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
@@ -162,7 +181,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
 
       <IonPage id="main-content">
         <MainHeader
-          pageTitle="Boards"
+          pageTitle={pageTitle}
           isWideScreen={isWideScreen}
           showMenuButton={!isWideScreen}
           endLink="/boards/new"
@@ -171,7 +190,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <div className="bg-inherit shadow-none w-full md:w-2/3 lg:w-1/2 mx-auto my-3">
+          <div className="bg-inherit shadow-none w-full md:w-2/3 lg:w-1/2 mx-auto ">
             {currentUser && (
               <IonSegment
                 value={segmentType}
@@ -179,14 +198,16 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
                 className="w-full bg-inherit"
               >
                 <IonSegmentButton value="preset">
-                  <IonLabel className="text-md lg:text-lg">Preset</IonLabel>
-                  <IonIcon icon={imagesOutline} size="small" />
+                  <IonLabel className="text-sm lg:text-md mb-2">
+                    Preset
+                  </IonLabel>
+                  <IonIcon icon={imagesOutline} size="small" className="mt-2" />
                 </IonSegmentButton>
                 <IonSegmentButton value="user">
-                  <IonLabel className="text-md lg:text-lg">
+                  <IonLabel className="text-sm lg:text-md mb-2">
                     Your Boards
                   </IonLabel>
-                  <IonIcon icon={personOutline} size="small" />
+                  <IonIcon icon={personOutline} size="small" className="mt-2" />
                 </IonSegmentButton>
               </IonSegment>
             )}

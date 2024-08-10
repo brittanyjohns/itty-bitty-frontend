@@ -6,6 +6,7 @@ import {
   IonCard,
   IonContent,
   IonHeader,
+  IonIcon,
   IonImg,
   IonInput,
   IonItem,
@@ -26,7 +27,12 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 import BoardView from "../../components/boards/BoardView";
 import { Team } from "../../data/teams";
 import Tabs from "../../components/utils/Tabs";
-import { text } from "ionicons/icons";
+import {
+  fastFoodOutline,
+  gridOutline,
+  layersOutline,
+  text,
+} from "ionicons/icons";
 import { set } from "react-hook-form";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
@@ -165,13 +171,19 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
             <IonSegment
               value={segmentType}
               onIonChange={handleSegmentChange}
-              className="w-full bg-inherit my-2 p-2"
+              className="w-full bg-inherit mb-2"
             >
               <IonSegmentButton value="menuTab">
-                <IonLabel className="text-md lg:text-lg">Menu</IonLabel>
+                <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
+                  Menu
+                </IonLabel>
+                <IonIcon className="mt-2" icon={fastFoodOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="boardTab">
-                <IonLabel className="text-md lg:text-lg">Board</IonLabel>
+                <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
+                  Board
+                </IonLabel>
+                <IonIcon className="mt-2" icon={gridOutline} />
               </IonSegmentButton>
             </IonSegment>
           </IonHeader>

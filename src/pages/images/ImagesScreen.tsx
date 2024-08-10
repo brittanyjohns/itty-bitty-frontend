@@ -161,12 +161,14 @@ const ImagesScreen: React.FC = () => {
             className="w-full bg-inherit"
           >
             <IonSegmentButton value="all">
-              <IonLabel className="text-md lg:text-lg">Gallery</IonLabel>
-              <IonIcon icon={imagesOutline} />
+              <IonLabel className="text-sm lg:text-md mb-2">Gallery</IonLabel>
+              <IonIcon className="mt-2" icon={imagesOutline} />
             </IonSegmentButton>
             <IonSegmentButton value="user">
-              <IonLabel className="text-md lg:text-lg">Your Images</IonLabel>
-              <IonIcon icon={personOutline} />
+              <IonLabel className="text-sm lg:text-md mb-2">
+                Your Images
+              </IonLabel>
+              <IonIcon className="mt-2" icon={personOutline} />
             </IonSegmentButton>
           </IonSegment>
           <div className="p-2 w-7/8 md:w-5/6 mx-auto">

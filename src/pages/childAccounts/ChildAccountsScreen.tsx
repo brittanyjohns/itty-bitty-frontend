@@ -70,7 +70,7 @@ const ChildAccountsScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <div className="p-1 w-full md:w-3/4 mx-auto">
+          <div className="p-2 w-7/8 md:w-5/6 mx-auto">
             {currentUser && childAccounts?.length === 0 && (
               <div className="p-1 w-full md:w-3/4 mx-auto border">
                 <h2 className="text-2xl font-semibold text-center">
@@ -116,9 +116,8 @@ const ChildAccountsScreen: React.FC = () => {
                 </div>
               )}
             </div>
+            <ChildAccountList childAccounts={childAccounts} />
           </div>
-
-          <ChildAccountList childAccounts={childAccounts} />
         </IonContent>
         {currentUser && <Tabs />}
       </IonPage>

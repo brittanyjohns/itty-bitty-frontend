@@ -74,17 +74,16 @@ const Home: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <div>
-            {currentUser && (
+          <div className="bg-inherit shadow-none w-full md:w-3/4 lg:w-2/3 mx-auto ion-padding">
+            {(currentUser && (
               <UserHome
                 userName={currentUser?.name || currentUser.email}
                 trialDaysLeft={currentUser?.trial_days_left}
                 freeAccount={currentUser?.plan_type === "free"}
                 tokens={currentUser?.tokens ? currentUser.tokens : 0}
               />
-            )}
+            )) || <MainPageContent ipAddr={ip} />}
           </div>
-          {!currentUser && <MainPageContent ipAddr={ip} />}
 
           {currentAccount && (
             <BoardGrid

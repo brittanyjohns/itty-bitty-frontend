@@ -373,32 +373,32 @@ const ViewImageScreen: React.FC = () => {
             <IonSegment
               value={segmentType}
               onIonChange={handleSegmentChange}
-              className="w-full bg-inherit my-5"
+              className="w-full bg-inherit mb-2"
             >
               <IonSegmentButton value="gallery">
-                <IonLabel className="sm:text-sm md:text-md lg:text-lg">
+                <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
                   Gallery
                 </IonLabel>
-                <IonIcon icon={gridOutline} />
+                <IonIcon className="mt-2" icon={gridOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="upload">
-                <IonLabel className="sm:text-sm md:text-md lg:text-lg">
+                <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
                   Upload
                 </IonLabel>
-                <IonIcon icon={cloudUploadOutline} />
+                <IonIcon className="mt-2" icon={cloudUploadOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="generate">
-                <IonLabel className="sm:text-sm md:text-md lg:text-lg">
+                <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
                   Generate
                 </IonLabel>
-                <IonIcon icon={refreshCircleOutline} />
+                <IonIcon className="mt-2" icon={refreshCircleOutline} />
               </IonSegmentButton>
               {showHardDelete && (
                 <IonSegmentButton value="delete">
-                  <IonLabel className="sm:text-sm md:text-md lg:text-lg">
+                  <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
                     Delete
                   </IonLabel>
-                  <IonIcon icon={trashBinOutline} />
+                  <IonIcon className="mt-2" icon={trashBinOutline} />
                 </IonSegmentButton>
               )}
             </IonSegment>

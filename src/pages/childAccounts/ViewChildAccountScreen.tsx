@@ -27,6 +27,8 @@ import {
   mailOutline,
   addCircleOutline,
   pencilOutline,
+  paperPlaneOutline,
+  createOutline,
 } from "ionicons/icons";
 import BoardGrid from "../../components/boards/BoardGrid";
 import ChildBoardDropdown from "../../components/childBoards/ChildBoardDropdown";
@@ -69,6 +71,7 @@ const ViewChildAccountScreen: React.FC = () => {
     }
     setChildAccount(childAccountToSet);
     if (childAccountToSet?.boards) {
+      console.log("childAccountToSet.boards", childAccountToSet.boards);
       setBoards(childAccountToSet.boards);
     }
     const userBoards = currentUser.boards;
@@ -103,38 +106,6 @@ const ViewChildAccountScreen: React.FC = () => {
   const handleSegmentChange = (e: CustomEvent) => {
     const newSegment = e.detail.value;
     setSegmentType(newSegment);
-  };
-
-  const renderBoardGrid = (
-    segmentType: string,
-    currentUser?: User | null,
-    currentAccount?: ChildAccount
-  ) => {
-    if (segmentType === "boardTab") {
-      let gridType = "";
-      let boards: any[] = []; // Replace `any` with the actual type of `boards` if known
-
-      if (currentUser?.role === "admin") {
-        gridType = "user";
-        boards = currentUser.boards || [];
-      } else if (currentAccount) {
-        gridType = "child";
-        boards = currentAccount.boards || [];
-      } else {
-        gridType = "user";
-        boards = currentUser?.boards || [];
-      }
-
-      if (boards && boards.length > 0) {
-        return (
-          <div>
-            <IonLabel>Boards</IonLabel>
-            <BoardGrid boards={boards} gridType={gridType} />
-          </div>
-        );
-      }
-    }
-    return null;
   };
 
   if (loading) {
@@ -187,26 +158,32 @@ const ViewChildAccountScreen: React.FC = () => {
               onIonChange={handleSegmentChange}
               className="w-full bg-inherit"
             >
+              <IonSegmentButton value="gallery">
+                <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
+                  Gallery
+                </IonLabel>
+                <IonIcon className="mt-2" icon={gridOutline} />
+              </IonSegmentButton>
               <IonSegmentButton value="childAccountTab">
-                <p className="text-xl">
-                  <IonIcon
-                    icon={peopleCircleOutline}
-                    className="text-2xl mt-3 mb-2"
-                  />
-                </p>
+                <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
+                  Account
+                </IonLabel>
+                <IonIcon className="mt-2" icon={peopleCircleOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="boardTab">
-                <p className="text-xl">
-                  <IonIcon icon={gridOutline} />
-                </p>
+                <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
+                  Boards
+                </IonLabel>
+                <IonIcon className="mt-2" icon={gridOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="newAccountTab">
-                <p className="text-xl">
-                  <IonIcon
-                    icon={childAccount ? pencilOutline : addCircleOutline}
-                    className="text-2xl mt-3 mb-2"
-                  />
-                </p>
+                <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
+                  Edit
+                </IonLabel>
+                <IonIcon
+                  className="mt-2"
+                  icon={childAccount ? createOutline : addCircleOutline}
+                />
               </IonSegmentButton>
             </IonSegment>
           )}
@@ -245,7 +222,12 @@ const ViewChildAccountScreen: React.FC = () => {
               )}
             </div>
           )}
-          {renderBoardGrid(segmentType, currentUser, childAccount)}
+          {segmentType === "boardTab" && (
+            <div className="mt-4">
+              <h1 className="text-2xl text-center">Boards</h1>
+              <BoardGrid boards={boards} gridType="child" />
+            </div>
+          )}
           {segmentType === "newAccountTab" && (
             <div className="p-4 text-center">
               {childAccount ? (
