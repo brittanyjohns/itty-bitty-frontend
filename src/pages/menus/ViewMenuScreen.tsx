@@ -12,6 +12,7 @@ import {
   IonItem,
   IonLabel,
   IonList,
+  IonLoading,
   IonPage,
   IonSegment,
   IonSegmentButton,
@@ -84,9 +85,14 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
     return menuToSet;
   };
 
+  const [showLoading, setShowLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState("Loading images");
+
   useEffect(() => {
     fetchMenu();
     if (menu?.status !== "complete") {
+      setLoadingMessage("Please wait while we generate your menu board...");
+      setShowLoading(true);
       const intervalId = setInterval(() => {
         console.log("Checking for menu board...");
 
@@ -95,6 +101,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
       return () => clearInterval(intervalId); // Cleanup interval on component unmount
     } else {
       console.log("Symbol created successfully.");
+      setShowLoading(false);
     }
   }, [status]);
 
@@ -220,10 +227,10 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
             {menu && menu.status && menu.status !== "complete" && (
               <IonList className=" text-xl" style={{ marginTop: "20px" }}>
                 <IonItem lines="none" className="ion-margin-bottom">
-                  <p className="text-xl md:text-2xl mb-4">
+                  <p className="text-lg md:text-xl mb-4">
                     This menu is currently being processed. Please wait. This
-                    may take a few minutes. This page will refresh automatically
-                    once the menu is ready.
+                    may take a few minutes.<br></br> This page will refresh
+                    automatically once the menu is ready.
                   </p>
                 </IonItem>
               </IonList>
@@ -302,6 +309,12 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
               />
             )}
           </div>
+          <IonLoading
+            className="loading-icon"
+            cssClass="loading-icon"
+            isOpen={showLoading}
+            message={loadingMessage}
+          />
         </IonContent>
         <Tabs />
       </IonPage>
