@@ -22,3 +22,14 @@ export const fetchWordEventsByUserId = async (userId: number) => {
   const data: WordEvent[] = await response.json();
   return data;
 };
+
+export const fetchWordEventsByAccountId = async (accountId: number) => {
+  const response = await fetch(
+    `${BASE_URL}word_events?account_id=${accountId}`,
+    {
+      headers: userHeaders,
+    }
+  );
+  const data: WordEvent[] = await response.json();
+  return data;
+};
