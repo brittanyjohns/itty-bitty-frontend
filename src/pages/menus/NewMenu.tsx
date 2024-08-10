@@ -26,6 +26,7 @@ import MainMenu from "../../components/main_menu/MainMenu";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import ImageCropper from "../../components/images/ImageCropper";
+import { set } from "d3";
 
 type NewMenu = {
   name: string;
@@ -109,35 +110,29 @@ const NewMenu: React.FC = (props: any) => {
 
   const handleNameInput = (event: any) => {
     setName(event.target.value);
-    console.log("name: ", event.target.value);
   };
 
   const onFileChange = (event: any) => {
     event.preventDefault();
-    console.log("File: ", event.target.files[0]);
     let file = event.target.files[0];
 
     console.log("File: ", file);
     handleFile(file);
-    console.log("Image source: ", imageSrc);
     return menu;
   };
 
   const handlePaste = (file: File) => {
-    console.log("Pasted: ", file);
-
     handleFile(file);
     const fileField = document.querySelector("#file_field") as HTMLImageElement;
-    console.log("fileField", fileField);
     if (fileField) {
       fileField.hidden = true;
-
-      // fileField.src = URL.createObjectURL(file);
     }
   };
 
   const handleCancel = () => {
     window.location.reload();
+    setShowLoading(false);
+    setImageSrc(null);
   };
 
   const handleFile = (file: File) => {
@@ -202,17 +197,13 @@ const NewMenu: React.FC = (props: any) => {
                 Create a new menu board
               </h1>
             </IonItem>
-            <IonItem lines="none" className="ion-margin-bottom mx-4">
+            <IonItem lines="none" className="ion-margin-bottom mx-2">
               <h1 className="text-center text-md">
                 Upload or paste an image to create a new menu
               </h1>
             </IonItem>
-            <form
-              className="ion-padding"
-              onSubmit={uploadPhoto}
-              encType="multipart/form-data"
-            >
-              <IonItem lines="none" className="ion-margin-bottom">
+            <form onSubmit={uploadPhoto} encType="multipart/form-data">
+              <IonItem lines="none">
                 <IonInput
                   label="Name"
                   placeholder="Enter new menu name"
@@ -223,7 +214,7 @@ const NewMenu: React.FC = (props: any) => {
 
               <IonItem lines="none" className="ion-margin-bottom">
                 <input
-                  className="bg-inherit w-full p-4 rounded-md"
+                  className="bg-inherit w-full p-2 rounded-md"
                   type="file"
                   id="file_field"
                   onChange={(ev) => onFileChange(ev)}
@@ -251,14 +242,11 @@ const NewMenu: React.FC = (props: any) => {
                   required
                 ></IonInput>
               </IonItem>
-              <IonCard className="p-4 m-4 border text-center">
+              <IonCard className="p-2 m-2 border text-center">
                 <h2 className="text-xl font-bold">Paste an image</h2>
                 <p className="text-sm">Right-click and paste an image here</p>
                 <IonItem className="mt-4">
-                  <IonTextarea
-                    placeholder="Paste an image here"
-                    readonly
-                  ></IonTextarea>
+                  <IonTextarea rows={8}></IonTextarea>
                   <ImagePasteHandler setFile={handlePaste} />
                 </IonItem>
                 {imageSrc && (

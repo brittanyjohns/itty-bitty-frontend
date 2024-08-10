@@ -295,8 +295,6 @@ const ViewImageScreen: React.FC = () => {
     if (result["status"] === "ok") {
       console.log("Symbol created successfully.", result);
       setCreatingSymbol(true);
-      // alert("Symbol created successfully.");
-      // window.location.reload();
     } else {
       setShowLoading(false);
       alert("Error creating symbol.\n" + result["message"]);

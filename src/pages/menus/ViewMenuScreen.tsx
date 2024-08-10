@@ -53,6 +53,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
   const [currentUserTeams, setCurrentUserTeams] = useState<Team[]>();
   const [showIcon, setShowIcon] = useState(false);
   const [boardError, setBoardError] = useState(false);
+  const [status, setStatus] = useState("");
 
   const fetchMenu = async () => {
     const menuToSet = await getMenu(Number(id));
@@ -61,6 +62,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
       return;
     }
     setMenu(menuToSet);
+    setStatus(menuToSet.status);
     setBoard(menuToSet.board);
     setImages(menuToSet.images);
     toggleForms(segmentType);
@@ -69,8 +71,32 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
       return img.status;
     });
     console.log("Image statuses", imgStatuses);
+    if (
+      imgStatuses?.includes("generating") ||
+      imgStatuses?.includes("pending")
+    ) {
+      setStatus("generating");
+      return menuToSet;
+    } else {
+      console.log("Images are complete");
+      setStatus("complete");
+    }
     return menuToSet;
   };
+
+  useEffect(() => {
+    fetchMenu();
+    if (menu?.status !== "complete") {
+      const intervalId = setInterval(() => {
+        console.log("Checking for menu board...");
+
+        fetchMenu();
+      }, 3000); // Check every 5 seconds
+      return () => clearInterval(intervalId); // Cleanup interval on component unmount
+    } else {
+      console.log("Symbol created successfully.");
+    }
+  }, [status]);
 
   useEffect(() => {
     async function getData() {
@@ -166,7 +192,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
           endLink="/menus/new"
         />
 
-        <IonContent scrollY={true}>
+        <IonContent className="ion-padding">
           <IonHeader className="bg-inherit shadow-none">
             <IonSegment
               value={segmentType}
@@ -193,10 +219,11 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
             </h1>
             {menu && menu.status && menu.status !== "complete" && (
               <IonList className=" text-xl" style={{ marginTop: "20px" }}>
-                <IonItem lines="none" className="">
-                  <p className="text-xl md:text-2xl">
-                    This menu is currently being processed. Please wait a few
-                    seconds and refresh the page.
+                <IonItem lines="none" className="ion-margin-bottom">
+                  <p className="text-xl md:text-2xl mb-4">
+                    This menu is currently being processed. Please wait. This
+                    may take a few minutes. This page will refresh automatically
+                    once the menu is ready.
                   </p>
                 </IonItem>
               </IonList>
@@ -213,7 +240,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
             )}
 
             {menu && menu.displayImage && (
-              <div className="w-7/8 md:w-2/3 lg:w-3/4 mx-auto">
+              <div className="w-7/8 md:w-2/3 lg:w-3/4 mx-auto mt-4">
                 <IonImg src={menu.displayImage} alt={menu.name} />
               </div>
             )}
