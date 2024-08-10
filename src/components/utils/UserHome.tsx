@@ -116,7 +116,7 @@ const UserHome: React.FC<UserHomeProps> = ({
                   Customize your profile and preferences.
                 </li>
                 <li
-                  onClick={() => history.push("/boards/new")}
+                  onClick={() => history.push("/boards")}
                   className="cursor-pointer  hover:underline text-blue-700"
                 >
                   Create a new communication board.
