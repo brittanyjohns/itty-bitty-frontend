@@ -1,6 +1,5 @@
 import { Image } from "./images";
 import { BASE_URL, userHeaders } from "./constants";
-export const REFRESH_RATE = 45000;
 export interface ChildBoard {
   id?: string;
   name: string;
@@ -35,8 +34,6 @@ export const signedInHeaders = {
 export const getChildBoards = (
   childAccountId: number
 ): Promise<ChildBoard[]> => {
-  console.log("childAccountId", childAccountId);
-  console.log("signedInHeaders", signedInHeaders);
   const boards = fetch(`${BASE_URL}child_boards/${childAccountId}`, {
     headers: signedInHeaders,
   }) // `localhostboards

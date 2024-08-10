@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  ChildBoard,
-  getChildBoard,
-  REFRESH_RATE,
-} from "../../data/child_boards";
+import { ChildBoard, getChildBoard } from "../../data/child_boards";
+import { REFRESH_RATE } from "../../data/constants";
 import {
   IonButton,
   IonButtons,

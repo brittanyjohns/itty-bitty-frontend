@@ -41,12 +41,15 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [currentAccount, setCurrentAccount] = useState<ChildAccount | null>(
     null
   );
-  const isWideScreen = useMediaQuery({ query: "(min-width: 768px)" });
+  const isWideScreen = useMediaQuery({ query: "(min-width: 1200px)" });
   const platforms = getPlatforms();
   const isDesktop = platforms.includes("desktop");
+  const isTablet = platforms.includes("tablet");
   const fetchUser = async () => {
     // Assuming you have a function to fetch the current user
     const user = await getCurrentUser();
+
+    const showTabs = isTablet && isWideScreen;
 
     if (user) {
       setCurrentUser(user);
@@ -58,6 +61,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
     return user;
   };
+
   const fetchAccount = async () => {
     // Assuming you have a function to fetch the current user
     const account = await getCurrentAccount();
@@ -81,14 +85,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       return;
     }
     setCurrentUser(null);
-    console.log("No user signed in");
     if (isAccountSignedIn()) {
       fetchAccount();
       console.log("Account signed in");
       return;
     }
     setCurrentAccount(null);
-    console.log("No account signed in");
   }, []);
 
   return (

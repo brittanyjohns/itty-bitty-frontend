@@ -13,12 +13,9 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useState, useEffect } from "react";
 import { WordEvent } from "../../data/word_event";
 import MainHeader, { closeMainMenu } from "../MainHeader";
-import {
-  ChildBoard,
-  REFRESH_RATE,
-  getCurrentChildBoards,
-} from "../../data/child_boards";
+import { ChildBoard, getCurrentChildBoards } from "../../data/child_boards";
 import StaticMenu from "../../components/main_menu/StaticMenu";
+import { REFRESH_RATE } from "../../data/constants";
 import ChildBoardGrid from "../../components/childBoards/ChildBoardGrid";
 interface DashboardProps {
   userType?: string;

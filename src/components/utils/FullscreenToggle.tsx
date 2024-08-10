@@ -1,3 +1,4 @@
+import { useIonViewDidLeave } from "@ionic/react";
 import React, { useEffect, useRef, useState } from "react";
 
 // Extend the Document and HTMLElement interfaces to include vendor-prefixed properties
@@ -61,6 +62,12 @@ const FullscreenToggle: React.FC = () => {
       );
     };
   }, []);
+
+  useIonViewDidLeave(() => {
+    if (isFullscreen) {
+      document.exitFullscreen().catch((err) => console.error(err));
+    }
+  }, [isFullscreen]);
 
   const toggleFullscreen = () => {
     const elem = document.documentElement;

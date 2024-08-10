@@ -13,6 +13,8 @@ import {
   IonLoading,
   IonMenuButton,
   IonPage,
+  IonRefresher,
+  IonRefresherContent,
   IonSegment,
   IonSegmentButton,
   IonText,
@@ -22,6 +24,7 @@ import {
   useIonViewWillEnter,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
+import { AUTO_REFRESH_RATE } from "../../data/constants";
 import {
   getImage,
   Image,
@@ -38,8 +41,6 @@ import {
   addCircleOutline,
   cloudUploadOutline,
   gridOutline,
-  imagesOutline,
-  personOutline,
   refreshCircleOutline,
   trashBinOutline,
 } from "ionicons/icons";
@@ -48,9 +49,9 @@ import MainHeader from "../MainHeader";
 import ImageCropper from "../../components/images/ImageCropper";
 import { Board, getBoards } from "../../data/boards";
 import { generatePlaceholderImage } from "../../data/utils";
-import { set } from "react-hook-form";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import Tabs from "../../components/utils/Tabs";
+import { set } from "d3";
 
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -73,6 +74,7 @@ const ViewImageScreen: React.FC = () => {
   const [filteredBoards, setFilteredBoards] = useState<Board[]>([]);
   const [newImageWord, setNewImageWord] = useState("");
   const [wordsToRemove, setWordsToRemove] = useState<string[]>([]);
+  const [creatingSymbol, setCreatingSymbol] = useState(false);
 
   const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
     if (
@@ -101,7 +103,7 @@ const ViewImageScreen: React.FC = () => {
       currentUser?.role === "admin" || currentUser?.id === image?.user_id
     );
     setBoardId(boardId);
-    getData();
+    await getData();
     if (image && image.src) {
       setCurrentImage(image.src);
     }
@@ -110,6 +112,22 @@ const ViewImageScreen: React.FC = () => {
   useEffect(() => {
     setupData();
   }, []);
+
+  useEffect(() => {
+    setupData();
+
+    if (creatingSymbol) {
+      const intervalId = setInterval(() => {
+        console.log("Checking for symbol...");
+        getData();
+        setShowLoading(false);
+        setCreatingSymbol(false);
+      }, 3000); // Check every 5 seconds
+      return () => clearInterval(intervalId); // Cleanup interval on component unmount
+    } else {
+      console.log("Symbol created successfully.");
+    }
+  }, [creatingSymbol]);
 
   const getData = async () => {
     const imgToSet = await fetchImage();
@@ -141,7 +159,6 @@ const ViewImageScreen: React.FC = () => {
   const handleDeleteImage = async () => {
     if (!image) return;
     const result = await deleteImage(image.id);
-    console.log("Delete Image Result: ", result);
     if (result["status"] === "ok") {
       history.push("/images");
     } else {
@@ -157,6 +174,13 @@ const ViewImageScreen: React.FC = () => {
     } else {
       alert("Error removing display image.\n" + result["message"]);
     }
+  };
+
+  const refresh = (e: CustomEvent) => {
+    setTimeout(() => {
+      e.detail.complete();
+      setupData();
+    }, 3000);
   };
 
   const toggleForms = (segmentType: string, imgToSet?: Image) => {
@@ -267,11 +291,14 @@ const ViewImageScreen: React.FC = () => {
     if (!image) return;
     setShowLoading(true);
     const result = await create_symbol(image.id);
-    setShowLoading(false);
+    // setShowLoading(false);
     if (result["status"] === "ok") {
+      console.log("Symbol created successfully.", result);
+      setCreatingSymbol(true);
       // alert("Symbol created successfully.");
-      window.location.reload();
+      // window.location.reload();
     } else {
+      setShowLoading(false);
       alert("Error creating symbol.\n" + result["message"]);
     }
   };
@@ -332,6 +359,16 @@ const ViewImageScreen: React.FC = () => {
         />
 
         <IonContent className="ion-padding">
+          <IonRefresher slot="fixed" onIonRefresh={refresh}>
+            <IonRefresherContent>
+              <IonLoading
+                className="loading-icon"
+                cssClass="loading-icon"
+                isOpen={showLoading}
+                message={"Refreshing... Please wait."}
+              />
+            </IonRefresherContent>
+          </IonRefresher>
           <IonHeader className="bg-inherit shadow-none">
             <IonSegment
               value={segmentType}
