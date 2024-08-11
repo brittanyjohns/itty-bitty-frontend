@@ -250,23 +250,23 @@ const UserRoutes: React.FC = () => (
 );
 
 const App: React.FC = () => {
-  const [showCookiesConsent, setShowCookiesConsent] = useState(false);
+  // const [showCookiesConsent, setShowCookiesConsent] = useState(false);
 
-  useEffect(() => {
-    const cookiesConsent = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("cookies_consent=true"));
+  // useEffect(() => {
+  //   const cookiesConsent = document.cookie
+  //     .split("; ")
+  //     .find((row) => row.startsWith("cookies_consent=true"));
 
-    if (!cookiesConsent) {
-      console.log("No cookies consent found");
-      setShowCookiesConsent(true);
-    }
-  }, []);
+  //   if (!cookiesConsent) {
+  //     console.log("No cookies consent found");
+  //     setShowCookiesConsent(true);
+  //   }
+  // }, []);
 
   return (
     <IonApp>
       <UserRoutes />
-      {showCookiesConsent && <CookiesConsent />}
+      {/* {showCookiesConsent && <CookiesConsent />} */}
     </IonApp>
   );
 };

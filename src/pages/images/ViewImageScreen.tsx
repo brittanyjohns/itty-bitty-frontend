@@ -67,7 +67,8 @@ const ViewImageScreen: React.FC = () => {
   const imageGridWrapper = useRef<HTMLDivElement>(null);
   const deleteImageWrapper = useRef<HTMLDivElement>(null);
   const [pageTitle, setPageTitle] = useState("");
-  const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
+  const { currentUser, isWideScreen, currentAccount, smallScreen } =
+    useCurrentUser();
   const [boardId, setBoardId] = useState<string | null>(null);
   const [nextImageWords, setNextImageWords] = useState<string[]>([]);
   const [boards, setBoards] = useState<Board[]>([]);
@@ -374,28 +375,45 @@ const ViewImageScreen: React.FC = () => {
               className="w-full bg-inherit mb-2"
             >
               <IonSegmentButton value="gallery">
-                <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
-                  Gallery
-                </IonLabel>
+                {!smallScreen ? (
+                  <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
+                    Gallery
+                  </IonLabel>
+                ) : (
+                  <IonLabel className="text-sm md:text-md lg:text-lg mb-2"></IonLabel>
+                )}
                 <IonIcon className="mt-2" icon={gridOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="upload">
-                <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
-                  Upload
-                </IonLabel>
+                {!smallScreen ? (
+                  <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
+                    Upload
+                  </IonLabel>
+                ) : (
+                  <IonLabel className="text-sm md:text-md lg:text-lg mb-2"></IonLabel>
+                )}
+
                 <IonIcon className="mt-2" icon={cloudUploadOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="generate">
-                <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
-                  Generate
-                </IonLabel>
+                {!smallScreen ? (
+                  <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
+                    Generate
+                  </IonLabel>
+                ) : (
+                  <IonLabel className="text-sm md:text-md lg:text-lg mb-2"></IonLabel>
+                )}
                 <IonIcon className="mt-2" icon={refreshCircleOutline} />
               </IonSegmentButton>
               {showHardDelete && (
                 <IonSegmentButton value="delete">
-                  <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
-                    Delete
-                  </IonLabel>
+                  {!smallScreen ? (
+                    <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
+                      Delete
+                    </IonLabel>
+                  ) : (
+                    <IonLabel className="text-sm md:text-md lg:text-lg mb-2"></IonLabel>
+                  )}
                   <IonIcon className="mt-2" icon={trashBinOutline} />
                 </IonSegmentButton>
               )}
@@ -417,13 +435,15 @@ const ViewImageScreen: React.FC = () => {
             </div>
           </div>
           <div className="mt-6 py-3 px-1 hidden" ref={uploadForm}>
-            {image && (
-              <ImageCropper
-                existingId={image.id}
-                boardId={boardId}
-                existingLabel={image.label}
-              />
-            )}
+            <div className="w-full md:w-3/4 mx-auto m-2">
+              {image && (
+                <ImageCropper
+                  existingId={image.id}
+                  boardId={boardId}
+                  existingLabel={image.label}
+                />
+              )}
+            </div>
           </div>
           <div className="mt-6 hidden" ref={generateForm}>
             <IonList className="w-full md:w-3/4 lg:w-1/2 mx-auto" lines="none">
@@ -463,17 +483,20 @@ const ViewImageScreen: React.FC = () => {
 
           <div className="mt-6 hidden" ref={imageGridWrapper}>
             {image && image.docs && image.docs.length > 0 && (
-              <div className="ion-padding">
-                <IonLabel className="font-sans text-md">
+              <div className="w-full md:w-3/4 lg:w-2/3 mx-auto">
+                <IonLabel className="font-bold text-sm md:text-md lg:text-lg">
                   Click an image to display it for the word: "{image.label}"
                 </IonLabel>
-                <div className="grid grid-cols-3 gap-4 mt-3" ref={imageGrid}>
+                <div
+                  className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 mt-3"
+                  ref={imageGrid}
+                >
                   {/* This needs pulled out into a separate component */}
                   {image?.docs &&
                     image.docs.map((doc, index) => (
                       <div
                         key={doc.id}
-                        className={`h-20 w-20 ${
+                        className={` ${
                           image.bg_color || "bg-white"
                         } p-1 rounded-lg shadow-md`}
                       >
@@ -491,15 +514,15 @@ const ViewImageScreen: React.FC = () => {
             )}
 
             {image && boards && (
-              <div className="mt-6 flex justify-center gap-4">
-                <div className="mx-auto p-1 w-1/2">
+              <div className="mt-6 flex justify-center gap-2  w-full md:w-1/2 mx-auto">
+                <div className="mx-auto w-full">
                   {boards && boards.length > 0 && (
                     <BoardDropdown imageId={image.id} boards={boards} />
                   )}
                 </div>
                 {image?.user_image_boards &&
                   image?.user_image_boards?.length > 0 && (
-                    <div className="mx-auto">
+                    <div className="mx-auto ">
                       <IonText className="text-md">
                         This image is on the following boards:
                       </IonText>
@@ -518,13 +541,14 @@ const ViewImageScreen: React.FC = () => {
               </div>
             )}
             {currentUser?.admin && (
-              <div className="mt-10 w-full">
-                <IonButtons className="flex justify-between">
+              <div className="mt-10 w-full md:w-1/2 mx-auto">
+                <div className="flex justify-between">
                   {!image?.no_next && (
                     <IonButton
                       onClick={handleNextWords}
                       className="text-sm font-mono"
                       slot="start"
+                      fill="outline"
                     >
                       Set Next Words
                     </IonButton>
@@ -532,16 +556,18 @@ const ViewImageScreen: React.FC = () => {
                   <IonButton
                     routerLink={`/predictive/${image?.id}`}
                     className="text-sm font-mono"
+                    fill="outline"
                   >
                     View Predictive
                   </IonButton>
                   <IonButton
                     onClick={createSymbol}
                     className="text-sm font-mono"
+                    fill="outline"
                   >
                     Create Symbol
                   </IonButton>
-                </IonButtons>
+                </div>
                 <div className="text-sm font-mono w-full">
                   {image?.image_prompt && (
                     <div className="mt-2">
@@ -579,10 +605,11 @@ const ViewImageScreen: React.FC = () => {
                     placeholder="Enter word"
                     onIonInput={(e) => setNewImageWord(e.detail.value ?? "")}
                   ></IonInput>
-                  <IonButtons className="mt-2">
+                  <div className="mt-2">
                     <IonButton
                       className="mt-2 w-full"
                       onClick={handleAddNextWords}
+                      fill="outline"
                     >
                       Add Word
                     </IonButton>
@@ -590,17 +617,18 @@ const ViewImageScreen: React.FC = () => {
                       className="mt-2 w-full"
                       color={"danger"}
                       onClick={handleDeleteSelected}
+                      fill="outline"
                     >
                       Delete Selected
                     </IonButton>
-                  </IonButtons>
+                  </div>
                 </div>
               </div>
             )}
           </div>
           <div className="hidden p-4" ref={deleteImageWrapper}>
             {image && image.display_doc?.id && (
-              <div className="mb-4">
+              <div className="mb-4 w-full md:w-1/2 mx-auto">
                 <IonText className="text-xl">
                   Do you want to delete ONLY the above image?
                 </IonText>
@@ -613,7 +641,7 @@ const ViewImageScreen: React.FC = () => {
               </div>
             )}
             {showHardDelete && (
-              <div className="m-4 pt-4">
+              <div className="m-4 pt-4 w-full md:w-1/2 mx-auto">
                 <IonText className="text-md">
                   Do you want to delete this image AND all variations of it?
                 </IonText>

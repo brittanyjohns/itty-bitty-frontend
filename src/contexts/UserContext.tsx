@@ -24,6 +24,7 @@ export interface UserContextType {
   isWideScreen: boolean;
   platforms: string[];
   currentAccount: ChildAccount | null;
+  smallScreen: boolean;
   setCurrentAccount: React.Dispatch<React.SetStateAction<ChildAccount | null>>;
 }
 
@@ -45,6 +46,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const platforms = getPlatforms();
   const isDesktop = platforms.includes("desktop");
   const isTablet = platforms.includes("tablet");
+  const smallScreen = useMediaQuery({ query: "(max-width: 350px)" });
   const fetchUser = async () => {
     // Assuming you have a function to fetch the current user
     const user = await getCurrentUser();
@@ -103,6 +105,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         isDesktop,
         isWideScreen,
         platforms,
+        smallScreen,
       }}
     >
       {children}

@@ -10,6 +10,7 @@ import MainHeader from "./MainHeader";
 import StaticMenu from "../components/main_menu/StaticMenu";
 import UserHome from "../components/utils/UserHome";
 import { useEffect, useState } from "react";
+import CookiesConsent from "../components/utils/CookieConsent";
 const Demo: React.FC = () => {
   const { isWideScreen, currentAccount, currentUser } = useCurrentUser();
   const [ip, setIP] = useState("");
@@ -27,6 +28,19 @@ const Demo: React.FC = () => {
       e.detail.complete();
     }, 3000);
   };
+
+  const [showCookiesConsent, setShowCookiesConsent] = useState(false);
+
+  useEffect(() => {
+    const cookiesConsent = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("cookies_consent=true"));
+
+    if (!cookiesConsent) {
+      console.log("No cookies consent found");
+      setShowCookiesConsent(true);
+    }
+  }, []);
 
   return (
     <>
@@ -63,6 +77,7 @@ const Demo: React.FC = () => {
               />
             )}
           </div>
+          {showCookiesConsent && <CookiesConsent />}
         </IonContent>
       </IonPage>
     </>

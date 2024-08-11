@@ -108,11 +108,9 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
   }, [imageSrc]);
 
   const handleSubmit = async (event: React.FormEvent) => {
-    console.log("Existing ID: ", existingId);
     event.preventDefault();
     let createResult;
     if (cropper) {
-      console.log("Cropping image");
       const croppedImage = cropper.getCroppedCanvas().toDataURL();
       createResult = await handleFormSubmit({ croppedImage, fileExtension });
     } else {
@@ -196,7 +194,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
               // labelPlacement="stacked"
               required
               onIonChange={(e) => setLabel(e.detail.value!)}
-              className="p-2 border border-gray-300 rounded my-2 pl-2"
+              className="p-2 my-2 pl-2"
             />
           ) : null}
 
