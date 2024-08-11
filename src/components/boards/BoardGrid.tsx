@@ -32,7 +32,9 @@ const BoardGrid = ({ boards, gridType, loadBoards }: BoardGridProps) => {
   };
 
   useEffect(() => {
-    loadBoards();
+    if (loadBoards) {
+      loadBoards();
+    }
   }, [currentBoards]);
 
   return (
