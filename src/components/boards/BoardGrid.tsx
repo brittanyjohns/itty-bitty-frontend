@@ -1,21 +1,39 @@
-import { createRef, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import { Board } from "../../data/boards";
 import { IonButton } from "@ionic/react";
 import BoardGridItem from "./BoardGridItem";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { deleteChildBoard } from "../../data/child_boards";
 
 interface BoardGridProps {
   boards: Board[];
   gridType?: string;
+  loadBoards?: any;
 }
-const BoardGrid = ({ boards, gridType }: BoardGridProps) => {
-  const [boardId, setBoardId] = useState<string>("");
+const BoardGrid = ({ boards, gridType, loadBoards }: BoardGridProps) => {
   const { currentUser } = useCurrentUser();
   const gridRef = createRef<HTMLDivElement>();
+  const [currentBoards, setCurrentBoards] = useState<Board[]>(boards);
 
-  const handleBoardClick = (board: Board) => {
-    setBoardId(board.id as string);
+  const handleRemoveBoard = async (board: Board) => {
+    console.log("remove board", board);
+    if (!board) return;
+    if (currentUser) {
+      try {
+        await deleteChildBoard(board.id);
+        const updatedBoards = boards.filter((b) => b.id !== board.id);
+        setCurrentBoards(updatedBoards);
+        console.log("updatedBoards", updatedBoards);
+      } catch (error) {
+        console.error("Error removing board: ", error);
+        alert("Error removing board");
+      }
+    }
   };
+
+  useEffect(() => {
+    loadBoards();
+  }, [currentBoards]);
 
   return (
     <div
@@ -27,10 +45,14 @@ const BoardGrid = ({ boards, gridType }: BoardGridProps) => {
           <div
             id={board.id}
             className="rounded-md flex relative p-2"
-            onClick={() => handleBoardClick(board)}
             key={board.id}
           >
-            <BoardGridItem board={board} gridType={gridType} />
+            <BoardGridItem
+              board={board}
+              gridType={gridType}
+              showRemoveBtn={currentUser ? true : false}
+              removeChildBoard={handleRemoveBoard}
+            />
           </div>
         ))}
       {currentUser && boards?.length === 0 && (

@@ -72,7 +72,6 @@ const ViewChildAccountScreen: React.FC = () => {
     }
     setChildAccount(childAccountToSet);
     if (childAccountToSet?.boards) {
-      console.log("childAccountToSet.boards", childAccountToSet.boards);
       setBoards(childAccountToSet.boards);
     }
     const userBoards = currentUser.boards;
@@ -87,7 +86,6 @@ const ViewChildAccountScreen: React.FC = () => {
   const fetchUserBoards = async () => {
     const fetchedBoards = currentUser?.boards;
     setUserBoards(fetchedBoards || []);
-    console.log("fetchedUserBoards", fetchedBoards);
     if (!fetchedBoards) {
       console.error("Error fetching boards");
       return;
@@ -224,16 +222,6 @@ const ViewChildAccountScreen: React.FC = () => {
                       <IonLabel># of Boards</IonLabel>
                       <IonText>{childAccount.boards?.length}</IonText>
                     </IonItem>
-                    <div className="flex justify-center">
-                      <h1 className="text-lg md:text-xl text-center">
-                        Select which boards this account can access
-                      </h1>
-                    </div>
-                    <ChildBoardDropdown
-                      childAccount={childAccount}
-                      boards={userBoards}
-                      onSuccess={fetchChildAccount}
-                    />
                   </IonList>
                 </div>
               )}
@@ -241,8 +229,30 @@ const ViewChildAccountScreen: React.FC = () => {
           )}
           {segmentType === "boardTab" && (
             <div className="mt-4">
-              <h1 className="text-2xl text-center">Boards</h1>
-              <BoardGrid boards={boards} gridType="child" />
+              <div className="flex justify-center">
+                <h1 className="text-lg md:text-xl text-center">
+                  Select which boards this account can access
+                </h1>
+              </div>
+              <div className="w-full md:w-1/2 mx-auto">
+                {childAccount && (
+                  <ChildBoardDropdown
+                    childAccount={childAccount}
+                    boards={userBoards}
+                    onSuccess={fetchChildAccount}
+                  />
+                )}
+              </div>
+              <div className="mt-4">
+                <h1 className="text-2xl text-center mt-4">
+                  Currently Assigned Boards
+                </h1>
+                <BoardGrid
+                  boards={boards}
+                  gridType="child"
+                  loadBoards={fetchChildAccount}
+                />
+              </div>
             </div>
           )}
           {segmentType === "newAccountTab" && (

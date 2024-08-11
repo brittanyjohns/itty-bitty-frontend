@@ -91,7 +91,7 @@ const ViewImageScreen: React.FC = () => {
   const fetchImage = async () => {
     const img = await getImage(id);
     setImage(img);
-    setNextImageWords(img.next_words);
+    setNextImageWords(img?.next_words);
     return img;
   };
 

@@ -71,3 +71,13 @@ export const getCurrentChildBoards = (): Promise<ChildBoard[]> => {
 
   return boards;
 };
+
+export const deleteChildBoard = (id: string) => {
+  return fetch(`${BASE_URL}child_boards/${id}`, {
+    method: "DELETE",
+    headers: userHeaders,
+  })
+    .then((response) => response.json())
+    .then((data) => data)
+    .catch((error) => console.error("Error deleting board: ", error));
+};
