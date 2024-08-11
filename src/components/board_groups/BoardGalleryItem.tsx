@@ -82,6 +82,7 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
       console.log("No audio for board: ", board);
     } else {
       if (onPlayAudioList) {
+        console.log("Playing audio list: ", audioSrc);
         onPlayAudioList(audioSrc);
       }
     }
@@ -103,7 +104,8 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
       console.log("No audio for board: ", board);
       if (!waitToSpeak) {
         console.log("No audio, speaking name: ", name);
-        speak(name);
+        // TODO: Uncomment this line
+        // speak(name);
       }
     } else {
       if (!waitToSpeak) {
