@@ -25,6 +25,8 @@ interface DraggableGridProps {
   onImageClick?: any;
   viewOnClick?: boolean;
   showRemoveBtn?: boolean;
+  compactType?: any;
+  preventCollision?: boolean;
 }
 const DraggableGrid: React.FC<DraggableGridProps> = ({
   images,
@@ -40,6 +42,8 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   onImageClick,
   viewOnClick,
   showRemoveBtn,
+  compactType,
+  preventCollision,
 }) => {
   const [width, setWidth] = useState(window.innerWidth);
   const [rowHeight, setRowHeight] = useState(180);
@@ -90,7 +94,9 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
       width={width}
       rowHeight={rowHeight}
       onLayoutChange={onLayoutChange}
-      margin={[10, 5]}
+      // margin={[5, 5]}
+      compactType={compactType}
+      preventCollision={preventCollision}
     >
       {images.map((img: any, index: number) => (
         <div

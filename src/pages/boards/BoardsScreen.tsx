@@ -122,9 +122,9 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
       );
     }
 
-    if (boardsToSet.length > 0) {
+    if (boardsToSet && boardsToSet?.length > 0) {
       return <BoardGrid gridType={gridType} boards={boardsToSet} />;
-    } else if (boardsToSet.length === 0 && gridType === "user") {
+    } else if (boardsToSet?.length === 0 && gridType === "user") {
       return (
         <>
           <div className="flex flex-col items-center justify-center my-5">

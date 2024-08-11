@@ -41,6 +41,7 @@ import ImageCropper from "../../components/images/ImageCropper";
 import ConfirmDeleteAlert from "../../components/utils/ConfirmDeleteAlert";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
+import ConfirmAlert from "../../components/utils/ConfirmAlert";
 
 const EditBoardScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -74,6 +75,7 @@ const EditBoardScreen: React.FC = () => {
     layout: [],
   };
   const [image, setImage] = useState<Image | null>(initialImage);
+  const [openAlert, setOpenAlert] = useState(false);
   const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
     if (
       currentUser &&
@@ -287,6 +289,8 @@ const EditBoardScreen: React.FC = () => {
                     enableResize={true}
                     viewOnClick={false}
                     showRemoveBtn={false}
+                    compactType={null}
+                    preventCollision={true}
                   />
                 </div>
               )}
@@ -297,25 +301,29 @@ const EditBoardScreen: React.FC = () => {
               )}
             </div>
             <div className="flex justify-between items-center px-4 mt-4">
-              {/* {showEdit && (
-                <IonButton onClick={toggleAddToTeam} className="mr-1 text-xs">
-                  <IonIcon icon={shareOutline} className="mx-2" />
-                  <IonLabel>Share</IonLabel>
-                </IonButton>
-              )} */}
               <IonButton
                 className="text-xs md:text-md lg:text-lg font-bold text-center my-2 cursor-pointer mx-auto text-wrap"
-                onClick={handleRearrangeImages}
+                // onClick={handleRearrangeImages}
+                onClick={() => setOpenAlert(true)}
+                color={"danger"}
               >
                 <IonIcon icon={appsOutline} className="mx-2" />
                 <IonLabel>Reset layout</IonLabel>
               </IonButton>
-              {showEdit && (
-                <ConfirmDeleteAlert
-                  onConfirm={removeBoard}
-                  onCanceled={() => {}}
-                />
-              )}
+              <ConfirmAlert
+                onConfirm={handleRearrangeImages}
+                onCanceled={() => {}}
+                openAlert={openAlert}
+                onDidDismiss={() => setOpenAlert(false)}
+                message="Are you sure you want to reset the layout? - this will revert to the standard layout."
+              />
+              <ConfirmAlert
+                onConfirm={removeBoard}
+                onCanceled={() => {}}
+                openAlert={isOpen}
+                message="Are you sure you want to DELETE this board? This action cannot be undone."
+                onDidDismiss={() => setIsOpen(false)}
+              />
             </div>
           </div>
 

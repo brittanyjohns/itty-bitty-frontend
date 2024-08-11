@@ -218,7 +218,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
             />
           </div>
         )}
-        <FloatingWordsBtn inputRef={inputRef} words={board?.floating_words} />
+        {/* <FloatingWordsBtn inputRef={inputRef} words={board?.floating_words} /> */}
         <ActivityTrackingConsent />
       </IonContent>
     </IonPage>

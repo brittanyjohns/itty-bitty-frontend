@@ -28,10 +28,10 @@ const BoardGroupGrid = ({ boardGroups }: BoardGridProps) => {
         ))}
       {currentUser && boardGroups?.length === 0 && (
         <div className="text-center">
-          <p className="text-lg">No boardGroups found</p>
+          <p className="text-lg">No groups found</p>
 
           <IonButton routerLink="/board-groups/new" color="primary">
-            Create a new boardGroup
+            Create a new board group
           </IonButton>
         </div>
       )}

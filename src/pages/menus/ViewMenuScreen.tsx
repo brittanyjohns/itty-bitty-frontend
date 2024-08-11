@@ -90,11 +90,11 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
 
   useEffect(() => {
     fetchMenu();
-    if (menu?.status !== "complete") {
+    if (menu?.status !== "complete" && status === "generating") {
       setLoadingMessage("Please wait while we generate your menu board...");
       setShowLoading(true);
       const intervalId = setInterval(() => {
-        console.log("Checking for menu board...");
+        console.log("Checking for menu board...", status);
 
         fetchMenu();
       }, 3000); // Check every 5 seconds
