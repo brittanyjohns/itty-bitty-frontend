@@ -37,6 +37,8 @@ import {
 import { set } from "react-hook-form";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
+import ProgressBar from "../../components/utils/ProgressBar";
+import { rearrangeImages } from "../../data/boards";
 interface ViewMenuScreenProps {
   id: string;
 }
@@ -55,6 +57,10 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
   const [showIcon, setShowIcon] = useState(false);
   const [boardError, setBoardError] = useState(false);
   const [status, setStatus] = useState("");
+  const [pendingImages, setPendingImages] = useState(0);
+  const [completedImages, setCompletedImages] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [progressPercentage, setProgressPercentage] = useState(100);
 
   const fetchMenu = async () => {
     const menuToSet = await getMenu(Number(id));
@@ -64,22 +70,64 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
     }
     setMenu(menuToSet);
     setStatus(menuToSet.status);
-    setBoard(menuToSet.board);
+    const mainBoard = menuToSet.board;
+    // setBoard(mainBoard);
+    console.log("Main board", mainBoard);
+    // setTimeout(() => {
+    //   console.log("Setting board", mainBoard);
+    // }, 5000); //
+    if (!mainBoard?.layout) {
+      console.log("Empty board layout");
+      if (mainBoard && mainBoard.id) {
+        // const rearrangedBoard = await rearrangeImages(mainBoard.id);
+        // setBoard(rearrangedBoard);
+        const boardHasError = mainBoard?.status.includes("error");
+        if (boardHasError) {
+          setBoardError(true);
+          setStatus("error");
+          console.error("Error fetching board");
+          alert("Error fetching board");
+          return;
+        }
+      }
+      // window.location.reload();
+    } else {
+      setBoard(mainBoard);
+    }
     setImages(menuToSet.images);
     toggleForms(segmentType);
-    console.log("Menu", menuToSet);
-    const imgStatuses = menuToSet.board?.images.map((img: Image) => {
-      return img.status;
-    });
+    const imgStatuses =
+      menuToSet.board?.images.map((img: Image) => {
+        return img.status;
+      }) || [];
+
     console.log("Image statuses", imgStatuses);
+
+    const pendingImages =
+      imgStatuses?.filter(
+        (status: string) => status === "pending" || status === "generating"
+      ).length || 0;
+
+    const progressToSet = Math.round(
+      (completedImages / imgStatuses.length) * 100
+    );
+    setProgress(progress);
+    setPendingImages(pendingImages);
+    setCompletedImages(
+      imgStatuses?.filter(
+        (status: string) => status === "completed" || status === "skipped"
+      ).length || 0
+    );
+    setProgressPercentage(progressToSet);
+
     if (
+      imgStatuses?.length === 0 ||
       imgStatuses?.includes("generating") ||
       imgStatuses?.includes("pending")
     ) {
       setStatus("generating");
       return menuToSet;
     } else {
-      console.log("Images are complete");
       setStatus("complete");
     }
     return menuToSet;
@@ -100,7 +148,6 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
       }, 3000); // Check every 5 seconds
       return () => clearInterval(intervalId); // Cleanup interval on component unmount
     } else {
-      console.log("Symbol created successfully.");
       setShowLoading(false);
     }
   }, [status]);
@@ -135,7 +182,6 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
       return;
     }
     const result = await rerunMenuJob(menu.id as string);
-    console.log("Menu rerun result", result);
     if (result.error) {
       alert(`Menu rerun failed: ${result.error}`);
     } else {
@@ -224,24 +270,33 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
             <h1 className="text-2xl md:text-3xl font-bold my-6 text-center">
               {menu?.name}
             </h1>
-            {menu && menu.status && menu.status !== "complete" && (
-              <IonList className=" text-xl" style={{ marginTop: "20px" }}>
-                <IonItem lines="none" className="ion-margin-bottom">
-                  <p className="text-lg md:text-xl mb-4">
-                    This menu is currently being processed. Please wait. This
-                    may take a few minutes.<br></br> This page will refresh
-                    automatically once the menu is ready.
-                  </p>
-                </IonItem>
-              </IonList>
+            {status === "generating" && (
+              <>
+                {progressPercentage / 100 > 0 && (
+                  <ProgressBar progressToSet={progressPercentage / 100} />
+                )}
+
+                <IonList className=" text-xl" style={{ marginTop: "20px" }}>
+                  <IonItem lines="none" className="ion-margin-bottom">
+                    <p className="text-lg md:text-xl mb-4">
+                      This menu is currently being processed. Please wait. This
+                      {board && board.images && board.images.length > 1
+                        ? ` may take a few minutes.`
+                        : ` should be ready shortly.`}
+                      may take a few minutes.<br></br> This page will refresh
+                      automatically once the menu is ready.
+                    </p>
+                  </IonItem>
+                </IonList>
+              </>
             )}
-            {menu && menu.status && menu.status === "complete" && (
+            {status === "complete" && (
               <div className="w-7/8 md:w-2/3 lg:w-3/4 mx-auto text-center mb-4">
                 <p className="text-xl md:text-2xl">
                   This menu board is ready for viewing.
                 </p>
                 <p className="text-xl md:text-2xl">
-                  Click the <strong>Board</strong> tab to start speaking.
+                  Click the <strong>Board</strong> tab to get started.
                 </p>
               </div>
             )}
@@ -297,7 +352,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
             </IonList>
           </div>
           <div className="hidden" ref={boardTab}>
-            {board && (
+            {board && board.layout && (
               <BoardView
                 board={board}
                 showEdit={menu?.can_edit || false}

@@ -14,6 +14,7 @@ export interface Menu {
   token_limit?: number;
   can_edit?: boolean;
   status?: string;
+  has_generating_images: boolean;
 }
 
 export const getMenus = () => {
@@ -48,7 +49,6 @@ export const getMenu = (id: number) => {
 
 export const createMenu = (formData: FormData) => {
   for (var pair of formData.entries()) {
-    console.log("create Menu Pair", pair[0] + ", " + pair[1]);
   }
   const newMenu = fetch(`${BASE_URL}menus`, {
     method: "POST",
@@ -130,9 +130,7 @@ export async function addImageToMenu(
     `${BASE_URL}menus/${id}/associate_image`,
     requestInfo
   );
-  console.log("Add Image to Menu response", response);
   const menu: Menu = await response.json();
-  console.log("Add Image to Menu menu", menu);
   return menu;
 }
 
@@ -141,7 +139,6 @@ export async function removeImageFromMenu(
   image_id: string
 ): Promise<Menu> {
   const body = JSON.stringify({ image_id });
-  console.log("Remove Image from Menu body", body);
   const requestInfo = {
     method: "POST",
     headers: userHeaders,
@@ -151,7 +148,6 @@ export async function removeImageFromMenu(
     `${BASE_URL}menus/${id}/remove_image`,
     requestInfo
   );
-  console.log("Remove Image from Menu response", response);
   const menu: Menu = await response.json();
   return menu;
 }

@@ -96,7 +96,6 @@ const NewMenu: React.FC = (props: any) => {
       return;
     }
     let result = await createMenu(formData);
-    console.log("Result:", result);
     if (result?.errors) {
       console.error("Error:", result.errors);
       alert(`Error creating menu: ${JSON.stringify(result)}`);
@@ -116,7 +115,6 @@ const NewMenu: React.FC = (props: any) => {
     event.preventDefault();
     let file = event.target.files[0];
 
-    console.log("File: ", file);
     handleFile(file);
     return menu;
   };
@@ -150,7 +148,6 @@ const NewMenu: React.FC = (props: any) => {
         setMenus({ ...menu, file: file, description: text });
         if (imageElementRef.current) {
           imageElementRef.current.src = dataUrl;
-          console.log("Setting image source: ", dataUrl);
         }
         console.log("Data URL: ", dataUrl);
         // setImageSrc(dataUrl);
@@ -189,66 +186,88 @@ const NewMenu: React.FC = (props: any) => {
           />
 
           <div className="w-full md:w-3/4 lg:w-1/2 mx-auto">
-            <IonItem
-              lines="none"
-              className="ion-margin-bottom ion-margin-top mx-auto"
-            >
-              <h1 className="text-center text-xl md:text-2xl font-bold">
-                Create a new menu board
-              </h1>
-            </IonItem>
-            <IonItem lines="none" className="ion-margin-bottom mx-2">
-              <h1 className="text-center text-md">
-                Upload or paste an image to create a new menu
-              </h1>
-            </IonItem>
             <form onSubmit={uploadPhoto} encType="multipart/form-data">
-              <IonItem lines="none">
-                <IonInput
-                  label="Name"
-                  placeholder="Enter new menu name"
-                  onIonInput={handleNameInput}
-                  required
-                ></IonInput>
-              </IonItem>
-
-              <IonItem lines="none" className="ion-margin-bottom">
-                <input
-                  className="bg-inherit w-full p-2 rounded-md"
-                  type="file"
-                  id="file_field"
-                  onChange={(ev) => onFileChange(ev)}
-                />
-              </IonItem>
-              <IonItem lines="none" className="ion-margin-bottom">
-                <p className="w-3/4 md:w-1/2 mx-auto text-center">
-                  You have {currentUser?.tokens} tokens
-                </p>
-              </IonItem>
-              <IonItem lines="none" className="ion-margin-bottom">
-                <p className="text-center">
-                  You can set the maximum number of tokens to use to generate
-                  this menu.
-                </p>
-              </IonItem>
-
-              <IonItem lines="none" className="ion-margin-bottom">
-                <IonInput
-                  label="Token Limit"
-                  type="number"
-                  placeholder="Enter token limit"
-                  value={tokenLimit}
-                  onIonInput={(e) => setTokenLimit(parseInt(e.detail.value!))}
-                  required
-                ></IonInput>
-              </IonItem>
-              <IonCard className="p-2 m-2 border text-center">
-                <h2 className="text-xl font-bold">Paste an image</h2>
-                <p className="text-sm">Right-click and paste an image here</p>
-                <IonItem className="mt-4">
-                  <IonTextarea rows={8}></IonTextarea>
-                  <ImagePasteHandler setFile={handlePaste} />
+              <IonCard className="text-center w-full w-7/8 mx-auto ion-padding">
+                <IonItem lines="none" className="ion-margin-bottom mx-2">
+                  <h1 className="text-center text-lg md:text-2xl font-bold">
+                    Convert an image of any menu into a communication board
+                    instantly!
+                  </h1>
                 </IonItem>
+                <IonItem
+                  lines="none"
+                  className="ion-margin-bottom pb-3 border-b-2"
+                >
+                  <IonInput
+                    label="Name"
+                    fill="outline"
+                    placeholder="Enter new menu name"
+                    onIonInput={handleNameInput}
+                    required
+                  ></IonInput>
+                </IonItem>
+
+                <IonItem lines="none" className="ion-margin-bottom">
+                  <p className="w-3/4 md:w-1/2 mx-auto text-center text-lg font-bold">
+                    This is the number of tokens that will be used to generate
+                    this menu.
+                  </p>
+                </IonItem>
+                <IonItem lines="none" className="ion-margin-bottom p-2">
+                  <IonInput
+                    type="number"
+                    label="Token Limit"
+                    fill="outline"
+                    placeholder="Enter token limit"
+                    className="w-full md:w-1/2 mx-auto"
+                    value={tokenLimit}
+                    onIonInput={(e) => setTokenLimit(parseInt(e.detail.value!))}
+                    required
+                  ></IonInput>
+                </IonItem>
+                <IonItem lines="none" className="ion-margin-bottom">
+                  <p className="w-3/4 md:w-1/2 mx-auto text-center">
+                    You have {currentUser?.tokens} tokens
+                    <br></br>
+                    This menu will use a maximum of{" "}
+                    <span className="font-bold"> {tokenLimit}</span> tokens
+                  </p>
+                </IonItem>
+                <IonItem
+                  lines="none"
+                  className="ion-margin-bottom border-b-2 py-3"
+                >
+                  {currentUser?.tokens && (
+                    <p className="w-3/4 md:w-1/2 mx-auto text-center">
+                      You will have a minimum of {""}
+                      {currentUser?.tokens - tokenLimit} tokens remaining after
+                      creating this menu
+                    </p>
+                  )}
+                </IonItem>
+                <IonItem lines="none" className="ion-margin-bottom mx-2">
+                  <h1 className="text-center text-xl font-bold">
+                    Upload or paste an image to create a new menu
+                  </h1>
+                </IonItem>
+                <IonItem lines="none" className="ion-margin-bottom">
+                  <input
+                    className="bg-inherit w-full p-2 rounded-md border border-gray-300"
+                    type="file"
+                    id="file_field"
+                    onChange={(ev) => onFileChange(ev)}
+                  />
+                </IonItem>
+                <h2 className="text-xl font-bold">Paste an image below</h2>
+                <div className="mt-4 w-full md:w-3/4 mx-auto">
+                  <IonTextarea
+                    // fill={"outline"}
+                    // rows={8}
+                    disabled
+                    readonly
+                  ></IonTextarea>
+                  <ImagePasteHandler setFile={handlePaste} />
+                </div>
                 {imageSrc && (
                   <>
                     <img
