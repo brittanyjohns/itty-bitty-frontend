@@ -17,8 +17,9 @@ const BoardGrid = ({ boards, gridType, loadBoards }: BoardGridProps) => {
 
   const handleRemoveBoard = async (board: Board) => {
     console.log("remove board", board);
+    console.log("gridType", gridType);
     if (!board) return;
-    if (currentUser) {
+    if (currentUser && gridType === "child") {
       try {
         await deleteChildBoard(board.id);
         const updatedBoards = boards.filter((b) => b.id !== board.id);
@@ -52,7 +53,7 @@ const BoardGrid = ({ boards, gridType, loadBoards }: BoardGridProps) => {
             <BoardGridItem
               board={board}
               gridType={gridType}
-              showRemoveBtn={currentUser ? true : false}
+              showRemoveBtn={currentUser && gridType === "child" ? true : false}
               removeChildBoard={handleRemoveBoard}
             />
           </div>
