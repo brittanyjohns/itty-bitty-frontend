@@ -56,7 +56,7 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
           onClick={() => {
             currentAccount
               ? history.push("/account-dashboard")
-              : history.push("/dashboard");
+              : history.push("/home");
           }}
         >
           SpeakAnyWay

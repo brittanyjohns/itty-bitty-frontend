@@ -26,6 +26,7 @@ import {
   layersOutline,
   imagesOutline,
   speedometerOutline,
+  sparklesOutline,
 } from "ionicons/icons";
 import { set } from "react-hook-form";
 const menuLinks: MenuLink[] = [
@@ -105,17 +106,24 @@ const menuLinks: MenuLink[] = [
     id: 33,
   },
   {
-    endpoint: "/sign-in",
+    endpoint: "/users/sign-in",
     name: "Sign In",
-    slug: "sign-in",
+    slug: "user/sign-in",
     icon: logInOutline,
     id: 7,
+  },
+  {
+    endpoint: "/accounts/sign-in",
+    name: "Child Sign In",
+    slug: "child-sign-in",
+    icon: accessibilityOutline,
+    id: 77,
   },
   {
     endpoint: "/sign-up",
     name: "Sign Up",
     slug: "sign-up",
-    icon: logInOutline,
+    icon: sparklesOutline,
     id: 8,
   },
   {

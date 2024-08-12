@@ -3,6 +3,7 @@ import { getIconUrl, getImageUrl } from "../data/utils";
 import {
   IonButton,
   IonButtons,
+  IonCard,
   IonInput,
   IonItem,
   IonToast,
@@ -11,6 +12,7 @@ import { useState } from "react";
 import { BetaRequest, createBetaRequest } from "../data/beta_requests";
 import { useHistory } from "react-router-dom";
 import "./MainPage.css";
+import SignUpForm from "../components/utils/SignUpForm";
 interface MainPageContentProps {
   ipAddr: string;
 }
@@ -94,9 +96,9 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
   };
 
   return (
-    <div className="">
+    <div className="relative">
       <div className="">
-        <div className="flex flex-col justify-center items-center text-center py-4 lg:py-8 shadow-overlay">
+        <div className="flex flex-col justify-center items-center text-center py-4 lg:py-8 bg-black">
           <h1 className="text-2xl md:text-5xl font-bold text-white mt-4">
             Empower Your Child's Communication
           </h1>
@@ -105,9 +107,9 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
           </p>
         </div>
 
-        <div className="flex flex-col justify-center items-center text-center gap-4">
+        <div className="">
           <div className="fixed-bg">
-            <div className="h-10 md:h-24 lg:h-32 my-2 md:my-4">
+            <div className="flex flex-col justify-center items-center text-center">
               <IonButton
                 onClick={() => history.push("/about")}
                 className=""
@@ -125,44 +127,48 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
               </IonButton>
             </div>
             <div className="relative h-80 md:h-96 lg:h-96 w-full">
-              <div className="p-2 bg-white absolute bottom-0 left-0 right-0 mt-5">
+              <div className="p-2 bg-white bg-opacity-80 absolute bottom-45 left-0 right-0 mt-5 shadow-xl">
                 <IonToast
                   isOpen={isOpen}
                   message={toastMessage}
                   onDidDismiss={() => setIsOpen(false)}
                   duration={2000}
                 ></IonToast>
-                <p className="text-xl font-bold text-gray-600 text-center my-2">
+                <p className="text-xl font-bold text-center my-4">
                   Stay updated on all things SpeakAnyWay!
                 </p>
-                <p className="text-center text-sm text-gray-600">
+                <p className="text-center text-lg font-md mb-4">
                   We're working on mobile apps for Android and iOS{" "}
                 </p>
-                <p className="mt-2 font-bold">Stay tuned for updates!</p>
-                <IonItem className="w-full md:w-2/3 mx-auto border">
+                <div className="flex justify-center items-center">
                   <IonInput
                     type="email"
                     value={email}
-                    placeholder="Enter your email"
+                    label="Email"
+                    fill="solid"
+                    className="w-1/2"
                     onIonInput={(e) => setEmail(e.detail.value || "")} // Assuming Ionic React
                   />
 
                   <IonButton
-                    className="mt-4"
+                    className="ml-2"
+                    size="large"
+                    color="primary"
+                    type="submit"
                     onClick={handleSubmitEmail}
                     disabled={!email}
                   >
                     Go
                   </IonButton>
-                </IonItem>
+                </div>
               </div>
             </div>
-            <div className="relative  h-80 md:h-96 lg:h-96">
-              <div className="shadow-overlay text-white px-5">
-                <section className="row-span-1 py-4">
-                  <div className="container mx-auto px-2">
+            <div className="relative h-80 md:h-96 lg:h-96 ">
+              <div className="shadow-overlay text-white">
+                <section className="">
+                  <div className="container mx-auto">
                     <h2 className="text-4xl font-bold text-center">Features</h2>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-1 mt-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
                       {features.map((feature, index) => (
                         <Link
                           key={feature.id}
@@ -182,11 +188,57 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
                           </p>
                         </Link>
                       ))}
+                      <IonCard className="bg-white rounded-lg shadow p-4 text-center">
+                        <img
+                          src={getImageUrl(`happy-headphones`, "webp")}
+                          alt={"happy headphones"}
+                          className="h-40 object-cover rounded-md mx-auto"
+                        />
+                        <h3 className="mt-2 font-semibold text-lg text-purple-600">
+                          Sign Up Now!
+                        </h3>
+                        <p className="mt-2 text-sm text-gray-600">
+                          Sign up for a free account and start using SpeakAnyWay
+                          now!
+                        </p>
+                        <IonInput
+                          type="email"
+                          value={email}
+                          label="Email"
+                          labelPlacement="floating"
+                          fill="outline"
+                          className="mt-2"
+                          onIonInput={(e) => setEmail(e.detail.value || "")} // Assuming Ionic React
+                        />
+
+                        <IonButton
+                          className="font-bold mt-2"
+                          // size="large"
+                          expand="block"
+                          color="success"
+                          type="submit"
+                          onClick={handleSubmitEmail}
+                          disabled={!email}
+                        >
+                          Go
+                        </IonButton>
+                      </IonCard>
                     </div>
                   </div>
                 </section>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div className=" h-80 md:h-96 lg:h-96 lower-fixed-bg">
+        <div className=" ">
+          <div className="p-2 bg-white bg-opacity-80  mt-5 shadow-xl">
+            <h1>Sign Up Now!</h1>
+            <p>Sign up for a free account and start using SpeakAnyWay now!</p>
+          </div>
+          <div className="pt-4">
+            <SignUpForm plan="free" />
           </div>
         </div>
       </div>

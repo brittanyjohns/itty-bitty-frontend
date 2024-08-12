@@ -140,17 +140,17 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       className={`relative cursor-pointer ${
         image.bg_color || "bg-white"
       } rounded-sm p-2`}
-      onClick={() => handleImageClick(image)}
+      // onClick={() => handleImageClick(image)}
     >
       <IonImg
         src={image.src || placeholderUrl}
         alt={image.label}
         className="ion-img-contain mx-auto"
-        // onClick={() => handleImageClick(image)}
+        onClick={() => handleImageClick(image)}
       />
       {!image.is_placeholder && (
         <span
-          // onClick={() => handleImageClick(image)}
+          onClick={() => handleImageClick(image)}
           className="bg-white bg-opacity-95 w-full font-medium tracking-tighter leading-tight text-xs md:text-sm lg:text-sm absolute bottom-0 left-0 shadow-md"
         >
           {image.label.length > 15

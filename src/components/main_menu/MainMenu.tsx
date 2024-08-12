@@ -37,8 +37,13 @@ const MainMenu: React.FC<MainMenuProps> = (props) => {
   }, [setUpMenu]);
 
   const goToDashboard = () => {
-    closeMainMenu();
-    history.push("/home");
+    if (currentAccount || currentUser) {
+      closeMainMenu();
+      history.push("/home");
+    } else {
+      closeMainMenu();
+      history.push("/sign-in");
+    }
   };
 
   return (

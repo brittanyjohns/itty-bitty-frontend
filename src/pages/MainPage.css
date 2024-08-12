@@ -13,11 +13,27 @@
   min-height: 100vh;
   width: 100%;
 }
-
+.lower-fixed-bg {
+  background: url("../assets/images/puzzle-bg.webp") no-repeat center bottom
+    fixed;
+  background-size: cover;
+  min-height: 100vh;
+  width: 100%;
+  padding: 20px;
+}
 .shadow-overlay {
   position: relative;
   z-index: 2;
-  background: rgba(0, 0, 0, 0.9); /* optional for some background on content */
+  background: rgba(0, 0, 0, 0.8); /*optional for some background on content */
+  color: white;
+  padding: 20px;
+}
+
+.color-overlay {
+  position: relative;
+  z-index: 2;
+  /* background: rgba(0, 0, 0, 0.7); optional for some background on content */
+  background-color: rgba(38, 103, 149, 0.8);
   color: white;
   padding: 20px;
 }

@@ -19,6 +19,7 @@ import MainHeader from "../MainHeader";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import { logInOutline } from "ionicons/icons";
 import UserHome from "../../components/utils/UserHome";
+import SignUpForm from "../../components/utils/SignUpForm";
 
 interface SignUpScreenProps {
   plan: string;
@@ -150,7 +151,7 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
                   </div>
                 </div>
               )}
-              <div className="w-full max-w-xs mx-auto">
+              {/* <div className="w-full max-w-xs mx-auto">
                 <form className="shadow-md rounded mt-8 bg-white bg-opacity-95 p-8">
                   <h1 className="text-2xl font-bold text-center mb-3">
                     Sign Up
@@ -216,7 +217,8 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
                     </IonButton>
                   </div>
                 </form>
-              </div>
+              </div> */}
+              <SignUpForm plan={plan} />
             </div>
           )}
         </IonContent>

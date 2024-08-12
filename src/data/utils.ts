@@ -222,7 +222,8 @@ export const getFilterList = (
     "settings",
   ];
   const signedOutLinks = [
-    "sign-in",
+    "child-sign-in",
+    "user/sign-in",
     "sign-up",
     "forgot-password",
     "home",

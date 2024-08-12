@@ -278,13 +278,13 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
 
                 <IonList className=" text-xl" style={{ marginTop: "20px" }}>
                   <IonItem lines="none" className="ion-margin-bottom">
-                    <p className="text-lg md:text-xl mb-4">
+                    <p className="text-lg md:text-xl mb-4 text-center font-bold">
                       This menu is currently being processed. Please wait. This
                       {board && board.images && board.images.length > 1
                         ? ` may take a few minutes.`
                         : ` should be ready shortly.`}
-                      may take a few minutes.<br></br> This page will refresh
-                      automatically once the menu is ready.
+                      <br></br> This page will refresh automatically once the
+                      menu is ready.
                     </p>
                   </IonItem>
                 </IonList>
