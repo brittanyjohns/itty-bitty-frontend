@@ -38,7 +38,6 @@ import Tabs from "../../components/utils/Tabs";
 import DraggableGrid from "../../components/images/DraggableGrid";
 import MainMenu from "../../components/main_menu/MainMenu";
 import ImageCropper from "../../components/images/ImageCropper";
-import ConfirmDeleteAlert from "../../components/utils/ConfirmDeleteAlert";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import ConfirmAlert from "../../components/utils/ConfirmAlert";
@@ -57,6 +56,7 @@ const EditBoardScreen: React.FC = () => {
   const history = useHistory();
   const [toastMessage, setToastMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isToastOpen, setIsToastOpen] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("Loading board");
   const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
   const [gridLayout, setGridLayout] = useState([]);
@@ -207,7 +207,7 @@ const EditBoardScreen: React.FC = () => {
     const updatedBoard = await saveLayout(board.id, gridLayout);
     const message = "Board layout saved";
     setToastMessage(message);
-    setIsOpen(true);
+    setIsToastOpen(true);
     setBoard(updatedBoard);
     history.push(`/boards/${board?.id}`);
   };
@@ -387,9 +387,9 @@ const EditBoardScreen: React.FC = () => {
             </IonList>
           </div>
           <IonToast
-            isOpen={isOpen}
+            isOpen={isToastOpen}
             message={toastMessage}
-            onDidDismiss={() => setIsOpen(false)}
+            onDidDismiss={() => setIsToastOpen(false)}
             duration={2000}
           ></IonToast>
         </IonContent>

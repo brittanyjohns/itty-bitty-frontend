@@ -40,7 +40,6 @@ const BoardGroupsScreen: React.FC = () => {
   }, []);
 
   useIonViewDidEnter(() => {
-    console.log("View did enter");
     fetchBoardGroups();
   }, []);
 
@@ -53,7 +52,6 @@ const BoardGroupsScreen: React.FC = () => {
 
   const handleSegmentChange = (event: CustomEvent) => {
     const segmentValue = event.detail.value;
-    console.log("Segment value: ", segmentValue);
     setSegmentType(segmentValue);
     if (segmentType === "user") {
       setBoardGroups(userBoardGroups);

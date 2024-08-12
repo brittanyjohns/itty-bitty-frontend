@@ -96,7 +96,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
       onLayoutChange={onLayoutChange}
       // margin={[5, 5]}
       compactType={compactType}
-      preventCollision={preventCollision}
+      preventCollision={false}
     >
       {images.map((img: any, index: number) => (
         <div

@@ -6,11 +6,8 @@ interface ImagePasteHandlerProps {
 
 const ImagePasteHandler: React.FC<ImagePasteHandlerProps> = ({ setFile }) => {
   useEffect(() => {
-    console.log("ImagePasteHandler mounted");
     const handlePaste = (evt: ClipboardEvent) => {
-      console.log("ClipboardEvent", evt);
       const clipboardItems = evt.clipboardData?.items;
-      console.log("clipboardItems", clipboardItems);
       if (!clipboardItems) {
         alert(
           "Failed to paste image - no clipboard items found. Please refresh the page and try again."
@@ -49,13 +46,11 @@ const ImagePasteHandler: React.FC<ImagePasteHandlerProps> = ({ setFile }) => {
         type: "image/jpeg",
         lastModified: new Date().getTime(),
       });
-      console.log("file", file);
       const container = new DataTransfer();
       container.items.add(file);
       const fileField = document.querySelector(
         "#file_field"
       ) as HTMLImageElement;
-      console.log("fileField", fileField);
 
       if (fileField) {
         fileField.src = URL.createObjectURL(file);
@@ -65,7 +60,6 @@ const ImagePasteHandler: React.FC<ImagePasteHandlerProps> = ({ setFile }) => {
     };
 
     document.addEventListener("paste", handlePaste);
-    console.log("Event listener added");
     return () => {
       document.removeEventListener("paste", handlePaste);
     };

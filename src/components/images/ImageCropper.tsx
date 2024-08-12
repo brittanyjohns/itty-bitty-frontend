@@ -64,7 +64,6 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
   };
 
   const handlePastedFile = (file: File) => {
-    console.log("Pasted file: ", file);
     const fileExtension = file.name.split(".").pop() || "";
     setFileExtension(fileExtension);
     const reader = new FileReader();
