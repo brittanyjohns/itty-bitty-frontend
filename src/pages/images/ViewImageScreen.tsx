@@ -33,6 +33,8 @@ import {
   removeDoc,
   setNextWords,
   create_symbol,
+  cloneImage,
+  findByLabel,
 } from "../../data/images"; // Adjust imports based on actual functions
 import { markAsCurrent } from "../../data/docs"; // Adjust imports based on actual functions
 import BoardDropdown from "../../components/boards/BoardDropdown";
@@ -274,6 +276,16 @@ const ViewImageScreen: React.FC = () => {
     setWordsToRemove([]);
   };
 
+  const handleCloneImage = async () => {
+    if (!image) return;
+    const result = await cloneImage(image.id);
+    if (result) {
+      history.push(`/images/${result.id}`);
+    } else {
+      alert("Error cloning image.");
+    }
+  };
+
   const handleAddNextWords = async () => {
     if (!image) return;
     console.log("Adding next words: ", nextImageWords);
@@ -302,6 +314,15 @@ const ViewImageScreen: React.FC = () => {
     }
   };
 
+  const handleFindByLabel = async (word: string) => {
+    const result = await findByLabel(word);
+    if (result) {
+      history.push(`/images/${result.id}`);
+    } else {
+      alert("Error finding image by label.");
+    }
+  };
+
   const toggleAddToRemoveList = (e: React.MouseEvent<HTMLIonTextElement>) => {
     const target = e.target as HTMLIonTextElement;
     const word = target.innerText;
@@ -324,6 +345,34 @@ const ViewImageScreen: React.FC = () => {
       getData();
     } else {
       alert("Error setting next words.\n" + result["message"]);
+    }
+  };
+
+  const renderImageUserInfo = (currentUser: any) => {
+    if (currentUser?.admin) {
+      return (
+        <div className="w-full md:w-1/2 mx-auto">
+          {(currentAccount?.id === image?.user_id || currentUser?.admin) && (
+            <IonText className="text-md block">
+              This image was created by:{" "}
+              {image?.user?.name || image?.user?.email || image?.user?.id}
+            </IonText>
+          )}
+          <IonText className="text-md block my-3">
+            This image was created on: {image?.created_at}
+          </IonText>
+
+          {currentAccount?.id === image?.user_id ? (
+            ""
+          ) : (
+            <IonText className="text-md block my-3">
+              This image is owned by: <br></br>
+              {image?.user?.name || image?.user?.email || image?.user?.id}{" "}
+              {image?.user.role === "admin" ? "(admin)" : ""}
+            </IonText>
+          )}
+        </div>
+      );
     }
   };
 
@@ -433,6 +482,17 @@ const ViewImageScreen: React.FC = () => {
                 />
               )}
             </div>
+            <div className="mt-4">
+              {currentUser?.admin && (
+                <IonButton
+                  onClick={handleCloneImage}
+                  className="text-md font-md"
+                  fill="outline"
+                >
+                  Clone Image
+                </IonButton>
+              )}
+            </div>
           </div>
           <div className="mt-6 py-3 px-1 hidden" ref={uploadForm}>
             <div className="w-full md:w-3/4 mx-auto m-2">
@@ -482,6 +542,8 @@ const ViewImageScreen: React.FC = () => {
           </div>
 
           <div className="mt-6 hidden" ref={imageGridWrapper}>
+            {renderImageUserInfo(currentUser)}
+
             {image && image.docs && image.docs.length > 0 && (
               <div className="w-full md:w-3/4 lg:w-2/3 mx-auto">
                 <IonLabel className="font-bold text-sm md:text-md lg:text-lg">
@@ -538,6 +600,29 @@ const ViewImageScreen: React.FC = () => {
                       ))}
                     </div>
                   )}
+              </div>
+            )}
+            {currentUser?.id === image?.user_id && (
+              <div className="">
+                {image?.next_words && image?.next_words.length > 0 && (
+                  <>
+                    <IonText className="text-md block">
+                      Next words for this image:
+                    </IonText>
+                    {image?.next_words.map((word, index) => (
+                      <IonButton
+                        key={index}
+                        className="text-md hover:cursor-pointer"
+                        color={"secondary"}
+                        onClick={() => {
+                          handleFindByLabel(word);
+                        }}
+                      >
+                        {word}
+                      </IonButton>
+                    ))}
+                  </>
+                )}
               </div>
             )}
             {currentUser?.admin && (

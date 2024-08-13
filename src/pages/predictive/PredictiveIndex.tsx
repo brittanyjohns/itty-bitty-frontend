@@ -231,13 +231,18 @@ const PredictiveImagesScreen: React.FC = () => {
                 </IonButton>
               )}
               {showIcon && (
-                <IonButton size="small" onClick={() => clearInput()}>
-                  <IonIcon
-                    slot="icon-only"
-                    className="tiny"
-                    icon={trashBinOutline}
-                  ></IonIcon>
-                </IonButton>
+                <>
+                  <IonButton size="small" onClick={() => clearInput()}>
+                    <IonIcon
+                      slot="icon-only"
+                      className="tiny"
+                      icon={trashBinOutline}
+                    ></IonIcon>
+                  </IonButton>
+                  <IonButton routerLink={`/images/${imageId}`}>
+                    <IonIcon icon={imageOutline} />
+                  </IonButton>
+                </>
               )}
             </IonButtons>
           </IonItem>

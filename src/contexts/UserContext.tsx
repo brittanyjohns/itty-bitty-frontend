@@ -1,4 +1,3 @@
-// UserContext.tsx
 import React, {
   createContext,
   useContext,
@@ -7,7 +6,6 @@ import React, {
   ReactNode,
 } from "react";
 import { getCurrentUser, isUserSignedIn, User } from "../data/users";
-
 import { getPlatforms } from "@ionic/react";
 import { useMediaQuery } from "react-responsive";
 import {
@@ -15,8 +13,8 @@ import {
   getCurrentAccount,
   isAccountSignedIn,
 } from "../data/child_accounts";
-// Define the shape of the context
 
+// Define the shape of the context
 export interface UserContextType {
   currentUser: User | null;
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
@@ -25,6 +23,9 @@ export interface UserContextType {
   platforms: string[];
   currentAccount: ChildAccount | null;
   smallScreen: boolean;
+  mediumScreen: boolean;
+  largeScreen: boolean;
+  screenSize: string;
   setCurrentAccount: React.Dispatch<React.SetStateAction<ChildAccount | null>>;
 }
 
@@ -42,57 +43,47 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [currentAccount, setCurrentAccount] = useState<ChildAccount | null>(
     null
   );
-  const isWideScreen = useMediaQuery({ query: "(min-width: 1200px)" });
+
   const platforms = getPlatforms();
   const isDesktop = platforms.includes("desktop");
-  const isTablet = platforms.includes("tablet");
-  const smallScreen = useMediaQuery({ query: "(max-width: 350px)" });
+
+  // Media queries
+  const isWideScreen = useMediaQuery({ query: "(min-width: 768px)" });
+  const smallScreen = useMediaQuery({ query: "(max-width: 600px)" });
+  const mediumScreen = useMediaQuery({
+    query: "(min-width: 601px) and (max-width: 999px)",
+  });
+  const largeScreen = useMediaQuery({ query: "(min-width: 1000px)" });
+
+  // Determine screen size label
+  const screenSize = smallScreen ? "sm" : mediumScreen ? "md" : "lg";
+
   const fetchUser = async () => {
-    // Assuming you have a function to fetch the current user
     const user = await getCurrentUser();
-
-    const showTabs = isTablet && isWideScreen;
-
-    if (user) {
-      setCurrentUser(user);
-      console.log("Current user", user);
-    }
-    if (!user) {
-      setCurrentUser(null);
-      console.log("No user found");
-    }
+    if (user) setCurrentUser(user);
+    else setCurrentUser(null);
     return user;
   };
 
   const fetchAccount = async () => {
-    // Assuming you have a function to fetch the current user
     const account = await getCurrentAccount();
-
-    if (account) {
-      setCurrentAccount(account);
-      console.log("Current account", account);
-    }
-    if (!account) {
-      setCurrentAccount(null);
-      console.log("No account found");
-    }
+    if (account) setCurrentAccount(account);
+    else setCurrentAccount(null);
     return account;
   };
+
   useEffect(() => {
-    // Fetch the current user here and set it
     if (isUserSignedIn()) {
       fetchUser();
-
-      console.log("User signed in");
-      return;
+    } else {
+      setCurrentUser(null);
     }
-    setCurrentUser(null);
+
     if (isAccountSignedIn()) {
       fetchAccount();
-      console.log("Account signed in");
-      return;
+    } else {
+      setCurrentAccount(null);
     }
-    setCurrentAccount(null);
   }, []);
 
   return (
@@ -103,12 +94,24 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         setCurrentAccount,
         currentAccount,
         isDesktop,
-        isWideScreen,
         platforms,
         smallScreen,
+        mediumScreen,
+        largeScreen,
+        screenSize,
+        isWideScreen,
       }}
     >
       {children}
     </UserContext.Provider>
   );
+};
+
+// Hook for easy access to the context
+export const useCurrentUser = () => {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error("useCurrentUser must be used within a UserProvider");
+  }
+  return context;
 };

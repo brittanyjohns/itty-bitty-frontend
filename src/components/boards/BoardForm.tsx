@@ -5,6 +5,7 @@ import {
   IonCheckbox,
   IonInput,
   IonItem,
+  IonLabel,
   IonList,
   IonLoading,
   IonSelect,
@@ -17,6 +18,7 @@ import { denyAccess } from "../../data/users";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { getSampleVoices } from "../../data/images";
 import { useHistory } from "react-router";
+import { set } from "d3";
 interface BoardFormProps {
   board: Board;
   setBoard: (board: Board) => void;
@@ -31,6 +33,15 @@ interface SampleVoiceResponse {
 const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   const [gridSize, setGridSize] = React.useState<number>(
     board.number_of_columns
+  );
+  const [smallScreenColumns, setSmallScreenColumns] = React.useState<number>(
+    board.small_screen_columns
+  );
+  const [mediumScreenColumns, setMediumScreenColumns] = React.useState<number>(
+    board.medium_screen_columns
+  );
+  const [largeScreenColumns, setLargeScreenColumns] = React.useState<number>(
+    board.large_screen_columns
   );
   const [isOpen, setIsOpen] = React.useState(false);
   const [voice, setVoice] = React.useState(board.voice);
@@ -52,18 +63,28 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
     fetchSampleVoices();
   }, []);
 
-  const handleGridSizeChange = (event: CustomEvent) => {
-    setGridSize(event.detail.value);
-    handleAfterAction();
-  };
-
-  const handleAfterAction = () => {
-    if (!board) {
-      console.error("No board found");
+  const handleColumnSizeChange = (event: CustomEvent) => {
+    const columnSize = event.detail.value;
+    const columnScreen = (event.target as HTMLInputElement)?.name;
+    console.log("columnScreen", columnScreen);
+    if (!columnScreen) {
+      console.error("No column screen found");
       return;
     }
-    const updatedBoard = { ...board, number_of_columns: gridSize };
-    setBoard(updatedBoard);
+    if (columnScreen === "large_screen_columns") {
+      setLargeScreenColumns(columnSize);
+      setBoard({ ...board, large_screen_columns: columnSize });
+    }
+    if (columnScreen === "medium_screen_columns") {
+      setMediumScreenColumns(columnSize);
+      setBoard({ ...board, medium_screen_columns: columnSize });
+    }
+    if (columnScreen === "small_screen_columns") {
+      setSmallScreenColumns(columnSize);
+      setBoard({ ...board, small_screen_columns: columnSize });
+    }
+    setGridSize(event.detail.value);
+    // handleAfterAction();
   };
 
   const handleSubmit = async () => {
@@ -73,20 +94,20 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
     }
     setShowLoading(true);
     const updatingBoard = { ...board, number_of_columns: gridSize };
-    alert("Board saved successfully");
+    // alert("Board saved successfully");
 
     const savedBoard = await updateBoard(updatingBoard);
     // setBoard(savedBoard);
     setShowLoading(false);
     setToastMessage("Board saved successfully");
     setIsOpen(true);
-    // window.location.reload();
-    history.push(`/boards/${savedBoard.id}`);
+    window.location.reload();
+    // history.push(`/boards/${savedBoard.id}`);
   };
 
   const gridSizeOptions = [
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-    22, 23, 24,
+    22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
   ];
 
   const voiceOptions = ["alloy", "shimmer", "onyx", "fable", "nova", "echo"];
@@ -139,13 +160,48 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
           </IonItem>
         )}
         <IonItem className="mb-4">
+          <IonLabel>Large Screens {"(> 1000px)"}:</IonLabel>
           <IonSelect
             label="Number of Columns:"
             placeholder="Select # of columns"
-            name="number_of_columns"
+            name="large_screen_columns"
             className="mr-2"
-            onIonChange={handleGridSizeChange}
-            value={gridSize}
+            onIonChange={handleColumnSizeChange}
+            value={largeScreenColumns}
+          >
+            {gridSizeOptions.map((size) => (
+              <IonSelectOption key={size} value={size}>
+                {size}
+              </IonSelectOption>
+            ))}
+          </IonSelect>
+        </IonItem>
+        <IonItem className="mb-4">
+          <IonLabel>Medium Screens {"(< 1000px)"}:</IonLabel>
+          <IonSelect
+            label="Number of Columns:"
+            placeholder="Select # of columns"
+            name="medium_screen_columns"
+            className="mr-2"
+            onIonChange={handleColumnSizeChange}
+            value={mediumScreenColumns}
+          >
+            {gridSizeOptions.map((size) => (
+              <IonSelectOption key={size} value={size}>
+                {size}
+              </IonSelectOption>
+            ))}
+          </IonSelect>
+        </IonItem>
+        <IonItem className="mb-4">
+          <IonLabel>Small Screens {"(< 600px)"}:</IonLabel>
+          <IonSelect
+            label="Number of Columns:"
+            placeholder="Select # of columns"
+            name="small_screen_columns"
+            className="mr-2"
+            onIonChange={handleColumnSizeChange}
+            value={smallScreenColumns}
           >
             {gridSizeOptions.map((size) => (
               <IonSelectOption key={size} value={size}>

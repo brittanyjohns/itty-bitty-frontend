@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   IonButton,
+  IonButtons,
   IonContent,
   IonIcon,
   IonInput,
@@ -58,12 +59,20 @@ const EditBoardScreen: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("Loading board");
-  const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
+  const {
+    currentUser,
+    isWideScreen,
+    currentAccount,
+    smallScreen,
+    mediumScreen,
+    largeScreen,
+    screenSize,
+  } = useCurrentUser();
   const [gridLayout, setGridLayout] = useState([]);
   const [numberOfColumns, setNumberOfColumns] = useState(4); // Default number of columns
   const [showEdit, setShowEdit] = useState(false);
   const params = useParams<{ id: string }>();
-  const addToTeamRef = useRef<HTMLDivElement>(null);
+  const [currentLayout, setCurrentLayout] = useState([]);
 
   const initialImage = {
     id: "",
@@ -112,9 +121,18 @@ const EditBoardScreen: React.FC = () => {
   const fetchBoard = async () => {
     const board = await getBoard(id); // Ensure getBoard is typed to return a Promise<Board>
     setBoard(board);
-    setNumberOfColumns(board.number_of_columns);
+
+    // setNumberOfColumns(board.number_of_columns);
     return board;
   };
+
+  useEffect(() => {
+    if (board) {
+      if (smallScreen) setNumberOfColumns(board.small_screen_columns);
+      else if (mediumScreen) setNumberOfColumns(board.medium_screen_columns);
+      else if (largeScreen) setNumberOfColumns(board.large_screen_columns);
+    }
+  }, [smallScreen, mediumScreen, largeScreen, board]);
 
   const fetchRemaining = async (id: string, page: number) => {
     const remainingImgs = await getRemainingImages(id, page, searchInput);
@@ -195,8 +213,16 @@ const EditBoardScreen: React.FC = () => {
     }
   };
 
+  const handleCurrentLayout = (layout: any) => {
+    setCurrentLayout(layout);
+    console.log("Current layout: ", layout);
+  };
+
   const setGrid = (layout: any) => {
+    console.log("from edit layout", layout);
+
     setGridLayout(layout);
+    console.log("gridLayout", gridLayout);
   };
 
   const handleSaveLayout = async () => {
@@ -204,7 +230,9 @@ const EditBoardScreen: React.FC = () => {
       console.error("Board ID is missing");
       return;
     }
-    const updatedBoard = await saveLayout(board.id, gridLayout);
+    console.log("Sending Grid Layout: ", gridLayout);
+    console.log("Screen Size: ", screenSize);
+    const updatedBoard = await saveLayout(board.id, gridLayout, screenSize);
     const message = "Board layout saved";
     setToastMessage(message);
     setIsToastOpen(true);
@@ -212,9 +240,17 @@ const EditBoardScreen: React.FC = () => {
     history.push(`/boards/${board?.id}`);
   };
 
-  const toggleAddToTeam = () => {
-    addToTeamRef.current?.classList.toggle("hidden");
+  const getScreenSizeName = () => {
+    if (smallScreen) return "small";
+    if (mediumScreen) return "medium";
+    if (largeScreen) return "large";
+    return "unknown";
   };
+
+  useEffect(() => {
+    console.log("Cfrom edit urrent layout: ", currentLayout);
+    setGridLayout(currentLayout);
+  }, [currentLayout]);
 
   return (
     <>
@@ -264,34 +300,36 @@ const EditBoardScreen: React.FC = () => {
                 />
               )}
             </div>
-            <div className="mt-6 px-4 lg:px-12">
+            <div className="my-6 px-4 lg:px-12">
               {board && board.images && board.images.length > 0 && (
-                <div className="">
+                <div className="pb-10">
                   <p className="text-center font-bold text-lg">
                     This board currently has {board.images.length} images.
                   </p>
                   <p className="text-center font-mono text-md">
                     Drag and drop to rearrange the layout.
                   </p>
+                  <p className="text-center text-lg ">
+                    You are currently viewing the layout for{" "}
+                    <span className="font-bold">{getScreenSizeName()}</span>{" "}
+                    screens ({numberOfColumns} columns).
+                  </p>
 
-                  <IonButton
-                    className="block my-5 w-5/6 md:w-1/3 lg:w-1/4 mx-auto text-md text-wrap"
-                    onClick={handleSaveLayout}
-                    size="large"
-                  >
-                    Save Layout
-                  </IonButton>
-                  <DraggableGrid
-                    images={board.images}
-                    columns={numberOfColumns}
-                    onLayoutChange={(layout: any) => setGrid(layout)}
-                    mute={true}
-                    enableResize={true}
-                    viewOnClick={false}
-                    showRemoveBtn={false}
-                    compactType={null}
-                    preventCollision={true}
-                  />
+                  {board && (
+                    <DraggableGrid
+                      board={board}
+                      images={board.images}
+                      columns={numberOfColumns}
+                      onLayoutChange={(layout: any) => setGrid(layout)}
+                      mute={true}
+                      enableResize={true}
+                      viewOnClick={false}
+                      showRemoveBtn={false}
+                      compactType={null}
+                      preventCollision={true}
+                      setCurrentLayout={handleCurrentLayout}
+                    />
+                  )}
                 </div>
               )}
               {board && board.images && board.images.length < 1 && (
@@ -300,16 +338,27 @@ const EditBoardScreen: React.FC = () => {
                 </div>
               )}
             </div>
+            <div className="mt-5 flex justify-center">
+              <IonButtons className="flex justify-center">
+                <IonButton
+                  className="text-xs md:text-md lg:text-lg font-bold text-center my-2 cursor-pointer mx-auto text-wrap"
+                  // onClick={handleRearrangeImages}
+                  onClick={() => setOpenAlert(true)}
+                  color={"danger"}
+                >
+                  <IonIcon icon={appsOutline} className="mx-2" />
+                  <IonLabel>Reset layout</IonLabel>
+                </IonButton>
+                <IonButton
+                  className="block my-5 w-5/6 md:w-1/3 lg:w-1/4 mx-auto text-md text-wrap"
+                  onClick={handleSaveLayout}
+                  size="large"
+                >
+                  Save Layout
+                </IonButton>
+              </IonButtons>
+            </div>
             <div className="flex justify-between items-center px-4 mt-4">
-              <IonButton
-                className="text-xs md:text-md lg:text-lg font-bold text-center my-2 cursor-pointer mx-auto text-wrap"
-                // onClick={handleRearrangeImages}
-                onClick={() => setOpenAlert(true)}
-                color={"danger"}
-              >
-                <IonIcon icon={appsOutline} className="mx-2" />
-                <IonLabel>Reset layout</IonLabel>
-              </IonButton>
               <ConfirmAlert
                 onConfirm={handleRearrangeImages}
                 onCanceled={() => {}}

@@ -35,6 +35,9 @@ export interface Image {
   added_at?: string;
   image_last_added_at?: string;
   open_symbol_api_status?: string;
+  user?: any;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface DraggableGridLayout {
@@ -292,5 +295,24 @@ export async function getSampleVoices(): Promise<any> {
     headers: userHeaders,
     method: "GET",
   });
+  return response.json();
+}
+
+export async function cloneImage(imageId: string): Promise<Image> {
+  const response = await fetch(`${BASE_URL}images/${imageId}/clone`, {
+    headers: userHeaders,
+    method: "POST",
+  });
+  return response.json();
+}
+
+export async function findByLabel(label: string): Promise<Image> {
+  const response = await fetch(
+    `${BASE_URL}images/find_by_label?label=${label}`,
+    {
+      headers: userHeaders,
+      method: "GET",
+    }
+  );
   return response.json();
 }

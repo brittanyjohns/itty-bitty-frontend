@@ -20,6 +20,9 @@ export interface ChildBoard {
   has_generating_images?: boolean;
   user_id?: string;
   layout?: any;
+  large_screen_columns: number;
+  medium_screen_columns: number;
+  small_screen_columns: number;
 }
 
 const signedInToken =

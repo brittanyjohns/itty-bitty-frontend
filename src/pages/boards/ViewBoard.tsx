@@ -1,78 +1,70 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Board,
-  addToTeam,
-  cloneBoard,
   getBoard,
   rearrangeImages,
+  cloneBoard,
 } from "../../data/boards";
 import {
   IonButton,
-  IonButtons,
   IonContent,
-  IonHeader,
-  IonIcon,
   IonLoading,
-  IonMenuButton,
   IonPage,
-  IonTitle,
   IonToolbar,
   useIonViewDidLeave,
   useIonViewWillEnter,
 } from "@ionic/react";
-
 import { useHistory, useParams } from "react-router";
 import "./ViewBoard.css";
-import React from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { Team } from "../../data/teams";
-import Tabs from "../../components/utils/Tabs";
 import MainMenu from "../../components/main_menu/MainMenu";
-import BoardView from "../../components/boards/BoardView";
-import { addCircleOutline } from "ionicons/icons";
-import { set } from "d3";
 import StaticMenu from "../../components/main_menu/StaticMenu";
+
 import MainHeader from "../MainHeader";
+import BoardView from "../../components/boards/BoardView";
+import Tabs from "../../components/utils/Tabs";
 
 const ViewBoard: React.FC<any> = () => {
   const [board, setBoard] = useState<Board>();
   const params = useParams<{ id: string }>();
   const inputRef = useRef<HTMLIonInputElement>(null);
-  const [showIcon, setShowIcon] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [numOfColumns, setNumOfColumns] = useState(4);
-  const [currentUserTeams, setCurrentUserTeams] = useState<Team[]>();
-  const { isWideScreen, currentAccount, currentUser } = useCurrentUser();
+  const [showIcon, setShowIcon] = useState(false);
+  const { smallScreen, mediumScreen, largeScreen, currentUser } =
+    useCurrentUser();
   const history = useHistory();
 
   const fetchBoard = async () => {
+    setShowLoading(true);
     const board = await getBoard(params.id);
-
     if (!board) {
       console.error("Error fetching board");
-      setShowLoading(false);
       alert("Error fetching board");
+      setShowLoading(false);
       return;
     }
 
-    setCurrentUserTeams(board?.current_user_teams);
-    const userCanEdit = board.can_edit || currentUser?.role === "admin";
-    setShowEdit(userCanEdit);
+    setShowEdit(board.can_edit || currentUser?.role === "admin");
 
-    // Check if board layout is empty and rearrange images if necessary
     if (!board.layout) {
-      console.log("Empty board layout, rearranging images");
       const rearrangedBoard = await rearrangeImages(board.id);
       setBoard(rearrangedBoard);
       window.location.reload();
     } else {
       setBoard(board);
     }
-
-    setNumOfColumns(board.number_of_columns);
     setShowLoading(false);
   };
+
+  useEffect(() => {
+    if (board) {
+      if (smallScreen) setNumOfColumns(board.small_screen_columns);
+      else if (mediumScreen) setNumOfColumns(board.medium_screen_columns);
+      else if (largeScreen) setNumOfColumns(board.large_screen_columns);
+    }
+  }, [smallScreen, mediumScreen, largeScreen, board]);
 
   useEffect(() => {
     fetchBoard();
@@ -88,75 +80,40 @@ const ViewBoard: React.FC<any> = () => {
 
   useIonViewWillEnter(() => {
     fetchBoard();
-  }, []);
+  });
 
   const handleClone = async () => {
+    setShowLoading(true);
     try {
-      setShowLoading(true);
       const clonedBoard = await cloneBoard(params.id);
-      if (clonedBoard && clonedBoard.id) {
+      if (clonedBoard) {
         const updatedBoard = await rearrangeImages(clonedBoard.id);
-        if (updatedBoard) {
-          console.log("Board cloned and images rearranged", updatedBoard);
-          setBoard(updatedBoard);
-        } else {
-          console.error("Error rearranging images");
-          setBoard(clonedBoard);
-        }
+        setBoard(updatedBoard || clonedBoard);
+        history.push(`/boards/${clonedBoard.id}`);
       } else {
-        console.error("Error cloning board", clonedBoard);
+        console.error("Error cloning board");
         alert("Error cloning board");
-        setShowLoading(false);
-        history.push("/boards");
-
-        // window.location.href = "/boards";
       }
-      setShowLoading(false);
-      history.push(`/boards/${clonedBoard.id}`);
-      // window.location.href = `/boards/${clonedBoard.id}`;
     } catch (error) {
       console.error("Error cloning board: ", error);
       alert("Error cloning board");
-      setShowLoading(false);
     }
+    setShowLoading(false);
   };
 
   return (
     <>
-      <MainMenu
-        pageTitle="Boards"
-        isWideScreen={isWideScreen}
-        currentUser={currentUser}
-        currentAccount={currentAccount}
-      />
-      <StaticMenu
-        pageTitle="Boards"
-        isWideScreen={isWideScreen}
-        currentUser={currentUser}
-        currentAccount={currentAccount}
-      />
-
+      <MainMenu pageTitle="Boards" currentUser={currentUser} />
+      <StaticMenu pageTitle="Boards" currentUser={currentUser} />
       <IonPage id="main-content">
-        <MainHeader
-          pageTitle={board?.name || "Board"}
-          isWideScreen={isWideScreen}
-          startLink="/boards"
-          endLink="/boards/new"
-        />
-
+        <MainHeader pageTitle={board?.name || "Board"} />
         <IonContent>
           <IonLoading message="Please wait..." isOpen={showLoading} />
-          {isWideScreen && (
-            <div className="ml-4 mt-4 pl-4">
-              <h1>{board?.name || "View Board"}</h1>
-            </div>
-          )}
           {board && (
             <BoardView
               board={board}
               showEdit={showEdit}
               showShare={true}
-              currentUserTeams={currentUserTeams}
               handleClone={handleClone}
               setShowIcon={setShowIcon}
               inputRef={inputRef}

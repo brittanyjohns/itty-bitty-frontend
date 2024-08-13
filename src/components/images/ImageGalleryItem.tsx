@@ -134,6 +134,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       return starOutline;
     }
   };
+
   return (
     <div
       ref={imgRef}

@@ -15,6 +15,9 @@ export interface Board {
   parent_type?: string;
   display_image_url?: string | null;
   number_of_columns: number;
+  small_screen_columns: number;
+  medium_screen_columns: number;
+  large_screen_columns: number;
   images?: Image[];
   error?: string;
   floating_words?: string[];
@@ -61,11 +64,11 @@ export const getBoards = () => {
 //     return updatedBoard;
 // }
 
-export const saveLayout = (id: string, layout: any) => {
+export const saveLayout = (id: string, layout: any, screen_size: string) => {
   const updatedBoard = fetch(`${BASE_URL}boards/${id}/save_layout`, {
     method: "POST",
     headers: userHeaders,
-    body: JSON.stringify({ layout }),
+    body: JSON.stringify({ layout, screen_size }),
   })
     .then((response) => response.json())
     .then((data) => data)

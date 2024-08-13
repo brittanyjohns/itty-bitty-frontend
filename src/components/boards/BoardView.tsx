@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Board, addToTeam } from "../../data/boards";
 import {
   IonButton,
@@ -25,7 +25,7 @@ import MainMenu from "../main_menu/MainMenu";
 interface BoardViewProps {
   board: Board;
   showEdit: boolean;
-  currentUserTeams: any;
+  currentUserTeams?: any;
   inputRef?: any;
   setShowIcon: any;
   showLoading: boolean;
@@ -45,9 +45,17 @@ const BoardView: React.FC<BoardViewProps> = ({
   numOfColumns,
   handleClone,
 }) => {
-  const { currentUser } = useCurrentUser();
+  const { currentUser, smallScreen, largeScreen, mediumScreen } =
+    useCurrentUser();
 
   const shouldShowRemoveBtn = currentUser?.role === "admin" || board?.can_edit;
+
+  useEffect(() => {
+    console.log("BoardView: ", numOfColumns);
+    console.log("smallScreen: ", smallScreen);
+    console.log("mediumScreen: ", mediumScreen);
+    console.log("largeScreen: ", largeScreen);
+  }, [numOfColumns, smallScreen, mediumScreen, largeScreen]);
 
   return (
     <>

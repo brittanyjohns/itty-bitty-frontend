@@ -279,7 +279,7 @@ const ViewChildAccountScreen: React.FC = () => {
           )}
           {segmentType === "gallery" && (
             <div className="ion-padding border">
-              <div className="flex justify-between">
+              <div className="flex flex-col justify-center items-center text-center">
                 <div className="text-2xl text-gray-500">
                   🚧 BETA Features 🚧 <br></br>{" "}
                   <span className="text-md font-bold">Under Construction</span>
