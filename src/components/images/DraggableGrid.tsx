@@ -30,6 +30,7 @@ interface DraggableGridProps {
   compactType?: any;
   preventCollision?: boolean;
   setCurrentLayout?: any;
+  updateScreenSize?: any;
 }
 const DraggableGrid: React.FC<DraggableGridProps> = ({
   images,
@@ -48,6 +49,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   compactType,
   preventCollision,
   setCurrentLayout,
+  updateScreenSize,
 }) => {
   const [width, setWidth] = useState(window.innerWidth);
   const [rowHeight, setRowHeight] = useState(180);
@@ -109,24 +111,23 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
     if (setCurrentLayout) {
       setCurrentLayout(layout);
     }
-    console.log("Layout changed: ", layout);
+    // console.log("Layout changed: ", layout);
     console.log("screenSize: ", screenSize);
   };
 
-  // console.log("Board layout: ", boardLayout);
   // console.log("screenSize: ", screenSize);
   // boardLayout[screenSize][img.id]
   return (
     <ResponsiveGridLayout
       className="layout"
-      breakpoints={{ lg: 1000, md: 800, sm: 600 }}
+      breakpoints={{ lg: 1200, md: 800, sm: 600 }}
       // cols={boardLayout}
       cols={
         board
           ? {
-              lg: board.large_screen_columns,
-              md: board.medium_screen_columns,
-              sm: board.small_screen_columns,
+              lg: board.large_screen_columns || 4,
+              md: board.medium_screen_columns || 3,
+              sm: board.small_screen_columns || 3,
               xs: 4,
               xxs: 2,
             }
@@ -140,6 +141,9 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
       preventCollision={false}
       onBreakpointChange={(newBreakpoint, newCols) => {
         console.log("Breakpoint change: ", newBreakpoint, newCols);
+        if (updateScreenSize) {
+          updateScreenSize(newBreakpoint, newCols);
+        }
       }}
     >
       {images.map((img: any, index: number) => (
@@ -147,13 +151,6 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
           key={Number(img.id)}
           data-grid={{
             ...img.layout[screenSize],
-            // x: img.layout.x,
-            // y: img.layout.y,
-            // w: img.layout.w,
-            // h: img.layout.h,
-            // ...boardLayout[screenSize][img.id],
-            // minW: img.layout.minW,
-            // layout: img.layout,
             isResizable: enableResize,
             isBounded: true,
             allowOverlap: false,

@@ -69,10 +69,13 @@ const EditBoardScreen: React.FC = () => {
     screenSize,
   } = useCurrentUser();
   const [gridLayout, setGridLayout] = useState([]);
-  const [numberOfColumns, setNumberOfColumns] = useState(4); // Default number of columns
+  const [numberOfColumns, setNumberOfColumns] = useState(4);
   const [showEdit, setShowEdit] = useState(false);
   const params = useParams<{ id: string }>();
   const [currentLayout, setCurrentLayout] = useState([]);
+  const [currentScreenSize, setCurrentScreenSize] = useState(screenSize);
+  const [currentNumberOfColumns, setCurrentNumberOfColumns] =
+    useState(numberOfColumns);
 
   const initialImage = {
     id: "",
@@ -240,17 +243,28 @@ const EditBoardScreen: React.FC = () => {
     history.push(`/boards/${board?.id}`);
   };
 
-  const getScreenSizeName = () => {
-    if (smallScreen) return "small";
-    if (mediumScreen) return "medium";
-    if (largeScreen) return "large";
+  const getScreenSizeName = (screenSize: string) => {
+    if (screenSize === "sm") return "Small";
+    if (screenSize === "md") return "Medium";
+    if (screenSize === "lg") return "Large";
+    if (screenSize === "xs") return "Extra Small";
+    if (screenSize === "xxs") return "Extra Extra Small";
+    // if (smallScreen) return "small";
+    // if (mediumScreen) return "medium";
+    // if (largeScreen) return "large";
     return "unknown";
   };
 
   useEffect(() => {
-    console.log("Cfrom edit urrent layout: ", currentLayout);
     setGridLayout(currentLayout);
   }, [currentLayout]);
+
+  useEffect(() => {
+    console.log("Screen size: ", screenSize);
+  }, [screenSize]);
+  useEffect(() => {
+    console.log("Number of columns: ", numberOfColumns);
+  }, [numberOfColumns]);
 
   return (
     <>
@@ -311,8 +325,10 @@ const EditBoardScreen: React.FC = () => {
                   </p>
                   <p className="text-center text-lg ">
                     You are currently viewing the layout for{" "}
-                    <span className="font-bold">{getScreenSizeName()}</span>{" "}
-                    screens ({numberOfColumns} columns).
+                    <span className="font-bold">
+                      {getScreenSizeName(currentScreenSize)}
+                    </span>{" "}
+                    screens ({currentNumberOfColumns} columns).
                   </p>
 
                   {board && (
@@ -328,6 +344,18 @@ const EditBoardScreen: React.FC = () => {
                       compactType={null}
                       preventCollision={true}
                       setCurrentLayout={handleCurrentLayout}
+                      updateScreenSize={(
+                        newScreenSize: string,
+                        newCols: number
+                      ) => {
+                        console.log(
+                          "Breakpoint change: ",
+                          newScreenSize,
+                          newCols
+                        );
+                        setCurrentNumberOfColumns(newCols);
+                        setCurrentScreenSize(newScreenSize);
+                      }}
                     />
                   )}
                 </div>

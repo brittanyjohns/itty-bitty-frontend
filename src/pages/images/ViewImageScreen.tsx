@@ -149,12 +149,16 @@ const ViewImageScreen: React.FC = () => {
     }
     setImage(imgToSet);
     toggleForms(segmentType, imgToSet);
-    if (imgToSet.display_doc && imgToSet.display_doc.src) {
+    if (
+      imgToSet?.display_doc &&
+      imgToSet.display_doc &&
+      imgToSet.display_doc.src
+    ) {
       setCurrentImage(imgToSet.display_doc.src);
-    } else if (imgToSet.src) {
+    } else if (imgToSet?.src) {
       setCurrentImage(imgToSet.src);
     } else {
-      const imgURl = generatePlaceholderImage(imgToSet.label);
+      const imgURl = generatePlaceholderImage(imgToSet?.label);
       setCurrentImage(imgURl);
     }
   };

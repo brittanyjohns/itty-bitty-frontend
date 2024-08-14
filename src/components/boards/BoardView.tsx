@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Board, addToTeam } from "../../data/boards";
 import {
   IonButton,
@@ -45,10 +45,20 @@ const BoardView: React.FC<BoardViewProps> = ({
   numOfColumns,
   handleClone,
 }) => {
-  const { currentUser, smallScreen, largeScreen, mediumScreen } =
+  const { currentUser, smallScreen, largeScreen, mediumScreen, screenSize } =
     useCurrentUser();
 
   const shouldShowRemoveBtn = currentUser?.role === "admin" || board?.can_edit;
+
+  const [currentLayout, setCurrentLayout] = useState([]);
+  const [currentScreenSize, setCurrentScreenSize] = useState(screenSize);
+  const [currentNumberOfColumns, setCurrentNumberOfColumns] =
+    useState(numOfColumns);
+
+  const handleCurrentLayout = (layout: any) => {
+    setCurrentLayout(layout);
+    console.log("Current layout: ", layout);
+  };
 
   useEffect(() => {
     console.log("BoardView: ", numOfColumns);
@@ -103,17 +113,23 @@ const BoardView: React.FC<BoardViewProps> = ({
         </IonButtons>
       </div>
 
-      {board && (
+      {board && board.images && board.images.length > 0 && (
         <DraggableGrid
           images={board.images}
           board={board}
           setShowIcon={setShowIcon}
           inputRef={inputRef}
-          columns={numOfColumns}
+          columns={currentNumberOfColumns}
           disableReorder={true}
           mute={true}
           viewOnClick={true}
           showRemoveBtn={shouldShowRemoveBtn}
+          setCurrentLayout={handleCurrentLayout}
+          updateScreenSize={(newScreenSize: string, newCols: number) => {
+            console.log("Breakpoint change: ", newScreenSize, newCols);
+            setCurrentNumberOfColumns(newCols);
+            setCurrentScreenSize(newScreenSize);
+          }}
         />
       )}
 
