@@ -119,6 +119,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
     <ResponsiveGridLayout
       className="layout"
       breakpoints={{ lg: 1200, md: 786, sm: 600 }}
+      margin={[5, 5]}
       cols={
         board
           ? {
@@ -131,7 +132,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
           : { lg: 4, md: 3, sm: 3, xs: 1, xxs: 1 }
       }
       width={width}
-      rowHeight={rowHeight - 50}
+      rowHeight={rowHeight}
       onLayoutChange={handleLayoutChange}
       compactType={compactType}
       preventCollision={false}
