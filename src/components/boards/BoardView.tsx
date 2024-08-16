@@ -21,6 +21,7 @@ import AddToTeamForm from "../teams/AddToTeamForm";
 import { useHistory } from "react-router";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import MainMenu from "../main_menu/MainMenu";
+import { getScreenSizeName } from "../../data/utils";
 
 interface BoardViewProps {
   board: Board;
@@ -45,27 +46,19 @@ const BoardView: React.FC<BoardViewProps> = ({
   numOfColumns,
   handleClone,
 }) => {
-  const { currentUser, smallScreen, largeScreen, mediumScreen, screenSize } =
+  const { currentUser, smallScreen, largeScreen, mediumScreen } =
     useCurrentUser();
 
   const shouldShowRemoveBtn = currentUser?.role === "admin" || board?.can_edit;
 
   const [currentLayout, setCurrentLayout] = useState([]);
-  const [currentScreenSize, setCurrentScreenSize] = useState(screenSize);
+  const [currentScreenSize, setCurrentScreenSize] = useState("lg");
   const [currentNumberOfColumns, setCurrentNumberOfColumns] =
     useState(numOfColumns);
 
   const handleCurrentLayout = (layout: any) => {
     setCurrentLayout(layout);
-    console.log("Current layout: ", layout);
   };
-
-  useEffect(() => {
-    console.log("BoardView: ", numOfColumns);
-    console.log("smallScreen: ", smallScreen);
-    console.log("mediumScreen: ", mediumScreen);
-    console.log("largeScreen: ", largeScreen);
-  }, [numOfColumns, smallScreen, mediumScreen, largeScreen]);
 
   return (
     <>
@@ -112,6 +105,13 @@ const BoardView: React.FC<BoardViewProps> = ({
           )}
         </IonButtons>
       </div>
+      <IonLabel className="text-xs md:text-md lg:text-lg block text-center">
+        You are currently viewing the layout for{" "}
+        <span className="font-bold">
+          {getScreenSizeName(currentScreenSize)}
+        </span>{" "}
+        screens ({currentNumberOfColumns} columns).
+      </IonLabel>
 
       {board && board.images && board.images.length > 0 && (
         <DraggableGrid

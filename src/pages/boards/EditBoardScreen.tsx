@@ -42,6 +42,7 @@ import ImageCropper from "../../components/images/ImageCropper";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import ConfirmAlert from "../../components/utils/ConfirmAlert";
+import { getScreenSizeName } from "../../data/utils";
 
 const EditBoardScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -66,14 +67,14 @@ const EditBoardScreen: React.FC = () => {
     smallScreen,
     mediumScreen,
     largeScreen,
-    screenSize,
   } = useCurrentUser();
   const [gridLayout, setGridLayout] = useState([]);
   const [numberOfColumns, setNumberOfColumns] = useState(4);
   const [showEdit, setShowEdit] = useState(false);
   const params = useParams<{ id: string }>();
   const [currentLayout, setCurrentLayout] = useState([]);
-  const [currentScreenSize, setCurrentScreenSize] = useState(screenSize);
+  // const [screenSize, setScreenSize] = useState("lg");
+  const [currentScreenSize, setCurrentScreenSize] = useState("lg");
   const [currentNumberOfColumns, setCurrentNumberOfColumns] =
     useState(numberOfColumns);
 
@@ -102,7 +103,6 @@ const EditBoardScreen: React.FC = () => {
   const removeBoard = async () => {
     try {
       const boardId = params.id;
-      console.log("Removing board: ", boardId);
       // Implement delete board logic
       await deleteBoard(boardId);
       window.location.href = "/boards";
@@ -218,7 +218,6 @@ const EditBoardScreen: React.FC = () => {
 
   const handleCurrentLayout = (layout: any) => {
     setCurrentLayout(layout);
-    console.log("Current layout: ", layout);
   };
 
   const setGrid = (layout: any) => {
@@ -230,9 +229,12 @@ const EditBoardScreen: React.FC = () => {
       console.error("Board ID is missing");
       return;
     }
-    console.log("Sending Grid Layout: ", gridLayout);
-    console.log("Screen Size: ", screenSize);
-    const updatedBoard = await saveLayout(board.id, gridLayout, screenSize);
+
+    const updatedBoard = await saveLayout(
+      board.id,
+      gridLayout,
+      currentScreenSize
+    );
     const message = "Board layout saved";
     setToastMessage(message);
     setIsToastOpen(true);
@@ -240,28 +242,9 @@ const EditBoardScreen: React.FC = () => {
     history.push(`/boards/${board?.id}`);
   };
 
-  const getScreenSizeName = (screenSize: string) => {
-    if (screenSize === "sm") return "Small";
-    if (screenSize === "md") return "Medium";
-    if (screenSize === "lg") return "Large";
-    if (screenSize === "xs") return "Extra Small";
-    if (screenSize === "xxs") return "Extra Extra Small";
-    // if (smallScreen) return "small";
-    // if (mediumScreen) return "medium";
-    // if (largeScreen) return "large";
-    return "unknown";
-  };
-
   useEffect(() => {
     setGridLayout(currentLayout);
   }, [currentLayout]);
-
-  useEffect(() => {
-    console.log("Screen size: ", screenSize);
-  }, [screenSize]);
-  useEffect(() => {
-    console.log("Number of columns: ", numberOfColumns);
-  }, [numberOfColumns]);
 
   return (
     <>
@@ -345,11 +328,6 @@ const EditBoardScreen: React.FC = () => {
                         newScreenSize: string,
                         newCols: number
                       ) => {
-                        console.log(
-                          "Breakpoint change: ",
-                          newScreenSize,
-                          newCols
-                        );
                         setCurrentNumberOfColumns(newCols);
                         setCurrentScreenSize(newScreenSize);
                       }}

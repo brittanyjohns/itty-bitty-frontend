@@ -11,7 +11,6 @@ import ImageGalleryItem from "./ImageGalleryItem";
 import { Board, updateBoard } from "../../data/boards";
 import { Image } from "../../data/images";
 import { ChildBoard } from "../../data/child_boards";
-import { useCurrentUser } from "../../contexts/UserContext";
 
 interface DraggableGridProps {
   columns: number;
@@ -31,6 +30,7 @@ interface DraggableGridProps {
   preventCollision?: boolean;
   setCurrentLayout?: any;
   updateScreenSize?: any;
+  screenSize?: string;
 }
 const DraggableGrid: React.FC<DraggableGridProps> = ({
   images,
@@ -50,34 +50,32 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   preventCollision,
   setCurrentLayout,
   updateScreenSize,
+  screenSize,
 }) => {
   const [width, setWidth] = useState(window.innerWidth);
   const [rowHeight, setRowHeight] = useState(180);
-  const { screenSize } = useCurrentUser();
   const updateRowHeight = () => {
-    const adjustWidth = width - 50;
+    const adjustWidth = width - 10;
     const dynamicRowHeight = Math.floor(adjustWidth / columns);
     setRowHeight(dynamicRowHeight);
   };
-  const [boardLayout, setBoardLayout] = useState(board?.layout);
+
+  const [currentNumberOfColumns, setCurrentNumberOfColumns] = useState(columns);
+  // const [boardLayout, setBoardLayout] = useState(board?.layout);
+  const [currentScreenSize, setCurrentScreenSize] = useState(screenSize);
   useEffect(() => {
     updateRowHeight();
-  }, [width, columns]);
+  }, [width, currentNumberOfColumns]);
 
   useEffect(() => {
-    console.log("Columns changed: ", columns);
-  }, [columns]);
-
-  useEffect(() => {
-    console.log("Board changed: ", board);
-    if (board) {
-      setBoardLayout(board.layout);
-    }
     const handleResize = () => {
       const currentWidth = window.innerWidth;
       setWidth(currentWidth);
-      const adjustWidth = width - 10;
+      console.log("Columns: ", currentNumberOfColumns);
+      console.log("Current width: ", currentWidth);
+      const adjustWidth = currentWidth - 20;
       const dynamicRowHeight = Math.floor(adjustWidth / columns);
+      console.log("Dynamic row height: ", dynamicRowHeight);
       setRowHeight(dynamicRowHeight);
     };
 
@@ -115,8 +113,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   return (
     <ResponsiveGridLayout
       className="layout"
-      breakpoints={{ lg: 1200, md: 800, sm: 600 }}
-      // cols={boardLayout}
+      breakpoints={{ lg: 1200, md: 786, sm: 600 }}
       cols={
         board
           ? {
@@ -131,18 +128,11 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
       width={width}
       rowHeight={rowHeight}
       onLayoutChange={handleLayoutChange}
-      // margin={[5, 5]}
-      // margin={{
-      // lg: [10, 10],
-      // md: [0, 0],
-      // sm: [0, 20],
-      // xs: [10, 10],
-      // xxs: [10, 10],
-      // }}
       compactType={compactType}
       preventCollision={false}
       onBreakpointChange={(newBreakpoint, newCols) => {
-        console.log("Breakpoint change: ", newBreakpoint, newCols);
+        setCurrentNumberOfColumns(newCols);
+        setCurrentScreenSize(newBreakpoint);
         if (updateScreenSize) {
           updateScreenSize(newBreakpoint, newCols);
         }
@@ -152,7 +142,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
         <div
           key={Number(img.id)}
           data-grid={{
-            ...img.layout[screenSize],
+            ...img.layout[currentScreenSize ?? "lg"],
             isResizable: enableResize,
             isBounded: true,
             allowOverlap: false,

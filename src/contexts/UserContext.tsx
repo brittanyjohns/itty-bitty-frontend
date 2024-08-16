@@ -25,7 +25,6 @@ export interface UserContextType {
   smallScreen: boolean;
   mediumScreen: boolean;
   largeScreen: boolean;
-  screenSize: string;
   setCurrentAccount: React.Dispatch<React.SetStateAction<ChildAccount | null>>;
 }
 
@@ -51,12 +50,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const isWideScreen = useMediaQuery({ query: "(min-width: 768px)" });
   const smallScreen = useMediaQuery({ query: "(max-width: 599px)" });
   const mediumScreen = useMediaQuery({
-    query: "(min-width: 600px) and (max-width: 1199px)",
+    query: "(min-width: 600px) and (max-width: 768px)",
   });
-  const largeScreen = useMediaQuery({ query: "(min-width: 1200px)" });
-
-  // Determine screen size label
-  const screenSize = smallScreen ? "sm" : mediumScreen ? "md" : "lg";
+  const largeScreen = useMediaQuery({ query: "(min-width: 769px)" });
 
   const fetchUser = async () => {
     const user = await getCurrentUser();
@@ -98,7 +94,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         smallScreen,
         mediumScreen,
         largeScreen,
-        screenSize,
         isWideScreen,
       }}
     >

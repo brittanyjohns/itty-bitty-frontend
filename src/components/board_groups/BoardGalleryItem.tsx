@@ -179,8 +179,8 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
         board?.bg_color || "bg-white"
       } rounded-sm p-1 border`}
     >
-      <IonLabel className="text-center text-xs md:text-sm lg:text-sm font-medium">
-        {board.name.length > 20
+      <IonLabel className="text-center text-xs md:text-xs lg:text-xs font-medium">
+        {board.name.length > 25
           ? `${board.name.substring(0, 25)}...`
           : board.name}
       </IonLabel>

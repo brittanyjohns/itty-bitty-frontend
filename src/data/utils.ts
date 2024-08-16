@@ -292,3 +292,12 @@ export const checkCurrentUserTokens = (
   }
   return false;
 };
+
+export const getScreenSizeName = (screenSize: string) => {
+  if (screenSize === "sm") return "Small";
+  if (screenSize === "md") return "Medium";
+  if (screenSize === "lg") return "Large";
+  if (screenSize === "xs") return "Extra Small";
+  if (screenSize === "xxs") return "Extra Extra Small";
+  return "unknown";
+};
