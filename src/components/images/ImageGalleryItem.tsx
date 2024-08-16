@@ -25,6 +25,7 @@ interface ImageGalleryItemProps {
   viewOnClick?: boolean;
   showRemoveBtn?: boolean;
   onSetDisplayImage?: any;
+  rowHeight?: number;
 }
 
 const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
@@ -38,6 +39,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   viewOnClick,
   showRemoveBtn,
   onSetDisplayImage,
+  rowHeight,
 }) => {
   const { currentUser } = useCurrentUser();
   const imgRef = useRef<HTMLDivElement>(null);
@@ -134,6 +136,10 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       return starOutline;
     }
   };
+
+  useEffect(() => {
+    console.log("rowHeight IMAGE GALLERY ITEM:", rowHeight);
+  }, [rowHeight]);
 
   return (
     <div

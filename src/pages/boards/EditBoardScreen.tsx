@@ -235,6 +235,7 @@ const EditBoardScreen: React.FC = () => {
       gridLayout,
       currentScreenSize
     );
+    console.log("Updated board: ", updatedBoard);
     const message = "Board layout saved";
     setToastMessage(message);
     setIsToastOpen(true);

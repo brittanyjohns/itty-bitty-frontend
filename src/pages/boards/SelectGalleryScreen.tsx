@@ -165,7 +165,7 @@ const SelectGalleryScreen: React.FC = () => {
       setIsOpen(true);
     }
     addSelectedImageToBoard();
-    handleRearrangeImages();
+    // handleRearrangeImages();
   };
 
   const handleCreateImage = async (label: string) => {

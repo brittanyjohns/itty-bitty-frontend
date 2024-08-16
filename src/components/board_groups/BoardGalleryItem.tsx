@@ -68,13 +68,16 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
   const handleBoardClick = (board: Board) => {
     let playAudioList = false;
     if (mute) {
+      console.log("Mute is on, not playing audio");
       if (viewOnClick) {
         if (boardGroup?.id) {
           history.push(`/boards/${board.id}?boardGroupId=${boardGroup.id}`);
         }
         history.push(`/boards/${board.id}`);
       }
+      return;
     } else {
+      console.log("Mute is off, playing audio");
       playAudioList = true;
     }
     const audioSrc = board.audio_url;
@@ -117,6 +120,7 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
     }
     const audio = new Audio(audioSrc);
     if (!waitToSpeak) {
+      console.log("Playing audio: ", audioSrc);
       const promise = audio.play();
       if (promise !== undefined) {
         promise

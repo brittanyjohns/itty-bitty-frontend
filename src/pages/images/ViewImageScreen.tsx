@@ -106,7 +106,7 @@ const ViewImageScreen: React.FC = () => {
       currentUser?.role === "admin" || currentUser?.id === image?.user_id
     );
     setBoardId(boardId);
-    await getData();
+    await getData(boardId);
     if (image && image.src) {
       setCurrentImage(image.src);
     }
@@ -122,7 +122,7 @@ const ViewImageScreen: React.FC = () => {
     if (creatingSymbol) {
       const intervalId = setInterval(() => {
         console.log("Checking for symbol...");
-        getData();
+        getData(boardId);
         setShowLoading(false);
         setCreatingSymbol(false);
       }, 3000); // Check every 5 seconds
@@ -132,7 +132,7 @@ const ViewImageScreen: React.FC = () => {
     }
   }, [creatingSymbol]);
 
-  const getData = async () => {
+  const getData = async (boardId?: string) => {
     const imgToSet = await fetchImage();
     const allBoards = await getBoards();
     setBoards(allBoards["boards"]);
@@ -549,12 +549,12 @@ const ViewImageScreen: React.FC = () => {
             {renderImageUserInfo(currentUser)}
 
             {image && image.docs && image.docs.length > 0 && (
-              <div className="w-full md:w-3/4 lg:w-2/3 mx-auto">
+              <div className="w-full md:w-5/6 mx-auto text-center">
                 <IonLabel className="font-bold text-sm md:text-md lg:text-lg">
                   Click an image to display it for the word: "{image.label}"
                 </IonLabel>
                 <div
-                  className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 mt-3"
+                  className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 mt-3"
                   ref={imageGrid}
                 >
                   {/* This needs pulled out into a separate component */}
@@ -580,8 +580,8 @@ const ViewImageScreen: React.FC = () => {
             )}
 
             {image && boards && (
-              <div className="mt-6 flex justify-center gap-2  w-full md:w-1/2 mx-auto">
-                <div className="mx-auto w-full">
+              <div className="mt-6 flex justify-center gap-1  w-full mx-auto">
+                <div className="mx-auto w-1/2">
                   {boards && boards.length > 0 && (
                     <BoardDropdown imageId={image.id} boards={boards} />
                   )}
@@ -592,16 +592,18 @@ const ViewImageScreen: React.FC = () => {
                       <IonText className="text-md">
                         This image is on the following boards:
                       </IonText>
-                      {image?.user_image_boards?.map((board) => (
-                        <IonItem
-                          key={board.id}
-                          routerLink={`/boards/${board.id}`}
-                          detail={true}
-                          className="text-sm font-mono"
-                        >
-                          {board.name}
-                        </IonItem>
-                      ))}
+                      <IonList>
+                        {image?.user_image_boards?.map((board) => (
+                          <IonItem
+                            key={board.id}
+                            routerLink={`/boards/${board.id}`}
+                            detail={true}
+                            className="text-sm font-mono"
+                          >
+                            {board.name}
+                          </IonItem>
+                        ))}
+                      </IonList>
                     </div>
                   )}
               </div>
@@ -630,7 +632,7 @@ const ViewImageScreen: React.FC = () => {
               </div>
             )}
             {currentUser?.admin && (
-              <div className="mt-10 w-full md:w-1/2 mx-auto">
+              <div className="mt-10 w-full md:w-11/12 mx-auto">
                 <div className="flex justify-between">
                   {!image?.no_next && (
                     <IonButton
@@ -666,7 +668,7 @@ const ViewImageScreen: React.FC = () => {
                   )}
                 </div>
                 <div className="text-sm font-mono w-full md:w-1/2 mx-auto">
-                  {nextImageWords.length > 0 && (
+                  {nextImageWords?.length > 0 && (
                     <div className="mt-2">
                       <IonText className="text-md">Next Words:</IonText>
                       <div className="flex flex-wrap">

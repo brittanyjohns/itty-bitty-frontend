@@ -177,9 +177,6 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen scrollY={true}>
-        <IonRefresher slot="fixed" onIonRefresh={refresh}>
-          <IonRefresherContent></IonRefresherContent>
-        </IonRefresher>
         <IonLoading message="Please wait..." isOpen={showLoading} />
         {board && (
           <DraggableGrid

@@ -46,8 +46,7 @@ const BoardView: React.FC<BoardViewProps> = ({
   numOfColumns,
   handleClone,
 }) => {
-  const { currentUser, smallScreen, largeScreen, mediumScreen } =
-    useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const shouldShowRemoveBtn = currentUser?.role === "admin" || board?.can_edit;
 
