@@ -51,7 +51,8 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
   const menuTab = useRef<HTMLDivElement>(null);
   const [images, setImages] = useState<Image[]>([]);
   const history = useHistory();
-  const { currentUser, currentAccount, isWideScreen } = useCurrentUser();
+  const { currentUser, currentAccount, isWideScreen, largeScreen } =
+    useCurrentUser();
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [currentUserTeams, setCurrentUserTeams] = useState<Team[]>();
   const [showIcon, setShowIcon] = useState(false);
@@ -73,6 +74,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
     const mainBoard = menuToSet.board;
     // setBoard(mainBoard);
     console.log("Main board", mainBoard);
+    console.log("largeScreen", largeScreen);
     // setTimeout(() => {
     //   console.log("Setting board", mainBoard);
     // }, 5000); //
@@ -241,8 +243,10 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
         <MainHeader
           pageTitle="Menus"
           isWideScreen={isWideScreen}
+          largeScreen={largeScreen}
           startLink="/menus"
           endLink="/menus/new"
+          showMenuButton={true}
         />
 
         <IonContent className="ion-padding">

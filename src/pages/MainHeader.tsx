@@ -29,6 +29,7 @@ interface MainHeaderProps {
   startLink?: string;
   startIcon?: string; // Ensure this is string type
   showMenuButton?: boolean;
+  largeScreen?: boolean;
 }
 
 const MainHeader: React.FC<MainHeaderProps> = (props) => {
@@ -38,11 +39,15 @@ const MainHeader: React.FC<MainHeaderProps> = (props) => {
   const [showMenuBtn, setShowMenuBtn] = useState(
     props.showMenuButton || !props.startLink
   );
-  const showHeader = !props.isWideScreen || (props.isWideScreen && showMenuBtn);
+  const showHeader =
+    !props.isWideScreen ||
+    (props.isWideScreen && showMenuBtn) ||
+    (props.isWideScreen && !props.largeScreen);
 
   useEffect(() => {
     setShowMenuBtn(props.showMenuButton || !props.startLink);
     console.log("showMenuBtn: ", props.showMenuButton);
+    console.log("**largeScreen: ", props.largeScreen);
   }, [props.isWideScreen]);
 
   const renderComponent = () => {
