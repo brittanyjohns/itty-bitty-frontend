@@ -127,8 +127,6 @@ const ViewImageScreen: React.FC = () => {
         setCreatingSymbol(false);
       }, 3000); // Check every 5 seconds
       return () => clearInterval(intervalId); // Cleanup interval on component unmount
-    } else {
-      console.log("Symbol created successfully.");
     }
   }, [creatingSymbol]);
 
@@ -310,7 +308,6 @@ const ViewImageScreen: React.FC = () => {
     const result = await create_symbol(image.id);
     // setShowLoading(false);
     if (result["status"] === "ok") {
-      console.log("Symbol created successfully.", result);
       setCreatingSymbol(true);
     } else {
       setShowLoading(false);
@@ -372,7 +369,7 @@ const ViewImageScreen: React.FC = () => {
             <IonText className="text-md block my-3">
               This image is owned by: <br></br>
               {image?.user?.name || image?.user?.email || image?.user?.id}{" "}
-              {image?.user.role === "admin" ? "(admin)" : ""}
+              {image?.user?.role === "admin" ? "(admin)" : ""}
             </IonText>
           )}
         </div>
