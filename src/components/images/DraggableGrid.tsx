@@ -118,8 +118,12 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   return (
     <ResponsiveGridLayout
       className="layout"
-      breakpoints={{ lg: 1200, md: 786, sm: 600 }}
-      margin={[5, 5]}
+      breakpoints={{ lg: 1200, md: 996, sm: 768 }}
+      margin={{
+        lg: [5, 60],
+        md: [5, 20],
+        sm: [5, 10],
+      }}
       cols={
         board
           ? {

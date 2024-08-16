@@ -42,6 +42,7 @@ const MainHeader: React.FC<MainHeaderProps> = (props) => {
 
   useEffect(() => {
     setShowMenuBtn(props.showMenuButton || !props.startLink);
+    console.log("showMenuBtn: ", props.showMenuButton);
   }, [props.isWideScreen]);
 
   const renderComponent = () => {
@@ -59,7 +60,7 @@ const MainHeader: React.FC<MainHeaderProps> = (props) => {
                 </IonButton>
               </IonButtons>
             )}
-            {!props.startLink && !isWideScreen && (
+            {!props.startLink && (
               <IonMenuButton
                 className="text-white"
                 slot="start"
