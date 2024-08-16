@@ -124,7 +124,7 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
           )}
           {!currentUser && (
             <div
-              className="hero_main1 bg-cover bg-center min-h-screen pb-5"
+              className="hero_main1 bg-cover bg-center min-h-screen pb-25"
               style={{
                 backgroundImage: `url(${getImageUrl("feature_1", "webp")})`,
               }}
@@ -138,9 +138,12 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
                 </p>
               </div>
               {emailParam && (
-                <div className="flex flex-col justify-center items-center text-center gap-4 py-4">
-                  <div className="bg-white bg-opacity-95 rounded-lg w-5/6 md:w- p-3/4 font-bold text-2xl sm:text-sm md:text-sm  text-center">
-                    <p className="text-center p-4 text-md font-semibold">
+                <div className="flex flex-col justify-center items-center text-center gap-1 p-2 m-2 bg-green-400 bg-opacity-95 rounded-lg w-11/12 md:w-3/4 lg:w-1/2 mx-auto">
+                  <h1 className="text-3xl font-bold text-center mt-4">
+                    Thanks for signing up! We'll be in touch soon.
+                  </h1>
+                  <div className="font-bold text-xl sm:text-sm md:text-sm  text-center">
+                    <p className="text-center p-2 text-md font-semibold">
                       While you're waiting on the hot, new features, why not
                       check out the existing ones?
                     </p>
@@ -151,74 +154,10 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
                   </div>
                 </div>
               )}
-              {/* <div className="w-full max-w-xs mx-auto">
-                <form className="shadow-md rounded mt-8 bg-white bg-opacity-95 p-8">
-                  <h1 className="text-2xl font-bold text-center mb-3">
-                    Sign Up
-                  </h1>
-                  <div className="mb-4">
-                    <IonInput
-                      value={email}
-                      fill="solid"
-                      className="mt-4"
-                      label="Email"
-                      labelPlacement="stacked"
-                      placeholder="Email"
-                      onIonInput={(e) => handleEmail(e.detail.value!)}
-                    ></IonInput>
-                  </div>
-                  <div className="mb-6">
-                    <IonInput
-                      label="Password"
-                      type="password"
-                      fill="solid"
-                      className="mt-4"
-                      labelPlacement="stacked"
-                      value={password}
-                      placeholder="Choose A Password"
-                      onIonInput={(e) => handlePassword(e.detail.value!)}
-                    ></IonInput>
-                  </div>
-                  <div className="mb-6">
-                    <IonInput
-                      label="Password Confirmation"
-                      type="password"
-                      fill="solid"
-                      value={passwordConfirmation}
-                      labelPlacement="stacked"
-                      placeholder="Confirm Password"
-                      onIonInput={(e) =>
-                        handlePasswordConfirmation(e.detail.value!)
-                      }
-                      className="mt-4"
-                    ></IonInput>
-                  </div>
-                  <div className="mt-8">
-                    <IonButton
-                      color="primary"
-                      expand="full"
-                      size="large"
-                      onClick={handleSignUp}
-                    >
-                      Sign Up
-                    </IonButton>
-                    <p className="text-center mt-8 font-light">
-                      Already have an account?
-                    </p>
-                    <IonButton
-                      expand="full"
-                      fill="clear"
-                      color="medium"
-                      className="ion-text-wrap mx-auto w-full mt-2 font-bold"
-                      style={{ minWidth: "200px" }}
-                      onClick={() => history.push("/sign-in")}
-                    >
-                      Sign In
-                    </IonButton>
-                  </div>
-                </form>
-              </div> */}
-              <SignUpForm plan={plan} />
+
+              <div className="pb-10">
+                <SignUpForm plan={plan} />
+              </div>
             </div>
           )}
         </IonContent>

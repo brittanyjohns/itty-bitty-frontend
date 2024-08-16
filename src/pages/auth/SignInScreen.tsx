@@ -5,6 +5,8 @@ import {
   IonInput,
   IonButton,
   IonAlert,
+  IonButtons,
+  IonLabel,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import { User, signIn } from "../../data/users";
@@ -95,7 +97,7 @@ const SignInScreen: React.FC = () => {
                   Discover the simplicity of SpeakAnyWay.
                 </p>
               </div>
-              <div className="max-w-md mx-auto bg-white bg-opacity-95 p-8 shadow-xl mt-20">
+              <div className="max-w-md mx-auto bg-white bg-opacity-95 p-8 shadow-xl mt-20 rounded-md">
                 <h1 className="text-2xl font-bold text-center mb-3">Sign In</h1>
                 <form onSubmit={(e) => e.preventDefault()}>
                   <IonInput
@@ -123,17 +125,11 @@ const SignInScreen: React.FC = () => {
                   <IonButton
                     expand="block"
                     className="mt-6"
+                    size="large"
+                    color={"success"}
                     onClick={handleSignIn}
                   >
                     Sign In
-                  </IonButton>
-                  <IonButton
-                    expand="block"
-                    fill="clear"
-                    color="medium"
-                    onClick={handleForgotPassword}
-                  >
-                    Forgot Password?
                   </IonButton>
                 </form>
                 <IonAlert
@@ -143,6 +139,20 @@ const SignInScreen: React.FC = () => {
                   message={errorMessage}
                   buttons={["OK"]}
                 />
+              </div>
+              <div className=" bg-blue-400 p-4 w-11/12 md:w-3/4 lg:w-1/2 mx-auto mt-40 rounded-md">
+                <IonButtons className="flex justify-center">
+                  <IonButton
+                    expand="block"
+                    fill="clear"
+                    color="medium"
+                    onClick={handleForgotPassword}
+                  >
+                    <IonLabel className="text-lg text-white">
+                      Forgot Password?
+                    </IonLabel>
+                  </IonButton>
+                </IonButtons>
               </div>
             </div>
           )}

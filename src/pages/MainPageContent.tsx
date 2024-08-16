@@ -97,7 +97,7 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
 
   return (
     <div className="relative">
-      <div className="">
+      <div className="w-full md:w-11/12 lg:w-11/12 mx-auto">
         <div className="flex flex-col justify-center items-center text-center py-4 lg:py-8 bg-black">
           <h1 className="text-2xl md:text-5xl font-bold text-white mt-4">
             Empower Your Child's Communication
@@ -109,61 +109,88 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
 
         <div className="">
           <div className="fixed-bg">
-            <div className="flex flex-col justify-center items-center text-center">
+            <div className="flex justify-center items-center p-4">
               <IonButton
                 onClick={() => history.push("/about")}
-                className=""
+                className="mr-3"
                 color="light"
+                size="large"
               >
                 Learn More
               </IonButton>
 
               <IonButton
                 onClick={() => history.push("/demo")}
-                className=""
+                className="ml-3"
                 color={"light"}
+                size="large"
               >
                 Demo
               </IonButton>
             </div>
-            <div className="relative h-80 md:h-96 lg:h-96 w-full">
-              <div className="p-2 bg-white bg-opacity-80 absolute bottom-45 left-0 right-0 mt-5 shadow-xl">
+            <div className="relative h-80 md:h-96 lg:h-96 w-11/12 md:w-1/2 lg:w-1/2 mx-auto">
+              <div className="p-0 bg-white bg-opacity-95 absolute bottom-45 left-0 right-0 mt-5 shadow-xl  p-4  rounded-lg">
                 <IonToast
                   isOpen={isOpen}
                   message={toastMessage}
                   onDidDismiss={() => setIsOpen(false)}
                   duration={2000}
                 ></IonToast>
-                <p className="text-xl font-bold text-center my-4">
+                <p className="text-xl font-bold text-center my-2">
                   Stay updated on all things SpeakAnyWay!
                 </p>
                 <p className="text-center text-lg font-md mb-4">
                   We're working on mobile apps for Android and iOS{" "}
                 </p>
-                <div className="flex justify-center items-center">
+
+                <IonInput
+                  type="email"
+                  value={email}
+                  label="Email"
+                  labelPlacement="floating"
+                  fill="outline"
+                  className="mt-2"
+                  onIonInput={(e) => setEmail(e.detail.value || "")} // Assuming Ionic React
+                />
+
+                <IonButton
+                  className="font-bold mt-2 py-3 w-full md:w-1/2 lg:w-1/2 mx-auto"
+                  size="large"
+                  expand="block"
+                  color="success"
+                  type="submit"
+                  onClick={handleSubmitEmail}
+                  disabled={!email}
+                >
+                  Go
+                </IonButton>
+
+                {/* <div className="flex justify-center items-center bg-white w-full p-1">
                   <IonInput
                     type="email"
                     value={email}
-                    label="Email"
-                    fill="solid"
-                    className="w-1/2"
+                    label=" Email"
+                    labelPlacement="stacked"
+                    fill="outline"
+                    className="mt-2"
                     onIonInput={(e) => setEmail(e.detail.value || "")} // Assuming Ionic React
                   />
 
                   <IonButton
-                    className="ml-2"
-                    size="large"
-                    color="primary"
+                    className="ml-2 font-bold"
+                    size="small"
+                    color="success"
                     type="submit"
                     onClick={handleSubmitEmail}
                     disabled={!email}
                   >
                     Go
                   </IonButton>
-                </div>
+                </div> */}
               </div>
             </div>
-            <div className="relative h-80 md:h-96 lg:h-96 ">
+
+            <div className="relative h-80 md:h-96 lg:h-96 mt-5">
               <div className="shadow-overlay text-white">
                 <section className="">
                   <div className="container mx-auto">
@@ -188,41 +215,13 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
                           </p>
                         </Link>
                       ))}
-                      <IonCard className="bg-white rounded-lg shadow p-4 text-center">
-                        <img
-                          src={getImageUrl(`happy-headphones`, "webp")}
-                          alt={"happy headphones"}
-                          className="h-40 object-cover rounded-md mx-auto"
-                        />
-                        <h3 className="mt-2 font-semibold text-lg text-purple-600">
-                          Sign Up Now!
-                        </h3>
-                        <p className="mt-2 text-sm text-gray-600">
-                          Sign up for a free account and start using SpeakAnyWay
-                          now!
-                        </p>
-                        <IonInput
-                          type="email"
-                          value={email}
-                          label="Email"
-                          labelPlacement="floating"
-                          fill="outline"
-                          className="mt-2"
-                          onIonInput={(e) => setEmail(e.detail.value || "")} // Assuming Ionic React
-                        />
-
-                        <IonButton
-                          className="font-bold mt-2"
-                          // size="large"
-                          expand="block"
-                          color="success"
-                          type="submit"
-                          onClick={handleSubmitEmail}
-                          disabled={!email}
-                        >
-                          Go
-                        </IonButton>
-                      </IonCard>
+                    </div>
+                  </div>
+                  <div className=" h-80 md:h-96 lg:h-96 lower-fixed-bg my-8">
+                    <div className="">
+                      <div className="pt-4">
+                        <SignUpForm plan="free" />
+                      </div>
                     </div>
                   </div>
                 </section>

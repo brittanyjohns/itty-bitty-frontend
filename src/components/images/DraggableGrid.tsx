@@ -53,15 +53,43 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   screenSize,
 }) => {
   const [width, setWidth] = useState(window.innerWidth);
-  const [rowHeight, setRowHeight] = useState(180);
+  const [rowHeight, setRowHeight] = useState(160);
 
   const [currentNumberOfColumns, setCurrentNumberOfColumns] = useState(columns);
   // const [boardLayout, setBoardLayout] = useState(board?.layout);
+  const imgContainerRef = React.createRef<HTMLDivElement>();
   const [currentScreenSize, setCurrentScreenSize] = useState(screenSize);
-  // useEffect(() => {
-  //   updateRowHeight();
-  //   console.log("rowHeight: ", rowHeight);
-  // }, [width, currentNumberOfColumns, rowHeight]);
+  useEffect(() => {
+    updateRowHeight();
+  }, [width, currentNumberOfColumns, rowHeight]);
+
+  const updateRowHeight = () => {
+    const adjustWidth = width - 10;
+    const dynamicRowHeight = Math.floor(adjustWidth / currentNumberOfColumns);
+    console.log("dynamicRowHeight: ", dynamicRowHeight);
+    setRowHeight(dynamicRowHeight);
+  };
+
+  useEffect(() => {
+    if (imgContainerRef.current) {
+      const divHeight = imgContainerRef.current.offsetHeight;
+      console.log("imgContainerRef div height:", imgContainerRef);
+    }
+  }, [imgContainerRef]);
+
+  useEffect(() => {
+    updateRowHeight();
+    const handleResize = () => {
+      const currentWidth = window.innerWidth;
+      setWidth(currentWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   // useEffect(() => {
   //   console.log("on load rowHeight: ", rowHeight);
@@ -85,11 +113,6 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   //     window.removeEventListener("resize", handleResize);
   //   };
   // }, []);
-
-  useEffect(() => {
-    const dynamicRowHeight = rowHeight * 1 + 10 * currentNumberOfColumns;
-    console.log("Dynamic row height: ", dynamicRowHeight);
-  }, [currentNumberOfColumns]);
 
   const handleSetDisplayImage = async (image: Image) => {
     if (board) {
@@ -119,11 +142,11 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
     <ResponsiveGridLayout
       className="layout"
       breakpoints={{ lg: 1200, md: 996, sm: 768 }}
-      margin={{
-        lg: [5, 60],
-        md: [5, 20],
-        sm: [5, 10],
-      }}
+      // margin={{
+      //   lg: [5, 60],
+      //   md: [5, 20],
+      //   sm: [5, 10],
+      // }}
       cols={
         board
           ? {
@@ -159,6 +182,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
             static: disableReorder,
           }}
           className={`relative items-center cursor-pointer`}
+          // ref={imgContainerRef}
         >
           <ImageGalleryItem
             key={index}

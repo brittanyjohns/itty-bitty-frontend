@@ -10,6 +10,8 @@ import {
   IonContent,
   IonLoading,
   IonPage,
+  IonRefresher,
+  IonRefresherContent,
   IonToolbar,
   useIonViewDidLeave,
   useIonViewWillEnter,
@@ -23,6 +25,7 @@ import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import BoardView from "../../components/boards/BoardView";
 import Tabs from "../../components/utils/Tabs";
+import { refresh } from "ionicons/icons";
 
 const ViewBoard: React.FC<any> = () => {
   const [board, setBoard] = useState<Board>();
@@ -101,6 +104,13 @@ const ViewBoard: React.FC<any> = () => {
     setShowLoading(false);
   };
 
+  const refresh = (e: CustomEvent) => {
+    setTimeout(() => {
+      e.detail.complete();
+      fetchBoard();
+    }, 3000);
+  };
+
   return (
     <>
       <MainMenu pageTitle="Boards" currentUser={currentUser} />
@@ -108,6 +118,9 @@ const ViewBoard: React.FC<any> = () => {
       <IonPage id="main-content">
         <MainHeader pageTitle={board?.name || "Board"} />
         <IonContent>
+          <IonRefresher slot="fixed" onIonRefresh={refresh}>
+            <IonRefresherContent></IonRefresherContent>
+          </IonRefresher>
           <IonLoading message="Please wait..." isOpen={showLoading} />
           {board && (
             <BoardView

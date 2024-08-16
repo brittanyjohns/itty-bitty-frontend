@@ -20,6 +20,7 @@ import {
   appsOutline,
   arrowBackCircleOutline,
   imagesOutline,
+  saveOutline,
   shareOutline,
 } from "ionicons/icons";
 import {
@@ -295,7 +296,7 @@ const EditBoardScreen: React.FC = () => {
                 />
               )}
             </div>
-            <div className="my-6 px-4 lg:px-12">
+            <div className="my-2 px-2 lg:px-8">
               {board && board.images && board.images.length > 0 && (
                 <div className="pb-10">
                   <p className="text-center font-bold text-lg">
@@ -342,23 +343,26 @@ const EditBoardScreen: React.FC = () => {
                 </div>
               )}
             </div>
-            <div className="mt-5 flex justify-center">
-              <IonButtons className="flex justify-center">
+            <div className="mt-5">
+              <IonButtons className="flex justify-between">
                 <IonButton
-                  className="text-xs md:text-md lg:text-lg font-bold text-center my-2 cursor-pointer mx-auto text-wrap"
-                  // onClick={handleRearrangeImages}
+                  className="text-lg"
                   onClick={() => setOpenAlert(true)}
                   color={"danger"}
+                  fill="outline"
+                  size="small"
                 >
                   <IonIcon icon={appsOutline} className="mx-2" />
-                  <IonLabel>Reset layout</IonLabel>
+                  <IonLabel className="mx-1">Reset Layout </IonLabel>
                 </IonButton>
                 <IonButton
-                  className="block my-5 w-5/6 md:w-1/3 lg:w-1/4 mx-auto text-md text-wrap"
+                  className="text-lg"
                   onClick={handleSaveLayout}
                   size="large"
+                  fill="outline"
                 >
-                  Save Layout
+                  <IonIcon icon={saveOutline} className="mx-1" />
+                  <IonLabel className="mx-2">Save Layout</IonLabel>
                 </IonButton>
               </IonButtons>
             </div>

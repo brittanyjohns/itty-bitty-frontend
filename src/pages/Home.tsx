@@ -74,7 +74,7 @@ const Home: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <div className="bg-inherit shadow-none w-full md:w-3/4 lg:w-2/3 mx-auto ion-padding">
+          <div className="bg-inherit shadow-none w-full mx-auto">
             {(currentUser && (
               <UserHome
                 userName={currentUser?.name || currentUser.email}
