@@ -222,10 +222,7 @@ const EditBoardScreen: React.FC = () => {
   };
 
   const setGrid = (layout: any) => {
-    console.log("from edit layout", layout);
-
     setGridLayout(layout);
-    console.log("gridLayout", gridLayout);
   };
 
   const handleSaveLayout = async () => {

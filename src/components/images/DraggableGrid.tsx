@@ -111,12 +111,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
     if (setCurrentLayout) {
       setCurrentLayout(layout);
     }
-    // console.log("Layout changed: ", layout);
-    console.log("screenSize: ", screenSize);
   };
-
-  // console.log("screenSize: ", screenSize);
-  // boardLayout[screenSize][img.id]
   return (
     <ResponsiveGridLayout
       className="layout"
@@ -137,6 +132,13 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
       rowHeight={rowHeight}
       onLayoutChange={handleLayoutChange}
       // margin={[5, 5]}
+      // margin={{
+      // lg: [10, 10],
+      // md: [0, 0],
+      // sm: [0, 20],
+      // xs: [10, 10],
+      // xxs: [10, 10],
+      // }}
       compactType={compactType}
       preventCollision={false}
       onBreakpointChange={(newBreakpoint, newCols) => {

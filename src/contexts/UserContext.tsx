@@ -51,7 +51,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const isWideScreen = useMediaQuery({ query: "(min-width: 768px)" });
   const smallScreen = useMediaQuery({ query: "(max-width: 599px)" });
   const mediumScreen = useMediaQuery({
-    query: "(min-width: 600px) and (max-width: 999px)",
+    query: "(min-width: 600px) and (max-width: 1199px)",
   });
   const largeScreen = useMediaQuery({ query: "(min-width: 1200px)" });
 
