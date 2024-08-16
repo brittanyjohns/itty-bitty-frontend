@@ -106,7 +106,7 @@ const ViewImageScreen: React.FC = () => {
       currentUser?.role === "admin" || currentUser?.id === image?.user_id
     );
     setBoardId(boardId);
-    await getData(boardId);
+    await getData();
     if (image && image.src) {
       setCurrentImage(image.src);
     }
@@ -122,7 +122,7 @@ const ViewImageScreen: React.FC = () => {
     if (creatingSymbol) {
       const intervalId = setInterval(() => {
         console.log("Checking for symbol...");
-        getData(boardId);
+        getData();
         setShowLoading(false);
         setCreatingSymbol(false);
       }, 3000); // Check every 5 seconds
@@ -132,7 +132,7 @@ const ViewImageScreen: React.FC = () => {
     }
   }, [creatingSymbol]);
 
-  const getData = async (boardId?: string) => {
+  const getData = async () => {
     const imgToSet = await fetchImage();
     const allBoards = await getBoards();
     setBoards(allBoards["boards"]);
