@@ -13,12 +13,8 @@ import {
   copyOutline,
   createOutline,
   chatbubbleEllipsesOutline,
-  addCircleOutline,
 } from "ionicons/icons";
-import AddToTeamForm from "../teams/AddToTeamForm";
-import { useHistory } from "react-router";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import MainMenu from "../main_menu/MainMenu";
 import DraggableGroupGrid from "./DraggableGroupGrid";
 
 interface BoardViewProps {

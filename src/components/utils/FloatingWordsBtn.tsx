@@ -1,23 +1,12 @@
 import React from "react";
 import {
-  IonContent,
   IonFab,
   IonFabButton,
   IonFabList,
-  IonHeader,
   IonIcon,
   IonLabel,
-  IonTitle,
-  IonToolbar,
 } from "@ionic/react";
-import {
-  chevronDownCircle,
-  chevronForwardCircle,
-  chevronUpCircle,
-  colorPalette,
-  document,
-  globe,
-} from "ionicons/icons";
+import { chevronUpCircle } from "ionicons/icons";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
 import "./../main.css";
 interface FloatingWordsBtnProps {

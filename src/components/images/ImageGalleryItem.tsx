@@ -61,14 +61,6 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     }
   };
 
-  useEffect(() => {
-    console.log("imgRef.current:", imgRef.current);
-    const imageHeight = imgRef.current?.offsetHeight;
-    const imageWidth = imgRef.current?.clientWidth;
-    console.log("imageHeight:", imageHeight);
-    console.log("imageWidth:", imageWidth);
-  }, [imgRef.current]);
-
   const handleImageClick = (image: Image) => {
     if (onImageClick) {
       onImageClick(image);
@@ -144,10 +136,6 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       return starOutline;
     }
   };
-
-  useEffect(() => {
-    console.log("rowHeight IMAGE GALLERY ITEM:", rowHeight);
-  }, [rowHeight]);
 
   return (
     <div

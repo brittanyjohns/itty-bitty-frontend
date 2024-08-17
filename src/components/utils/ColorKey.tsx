@@ -2,26 +2,6 @@ import { IonButton, IonButtons, IonIcon } from "@ionic/react";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
 import React, { useState } from "react";
 
-// when "noun"
-//       color = "blue"
-//     when "verb"
-//       color = "green"
-//     when "adjective"
-//       color = "yellow"
-//     when "adverb"
-//       color = "purple"
-//     when "pronoun"
-//       color = "pink"
-//     when "preposition"
-//       color = "orange"
-//     when "conjunction"
-//       color = "red"
-//     when "interjection"
-//       color = "teal"
-//     else
-//       color = "gray"
-//     end
-
 const colorKeyItems = [
   { colorClass: "bg-blue-400 bg-opacity-50", label: "Nouns" },
   { colorClass: "bg-green-400 bg-opacity-50", label: "Verbs" },

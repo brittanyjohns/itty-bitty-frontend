@@ -66,7 +66,6 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   const handleColumnSizeChange = (event: CustomEvent) => {
     const columnSize = event.detail.value;
     const columnScreen = (event.target as HTMLInputElement)?.name;
-    console.log("columnScreen", columnScreen);
     if (!columnScreen) {
       console.error("No column screen found");
       return;
