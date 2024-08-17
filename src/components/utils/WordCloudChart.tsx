@@ -40,15 +40,15 @@ const WordCloudChart: React.FC<WordCloudChartProps> = ({ wordEvents }) => {
     // Convert word frequencies to the format expected by d3-cloud
     const words = Object.keys(wordFrequencyMap).map((word) => ({
       text: word,
-      size: Math.log2(wordFrequencyMap[word] + 1) * 10,
+      size: Math.log2(wordFrequencyMap[word] + 1) * 15,
     }));
 
     const customColors = scaleOrdinal(schemeCategory10);
 
     const layout = cloud()
-      .size([600, 600])
+      .size([400, 400])
       .words(words)
-      .padding(5)
+      .padding(1)
       .rotate(() => ~~(Math.random() * 2) * 90)
       .font("Impact")
       .fontSize((d: any) => d.size)

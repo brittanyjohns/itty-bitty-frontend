@@ -63,7 +63,7 @@ export const getChildAccount = async (
     requestInfo
   );
   const result = await response.json();
-  console.log("getChildAccount result", result);
+  // console.log("getChildAccount result", result);
   return result;
 };
 

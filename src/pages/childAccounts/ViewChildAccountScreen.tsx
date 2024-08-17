@@ -102,7 +102,10 @@ const ViewChildAccountScreen: React.FC = () => {
     }
     let events: WordEvent[] = [];
 
+    console.log("Fetching word events for account: ", id);
+
     events = await fetchWordEventsByAccountId(Number(id));
+    console.log("Word Events: ", events);
     setLoading(false);
     setWordEvents(events);
   };
@@ -112,11 +115,11 @@ const ViewChildAccountScreen: React.FC = () => {
     fetchUserBoards();
     loadWordEvents();
   }, []);
-  useEffect(() => {
-    fetchChildAccount();
-    fetchUserBoards();
-    loadWordEvents();
-  }, [currentUser]);
+  // useEffect(() => {
+  //   fetchChildAccount();
+  //   fetchUserBoards();
+  //   loadWordEvents();
+  // }, [currentUser]);
 
   const handleSegmentChange = (e: CustomEvent) => {
     const newSegment = e.detail.value;
@@ -166,7 +169,7 @@ const ViewChildAccountScreen: React.FC = () => {
           startLink="/child-accounts"
         />
 
-        <IonContent className="ion-padding" scrollY={true}>
+        <IonContent>
           {childAccount && (
             <IonSegment
               value={segmentType}
@@ -306,8 +309,8 @@ const ViewChildAccountScreen: React.FC = () => {
                 </IonButtons>
               </div>
               {loading && <IonSpinner />}
-              <div className="relative grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
-                <div className="border ion-padding overflow-hidden">
+              <div className=" ">
+                <div className="overflow-hidden">
                   <h1 className="text-2xl mt-4">Word Usage Cloud</h1>
                   <WordCloudChart wordEvents={wordEvents} />
                 </div>
