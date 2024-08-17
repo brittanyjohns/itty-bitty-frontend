@@ -39,6 +39,7 @@ const ViewBoardGroup: React.FC<ViewBoardGroupProps> = ({ locked }) => {
 
   const fetchBoardGroup = async () => {
     const boardGroup = await getBoardGroup(params.id);
+    console.log("useEffect fetchBoardGroup", boardGroup?.layout);
 
     if (!boardGroup) {
       console.error("Error fetching boardGroup");

@@ -90,6 +90,7 @@ const DraggableGroupGrid: React.FC<DraggableGroupGridProps> = ({
       className="layout"
       cols={columns}
       width={width}
+      layout={boardGroup?.layout}
       rowHeight={rowHeight}
       onLayoutChange={onLayoutChange}
       margin={[10, 5]}
@@ -99,7 +100,12 @@ const DraggableGroupGrid: React.FC<DraggableGroupGridProps> = ({
           <div
             key={Number(board.id)}
             data-grid={{
-              ...board.layout,
+              // ...board.layout,
+              x: boardGroup?.layout[index].x,
+              y: boardGroup?.layout[index].y,
+              w: boardGroup?.layout[index].w,
+              h: boardGroup?.layout[index].h,
+
               isResizable: enableResize,
               isBounded: true,
               allowOverlap: false,

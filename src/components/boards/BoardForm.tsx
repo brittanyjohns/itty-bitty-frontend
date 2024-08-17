@@ -97,11 +97,11 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
     // alert("Board saved successfully");
 
     const savedBoard = await updateBoard(updatingBoard);
-    // setBoard(savedBoard);
+    setBoard(savedBoard);
     setShowLoading(false);
     setToastMessage("Board saved successfully");
     setIsOpen(true);
-    window.location.reload();
+    // window.location.reload();
     // history.push(`/boards/${savedBoard.id}`);
   };
 
@@ -121,13 +121,20 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   };
 
   const playSampleVoice = (voice: string) => {
-    const file = sampleVoices.find((v: SampleVoiceResponse) =>
-      v.label.includes(voice)
-    );
+    const file = sampleVoices.find((v: SampleVoiceResponse) => {
+      if (v.label.includes(voice)) {
+        console.log("Voice file found", v);
+        return v;
+      } else {
+        console.error("No voice file found", file);
+        return null;
+      }
+    });
     if (!file) {
       console.error("No voice file found");
       return;
     }
+    console.log("Playing voice file url", file.url);
     const audio = new Audio(file.url);
     audio.play();
   };

@@ -81,18 +81,15 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({
 
   const handleNumberSelection = (e: any) => {
     const value = parseInt(e, 10);
-    console.log("value", value);
     setNumberOfImages(value);
     setTokenLimit(value);
   };
 
   const handlePromptInput = (value: string) => {
-    console.log("value", value);
     setPromptText(value);
   };
 
   const handleBoardName = (value: string) => {
-    console.log("name value", value);
     setBoardName(value);
   };
 
