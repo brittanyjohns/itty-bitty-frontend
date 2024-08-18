@@ -39,7 +39,7 @@ const AudioList: React.FC<AudioListProps> = ({ image }) => {
               image.audio_files.map(
                 (
                   audio_file: {
-                    id: Key | null | undefined;
+                    id: string | null | undefined;
                     url: string | undefined;
                     voice: string | undefined;
                     filename: string | undefined;
