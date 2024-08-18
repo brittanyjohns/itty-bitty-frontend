@@ -122,10 +122,9 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   const playSampleVoice = (voice: string) => {
     const file = sampleVoices.find((v: SampleVoiceResponse) => {
       if (v.label.includes(voice)) {
-        console.log("Voice file found", v);
         return v;
       } else {
-        console.error("No voice file found", file);
+        console.error("No voice file found", v);
         return null;
       }
     });
@@ -133,7 +132,6 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
       console.error("No voice file found");
       return;
     }
-    console.log("Playing voice file url", file.url);
     const audio = new Audio(file.url);
     audio.play();
   };

@@ -46,7 +46,7 @@ export const generatePlaceholderImage = (text: string): string => {
   if (context) {
     context.fillStyle = "#CCCCCC";
     context.fillRect(0, 0, canvas.width, canvas.height);
-    context.font = "20px Arial";
+    context.font = "48px Arial";
     context.fillStyle = "#000000";
     context.textAlign = "center";
     context.textBaseline = "middle";
