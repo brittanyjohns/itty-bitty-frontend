@@ -38,6 +38,7 @@ export interface Image {
   user?: any;
   created_at?: string;
   updated_at?: string;
+  audio_files?: any[];
 }
 
 export interface DraggableGridLayout {

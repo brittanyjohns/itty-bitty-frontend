@@ -54,6 +54,7 @@ import { generatePlaceholderImage } from "../../data/utils";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import Tabs from "../../components/utils/Tabs";
 import { set } from "d3";
+import AudioList from "../../components/images/AudioList";
 
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -710,6 +711,16 @@ const ViewImageScreen: React.FC = () => {
                       Delete Selected
                     </IonButton>
                   </div>
+                </div>
+                <div className="mt-6 w-full md:w-1/2 mx-auto">
+                  {image && image.display_doc && image.display_doc.src && (
+                    <>
+                      <IonText className="text-md">
+                        This image is currently displayed as the main image.
+                      </IonText>
+                      <AudioList image={image} />
+                    </>
+                  )}
                 </div>
               </div>
             )}

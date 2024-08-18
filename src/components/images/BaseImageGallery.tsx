@@ -24,7 +24,6 @@ const BaseImageGallery: React.FC<ImageGalleryProps> = ({
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
 
-
   const resizeGrid = () => {
     const imagesCount = images.length;
     let cols = 1;
