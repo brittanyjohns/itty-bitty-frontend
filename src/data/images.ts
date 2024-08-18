@@ -317,3 +317,17 @@ export async function findByLabel(label: string): Promise<Image> {
   );
   return response.json();
 }
+
+export const deleteAudioFile = async (
+  image_id: string,
+  audio_file_id: string
+) => {
+  const response = await fetch(
+    `${BASE_URL}images/${image_id}/destroy_audio?audio_file_id=${audio_file_id}`,
+    {
+      headers: userHeaders,
+      method: "DELETE",
+    }
+  );
+  return response.json();
+};
