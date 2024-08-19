@@ -11,11 +11,13 @@ import { image, trashBinOutline } from "ionicons/icons";
 import { Image, deleteAudioFile } from "../../data/images";
 interface AudioListProps {
   image: Image;
+  afterDeleteAudioFile: () => void;
 }
 
-const AudioList: React.FC<AudioListProps> = ({ image }) => {
-  console.log("AudioListProps", image?.audio_files);
-
+const AudioList: React.FC<AudioListProps> = ({
+  image,
+  afterDeleteAudioFile,
+}) => {
   const handleDeleteAudioFile = async (
     audio_file_id: string | null | undefined
   ) => {
@@ -24,6 +26,7 @@ const AudioList: React.FC<AudioListProps> = ({ image }) => {
       const response = await deleteAudioFile(image.id, audio_file_id);
       console.log("Delete audio file response", response);
     }
+    afterDeleteAudioFile();
   };
 
   return (

@@ -303,6 +303,10 @@ const ViewImageScreen: React.FC = () => {
     }
   };
 
+  const handleAudioDelete = () => {
+    getData();
+  };
+
   const createSymbol = async () => {
     if (!image) return;
     setShowLoading(true);
@@ -630,7 +634,7 @@ const ViewImageScreen: React.FC = () => {
               </div>
             )}
             {currentUser?.admin && (
-              <div className="mt-10 w-full md:w-11/12 mx-auto">
+              <div className="mt-10 w-full md:w-3/4 mx-auto">
                 <div className="flex justify-between">
                   {!image?.no_next && (
                     <IonButton
@@ -718,8 +722,15 @@ const ViewImageScreen: React.FC = () => {
                       <IonText className="text-md">
                         This image is currently displayed as the main image.
                       </IonText>
-                      <AudioList image={image} />
                     </>
+                  )}
+                </div>
+                <div className="mt-6 w-full md:w-1/2 mx-auto">
+                  {image && (
+                    <AudioList
+                      image={image}
+                      afterDeleteAudioFile={handleAudioDelete}
+                    />
                   )}
                 </div>
               </div>

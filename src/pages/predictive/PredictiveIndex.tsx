@@ -60,7 +60,6 @@ const PredictiveImagesScreen: React.FC = () => {
   const handleClickWord = async (image: Image) => {
     const text = image.label;
     if (previousLabel === text) {
-      console.log("Same label clicked", text);
       return;
     } else {
       const payload = {
@@ -70,7 +69,6 @@ const PredictiveImagesScreen: React.FC = () => {
       };
       clickWord(payload);
       setPreviousLabel(text);
-      console.log("New label clicked", text);
     }
   };
 
@@ -119,7 +117,6 @@ const PredictiveImagesScreen: React.FC = () => {
   };
 
   const clearInput = async () => {
-    console.log("Clearing input");
     if (inputRef.current) {
       inputRef.current.value = "";
     }
@@ -135,8 +132,6 @@ const PredictiveImagesScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log("Starting image id: ", startingImageId);
-    console.log("previousLabel: ", previousLabel);
     if (startingImageId) {
       setStartingImages(startingImageId);
     } else {
