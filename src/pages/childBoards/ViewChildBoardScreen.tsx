@@ -107,7 +107,6 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
 
     const intervalId = setInterval(() => {
       fetchBoard();
-      console.log("Fetching child boards...");
     }, REFRESH_RATE); // Fetch child boards every 45 seconds
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, [currentAccount]);

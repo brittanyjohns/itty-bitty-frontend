@@ -36,7 +36,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
       e.detail.complete();
-    }, 3000);
+    }, 2000);
   };
 
   const loadSubscriptions = async () => {

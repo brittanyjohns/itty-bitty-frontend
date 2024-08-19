@@ -7,11 +7,9 @@ import {
   IonButton,
   IonIcon,
 } from "@ionic/react";
-import { useHistory } from "react-router";
 import { menuController } from "@ionic/core/components";
 import { addCircleOutline, arrowBackCircleOutline } from "ionicons/icons";
 import { useEffect, useState } from "react";
-import { set } from "d3";
 
 export const toggleMainMenu = async () => {
   await menuController.toggle("main-menu");
@@ -19,6 +17,10 @@ export const toggleMainMenu = async () => {
 
 export const closeMainMenu = async () => {
   await menuController.close("main-menu");
+};
+
+export const openMainMenu = async () => {
+  await menuController.open("main-menu");
 };
 
 interface MainHeaderProps {
@@ -33,9 +35,6 @@ interface MainHeaderProps {
 }
 
 const MainHeader: React.FC<MainHeaderProps> = (props) => {
-  const isWideScreen = props.isWideScreen;
-  // const showMenuBtn = props.showMenuButton || !props.startLink;
-
   const [showMenuBtn, setShowMenuBtn] = useState(
     props.showMenuButton || !props.startLink
   );
