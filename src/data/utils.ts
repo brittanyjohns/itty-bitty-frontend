@@ -170,7 +170,7 @@ export const getFilterList = (
     "child-accounts",
     "images",
     "menus",
-    "teams",
+    // "teams",
     "predictive",
     "settings",
     "admin-dashboard",

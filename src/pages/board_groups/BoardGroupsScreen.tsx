@@ -39,15 +39,11 @@ const BoardGroupsScreen: React.FC = () => {
     fetchBoardGroups();
   }, []);
 
-  useIonViewDidEnter(() => {
-    fetchBoardGroups();
-  }, []);
-
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
       fetchBoardGroups();
       e.detail.complete();
-    }, 3000);
+    }, 2000); //  2 seconds
   };
 
   const handleSegmentChange = (event: CustomEvent) => {

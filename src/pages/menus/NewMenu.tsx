@@ -95,7 +95,9 @@ const NewMenu: React.FC = (props: any) => {
       );
       return;
     }
+    setShowLoading(true);
     let result = await createMenu(formData);
+    setShowLoading(false);
     if (result?.errors) {
       console.error("Error:", result.errors);
       alert(`Error creating menu: ${JSON.stringify(result)}`);
@@ -103,6 +105,7 @@ const NewMenu: React.FC = (props: any) => {
     } else {
       const id = result.id;
       props.history.push("/menus/" + id);
+
       window.location.reload();
     }
   };

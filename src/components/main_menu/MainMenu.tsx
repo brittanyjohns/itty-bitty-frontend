@@ -34,7 +34,7 @@ const MainMenu: React.FC<MainMenuProps> = (props) => {
 
   useEffect(() => {
     setUpMenu();
-  }, [setUpMenu]);
+  }, []);
 
   const goToDashboard = () => {
     if (currentAccount || currentUser) {

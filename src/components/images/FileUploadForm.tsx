@@ -5,7 +5,6 @@ import { addDoc, createImage } from "../../data/images";
 import { useHistory } from "react-router";
 import { Board } from "../../data/boards";
 import { camera } from "ionicons/icons";
-// import "./FileUploadForm.css"; // Assuming you have an external CSS file
 
 interface FileUploadFormProps {
   board: Board | undefined;
@@ -23,20 +22,14 @@ const FileUploadForm: React.FC<FileUploadFormProps> = ({
   existingId,
 }) => {
   const [label, setLabel] = useState(existingLabel || "");
-  // const [shouldDisable, setShouldDisable] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const hideLabel = showLabel ? false : true;
   const [file, setFile] = useState<File | null>(null);
   const history = useHistory();
 
-  // useEffect(() => {
-  //   setShouldDisable(existingLabel ? false : true);
-  // }, [existingLabel]);
-
   const uploadPhoto = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!label) return;
-    // setShouldDisable(true);
     const formData = new FormData();
     if (file) {
       formData.append("image[docs][image]", file);
@@ -91,11 +84,7 @@ const FileUploadForm: React.FC<FileUploadFormProps> = ({
         />
       )}
       <div className="upload-section">
-        <input
-          type="file"
-          onChange={onFileChange}
-          className="file-input"
-        />
+        <input type="file" onChange={onFileChange} className="file-input" />
         <IonButton expand="block" type="submit">
           <IonIcon slot="start" icon={camera} />
           {showLabel ? "Save Image" : "Upload Image"}
