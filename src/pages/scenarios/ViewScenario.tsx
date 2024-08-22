@@ -24,18 +24,19 @@ import ScenarioView from "../../components/scenarios/ScenarioView";
 import Tabs from "../../components/utils/Tabs";
 import { rearrangeImages } from "../../data/boards";
 import ChatBox from "../../components/scenarios/ChatBox";
+import BoardView from "../../components/boards/BoardView";
 interface ViewScenarioProps {
   mode: string;
 }
 const ViewScenario: React.FC<ViewScenarioProps> = ({ mode }) => {
   const [scenario, setScenario] = useState<Scenario>();
-  const [board, setBoard] = useState(scenario?.board);
   const params = useParams<{ id: string }>();
   const inputRef = useRef<HTMLIonInputElement>(null);
   const [showLoading, setShowLoading] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [showIcon, setShowIcon] = useState(false);
+  const [board, setBoard] = useState(scenario?.board);
   const { smallScreen, mediumScreen, largeScreen, currentUser } =
     useCurrentUser();
   const history = useHistory();
@@ -51,8 +52,10 @@ const ViewScenario: React.FC<ViewScenarioProps> = ({ mode }) => {
     }
     setScenario(scenario);
     setBoard(scenario.board);
+    console.log("board", scenario.board);
 
     setShowEdit(scenario.can_edit || currentUser?.role === "admin");
+    console.log("scenario", scenario);
 
     if (!board) {
       setShowLoading(false);
@@ -90,9 +93,9 @@ const ViewScenario: React.FC<ViewScenarioProps> = ({ mode }) => {
     inputRef.current!.value = "";
   };
 
-  useIonViewWillEnter(() => {
-    fetchScenario();
-  });
+  // useIonViewWillEnter(() => {
+  //   fetchScenario();
+  // });
 
   const handleClone = async () => {
     setShowLoading(true);
@@ -150,7 +153,20 @@ const ViewScenario: React.FC<ViewScenarioProps> = ({ mode }) => {
               {scenario && <ChatBox scenario={scenario} />}
             </IonCard>
           )}
-          {scenario && mode !== "chat" && (
+          {scenario && scenario.board && mode !== "chat" && (
+            <BoardView
+              board={scenario.board}
+              showEdit={showEdit}
+              showShare={true}
+              handleClone={handleClone}
+              setShowIcon={setShowIcon}
+              inputRef={inputRef}
+              numOfColumns={numOfColumns}
+              showLoading={showLoading}
+              setShowLoading={setShowLoading}
+            />
+          )}
+          {scenario && !scenario.board && mode !== "chat" && (
             <ScenarioView
               scenario={scenario}
               showEdit={showEdit}

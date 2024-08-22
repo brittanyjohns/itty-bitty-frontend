@@ -2,31 +2,23 @@
 
 import React, { useEffect, useState } from "react";
 import {
-  IonContent,
-  IonPage,
   IonInput,
   IonItem,
-  IonLabel,
   IonButton,
   IonTextarea,
-  IonLoading,
-  IonAlert,
   IonCard,
   IonList,
   IonText,
 } from "@ionic/react";
-import {
-  Scenario,
-  ScenarioData,
-  answerQuestion,
-  createScenario,
-} from "../../data/scenarios";
-import { set } from "d3";
+import { Scenario, answerQuestion } from "../../data/scenarios";
+import { useHistory } from "react-router";
 interface ScenarioFormProps {
   scenario: Scenario;
 }
 const ChatBox: React.FC<ScenarioFormProps> = ({ scenario }) => {
   const [question, setQuestion] = useState<string>(scenario.question_1 || "");
+  const history = useHistory();
+  const [updatedScenario, setScenario] = useState<Scenario>(scenario);
   const [questionNumber, setQuestionNumber] = useState<number>(1);
   const [currentAnswer, setCurrentAnswer] = useState<string>("");
   const [questions, setQuestions] = useState<string[]>(
@@ -41,21 +33,38 @@ const ChatBox: React.FC<ScenarioFormProps> = ({ scenario }) => {
   };
 
   useEffect(() => {
-    console.log("chat scenario", scenario);
-    console.log("chat question", scenario.question_1);
-    if (scenario.question_1) {
-      setQuestion(scenario.question_1);
+    console.log("chat scenario", updatedScenario);
+    console.log("chat question", updatedScenario.question_1);
+    if (updatedScenario.question_1) {
+      setQuestion(updatedScenario.question_1);
     }
-    if (scenario.questions) {
-      console.log("setting questions", scenario.questions);
-      setQuestions(scenario.questions);
+    if (updatedScenario.questions) {
+      console.log("setting questions", updatedScenario.questions);
+      setQuestions(updatedScenario.questions);
     }
   }, []);
   const handleSubmit = async () => {
-    console.log("submitting scenario", scenario);
-    console.log("submitting questions", questions);
-    console.log("submitting question", question);
-    answerQuestion(scenario.id!, questionNumber, currentAnswer);
+    const finalizing = questionNumber === 2;
+
+    console.log("submitting finalizing", finalizing);
+    console.log("submitting questionNumber", questionNumber);
+    console.log("submitting currentAnswer", currentAnswer);
+    const updatedScenario = await answerQuestion(
+      scenario.id!,
+      questionNumber,
+      currentAnswer,
+      finalizing
+    );
+    console.log("updatedScenario", updatedScenario);
+    setScenario(updatedScenario);
+    if (finalizing) {
+      console.log("pushing to results", updatedScenario);
+      history.push(`/scenarios/${scenario.id}`);
+    } else {
+      // setQuestionNumber(questionNumber + 1);
+      // setCurrentAnswer("");
+      window.location.reload();
+    }
   };
   return (
     <div>
@@ -74,7 +83,7 @@ const ChatBox: React.FC<ScenarioFormProps> = ({ scenario }) => {
         <IonItem>
           <IonText className="mt-2 mr-3">Initial Description</IonText>
           <IonTextarea
-            value={scenario.initialDescription}
+            value={scenario.initial_description}
             required
             className="mt-3"
           />

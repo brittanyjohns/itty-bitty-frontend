@@ -11,7 +11,7 @@ export interface Scenario {
   token_limit: number;
   board_id?: string;
   errors?: string[];
-  initialDescription?: string;
+  initial_description?: string;
   question_1?: string;
   question_2?: string;
   answer_1?: string;
@@ -55,13 +55,25 @@ export const createScenario = async (scenario: Scenario): Promise<Scenario> => {
 export const answerQuestion = async (
   scenario_id: string,
   question_number: number,
-  answer: string
+  answer: string,
+  finalize?: boolean
 ) => {
-  const response = await fetch(`${BASE_URL}scenarios/${scenario_id}/answer`, {
-    method: "POST",
-    headers: userHeaders,
-    body: JSON.stringify({ question_number, answer }),
-  });
+  let response;
+  console.log("finalizing", finalize);
+  console.log("answer", answer);
+  if (!finalize) {
+    response = await fetch(`${BASE_URL}scenarios/${scenario_id}/answer`, {
+      method: "POST",
+      headers: userHeaders,
+      body: JSON.stringify({ question_number, answer }),
+    });
+  } else {
+    response = await fetch(`${BASE_URL}scenarios/${scenario_id}/finalize`, {
+      method: "POST",
+      headers: userHeaders,
+      body: JSON.stringify({ question_number, answer, finalize }),
+    });
+  }
   const updatedScenario: Scenario = await response.json();
   return updatedScenario;
 };

@@ -33,8 +33,7 @@ const NewScenario: React.FC = (props: any) => {
       alert(`Error creating scenario: ${newScenario.errors.join(", ")}`);
     } else {
       console.log("Scenario created", newScenario);
-      const boardId = newScenario.board_id;
-      props.history.push("/boards/" + boardId);
+      props.history.push("/scenarios/" + newScenario.id + "/chat");
     }
   };
   return (
@@ -56,12 +55,12 @@ const NewScenario: React.FC = (props: any) => {
         <MainHeader
           pageTitle="New Scenario"
           isWideScreen={isWideScreen}
-          startLink="/boards/new"
+          startLink="/scenarios"
         />
         <IonContent fullscreen scrollY={true} className="ion-padding">
           <NewScenarioForm
             onSave={onSubmit}
-            onCancel={() => props.history.push("/boards")}
+            onCancel={() => props.history.push("/scenarios")}
             scenario={initialScenario}
           />
         </IonContent>
