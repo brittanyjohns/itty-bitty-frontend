@@ -59,7 +59,8 @@ const ChatBox: React.FC<ScenarioFormProps> = ({ scenario }) => {
     setScenario(updatedScenario);
     if (finalizing) {
       console.log("pushing to results", updatedScenario);
-      history.push(`/scenarios/${scenario.id}`);
+      const boardId = updatedScenario.board?.id;
+      history.push(`/boards/${boardId}`);
     } else {
       // setQuestionNumber(questionNumber + 1);
       // setCurrentAnswer("");

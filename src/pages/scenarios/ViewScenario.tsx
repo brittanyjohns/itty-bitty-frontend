@@ -2,8 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { Scenario, getScenario } from "../../data/scenarios";
 import {
   IonButton,
+  IonButtons,
   IonCard,
   IonContent,
+  IonIcon,
   IonLabel,
   IonLoading,
   IonPage,
@@ -25,6 +27,7 @@ import Tabs from "../../components/utils/Tabs";
 import { rearrangeImages } from "../../data/boards";
 import ChatBox from "../../components/scenarios/ChatBox";
 import BoardView from "../../components/boards/BoardView";
+import { chatbubbleEllipsesOutline, chatbubblesOutline } from "ionicons/icons";
 interface ViewScenarioProps {
   mode: string;
 }
@@ -37,7 +40,7 @@ const ViewScenario: React.FC<ViewScenarioProps> = ({ mode }) => {
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [showIcon, setShowIcon] = useState(false);
   const [board, setBoard] = useState(scenario?.board);
-  const { smallScreen, mediumScreen, largeScreen, currentUser } =
+  const { smallScreen, mediumScreen, largeScreen, currentUser, isWideScreen } =
     useCurrentUser();
   const history = useHistory();
 
@@ -129,7 +132,13 @@ const ViewScenario: React.FC<ViewScenarioProps> = ({ mode }) => {
       <MainMenu pageTitle="Scenarios" currentUser={currentUser} />
       <StaticMenu pageTitle="Scenarios" currentUser={currentUser} />
       <IonPage id="main-content">
-        <MainHeader pageTitle={scenario?.name || "Scenario"} />
+        <MainHeader
+          pageTitle={scenario?.name || "Scenario"}
+          isWideScreen={isWideScreen}
+          showMenuButton={!isWideScreen}
+          endLink={`/scenarios/${scenario?.id}/chat`}
+          endIcon={chatbubblesOutline}
+        />
         <IonContent>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
@@ -153,6 +162,7 @@ const ViewScenario: React.FC<ViewScenarioProps> = ({ mode }) => {
               {scenario && <ChatBox scenario={scenario} />}
             </IonCard>
           )}
+
           {scenario && scenario.board && mode !== "chat" && (
             <BoardView
               board={scenario.board}
