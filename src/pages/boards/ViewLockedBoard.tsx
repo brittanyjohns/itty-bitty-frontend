@@ -203,6 +203,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
             onImageClick={handleImageClick}
             viewOnClick={false}
             showRemoveBtn={false}
+            setShowLoading={setShowLoading}
           />
         )}
         {imageCount < 1 && (

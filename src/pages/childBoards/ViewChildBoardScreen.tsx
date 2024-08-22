@@ -179,6 +179,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
         <IonLoading message="Please wait..." isOpen={showLoading} />
         {board && (
           <DraggableGrid
+            setShowLoading={setShowLoading}
             images={board.images}
             board={board}
             setShowIcon={setShowIcon}

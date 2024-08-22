@@ -358,6 +358,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
           <div className="hidden" ref={boardTab}>
             {board && board.layout && (
               <BoardView
+                setShowLoading={setShowLoading}
                 board={board}
                 showEdit={menu?.can_edit || false}
                 currentUserTeams={currentUserTeams}
