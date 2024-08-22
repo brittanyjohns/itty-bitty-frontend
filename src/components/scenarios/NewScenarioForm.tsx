@@ -88,7 +88,6 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({
   };
 
   const handlePromptInput = (value: string) => {
-    console.log("prompt", value);
     setPromptText(value);
   };
 
