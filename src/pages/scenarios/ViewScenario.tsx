@@ -27,7 +27,12 @@ import Tabs from "../../components/utils/Tabs";
 import { rearrangeImages } from "../../data/boards";
 import ChatBox from "../../components/scenarios/ChatBox";
 import BoardView from "../../components/boards/BoardView";
-import { chatbubbleEllipsesOutline, chatbubblesOutline } from "ionicons/icons";
+import {
+  chatbubbleEllipsesOutline,
+  chatbubblesOutline,
+  earth,
+  earthOutline,
+} from "ionicons/icons";
 interface ViewScenarioProps {
   mode: string;
 }
@@ -96,30 +101,6 @@ const ViewScenario: React.FC<ViewScenarioProps> = ({ mode }) => {
     inputRef.current!.value = "";
   };
 
-  // useIonViewWillEnter(() => {
-  //   fetchScenario();
-  // });
-
-  const handleClone = async () => {
-    setShowLoading(true);
-    console.log("Cloning scenario");
-    // try {
-    //   const clonedScenario = await cloneScenario(params.id);
-    //   if (clonedScenario) {
-    //     const updatedScenario = await rearrangeImages(clonedScenario.id);
-    //     setScenario(updatedScenario || clonedScenario);
-    //     history.push(`/scenarios/${clonedScenario.id}`);
-    //   } else {
-    //     console.error("Error cloning scenario");
-    //     alert("Error cloning scenario");
-    //   }
-    // } catch (error) {
-    //   console.error("Error cloning scenario: ", error);
-    //   alert("Error cloning scenario");
-    // }
-    setShowLoading(false);
-  };
-
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
       e.detail.complete();
@@ -136,8 +117,12 @@ const ViewScenario: React.FC<ViewScenarioProps> = ({ mode }) => {
           pageTitle={scenario?.name || "Scenario"}
           isWideScreen={isWideScreen}
           showMenuButton={!isWideScreen}
-          endLink={`/scenarios/${scenario?.id}/chat`}
-          endIcon={chatbubblesOutline}
+          endLink={
+            mode === "chat"
+              ? `/scenarios/${scenario?.id}`
+              : `/scenarios/${scenario?.id}/chat`
+          }
+          endIcon={mode === "chat" ? earthOutline : chatbubbleEllipsesOutline}
         />
         <IonContent>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
@@ -157,10 +142,11 @@ const ViewScenario: React.FC<ViewScenarioProps> = ({ mode }) => {
             </IonCard>
           )}
           {mode === "chat" && (
-            <IonCard>
-              <IonLabel>Chat</IonLabel>
-              {scenario && <ChatBox scenario={scenario} />}
-            </IonCard>
+            <div>
+              {scenario && (
+                <ChatBox scenario={scenario} setShowLoading={setShowLoading} />
+              )}
+            </div>
           )}
 
           {scenario && scenario.board && mode !== "chat" && (
@@ -168,7 +154,6 @@ const ViewScenario: React.FC<ViewScenarioProps> = ({ mode }) => {
               board={scenario.board}
               showEdit={showEdit}
               showShare={true}
-              handleClone={handleClone}
               setShowIcon={setShowIcon}
               inputRef={inputRef}
               numOfColumns={numOfColumns}
@@ -181,7 +166,6 @@ const ViewScenario: React.FC<ViewScenarioProps> = ({ mode }) => {
               scenario={scenario}
               showEdit={showEdit}
               showShare={true}
-              handleClone={handleClone}
               setShowIcon={setShowIcon}
               inputRef={inputRef}
               numOfColumns={numOfColumns}

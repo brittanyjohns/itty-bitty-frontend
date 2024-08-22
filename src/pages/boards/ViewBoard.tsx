@@ -85,25 +85,6 @@ const ViewBoard: React.FC<any> = () => {
     fetchBoard();
   });
 
-  const handleClone = async () => {
-    setShowLoading(true);
-    try {
-      const clonedBoard = await cloneBoard(params.id);
-      if (clonedBoard) {
-        const updatedBoard = await rearrangeImages(clonedBoard.id);
-        setBoard(updatedBoard || clonedBoard);
-        history.push(`/boards/${clonedBoard.id}`);
-      } else {
-        console.error("Error cloning board");
-        alert("Error cloning board");
-      }
-    } catch (error) {
-      console.error("Error cloning board: ", error);
-      alert("Error cloning board");
-    }
-    setShowLoading(false);
-  };
-
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
       e.detail.complete();
@@ -127,7 +108,6 @@ const ViewBoard: React.FC<any> = () => {
               board={board}
               showEdit={showEdit}
               showShare={true}
-              handleClone={handleClone}
               setShowIcon={setShowIcon}
               inputRef={inputRef}
               numOfColumns={numOfColumns}

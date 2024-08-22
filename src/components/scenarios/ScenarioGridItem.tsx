@@ -13,7 +13,7 @@ interface ScenarioListItemProps {
   setShowIcon?: (show: boolean) => void;
   inputRef?: React.RefObject<HTMLInputElement>;
   showRemoveBtn?: boolean;
-  removeChildScenario?: any;
+  removeScenario?: any;
   board?: Board;
 }
 
@@ -22,7 +22,7 @@ const ScenarioGridItem: React.FC<ScenarioListItemProps> = ({
   board,
   gridType,
   showRemoveBtn,
-  removeChildScenario,
+  removeScenario,
 }) => {
   const { currentUser, currentAccount } = useCurrentUser();
   const history = useHistory();
@@ -50,7 +50,7 @@ const ScenarioGridItem: React.FC<ScenarioListItemProps> = ({
         onClick={() => handleScenarioClick(scenario)}
       >
         <IonImg
-          src={board?.display_image_url || placeholderUrl}
+          src={scenario.board.display_image_url || placeholderUrl}
           alt={scenario.name}
           className="ion-img-contain mx-auto"
         />
@@ -67,13 +67,13 @@ const ScenarioGridItem: React.FC<ScenarioListItemProps> = ({
           size="small"
           onClick={() => setIsOpen(true)}
           color="danger"
-          className="tiny absolute bottom-3 right-3"
+          className="tiny absolute bottom-3 right-3 cursor-pointer"
         />
       )}
       <IonAlert
         isOpen={isOpen}
-        header="Remove Scenario"
-        message="Are you sure you want to remove this scenario?"
+        header="Delete Scenario"
+        message="Are you sure you want to delete this scenario?"
         buttons={[
           {
             text: "Cancel",
@@ -86,7 +86,7 @@ const ScenarioGridItem: React.FC<ScenarioListItemProps> = ({
             text: "OK",
             role: "confirm",
             handler: () => {
-              removeChildScenario(scenario);
+              removeScenario(scenario);
             },
           },
         ]}

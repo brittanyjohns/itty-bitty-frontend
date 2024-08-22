@@ -231,11 +231,18 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
             ))}
           </IonSelect>
         </IonItem>
-        <IonButtons className="mt-4">
-          <IonButton onClick={handleSubmit} fill="solid" size="large">
-            Save
-          </IonButton>
-        </IonButtons>
+        {/* <IonButtons className="mt-4"> */}
+        <IonButton
+          onClick={handleSubmit}
+          color="primary"
+          fill="outline"
+          expand="block"
+          className="mr-2"
+          size="default"
+        >
+          Save
+        </IonButton>
+        {/* </IonButtons> */}
       </IonList>
       <IonToast
         isOpen={isOpen}

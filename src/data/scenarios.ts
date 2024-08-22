@@ -104,3 +104,12 @@ export const updateScenario = async (scenario: Scenario): Promise<Scenario> => {
   const updatedScenario: Scenario = await response.json();
   return updatedScenario;
 };
+
+export const deleteScenario = async (id: string): Promise<Scenario> => {
+  const response = await fetch(`${BASE_URL}scenarios/${id}`, {
+    method: "DELETE",
+    headers: userHeaders,
+  });
+  const deletedScenario: Scenario = await response.json();
+  return deletedScenario;
+};

@@ -19,6 +19,7 @@ import { useHistory, useParams } from "react-router";
 import {
   appsOutline,
   arrowBackCircleOutline,
+  contractOutline,
   imagesOutline,
   saveOutline,
   shareOutline,
@@ -248,6 +249,8 @@ const EditBoardScreen: React.FC = () => {
     setGridLayout(currentLayout);
   }, [currentLayout]);
 
+  const [preventCollision, setPreventCollision] = useState(false);
+
   return (
     <>
       <MainMenu
@@ -312,29 +315,33 @@ const EditBoardScreen: React.FC = () => {
                     </span>{" "}
                     screens ({currentNumberOfColumns} columns).
                   </p>
-
-                  {board && (
-                    <DraggableGrid
-                      board={board}
-                      images={board.images}
-                      columns={numberOfColumns}
-                      onLayoutChange={(layout: any) => setGrid(layout)}
-                      mute={true}
-                      enableResize={true}
-                      viewOnClick={false}
-                      showRemoveBtn={false}
-                      compactType={null}
-                      preventCollision={true}
-                      setCurrentLayout={handleCurrentLayout}
-                      updateScreenSize={(
-                        newScreenSize: string,
-                        newCols: number
-                      ) => {
-                        setCurrentNumberOfColumns(newCols);
-                        setCurrentScreenSize(newScreenSize);
-                      }}
-                    />
-                  )}
+                  <div>
+                    <div className="h-5 my-3"></div>
+                    {board && (
+                      <DraggableGrid
+                        board={board}
+                        images={board.images}
+                        columns={numberOfColumns}
+                        onLayoutChange={(layout: any) => setGrid(layout)}
+                        mute={true}
+                        enableResize={true}
+                        viewOnClick={false}
+                        showRemoveBtn={false}
+                        compactType={null}
+                        preventCollision={preventCollision}
+                        setShowLoading={setShowLoading}
+                        setCurrentLayout={handleCurrentLayout}
+                        updateScreenSize={(
+                          newScreenSize: string,
+                          newCols: number
+                        ) => {
+                          setCurrentNumberOfColumns(newCols);
+                          setCurrentScreenSize(newScreenSize);
+                        }}
+                      />
+                    )}
+                    <div className="h-5 my-3"></div>
+                  </div>
                 </div>
               )}
               {board && board.images && board.images.length < 1 && (
@@ -354,6 +361,18 @@ const EditBoardScreen: React.FC = () => {
                 >
                   <IonIcon icon={appsOutline} className="mx-2" />
                   <IonLabel className="mx-1">Reset Layout </IonLabel>
+                </IonButton>
+                <IonButton
+                  className="text-md"
+                  onClick={() => setPreventCollision(!preventCollision)}
+                  color={"primary"}
+                  fill={preventCollision ? "solid" : "outline"}
+                  size="small"
+                >
+                  <IonIcon icon={contractOutline} className="mx-2" />
+                  <IonLabel className="mx-1">
+                    Prevent Collision: {preventCollision ? "On" : "Off"}
+                  </IonLabel>
                 </IonButton>
                 <IonButton
                   className="text-lg"

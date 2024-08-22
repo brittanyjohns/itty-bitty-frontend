@@ -1,19 +1,14 @@
 import { createRef, useEffect, useState } from "react";
-import { Scenario } from "../../data/scenarios";
+import { Scenario, deleteScenario } from "../../data/scenarios";
 import { IonButton } from "@ionic/react";
 import ScenarioGridItem from "./ScenarioGridItem";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 interface ScenarioGridProps {
   scenarios: Scenario[];
-  gridType?: string;
   loadScenarios?: any;
 }
-const ScenarioGrid = ({
-  scenarios,
-  gridType,
-  loadScenarios,
-}: ScenarioGridProps) => {
+const ScenarioGrid = ({ scenarios, loadScenarios }: ScenarioGridProps) => {
   const { currentUser } = useCurrentUser();
   const gridRef = createRef<HTMLDivElement>();
   const [currentScenarios, setCurrentScenarios] =
@@ -21,18 +16,16 @@ const ScenarioGrid = ({
 
   const handleRemoveScenario = async (scenario: Scenario) => {
     console.log("remove scenario", scenario);
-    // if (!scenario) return;
-    // if (currentUser && gridType === "child") {
-    //   try {
-    //     await deleteScenario(scenario.id);
-    //     const updatedScenarios = scenarios.filter((b) => b.id !== scenario.id);
-    //     setCurrentScenarios(updatedScenarios);
-    //     console.log("updatedScenarios", updatedScenarios);
-    //   } catch (error) {
-    //     console.error("Error removing scenario: ", error);
-    //     alert("Error removing scenario");
-    //   }
-    // }
+    if (!scenario?.id) return;
+    try {
+      await deleteScenario(scenario.id);
+      const updatedScenarios = scenarios.filter((b) => b.id !== scenario.id);
+      setCurrentScenarios(updatedScenarios);
+      console.log("updatedScenarios", updatedScenarios);
+    } catch (error) {
+      console.error("Error removing scenario: ", error);
+      alert("Error removing scenario");
+    }
   };
 
   useEffect(() => {
@@ -55,9 +48,8 @@ const ScenarioGrid = ({
           >
             <ScenarioGridItem
               scenario={scenario}
-              gridType={gridType}
-              showRemoveBtn={currentUser && gridType === "child" ? true : false}
-              removeChildScenario={handleRemoveScenario}
+              showRemoveBtn={currentUser?.role === "admin"}
+              removeScenario={handleRemoveScenario}
             />
           </div>
         ))}

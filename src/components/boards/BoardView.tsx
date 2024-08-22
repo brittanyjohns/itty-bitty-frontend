@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { Board, addToTeam } from "../../data/boards";
+import {
+  Board,
+  addToTeam,
+  cloneBoard,
+  rearrangeImages,
+} from "../../data/boards";
 import {
   IonButton,
   IonButtons,
@@ -32,7 +37,7 @@ interface BoardViewProps {
   showLoading: boolean;
   imageCount?: number;
   numOfColumns: number;
-  handleClone?: any;
+  // handleClone?: any;
   showShare?: boolean;
   setShowLoading: any;
 }
@@ -44,12 +49,14 @@ const BoardView: React.FC<BoardViewProps> = ({
   setShowIcon,
   imageCount,
   numOfColumns,
-  handleClone,
+  // handleClone,
   setShowLoading,
   showLoading,
 }) => {
   const { currentUser } = useCurrentUser();
-  const [preventCollisionState, setPreventCollisionState] = useState(false);
+  const history = useHistory();
+  const [showShare, setShowShare] = useState(false);
+  const [currentBoard, setBoard] = useState<Board>(board);
 
   const shouldShowRemoveBtn = currentUser?.role === "admin" || board?.can_edit;
 
@@ -57,6 +64,25 @@ const BoardView: React.FC<BoardViewProps> = ({
   const [currentScreenSize, setCurrentScreenSize] = useState("lg");
   const [currentNumberOfColumns, setCurrentNumberOfColumns] =
     useState(numOfColumns);
+
+  const handleClone = async () => {
+    setShowLoading(true);
+    try {
+      const clonedBoard = await cloneBoard(board.id);
+      if (clonedBoard) {
+        const updatedBoard = await rearrangeImages(clonedBoard.id);
+        setBoard(updatedBoard || clonedBoard);
+        history.push(`/boards/${clonedBoard.id}`);
+      } else {
+        console.error("Error cloning board");
+        alert("Error cloning board");
+      }
+    } catch (error) {
+      console.error("Error cloning board: ", error);
+      alert("Error cloning board");
+    }
+    setShowLoading(false);
+  };
 
   const handleCurrentLayout = (layout: any) => {
     setCurrentLayout(layout);
