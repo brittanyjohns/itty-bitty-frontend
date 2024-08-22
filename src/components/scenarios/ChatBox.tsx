@@ -28,24 +28,18 @@ const ChatBox: React.FC<ScenarioFormProps> = ({ scenario, setShowLoading }) => {
   const [answers, setAnswers] = useState<string[]>(scenario.answers || []);
 
   const handleAnswerChange = (answer: string, index: number) => {
-    console.log("answer", answer);
-    console.log("index", index);
     setQuestionNumber(index + 1);
     setCurrentAnswer(answer);
   };
 
   useEffect(() => {
-    console.log("chat scenario", updatedScenario);
-    console.log("chat question", updatedScenario.question_1);
     if (updatedScenario.question_1) {
       setQuestion(updatedScenario.question_1);
     }
     if (updatedScenario.questions) {
-      console.log("setting questions", updatedScenario.questions);
       setQuestions(updatedScenario.questions);
     }
     if (updatedScenario.answers) {
-      console.log("setting answers", updatedScenario.answers);
       setAnswers(updatedScenario.answers);
     }
   }, []);
@@ -53,9 +47,6 @@ const ChatBox: React.FC<ScenarioFormProps> = ({ scenario, setShowLoading }) => {
     setShowLoading(true);
     const finalizing = questionNumber === 2;
 
-    console.log("submitting finalizing", finalizing);
-    console.log("submitting questionNumber", questionNumber);
-    console.log("submitting currentAnswer", currentAnswer);
     const updatedScenario = await answerQuestion(
       scenario.id!,
       questionNumber,
@@ -63,10 +54,8 @@ const ChatBox: React.FC<ScenarioFormProps> = ({ scenario, setShowLoading }) => {
       finalizing
     );
     setShowLoading(false);
-    console.log("updatedScenario", updatedScenario);
     setScenario(updatedScenario);
     if (finalizing) {
-      console.log("pushing to results", updatedScenario);
       const boardId = updatedScenario.board?.id;
       history.push(`/boards/${boardId}`);
     } else {
@@ -96,9 +85,9 @@ const ChatBox: React.FC<ScenarioFormProps> = ({ scenario, setShowLoading }) => {
         </IonText>
       </div>
 
-      <div className="my-5 p-1">
+      <div className="my-5 p-1  border shadow-md">
         {scenario.questions && (
-          <IonList class="mt-3 px-2 border shadow-md py-10" lines="none">
+          <IonList class="mt-3 px-2 py-10" lines="none">
             {questions.map((q: any, i: number) => (
               <div key={i}>
                 <IonItem className="mt-2 font-serif w-full" lines="none">
@@ -141,29 +130,29 @@ const ChatBox: React.FC<ScenarioFormProps> = ({ scenario, setShowLoading }) => {
             ))}
           </IonList>
         )}
-      </div>
-      <div className="w-full flex justify-center">
-        {answers.length > 2 ? (
-          <IonButton
-            fill="solid"
-            className=""
-            color="success"
-            size="large"
-            expand="block"
-            onClick={handleSubmit}
-          >
-            Chat
-          </IonButton>
-        ) : (
-          <IonButton
-            fill="solid"
-            className="hidden"
-            color="success"
-            size="large"
-            expand="block"
-            onClick={handleSubmit}
-          ></IonButton>
-        )}
+
+        <div className="w-7/12 mx-auto">
+          {answers.length < 2 ? (
+            <IonButton
+              fill="solid"
+              color="success"
+              size="large"
+              expand="block"
+              onClick={handleSubmit}
+            >
+              Chat
+            </IonButton>
+          ) : (
+            <IonButton
+              fill="solid"
+              className="hidden"
+              color="success"
+              size="large"
+              expand="block"
+              onClick={handleSubmit}
+            ></IonButton>
+          )}
+        </div>
       </div>
     </div>
   );

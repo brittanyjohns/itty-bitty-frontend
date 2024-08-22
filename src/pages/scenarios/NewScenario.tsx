@@ -26,6 +26,8 @@ const NewScenario: React.FC = (props: any) => {
     token_limit: numOfImages,
   };
   const { currentUser, currentAccount, isWideScreen } = useCurrentUser();
+  const [showLoading, setShowLoading] = useState(false);
+
   const onSubmit = async (data: Scenario) => {
     const newScenario = await createScenario(data);
     if (newScenario.errors && newScenario.errors.length > 0) {
@@ -58,7 +60,9 @@ const NewScenario: React.FC = (props: any) => {
           startLink="/scenarios"
         />
         <IonContent fullscreen scrollY={true} className="ion-padding">
+          <IonLoading message="Please wait..." isOpen={showLoading} />
           <NewScenarioForm
+            setShowLoading={setShowLoading}
             onSave={onSubmit}
             onCancel={() => props.history.push("/scenarios")}
             scenario={initialScenario}

@@ -50,7 +50,7 @@ const ScenarioGridItem: React.FC<ScenarioListItemProps> = ({
         onClick={() => handleScenarioClick(scenario)}
       >
         <IonImg
-          src={scenario.board.display_image_url || placeholderUrl}
+          src={scenario?.board?.display_image_url || placeholderUrl}
           alt={scenario.name}
           className="ion-img-contain mx-auto"
         />

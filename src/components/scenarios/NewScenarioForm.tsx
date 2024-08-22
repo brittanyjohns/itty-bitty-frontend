@@ -24,12 +24,14 @@ interface NewScenarioFormProps {
   onSave: any;
   onCancel: () => void;
   scenario: Scenario;
+  setShowLoading: (show: boolean) => void;
 }
 
 const NewScenarioForm: React.FC<NewScenarioFormProps> = ({
   onSave,
   onCancel,
   scenario,
+  setShowLoading,
 }) => {
   const [promptText, setPromptText] = useState<string>(
     scenario?.prompt_text || ""

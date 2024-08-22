@@ -85,11 +85,6 @@ const ScenarioView: React.FC<ScenarioViewProps> = ({
       <IonLabel className="text-xs md:text-md lg:text-lg block text-center">
         <span className="font-bold">{scenario?.name || "this scenario"}</span>
       </IonLabel>
-      <IonIcon
-        icon={chatbubbleEllipsesOutline}
-        className="mx-2"
-        onClick={() => setShowLoading(true)}
-      />
 
       {imageCount && imageCount < 1 && (
         <div className="text-center pt-32">
