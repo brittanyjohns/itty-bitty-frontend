@@ -31,6 +31,8 @@ interface DraggableGridProps {
   setCurrentLayout?: any;
   updateScreenSize?: any;
   screenSize?: string;
+  setShowLoading: any;
+  showLoading?: boolean;
 }
 const DraggableGrid: React.FC<DraggableGridProps> = ({
   images,
@@ -51,6 +53,8 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   setCurrentLayout,
   updateScreenSize,
   screenSize,
+  setShowLoading,
+  showLoading,
 }) => {
   const [width, setWidth] = useState(window.innerWidth);
   const [rowHeight, setRowHeight] = useState(160);
@@ -83,15 +87,15 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   }, []);
 
   const handleSetDisplayImage = async (image: Image) => {
+    setShowLoading(true);
     if (board) {
-      console.log("Setting display image: ", image);
       const updatingBoard: Board | ChildBoard = {
         ...board,
         display_image_url: image.src,
       };
 
       const savedBoard = await updateBoard(updatingBoard);
-      console.log("Saved board: ", savedBoard);
+      setShowLoading(false);
       window.location.reload();
       // alert("Response: " + savedBoard);
       // setBoard(savedBoard);
@@ -125,7 +129,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
       rowHeight={rowHeight}
       onLayoutChange={handleLayoutChange}
       compactType={compactType}
-      preventCollision={false}
+      preventCollision={preventCollision}
       onBreakpointChange={(newBreakpoint, newCols) => {
         setCurrentNumberOfColumns(newCols);
         setCurrentScreenSize(newBreakpoint);

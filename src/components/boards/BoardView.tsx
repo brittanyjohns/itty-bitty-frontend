@@ -34,6 +34,7 @@ interface BoardViewProps {
   numOfColumns: number;
   handleClone?: any;
   showShare?: boolean;
+  setShowLoading: any;
 }
 
 const BoardView: React.FC<BoardViewProps> = ({
@@ -41,12 +42,14 @@ const BoardView: React.FC<BoardViewProps> = ({
   showEdit,
   inputRef,
   setShowIcon,
-  showLoading,
   imageCount,
   numOfColumns,
   handleClone,
+  setShowLoading,
+  showLoading,
 }) => {
   const { currentUser } = useCurrentUser();
+  const [preventCollisionState, setPreventCollisionState] = useState(false);
 
   const shouldShowRemoveBtn = currentUser?.role === "admin" || board?.can_edit;
 
@@ -124,6 +127,9 @@ const BoardView: React.FC<BoardViewProps> = ({
           viewOnClick={true}
           showRemoveBtn={shouldShowRemoveBtn}
           setCurrentLayout={handleCurrentLayout}
+          preventCollision={true}
+          setShowLoading={setShowLoading}
+          showLoading={showLoading}
           updateScreenSize={(newScreenSize: string, newCols: number) => {
             console.log("Breakpoint change: ", newScreenSize, newCols);
             setCurrentNumberOfColumns(newCols);
@@ -135,14 +141,6 @@ const BoardView: React.FC<BoardViewProps> = ({
       {imageCount && imageCount < 1 && (
         <div className="text-center pt-32">
           <p>No images found</p>
-        </div>
-      )}
-      {board?.parent_type === "Menu" && imageCount && imageCount < 1 && (
-        <div className="text-center pt-32">
-          <IonLoading
-            message="Please wait while we load your board..."
-            isOpen={showLoading}
-          />
         </div>
       )}
     </>

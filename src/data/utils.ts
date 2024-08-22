@@ -174,6 +174,7 @@ export const getFilterList = (
     "predictive",
     "settings",
     "admin-dashboard",
+    "scenarios",
   ];
   const professionalLinks = [
     "home",

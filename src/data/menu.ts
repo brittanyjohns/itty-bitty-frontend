@@ -22,6 +22,7 @@ import {
   imagesOutline,
   speedometerOutline,
   sparklesOutline,
+  imageOutline,
 } from "ionicons/icons";
 const menuLinks: MenuLink[] = [
   {
@@ -128,13 +129,13 @@ const menuLinks: MenuLink[] = [
     icon: peopleCircleOutline,
     id: 12654654,
   },
-  // {
-  //   endpoint: "/settings",
-  //   name: "Settings",
-  //   slug: "settings",
-  //   icon: settingsOutline,
-  //   id: 9997,
-  // },
+  {
+    endpoint: "/scenarios",
+    name: "Scenarios",
+    slug: "scenarios",
+    icon: imageOutline,
+    id: 9997,
+  },
   {
     endpoint: "/predictive",
     name: "Predictive",

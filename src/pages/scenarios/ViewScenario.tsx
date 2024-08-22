@@ -1,13 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Board,
-  getBoard,
-  rearrangeImages,
-  cloneBoard,
-} from "../../data/boards";
+import { Scenario, getScenario } from "../../data/scenarios";
 import {
   IonButton,
+  IonCard,
   IonContent,
+  IonLabel,
   IonLoading,
   IonPage,
   IonRefresher,
@@ -17,18 +14,22 @@ import {
   useIonViewWillEnter,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
-import "./ViewBoard.css";
+// import "./ViewScenario.css";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import MainMenu from "../../components/main_menu/MainMenu";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 
 import MainHeader from "../MainHeader";
-import BoardView from "../../components/boards/BoardView";
+import ScenarioView from "../../components/scenarios/ScenarioView";
 import Tabs from "../../components/utils/Tabs";
-import { refresh } from "ionicons/icons";
-
-const ViewBoard: React.FC<any> = () => {
-  const [board, setBoard] = useState<Board>();
+import { rearrangeImages } from "../../data/boards";
+import ChatBox from "../../components/scenarios/ChatBox";
+interface ViewScenarioProps {
+  mode: string;
+}
+const ViewScenario: React.FC<ViewScenarioProps> = ({ mode }) => {
+  const [scenario, setScenario] = useState<Scenario>();
+  const [board, setBoard] = useState(scenario?.board);
   const params = useParams<{ id: string }>();
   const inputRef = useRef<HTMLIonInputElement>(null);
   const [showLoading, setShowLoading] = useState(false);
@@ -39,17 +40,25 @@ const ViewBoard: React.FC<any> = () => {
     useCurrentUser();
   const history = useHistory();
 
-  const fetchBoard = async () => {
+  const fetchScenario = async () => {
     setShowLoading(true);
-    const board = await getBoard(params.id);
-    if (!board) {
-      console.error("Error fetching board");
-      alert("Error fetching board");
+    const scenario = await getScenario(params.id);
+    if (!scenario) {
+      console.error("Error fetching scenario");
+      alert("Error fetching scenario");
       setShowLoading(false);
       return;
     }
+    setScenario(scenario);
+    setBoard(scenario.board);
 
-    setShowEdit(board.can_edit || currentUser?.role === "admin");
+    setShowEdit(scenario.can_edit || currentUser?.role === "admin");
+
+    if (!board) {
+      setShowLoading(false);
+
+      return;
+    }
 
     if (!board.layout) {
       const rearrangedBoard = await rearrangeImages(board.id);
@@ -70,7 +79,7 @@ const ViewBoard: React.FC<any> = () => {
   }, [smallScreen, mediumScreen, largeScreen, board]);
 
   useEffect(() => {
-    fetchBoard();
+    fetchScenario();
   }, [params.id]);
 
   useIonViewDidLeave(() => {
@@ -82,49 +91,68 @@ const ViewBoard: React.FC<any> = () => {
   };
 
   useIonViewWillEnter(() => {
-    fetchBoard();
+    fetchScenario();
   });
 
   const handleClone = async () => {
     setShowLoading(true);
-    try {
-      const clonedBoard = await cloneBoard(params.id);
-      if (clonedBoard) {
-        const updatedBoard = await rearrangeImages(clonedBoard.id);
-        setBoard(updatedBoard || clonedBoard);
-        history.push(`/boards/${clonedBoard.id}`);
-      } else {
-        console.error("Error cloning board");
-        alert("Error cloning board");
-      }
-    } catch (error) {
-      console.error("Error cloning board: ", error);
-      alert("Error cloning board");
-    }
+    console.log("Cloning scenario");
+    // try {
+    //   const clonedScenario = await cloneScenario(params.id);
+    //   if (clonedScenario) {
+    //     const updatedScenario = await rearrangeImages(clonedScenario.id);
+    //     setScenario(updatedScenario || clonedScenario);
+    //     history.push(`/scenarios/${clonedScenario.id}`);
+    //   } else {
+    //     console.error("Error cloning scenario");
+    //     alert("Error cloning scenario");
+    //   }
+    // } catch (error) {
+    //   console.error("Error cloning scenario: ", error);
+    //   alert("Error cloning scenario");
+    // }
     setShowLoading(false);
   };
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
       e.detail.complete();
-      fetchBoard();
+      fetchScenario();
     }, 3000);
   };
 
   return (
     <>
-      <MainMenu pageTitle="Boards" currentUser={currentUser} />
-      <StaticMenu pageTitle="Boards" currentUser={currentUser} />
+      <MainMenu pageTitle="Scenarios" currentUser={currentUser} />
+      <StaticMenu pageTitle="Scenarios" currentUser={currentUser} />
       <IonPage id="main-content">
-        <MainHeader pageTitle={board?.name || "Board"} />
+        <MainHeader pageTitle={scenario?.name || "Scenario"} />
         <IonContent>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <IonLoading message="Please wait..." isOpen={showLoading} />
-          {board && (
-            <BoardView
-              board={board}
+          {mode === "edit" && (
+            <IonCard>
+              <IonToolbar>
+                <IonButton
+                  routerLink={`/scenarios/${params.id}/edit`}
+                  color="primary"
+                >
+                  Edit
+                </IonButton>
+              </IonToolbar>
+            </IonCard>
+          )}
+          {mode === "chat" && (
+            <IonCard>
+              <IonLabel>Chat</IonLabel>
+              {scenario && <ChatBox scenario={scenario} />}
+            </IonCard>
+          )}
+          {scenario && mode !== "chat" && (
+            <ScenarioView
+              scenario={scenario}
               showEdit={showEdit}
               showShare={true}
               handleClone={handleClone}
@@ -142,4 +170,4 @@ const ViewBoard: React.FC<any> = () => {
   );
 };
 
-export default ViewBoard;
+export default ViewScenario;

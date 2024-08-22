@@ -86,6 +86,8 @@ import ViewBoardGroup from "./pages/board_groups/ViewBoardGroup";
 import EditBoardGroupScreen from "./pages/board_groups/EditBoardGroupScreen";
 import Welcome from "./pages/Welcome";
 import AccountDashboard from "./pages/accounts/AccountDashboard";
+import ScenariosScreen from "./pages/scenarios/ScenariosScreen";
+import ViewScenario from "./pages/scenarios/ViewScenario";
 
 const UserRoutes: React.FC = () => (
   <UserProvider>
@@ -149,7 +151,6 @@ const UserRoutes: React.FC = () => (
           exact={true}
         />
         <Route path="/boards/new" component={NewBoard} exact={true} />
-        <Route path="/scenarios/new" component={NewScenario} exact={true} />
         <Route
           path="/boards/:id/edit"
           component={EditBoardScreen}
@@ -160,11 +161,16 @@ const UserRoutes: React.FC = () => (
           component={SelectGalleryScreen}
           exact={true}
         />
-        {/* <Route path="/boards" component={BoardsScreen} exact={true} /> */}
+        <Route path="/scenarios" component={ScenariosScreen} exact={true} />
+        <Route path="/scenarios/:id" component={ViewScenario} exact={true} />
+        <Route path="/scenarios/:id/chat">
+          <ViewScenario mode="chat" />
+        </Route>
+        <Route path="/scenarios/new" component={NewScenario} exact={true} />
+
         <Route path="/boards" exact={true}>
           <BoardsScreen gridType="user" />
         </Route>
-        <Route path="/scenarios" component={BoardsScreen} exact={true} />
 
         <Route path="/menus/new" component={NewMenu} exact={true} />
 

@@ -41,7 +41,8 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   onSetDisplayImage,
   rowHeight,
 }) => {
-  const { currentUser } = useCurrentUser();
+  const { currentUser, smallScreen, mediumScreen, largeScreen } =
+    useCurrentUser();
   const imgRef = useRef<HTMLDivElement>(null);
   const [audioList, setAudioList] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -130,12 +131,35 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   };
 
   const imageStarIcon = (image: Image) => {
-    if (board?.display_image_url === image.src) {
+    if (image.src && board?.display_image_url === image.src) {
       return starSharp;
     } else {
       return starOutline;
     }
   };
+
+  const labelForScreenSize = (label: string) => {
+    if (smallScreen && label.length > 10) {
+      return label.substring(0, 10) + "...";
+    }
+    if (mediumScreen && label.length > 15) {
+      return label.substring(0, 15) + "...";
+    }
+    if (largeScreen && label.length > 20) {
+      return label.substring(0, 20) + "...";
+    }
+    if (label.length > 20) {
+      console.log("Row height: ", rowHeight);
+      if (rowHeight && rowHeight < 100) {
+        return label.substring(0, 10) + "...";
+      }
+      return label.substring(0, 20) + "...";
+    }
+    return label;
+  };
+  // curl -X POST http://localhost:4000/scenarios/start -d "scenario=Going to a birthday party" -d "age_range=8"
+
+  // curl -X POST http://localhost:4000/scenarios/finalize -d "answer_2=There will be a treasure hunt"
 
   return (
     <div
@@ -156,9 +180,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
           onClick={() => handleImageClick(image)}
           className="bg-white bg-opacity-95 w-full font-medium tracking-tighter leading-tight text-xs md:text-sm lg:text-sm absolute bottom-0 left-0 shadow-md"
         >
-          {image.label.length > 15
-            ? `${image.label.substring(0, 10)}...`
-            : image.label}
+          {labelForScreenSize(image.label)}
         </span>
       )}
       {image.audio && <audio src={image.audio} />}
