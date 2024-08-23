@@ -19,6 +19,7 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { getSampleVoices } from "../../data/images";
 import { useHistory } from "react-router";
 import { set } from "d3";
+import { voiceOptions } from "../../data/utils";
 interface BoardFormProps {
   board: Board;
   setBoard: (board: Board) => void;
@@ -222,9 +223,9 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
             onIonChange={handleVoiceChange}
             value={voice}
           >
-            {voiceOptions.map((size) => (
-              <IonSelectOption key={size} value={size}>
-                {size}
+            {voiceOptions.map((voice) => (
+              <IonSelectOption key={voice} value={voice}>
+                {voice}
               </IonSelectOption>
             ))}
           </IonSelect>
