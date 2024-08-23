@@ -17,11 +17,8 @@ import {
   logOutOutline,
   personCircleOutline,
 } from "ionicons/icons";
-import { getFilterList, getImageUrl } from "../../data/utils";
-import { useState, useCallback, useEffect } from "react";
-import { useHistory } from "react-router";
+import { getImageUrl } from "../../data/utils";
 import ColorKey from "../utils/ColorKey";
-const feature1Image = getImageUrl("round_itty_bitty_logo_1", "png");
 interface SideMenuProps {
   filteredLinks: MenuLink[];
   currentUser?: any;
@@ -29,22 +26,8 @@ interface SideMenuProps {
   currentAccount?: any;
 }
 const SideMenu: React.FC<SideMenuProps> = (props) => {
-  // const [filteredLinks, setFilteredLinks] = useState<MenuLink[]>([]);
-  const history = useHistory();
   const { currentUser, currentAccount, filteredLinks, goToDashboard } = props;
 
-  // const filterList = useCallback(() => {
-  //   return getFilterList(currentUser, currentAccount);
-  // }, [currentUser, currentAccount]);
-
-  // useEffect(() => {
-  //   const filtered = filterList();
-  //   setFilteredLinks(filtered);
-  // }, [filterList]);
-
-  // const goToDashboard = () => {
-  //   history.push("/home");
-  // };
   const feature1Image = getImageUrl("round_itty_bitty_logo_1", "png");
 
   return (

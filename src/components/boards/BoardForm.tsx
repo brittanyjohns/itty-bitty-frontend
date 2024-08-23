@@ -109,8 +109,6 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
     22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
   ];
 
-  const voiceOptions = ["alloy", "shimmer", "onyx", "fable", "nova", "echo"];
-
   const handleVoiceChange = (event: CustomEvent) => {
     const voice = event.detail.value;
     setVoice(voice);

@@ -24,7 +24,6 @@ const ConfirmDeleteAlert: React.FC<ConfirmDeleteAlertProps> = ({
     <>
       <IonAlert
         header={message}
-        // trigger="present-alert"
         isOpen={openAlert}
         buttons={[
           {
@@ -43,9 +42,6 @@ const ConfirmDeleteAlert: React.FC<ConfirmDeleteAlertProps> = ({
             },
           },
         ]}
-        // onDidDismiss={({ detail }) =>
-        //   console.log(`Dismissed with role: ${detail.role}`)
-        // }
         onDidDismiss={handleDismiss}
       ></IonAlert>
     </>

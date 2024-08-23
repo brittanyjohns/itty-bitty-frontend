@@ -31,6 +31,15 @@ export const playAudioList = async (audioList: string[]) => {
   }
 };
 
+export const voiceOptions = [
+  "alloy",
+  "shimmer",
+  "onyx",
+  "fable",
+  "nova",
+  "echo",
+];
+
 const placeholderCache: { [key: string]: string } = {};
 
 export const generatePlaceholderImage = (text: string): string => {

@@ -1,6 +1,7 @@
 import { Scenario, createScenario } from "../../data/scenarios";
 import {
   IonBackButton,
+  IonBackdrop,
   IonButtons,
   IonContent,
   IonHeader,
@@ -16,6 +17,9 @@ import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/utils/Tabs";
+import HelpPopup from "../../components/utils/HelpPopup";
+import { additionalText, helpContent, helpItems } from "../../data/help";
+import HelpList from "../../components/utils/HelpPopup";
 
 const NewScenario: React.FC = (props: any) => {
   const [numOfImages, setNumOfImages] = useState(12); // [1]
@@ -62,6 +66,9 @@ const NewScenario: React.FC = (props: any) => {
         />
         <IonContent fullscreen scrollY={true} className="ion-padding">
           <IonLoading message="Please wait..." isOpen={showLoading} />
+          <div className="flex justify-end border">
+            <HelpList items={helpItems} additionalText={additionalText} />
+          </div>
           <NewScenarioForm
             setShowLoading={setShowLoading}
             onSave={onSubmit}

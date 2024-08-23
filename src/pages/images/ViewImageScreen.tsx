@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   IonButton,
-  IonButtons,
   IonContent,
   IonHeader,
   IonIcon,
@@ -11,7 +10,6 @@ import {
   IonLabel,
   IonList,
   IonLoading,
-  IonMenuButton,
   IonPage,
   IonRefresher,
   IonRefresherContent,
@@ -19,12 +17,8 @@ import {
   IonSegmentButton,
   IonText,
   IonTextarea,
-  IonTitle,
-  IonToolbar,
-  useIonViewWillEnter,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
-import { AUTO_REFRESH_RATE } from "../../data/constants";
 import {
   getImage,
   Image,
@@ -35,12 +29,12 @@ import {
   create_symbol,
   cloneImage,
   findByLabel,
+  createAudio,
 } from "../../data/images"; // Adjust imports based on actual functions
 import { markAsCurrent } from "../../data/docs"; // Adjust imports based on actual functions
 import BoardDropdown from "../../components/boards/BoardDropdown";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import {
-  addCircleOutline,
   cloudUploadOutline,
   gridOutline,
   refreshCircleOutline,
@@ -53,8 +47,9 @@ import { Board, getBoards } from "../../data/boards";
 import { generatePlaceholderImage } from "../../data/utils";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import Tabs from "../../components/utils/Tabs";
-import { set } from "d3";
 import AudioList from "../../components/images/AudioList";
+import InputAlert from "../../components/utils/InputAlert";
+import VoiceDropdown from "../../components/utils/VoiceDropdown";
 
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -79,6 +74,7 @@ const ViewImageScreen: React.FC = () => {
   const [newImageWord, setNewImageWord] = useState("");
   const [wordsToRemove, setWordsToRemove] = useState<string[]>([]);
   const [creatingSymbol, setCreatingSymbol] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
 
   const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
     if (
@@ -279,13 +275,34 @@ const ViewImageScreen: React.FC = () => {
     setWordsToRemove([]);
   };
 
-  const handleCloneImage = async () => {
+  const [newName, setNewName] = useState(image?.label ?? "");
+  const [voiceToCreate, setVoiceToCreate] = useState("alloy");
+
+  const handleInputChange = (str: string) => {
+    console.log("New name: ", str);
+    setNewName(str);
+    handleCloneImage(str);
+  };
+
+  const handleCloneImage = async (name: string) => {
+    console.log("Cloning image with name: ", name);
+    console.log("newName: ", newName);
     if (!image) return;
-    const result = await cloneImage(image.id);
+    const result = await cloneImage(image.id, name);
     if (result) {
       history.push(`/images/${result.id}`);
     } else {
       alert("Error cloning image.");
+    }
+  };
+
+  const handleCreateAudio = async () => {
+    if (!image) return;
+    const result = await createAudio(image.id, voiceToCreate);
+    if (result["status"] === "ok") {
+      setCreatingSymbol(true);
+    } else {
+      alert("Error creating symbol.\n" + result["message"]);
     }
   };
 
@@ -389,6 +406,26 @@ const ViewImageScreen: React.FC = () => {
     return "bg-gray-200";
   };
 
+  const handleNewAudio = (response: any, voice: string) => {
+    if (!response) {
+      console.error("Error adding image to voice");
+      return;
+    }
+    if (response["error"]) {
+      const message = `${response["error"]}`;
+      alert(message);
+      setShowLoading(false);
+      return;
+    }
+    if (voice) {
+      setShowLoading(false);
+      setImage(response);
+
+      // window.location.reload();
+      // history.push(`/images/${response["id"]}`);
+    }
+  };
+
   return (
     <>
       <MainMenu
@@ -489,9 +526,9 @@ const ViewImageScreen: React.FC = () => {
               )}
             </div>
             <div className="mt-4">
-              {currentUser?.admin && (
+              {currentUser && (
                 <IonButton
-                  onClick={handleCloneImage}
+                  onClick={() => setOpenAlert(true)}
                   className="text-md font-md"
                   fill="outline"
                 >
@@ -499,6 +536,13 @@ const ViewImageScreen: React.FC = () => {
                 </IonButton>
               )}
             </div>
+            <InputAlert
+              message="Do you want to clone this image?"
+              // onConfirm={handleCloneImage}
+              onCanceled={() => setOpenAlert(false)}
+              openAlert={openAlert}
+              onInputChange={handleInputChange}
+            />
           </div>
           <div className="mt-6 py-3 px-1 hidden" ref={uploadForm}>
             <div className="w-full md:w-3/4 mx-auto m-2">
@@ -723,6 +767,14 @@ const ViewImageScreen: React.FC = () => {
                         This image is currently displayed as the main image.
                       </IonText>
                     </>
+                  )}
+                </div>
+                <div className="p-3">
+                  {image && (
+                    <VoiceDropdown
+                      imageId={image?.id}
+                      onSuccess={handleNewAudio}
+                    />
                   )}
                 </div>
                 <div className="mt-6 w-full md:w-1/2 mx-auto">

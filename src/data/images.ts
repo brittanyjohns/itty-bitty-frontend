@@ -299,11 +299,18 @@ export async function getSampleVoices(): Promise<any> {
   return response.json();
 }
 
-export async function cloneImage(imageId: string): Promise<Image> {
-  const response = await fetch(`${BASE_URL}images/${imageId}/clone`, {
-    headers: userHeaders,
-    method: "POST",
-  });
+export async function cloneImage(
+  imageId: string,
+  newName?: string
+): Promise<Image> {
+  newName;
+  const response = await fetch(
+    `${BASE_URL}images/${imageId}/clone?new_name=${newName}`,
+    {
+      headers: userHeaders,
+      method: "POST",
+    }
+  );
   return response.json();
 }
 
@@ -329,5 +336,14 @@ export const deleteAudioFile = async (
       method: "DELETE",
     }
   );
+  return response.json();
+};
+
+export const createAudio = async (id: string, voice: string) => {
+  const response = await fetch(`${BASE_URL}images/${id}/create_audio`, {
+    headers: userHeaders,
+    method: "POST",
+    body: JSON.stringify({ voice }),
+  });
   return response.json();
 };
