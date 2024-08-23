@@ -18,7 +18,7 @@ import MainHeader from "../MainHeader";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/utils/Tabs";
 import HelpPopup from "../../components/utils/HelpPopup";
-import { additionalText, helpContent, helpItems } from "../../data/help";
+import { additionalText, helpItems } from "../../data/help";
 import HelpList from "../../components/utils/HelpPopup";
 
 const NewScenario: React.FC = (props: any) => {
