@@ -12,6 +12,7 @@ import {
   IonPage,
   IonRefresher,
   IonRefresherContent,
+  IonToast,
   IonToolbar,
   useIonViewDidLeave,
   useIonViewWillEnter,
@@ -38,9 +39,18 @@ const ViewBoard: React.FC<any> = () => {
   const { smallScreen, mediumScreen, largeScreen, currentUser } =
     useCurrentUser();
   const history = useHistory();
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [toastMessage, setToastMessage] = React.useState("");
 
   const fetchBoard = async () => {
     setShowLoading(true);
+    if (isNaN(+params.id)) {
+      setToastMessage("Invalid board id");
+      setIsOpen(true);
+      history.push("/boards");
+      setShowLoading(false);
+      return;
+    }
     const board = await getBoard(params.id);
     if (!board) {
       console.error("Error fetching board");
@@ -115,6 +125,12 @@ const ViewBoard: React.FC<any> = () => {
               setShowLoading={setShowLoading}
             />
           )}
+          <IonToast
+            isOpen={isOpen}
+            message={toastMessage}
+            onDidDismiss={() => setIsOpen(false)}
+            duration={2000}
+          ></IonToast>
         </IonContent>
         <Tabs />
       </IonPage>
