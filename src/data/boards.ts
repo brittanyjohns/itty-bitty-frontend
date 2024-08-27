@@ -34,13 +34,13 @@ export interface Board {
   audio_url?: string;
 }
 
-export interface PredictiveBoard {
-  id: string;
-  name: string;
-  description: string;
-  number_of_columns: number;
-  images: Image[];
-}
+// export interface PredictiveBoard {
+//   id: string;
+//   name: string;
+//   description: string;
+//   number_of_columns: number;
+//   images: Image[];
+// }
 
 export const getBoards = () => {
   const boards = fetch(`${BASE_URL}boards`, { headers: userHeaders }) // `localhostboards
@@ -109,7 +109,7 @@ export const getBoard = (id: string) => {
   return board;
 };
 
-export const getInitialImages = () => {
+export const getInitialPredictive = (): Promise<PredictiveBoard> => {
   const board = fetch(`${BASE_URL}boards/first_predictive_board`, {
     headers: userHeaders,
   }) // `localhostboards

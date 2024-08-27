@@ -3,37 +3,28 @@ import {
   IonButton,
   IonButtons,
   IonContent,
-  IonHeader,
   IonIcon,
   IonInput,
   IonItem,
-  IonMenuButton,
   IonPage,
   IonRefresher,
   IonRefresherContent,
-  IonText,
-  IonTitle,
-  IonToolbar,
 } from "@ionic/react";
 import { Image, getPredictiveImages } from "../../data/images";
 import MainMenu from "../../components/main_menu/MainMenu";
 import { useHistory, useParams } from "react-router";
 import Tabs from "../../components/utils/Tabs";
 import {
-  add,
-  addCircleOutline,
   arrowBackCircleOutline,
   imageOutline,
-  // images,
+  pencilOutline,
   playCircleOutline,
-  pulseOutline,
   refreshCircleOutline,
-  text,
   trashBinOutline,
 } from "ionicons/icons";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
 
-import { getInitialImages } from "../../data/boards";
+import { Board, getInitialPredictive } from "../../data/boards";
 import PredictiveImageGallery from "../../components/predictive/PredictiveImageGallery";
 import { clickWord } from "../../data/audits";
 import { playAudioList } from "../../data/utils";
@@ -51,9 +42,14 @@ const PredictiveImagesScreen: React.FC = () => {
     undefined
   );
   const [imageId, setImageId] = useState<string | undefined>(undefined);
+  const [predictive, setPredictive] = useState<Board>();
+
+  const history = useHistory();
 
   const fetchFirstBoard = async () => {
-    const imgs = await getInitialImages();
+    const initialPredictiveBoard = await getInitialPredictive();
+    setPredictive(initialPredictiveBoard);
+    const imgs = initialPredictiveBoard.images;
     setImages(imgs);
   };
 
@@ -140,7 +136,8 @@ const PredictiveImagesScreen: React.FC = () => {
   }, []);
 
   const loadMoreImages = async () => {
-    const newImages = await getInitialImages();
+    const predictiveBoard = await getInitialPredictive();
+    const newImages = predictiveBoard.images;
     const allImages = [...newImages, ...initialImages];
     const uniqueImageIds = new Set(allImages.map((image) => image.id));
     const uniqueImages = Array.from(uniqueImageIds).map((id) =>
@@ -162,6 +159,13 @@ const PredictiveImagesScreen: React.FC = () => {
 
   const handlePlayAudioList = async () => {
     await playAudioList(audioList);
+  };
+
+  const handleEdit = () => {
+    if (!predictive) {
+      return;
+    }
+    history.push(`/boards/${predictive.id}`);
   };
 
   const refresh = (e: CustomEvent) => {
@@ -190,7 +194,6 @@ const PredictiveImagesScreen: React.FC = () => {
           isWideScreen={isWideScreen}
           showMenuButton={!isWideScreen}
         />
-
         <IonContent className="ion-padding">
           <IonItem className="w-full my-2" lines="none">
             <IonButtons slot="start" className="ml-0">
@@ -207,6 +210,15 @@ const PredictiveImagesScreen: React.FC = () => {
               ></IonInput>
             </IonItem>
             <IonButtons slot="start" className="ml-0">
+              {currentUser?.admin && (
+                <IonButton size="small" onClick={handleEdit}>
+                  <IonIcon
+                    slot="icon-only"
+                    className="tiny"
+                    icon={pencilOutline}
+                  ></IonIcon>
+                </IonButton>
+              )}
               {showIcon && (
                 <IonButton size="small" onClick={handlePlayAudioList}>
                   <IonIcon
@@ -244,19 +256,14 @@ const PredictiveImagesScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent />
           </IonRefresher>
-          {imageId && currentUser?.admin && (
-            <IonButtons class="flex justify-between w-full text-center">
-              <IonButton routerLink={`/images/${imageId}`}>
-                <IonIcon icon={imageOutline} />
-              </IonButton>
-            </IonButtons>
+          {predictive && (
+            <PredictiveImageGallery
+              predictiveBoard={predictive}
+              initialImages={initialImages}
+              onImageSpeak={handleImageSpeak}
+              setImageId={setImageId}
+            />
           )}
-          <PredictiveImageGallery
-            initialImages={initialImages}
-            onImageSpeak={handleImageSpeak}
-            setImageId={setImageId}
-          />
-          {/* <FloatingWordsBtn inputRef={inputRef} /> */}
         </IonContent>
         <Tabs />
       </IonPage>

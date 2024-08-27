@@ -13,7 +13,17 @@ const CookiesConsent: React.FC = () => {
   const [showModal, setShowModal] = useState(true);
 
   const handleAccept = () => {
-    document.cookie = "cookies_consent=true; path=/";
+    // Create a date for the desired expiration
+    const expirationDate = new Date();
+    expirationDate.setTime(
+      expirationDate.getTime() + 365 * 24 * 60 * 60 * 1000
+    ); // 1 year from now
+
+    // Convert to UTC string
+    const expires = "expires=" + expirationDate.toUTCString();
+
+    // Set the cookie with the expires attribute
+    document.cookie = "cookies_consent=true; path=/; " + expires;
     setShowModal(false);
   };
 

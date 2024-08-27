@@ -13,7 +13,17 @@ const ActivityTrackingConsent: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
 
   const handleAccept = () => {
-    document.cookie = "tracking_consent=true; path=/";
+    // Create a date for the desired expiration
+    const expirationDate = new Date();
+    expirationDate.setTime(
+      expirationDate.getTime() + 365 * 24 * 60 * 60 * 1000
+    ); // 1 year from now
+
+    // Convert to UTC string
+    const expires = "expires=" + expirationDate.toUTCString();
+
+    // Set the cookie with the expires attribute
+    document.cookie = "tracking_consent=true; path=/; " + expires;
     setShowModal(false);
   };
 
@@ -23,12 +33,9 @@ const ActivityTrackingConsent: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log("Checking tracking consent", document.cookie.split("; "));
     const trackingConsent = document.cookie.split("; ").find((row) => {
-      console.log("Row", row);
       return row.startsWith("tracking_consent=true");
     });
-    console.log("Tracking consent", trackingConsent);
 
     if (!trackingConsent) {
       console.log("No tracking consent found");
