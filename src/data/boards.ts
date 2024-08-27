@@ -109,7 +109,7 @@ export const getBoard = (id: string) => {
   return board;
 };
 
-export const getInitialPredictive = (): Promise<PredictiveBoard> => {
+export const getInitialPredictive = (): Promise<Board> => {
   const board = fetch(`${BASE_URL}boards/first_predictive_board`, {
     headers: userHeaders,
   }) // `localhostboards

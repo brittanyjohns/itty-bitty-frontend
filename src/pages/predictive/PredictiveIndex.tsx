@@ -50,6 +50,9 @@ const PredictiveImagesScreen: React.FC = () => {
     const initialPredictiveBoard = await getInitialPredictive();
     setPredictive(initialPredictiveBoard);
     const imgs = initialPredictiveBoard.images;
+    if (!imgs) {
+      return;
+    }
     setImages(imgs);
   };
 
@@ -137,8 +140,14 @@ const PredictiveImagesScreen: React.FC = () => {
 
   const loadMoreImages = async () => {
     const predictiveBoard = await getInitialPredictive();
-    const newImages = predictiveBoard.images;
-    const allImages = [...newImages, ...initialImages];
+    const newImages = predictiveBoard.images || [];
+    let allImages: Image[] = [];
+    if (newImages) {
+      allImages = [...newImages, ...initialImages];
+    } else {
+      allImages = initialImages;
+    }
+
     const uniqueImageIds = new Set(allImages.map((image) => image.id));
     const uniqueImages = Array.from(uniqueImageIds).map((id) =>
       allImages.find((image) => image.id === id)
