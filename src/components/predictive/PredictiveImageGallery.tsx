@@ -38,6 +38,7 @@ const PredictiveImageGallery: React.FC<PredictiveImageGalleryProps> = ({
   };
 
   useEffect(() => {
+    console.log("board", board);
     setCurrentImages(images);
   }, [images]);
 

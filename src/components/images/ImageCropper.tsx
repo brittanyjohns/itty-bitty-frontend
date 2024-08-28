@@ -14,12 +14,16 @@ import {
 import { cropImage, findOrCreateImage } from "../../data/images";
 import { useHistory } from "react-router";
 import ImagePasteHandler from "../utils/ImagePasteHandler";
+import { set } from "d3";
 
 interface ImageCropperProps {
   existingId?: string;
   boardId?: string | null;
   existingLabel?: string | null;
   disableCrop?: boolean;
+  existingImageSrc?: string | null;
+  setLoading?: (loading: boolean) => void;
+  hidePaste?: boolean;
 }
 
 const ImageCropper: React.FC<ImageCropperProps> = ({
@@ -27,17 +31,21 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
   existingId,
   existingLabel,
   disableCrop,
+  existingImageSrc,
+  setLoading,
+  hidePaste,
 }) => {
   const imageElementRef = useRef<HTMLImageElement>(null);
-  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [imageSrc, setImageSrc] = useState<string | null>();
   const history = useHistory();
+  const [showPaste, setShowPaste] = useState<boolean>(!hidePaste || false);
   const [showLoading, setShowLoading] = useState<boolean>(false);
   const [imageDimensions, setImageDimensions] = useState({
     width: 0,
     height: 0,
   });
   const [cropper, setCropper] = useState<Cropper>();
-  const [label, setLabel] = useState<string>("");
+  const [label, setLabel] = useState<string>(existingLabel || "");
   const [fileExtension, setFileExtension] = useState<string>("");
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,6 +62,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
         // Create an image to measure dimensions
         const img = new Image();
         img.onload = () => {
+          console.log("Image dimensions: ", img.width, img.height);
           setImageDimensions({ width: img.width, height: img.height });
         };
         img.src = dataUrl;
@@ -89,22 +98,38 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
   };
 
   useEffect(() => {
+    console.log("Image existingLabel: ", existingLabel);
+    setLabel(existingLabel || "");
+  }, [existingLabel]);
+
+  useEffect(() => {
+    console.log("Existing ID: ", existingId);
+    console.log("> imageSrc: ", imageSrc);
+    console.log("> label: ", existingLabel);
+    console.log("Existing image source: ", existingImageSrc);
+    if (existingImageSrc) {
+      console.log("Existing image source: ", existingImageSrc);
+      setImageSrc(existingImageSrc);
+    }
     if (disableCrop) {
       console.log("Cropping disabled");
       return;
     }
     if (imageSrc && imageElementRef.current) {
+      setShowPaste(false);
+
       const cropperInstance = new Cropper(imageElementRef.current, {
         aspectRatio: 1,
         viewMode: 1,
         responsive: true,
       });
       setCropper(cropperInstance);
+
       return () => {
         cropperInstance.destroy();
       };
     }
-  }, [imageSrc]);
+  }, [imageSrc, existingImageSrc]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -181,10 +206,9 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
   });
 
   return (
-    <div className="w-full md:w-1/2 lg:w-1/2 mx-auto">
+    <div className="w-full md:w-1/2 lg:w-1/2 mx-auto border p-4">
       <form onSubmit={handleSubmit} className="flex flex-col items-center">
-        <h1 className="text-xl font-bold">Upload an image</h1>
-        <IonCard className="p-4 m-4 border">
+        <div className="p-4 m-1">
           {!existingId ? (
             <IonInput
               value={label}
@@ -197,26 +221,27 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
             />
           ) : null}
 
-          <div className="flex flex-col items-center mt-8">
-            <input
-              type="file"
-              id="file_field"
-              accept="image/*"
-              onChange={onFileChange}
-            />
-          </div>
-        </IonCard>
-        <IonCard className="p-4 m-4 border text-center">
-          <h2 className="text-xl font-bold">Paste an image</h2>
-          <p className="text-sm">Right-click and paste an image here</p>
-          <IonItem className="mt-4">
-            {/* <IonTextarea
-              placeholder="Paste an image here"
-              readonly
-            ></IonTextarea> */}
-            <ImagePasteHandler setFile={handlePastedFile} />
-          </IonItem>
-        </IonCard>
+          {showPaste && (
+            <div className="flex flex-col items-center mt-8">
+              <input
+                type="file"
+                id="file_field"
+                accept="image/*"
+                className="cursor-pointer"
+                onChange={onFileChange}
+              />
+            </div>
+          )}
+        </div>
+        {showPaste && (
+          <IonCard className="p-4 m-4 border text-center">
+            <h2 className="text-xl font-bold">Paste an image</h2>
+            <p className="text-sm">Right-click and paste an image here</p>
+            <IonItem className="mt-4">
+              <ImagePasteHandler setFile={handlePastedFile} />
+            </IonItem>
+          </IonCard>
+        )}
         {imageSrc && (
           <>
             <img

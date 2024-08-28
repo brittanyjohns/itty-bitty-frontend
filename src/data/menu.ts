@@ -23,6 +23,9 @@ import {
   speedometerOutline,
   sparklesOutline,
   imageOutline,
+  searchCircleOutline,
+  searchCircle,
+  searchSharp,
 } from "ionicons/icons";
 const menuLinks: MenuLink[] = [
   {
@@ -151,13 +154,13 @@ const menuLinks: MenuLink[] = [
     icon: lockClosedOutline,
     id: 9998,
   },
-  // {
-  //   endpoint: "/users/sign-out",
-  //   name: "Sign Out",
-  //   slug: "sign-out",
-  //   icon: logOutOutline,
-  //   id: 9999,
-  // },
+  {
+    endpoint: "/image-search",
+    name: "Image Search",
+    slug: "image-search",
+    icon: searchSharp,
+    id: 9999,
+  },
   // {
   //   endpoint: "/child-accounts/sign-out",
   //   name: "Sign Out",

@@ -88,6 +88,7 @@ import Welcome from "./pages/Welcome";
 import AccountDashboard from "./pages/accounts/AccountDashboard";
 import ScenariosScreen from "./pages/scenarios/ScenariosScreen";
 import ViewScenario from "./pages/scenarios/ViewScenario";
+import SearchGoogleImages from "./pages/utils/SearchGoogleImages";
 
 const UserRoutes: React.FC = () => (
   <UserProvider>
@@ -95,6 +96,11 @@ const UserRoutes: React.FC = () => (
       <IonRouterOutlet>
         <Route path="/" component={Home} exact={true} />
         <Route path="/privacy-policy" component={PrivacyPolicy} exact={true} />
+        <Route
+          path="/image-search"
+          component={SearchGoogleImages}
+          exact={true}
+        />
 
         <Route path="/home" exact={true}>
           <Home />

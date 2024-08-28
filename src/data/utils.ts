@@ -184,6 +184,7 @@ export const getFilterList = (
     "settings",
     "admin-dashboard",
     "scenarios",
+    "image-search",
   ];
   const professionalLinks = [
     "home",

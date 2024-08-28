@@ -20,6 +20,8 @@ import {
 import { useEffect, useState } from "react";
 import StaticMenu from "../components/main_menu/StaticMenu";
 import MainHeader from "./MainHeader";
+import ImageSearchComponent from "../components/admin/ImageSearchComponent";
+import ImageCropper from "../components/images/ImageCropper";
 const AdminDashboard: React.FC = () => {
   const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
   const [betaRequests, setBetaRequests] = useState<BetaRequest[]>([]);
@@ -39,13 +41,11 @@ const AdminDashboard: React.FC = () => {
   const loadBetaRequests = async () => {
     const betaRequests = await fetchBetaRequests();
     setBetaRequests(betaRequests);
-    console.log("Beta Requests: ", betaRequests);
   };
 
   const loadAllUsers = async () => {
     const users = await getAllUsers();
     setUsers(users);
-    console.log("All Users: ", users);
   };
 
   return (
@@ -79,6 +79,10 @@ const AdminDashboard: React.FC = () => {
               This is where you can view your account information, manage your
               subscriptions, and more.
             </p>
+          </div>
+          <div className="ion-padding">
+            <h1 className="text-2xl">Google Image Search</h1>
+            <ImageSearchComponent />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div className="p-2 w-full">

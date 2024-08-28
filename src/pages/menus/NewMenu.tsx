@@ -6,18 +6,12 @@ import {
   IonButtons,
   IonCard,
   IonContent,
-  IonHeader,
-  IonIcon,
   IonInput,
   IonItem,
-  IonLabel,
   IonLoading,
   IonPage,
   IonTextarea,
-  IonTitle,
-  IonToolbar,
 } from "@ionic/react";
-import { arrowBackCircleOutline, cameraOutline } from "ionicons/icons";
 import { useRef, useState } from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/utils/Tabs";
@@ -25,8 +19,6 @@ import ImagePasteHandler from "../../components/utils/ImagePasteHandler";
 import MainMenu from "../../components/main_menu/MainMenu";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
-import ImageCropper from "../../components/images/ImageCropper";
-import { set } from "d3";
 
 type NewMenu = {
   name: string;
