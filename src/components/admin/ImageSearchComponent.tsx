@@ -180,22 +180,19 @@ const ImageSearchComponent = () => {
 
       {images.length > 0 && (
         <>
-          <p className="text-center">Page {pageNumber}</p>
-
           <IonButtons className="flex justify-between my-4">
             <IonButton fill="outline" onClick={previousPage}>
               Prev Page
             </IonButton>
-            <IonButton fill="outline" onClick={resetSearch}>
-              Reset Search
-            </IonButton>
+            <p className="text-center">Page {pageNumber}</p>
+
             <IonButton fill="outline" onClick={nextPage}>
               Next Page
             </IonButton>
           </IonButtons>
         </>
       )}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 my-4">
         {images.map((img, index) => (
           <div
             key={index}
@@ -216,7 +213,7 @@ const ImageSearchComponent = () => {
         ))}
       </div>
       {images.length > 0 && (
-        <IonButtons className="flex justify-between my-4">
+        <IonButtons className="flex justify-between mt-8">
           <IonButton fill="outline" onClick={previousPage}>
             Prev Page
           </IonButton>
