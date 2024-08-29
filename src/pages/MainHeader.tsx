@@ -69,7 +69,6 @@ const MainHeader: React.FC<MainHeaderProps> = (props) => {
                 menu="main-menu"
               ></IonMenuButton>
             )}
-
             <IonTitle className="text-center">{props.pageTitle}</IonTitle>
             {props.endLink && (
               <IonButtons class="p-0" slot="end">

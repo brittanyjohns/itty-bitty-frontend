@@ -31,6 +31,32 @@ export const playAudioList = async (audioList: string[]) => {
   }
 };
 
+export const labelForScreenSize = (
+  label: string,
+  rowHeight?: number,
+  smallScreen?: boolean,
+  mediumScreen?: boolean,
+  largeScreen?: boolean
+) => {
+  if (smallScreen && label.length > 10) {
+    return label.substring(0, 10) + "...";
+  }
+  if (mediumScreen && label.length > 15) {
+    return label.substring(0, 15) + "...";
+  }
+  if (largeScreen && label.length > 20) {
+    return label.substring(0, 20) + "...";
+  }
+  if (label.length > 20) {
+    console.log("Row height: ", rowHeight);
+    if (rowHeight && rowHeight < 100) {
+      return label.substring(0, 10) + "...";
+    }
+    return label.substring(0, 20) + "...";
+  }
+  return label;
+};
+
 export const voiceOptions = [
   "alloy",
   "shimmer",
@@ -207,6 +233,7 @@ export const getFilterList = (
     "menus",
     "predictive",
     "settings",
+    "image-search",
   ];
   const proLinks = [
     "home",
@@ -219,6 +246,7 @@ export const getFilterList = (
     "menus",
     "predictive",
     "settings",
+    "image-search",
   ];
   const freeLinks = [
     "home",
@@ -231,6 +259,7 @@ export const getFilterList = (
     "menus",
     "predictive",
     "settings",
+    "image-search",
   ];
   const signedOutLinks = [
     "child-sign-in",

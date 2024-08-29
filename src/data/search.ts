@@ -10,10 +10,25 @@ export interface ImageResult {
   context?: string;
   fileFormat?: string;
 }
-export const imageSearch = async (search: string): Promise<any> => {
+interface ImageSearchParams {
+  q: string;
+  fileType?: string;
+  imgSize?: string;
+  imgType?: string;
+  safe?: string;
+  searchType?: string;
+  start?: number;
+  num?: number;
+}
+export const imageSearch = async (
+  search: string,
+  params: ImageSearchParams
+): Promise<any> => {
+  console.log("Searching for params: ", params);
   const requestInfo = {
-    method: "GET",
+    method: "POST",
     headers: userHeaders,
+    body: JSON.stringify({ search, ...params }),
   };
   const response = await fetch(
     `${BASE_URL}google_images?q=${search}`,
@@ -21,18 +36,4 @@ export const imageSearch = async (search: string): Promise<any> => {
   );
   const result = await response.json();
   return result;
-};
-
-export const saveImageResult = async (
-  imageResult: ImageResult,
-  query: string
-): Promise<Image> => {
-  const response = await fetch(`${BASE_URL}save_image_result`, {
-    method: "POST",
-    headers: userHeaders,
-    body: JSON.stringify({ imageResult, query }),
-  });
-  const newImage: Image = await response.json();
-  console.log("New Image: ", newImage);
-  return newImage;
 };

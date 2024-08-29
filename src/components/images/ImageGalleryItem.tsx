@@ -12,7 +12,7 @@ import { TextToSpeech } from "@capacitor-community/text-to-speech";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { starOutline, starSharp, trashBinOutline } from "ionicons/icons";
 import { useHistory } from "react-router";
-import { generatePlaceholderImage } from "../../data/utils";
+import { generatePlaceholderImage, labelForScreenSize } from "../../data/utils";
 
 interface ImageGalleryItemProps {
   image: Image;
@@ -138,29 +138,34 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     }
   };
 
-  const labelForScreenSize = (label: string) => {
-    if (smallScreen && label.length > 10) {
-      return label.substring(0, 10) + "...";
-    }
-    if (mediumScreen && label.length > 15) {
-      return label.substring(0, 15) + "...";
-    }
-    if (largeScreen && label.length > 20) {
-      return label.substring(0, 20) + "...";
-    }
-    if (label.length > 20) {
-      console.log("Row height: ", rowHeight);
-      if (rowHeight && rowHeight < 100) {
-        return label.substring(0, 10) + "...";
-      }
-      return label.substring(0, 20) + "...";
-    }
-    return label;
-  };
+  // const labelForScreenSize = (label: string) => {
+  //   if (smallScreen && label.length > 10) {
+  //     return label.substring(0, 10) + "...";
+  //   }
+  //   if (mediumScreen && label.length > 15) {
+  //     return label.substring(0, 15) + "...";
+  //   }
+  //   if (largeScreen && label.length > 20) {
+  //     return label.substring(0, 20) + "...";
+  //   }
+  //   if (label.length > 20) {
+  //     console.log("Row height: ", rowHeight);
+  //     if (rowHeight && rowHeight < 100) {
+  //       return label.substring(0, 10) + "...";
+  //     }
+  //     return label.substring(0, 20) + "...";
+  //   }
+  //   return label;
+  // };
   // curl -X POST http://localhost:4000/scenarios/start -d "scenario=Going to a birthday party" -d "age_range=8"
 
   // curl -X POST http://localhost:4000/scenarios/finalize -d "answer_2=There will be a treasure hunt"
-
+  // export const labelForScreenSize = (
+  //   label: string,
+  //   rowHeight?: number,
+  //   smallScreen?: boolean,
+  //   mediumScreen?: boolean,
+  //   largeScreen?: boolean
   return (
     <div
       ref={imgRef}
@@ -180,7 +185,13 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
           onClick={() => handleImageClick(image)}
           className="bg-white bg-opacity-95 w-full font-medium tracking-tighter leading-tight text-xs md:text-sm lg:text-sm absolute bottom-0 left-0 shadow-md"
         >
-          {labelForScreenSize(image.label)}
+          {labelForScreenSize(
+            image.label,
+            rowHeight,
+            smallScreen,
+            mediumScreen,
+            largeScreen
+          )}
         </span>
       )}
       {image.audio && <audio src={image.audio} />}

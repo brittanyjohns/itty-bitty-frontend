@@ -9,6 +9,7 @@ import {
   menuSharp,
   cogOutline,
   settingsOutline,
+  searchSharp,
 } from "ionicons/icons";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { toggleMainMenu } from "../../pages/MainHeader";
@@ -30,6 +31,10 @@ const Tabs: React.FC = () => {
           <IonTabButton tab="images" href="/images">
             <IonIcon icon={imagesOutline} />
             <IonLabel>Images</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="search" href="/image-search">
+            <IonIcon icon={searchSharp} />
+            <IonLabel>Search</IonLabel>
           </IonTabButton>
 
           <IonTabButton tab="accounts" href="/child-accounts">

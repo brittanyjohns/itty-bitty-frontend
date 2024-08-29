@@ -98,17 +98,11 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
   };
 
   useEffect(() => {
-    console.log("Image existingLabel: ", existingLabel);
     setLabel(existingLabel || "");
   }, [existingLabel]);
 
   useEffect(() => {
-    console.log("Existing ID: ", existingId);
-    console.log("> imageSrc: ", imageSrc);
-    console.log("> label: ", existingLabel);
-    console.log("Existing image source: ", existingImageSrc);
     if (existingImageSrc) {
-      console.log("Existing image source: ", existingImageSrc);
       setImageSrc(existingImageSrc);
     }
     if (disableCrop) {
@@ -116,6 +110,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
       return;
     }
     if (imageSrc && imageElementRef.current) {
+      setShowLoading(true);
       setShowPaste(false);
 
       const cropperInstance = new Cropper(imageElementRef.current, {
@@ -124,6 +119,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
         responsive: true,
       });
       setCropper(cropperInstance);
+      setShowLoading(false);
 
       return () => {
         cropperInstance.destroy();
@@ -214,7 +210,8 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
               value={label}
               aria-label="Label"
               placeholder="Enter a label for the image"
-              // labelPlacement="stacked"
+              labelPlacement="stacked"
+              label="Image Label"
               required
               onIonChange={(e) => setLabel(e.detail.value!)}
               className="p-2 my-2 pl-2"
