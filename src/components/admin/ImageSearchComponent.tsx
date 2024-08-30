@@ -8,6 +8,7 @@ import {
   IonLoading,
   IonSelect,
   IonSelectOption,
+  useIonViewWillLeave,
 } from "@ionic/react";
 import React from "react";
 import { Image } from "../../data/images";
@@ -21,13 +22,39 @@ const ImageSearchComponent = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
+  const [placeholder, setPlaceholder] = useState("smile");
   const [images, setImages] = useState<ImageResult[]>([]);
   const [newImageSrc, setNewImageSrc] = useState<string | null>(null);
   const [newImageLabel, setNewImageLabel] = useState<string | null>(null);
   const [imageType, setImageType] = useState<string>("clipart");
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [nextStartIndex, setNextStartIndex] = useState<number>(0);
+  const [nextStartIndex, setNextStartIndex] = useState<number>(11);
   const { smallScreen, mediumScreen, largeScreen } = useCurrentUser();
+  useIonViewWillLeave(() => {
+    console.log("Leaving Search Google Images");
+    resetSearch();
+    setNewImageSrc(null);
+    setNewImageLabel(null);
+  });
+
+  const loadInitialImages = async () => {
+    const params = {
+      q: placeholder,
+      imgType: imageType,
+      start: nextStartIndex,
+      num: 10,
+    };
+
+    try {
+      const imgResult = await imageSearch(placeholder, params);
+      console.log("Image Search Result: ", imgResult);
+      setImages(imgResult);
+      setNextStartIndex(imgResult[0].startIndex);
+    } catch (error) {
+      console.error("Image Search Error: ", error);
+      alert("Failed to load images");
+    }
+  };
 
   const handleSearch = async () => {
     if (!query) {
@@ -39,18 +66,17 @@ const ImageSearchComponent = () => {
     const params = {
       q: query,
       imgType: imageType,
-      start: nextStartIndex, // Pagination, starts from 1
+      start: nextStartIndex,
       num: 10,
     };
 
     try {
       const imgResult = await imageSearch(query, params);
+
       if (!imgResult) {
-        alert("No images found");
+        alert("Something went wrong. Please try again later");
         return;
       }
-      console.log("Image Search Result: ", imgResult);
-      // setImages((prevImages) => [...prevImages, ...imgResult]); // Append new results
       setImages(imgResult);
       setNextStartIndex(imgResult[0].startIndex);
     } catch (error) {
@@ -62,20 +88,26 @@ const ImageSearchComponent = () => {
   };
 
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
+    if (query) {
+    } else {
+      setImages([]);
+      setPlaceholder("smile");
+      loadInitialImages();
     }
-    setNewImageSrc(newImageLabel ? newImageSrc : null);
-  }, [newImageSrc, newImageLabel]);
+  }, []);
 
   const handleClick = async (imageResult: ImageResult) => {
     setLoading(true);
     try {
       const imgUrl = imageResult.link;
       setNewImageSrc(imgUrl);
-      setNewImageLabel(query);
-      console.log("Image URL: ", imgUrl);
-      // const result = await saveImageResult(imageResult, query);
+      if (query === "") {
+        setQuery(placeholder);
+        setNewImageLabel(placeholder);
+      } else {
+        setNewImageLabel(query);
+      }
+
       const result = true;
       if (result) {
         resetSearch();
@@ -109,11 +141,6 @@ const ImageSearchComponent = () => {
     }
   };
 
-  const loadMoreImages = () => {
-    setPageNumber((prevPage) => prevPage + 1); // Increment page number
-    handleSearch(); // Load more images
-  };
-
   const previousPage = () => {
     if (pageNumber > 1) {
       setPageNumber((prevPage) => prevPage - 1);
@@ -139,19 +166,20 @@ const ImageSearchComponent = () => {
     <div>
       <IonLoading isOpen={loading} />
 
-      <div className="flex justify-center items-center m-1">
-        <div className="w-full md:w-1/2 flex items-center">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-1 p-3 bg-gray-100 rounded-md shadow-md bg-opacity-50">
+        <div className="flex items-center w-full">
           <input
             type="text"
             value={query}
             ref={inputRef}
+            className="w-full"
             onChange={(e) => handleInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Search for images"
+            placeholder={`Search for images (e.g. ${placeholder})`}
           />
           <IonButton
             type="submit"
-            className="mx-1"
+            className="ml-1"
             onClick={() => {
               setImages([]);
               setPageNumber(1);
@@ -161,21 +189,23 @@ const ImageSearchComponent = () => {
             <IonIcon icon={searchSharp} />
           </IonButton>
         </div>
-        <IonSelect
-          value={imageType}
-          placeholder="Image Type"
-          labelPlacement="stacked"
-          label="Image Type"
-          className="w-full md:w-1/4"
-          selectedText={imageType}
-          onIonChange={(e) => setImageType(e.detail.value)}
-        >
-          {imageTypes.map((type, index) => (
-            <IonSelectOption key={index} value={type}>
-              {type}
-            </IonSelectOption>
-          ))}
-        </IonSelect>
+        <div className="flex items-center">
+          <IonSelect
+            value={imageType}
+            placeholder="Image Type"
+            labelPlacement="stacked"
+            label="Image Type"
+            className=""
+            selectedText={imageType}
+            onIonChange={(e) => setImageType(e.detail.value)}
+          >
+            {imageTypes.map((type, index) => (
+              <IonSelectOption key={index} value={type}>
+                {type}
+              </IonSelectOption>
+            ))}
+          </IonSelect>
+        </div>
       </div>
 
       {images.length > 0 && (

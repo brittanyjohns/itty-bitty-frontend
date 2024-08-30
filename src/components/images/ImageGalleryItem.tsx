@@ -138,41 +138,12 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     }
   };
 
-  // const labelForScreenSize = (label: string) => {
-  //   if (smallScreen && label.length > 10) {
-  //     return label.substring(0, 10) + "...";
-  //   }
-  //   if (mediumScreen && label.length > 15) {
-  //     return label.substring(0, 15) + "...";
-  //   }
-  //   if (largeScreen && label.length > 20) {
-  //     return label.substring(0, 20) + "...";
-  //   }
-  //   if (label.length > 20) {
-  //     console.log("Row height: ", rowHeight);
-  //     if (rowHeight && rowHeight < 100) {
-  //       return label.substring(0, 10) + "...";
-  //     }
-  //     return label.substring(0, 20) + "...";
-  //   }
-  //   return label;
-  // };
-  // curl -X POST http://localhost:4000/scenarios/start -d "scenario=Going to a birthday party" -d "age_range=8"
-
-  // curl -X POST http://localhost:4000/scenarios/finalize -d "answer_2=There will be a treasure hunt"
-  // export const labelForScreenSize = (
-  //   label: string,
-  //   rowHeight?: number,
-  //   smallScreen?: boolean,
-  //   mediumScreen?: boolean,
-  //   largeScreen?: boolean
   return (
     <div
       ref={imgRef}
       className={`relative cursor-pointer ${
         image.bg_color || "bg-white"
       } rounded-sm p-2`}
-      // onClick={() => handleImageClick(image)}
     >
       <IonImg
         src={image.src || placeholderUrl}

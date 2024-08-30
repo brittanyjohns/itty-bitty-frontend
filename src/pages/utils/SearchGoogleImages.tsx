@@ -1,13 +1,15 @@
 import React from "react";
-import { IonContent, IonPage } from "@ionic/react";
+import { IonContent, IonPage, useIonViewWillLeave } from "@ionic/react";
 import MainMenu from "../../components/main_menu/MainMenu";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import ImageSearchComponent from "../../components/admin/ImageSearchComponent";
+import Tabs from "../../components/utils/Tabs";
 
 const SearchGoogleImages: React.FC = () => {
   const { isWideScreen, currentAccount, currentUser } = useCurrentUser();
+
   return (
     <>
       <MainMenu
@@ -29,7 +31,7 @@ const SearchGoogleImages: React.FC = () => {
           isWideScreen={isWideScreen}
           showMenuButton={!isWideScreen}
         />
-        <IonContent className="ion-padding">
+        <IonContent>
           <div className="ion-padding">
             <h1>Search Google Images</h1>
             <p className="ion-padding-top text-md">
@@ -38,11 +40,13 @@ const SearchGoogleImages: React.FC = () => {
             <p className="ion-padding-bottom text-sm">
               Click on an image to save it.
             </p>
-            <div className="ion-padding">
-              <ImageSearchComponent />
-            </div>
+          </div>
+
+          <div className="ion-padding">
+            <ImageSearchComponent />
           </div>
         </IonContent>
+        <Tabs />
       </IonPage>
     </>
   );

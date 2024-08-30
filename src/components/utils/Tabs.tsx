@@ -32,7 +32,7 @@ const Tabs: React.FC = () => {
             <IonIcon icon={imagesOutline} />
             <IonLabel>Images</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="search" href="/image-search">
+          <IonTabButton tab="image-search" href="/image-search">
             <IonIcon icon={searchSharp} />
             <IonLabel>Search</IonLabel>
           </IonTabButton>

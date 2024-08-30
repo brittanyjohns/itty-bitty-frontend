@@ -6,6 +6,9 @@ export interface ImageDoc {
   src: string;
   label: string;
   is_current?: boolean;
+  raw?: string;
+  user_id?: string;
+  can_edit?: boolean;
 }
 
 export interface Image {

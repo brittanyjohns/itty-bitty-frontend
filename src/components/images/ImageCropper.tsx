@@ -15,6 +15,7 @@ import { cropImage, findOrCreateImage } from "../../data/images";
 import { useHistory } from "react-router";
 import ImagePasteHandler from "../utils/ImagePasteHandler";
 import { set } from "d3";
+import { image } from "ionicons/icons";
 
 interface ImageCropperProps {
   existingId?: string;
@@ -55,12 +56,18 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
       setFileExtension(fileExtension);
       const reader = new FileReader();
 
+      console.log("File: ", file);
+
       reader.onload = (event: ProgressEvent<FileReader>) => {
         const dataUrl = event.target!.result as string;
+        console.log("Data URL: ", dataUrl);
         setImageSrc(dataUrl);
 
         // Create an image to measure dimensions
         const img = new Image();
+        // img.crossOrigin = "anonymous";
+        img.setAttribute("crossorigin", "anonymous");
+        console.log("new image: ", img);
         img.onload = () => {
           console.log("Image dimensions: ", img.width, img.height);
           setImageDimensions({ width: img.width, height: img.height });
@@ -77,12 +84,16 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
     setFileExtension(fileExtension);
     const reader = new FileReader();
 
+    console.log("PASTE File: ", file);
+
     reader.onload = (event: ProgressEvent<FileReader>) => {
       const dataUrl = event.target!.result as string;
       setImageSrc(dataUrl);
 
       // Create an image to measure dimensions
       const img = new Image();
+      // img.crossOrigin = "anonymous";
+      img.setAttribute("crossorigin", "anonymous");
       img.onload = () => {
         setImageDimensions({ width: img.width, height: img.height });
       };
@@ -109,23 +120,35 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
       console.log("Cropping disabled");
       return;
     }
-    if (imageSrc && imageElementRef.current) {
-      setShowLoading(true);
-      setShowPaste(false);
+    try {
+      if (imageSrc && imageElementRef.current) {
+        setShowLoading(true);
+        setShowPaste(false);
+        console.log("Creating cropper", imageElementRef.current);
+        // imageElementRef.current.crossOrigin = "anonymous";
 
-      const cropperInstance = new Cropper(imageElementRef.current, {
-        aspectRatio: 1,
-        viewMode: 1,
-        responsive: true,
-      });
-      setCropper(cropperInstance);
-      setShowLoading(false);
+        const cropperInstance = new Cropper(imageElementRef.current, {
+          aspectRatio: 1,
+          viewMode: 1,
+          responsive: true,
+          checkCrossOrigin: false,
+          checkOrientation: false,
+          // checkCrossOrigin: true,
+          // checkOrientation: true,
+        });
+        console.log("Cropper instance: ", cropperInstance);
+        setCropper(cropperInstance);
+        setShowLoading(false);
 
-      return () => {
-        cropperInstance.destroy();
-      };
+        return () => {
+          console.log("Destroying cropper");
+          cropperInstance.destroy();
+        };
+      }
+    } catch (error) {
+      console.error("Error creating cropper: ", error);
     }
-  }, [imageSrc, existingImageSrc]);
+  }, [imageSrc]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();

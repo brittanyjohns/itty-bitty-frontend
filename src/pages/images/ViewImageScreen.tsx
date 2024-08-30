@@ -22,6 +22,7 @@ import { useHistory, useParams } from "react-router";
 import {
   getImage,
   Image,
+  ImageDoc,
   generateImage,
   deleteImage,
   removeDoc,
@@ -50,6 +51,10 @@ import Tabs from "../../components/utils/Tabs";
 import AudioList from "../../components/images/AudioList";
 import InputAlert from "../../components/utils/InputAlert";
 import VoiceDropdown from "../../components/utils/VoiceDropdown";
+import ConfirmAlert from "../../components/utils/ConfirmAlert";
+import { h } from "ionicons/dist/types/stencil-public-runtime";
+import { set } from "d3";
+import { get } from "react-hook-form";
 
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -87,7 +92,9 @@ const ViewImageScreen: React.FC = () => {
     return false;
   };
   const [showHardDelete, setShowHardDelete] = useState(false);
-
+  const [confirmDeleteDocMessage, setConfirmDeleteDocMessage] = useState(
+    "Do you want to delete this image?"
+  );
   const fetchImage = async () => {
     const img = await getImage(id);
     setImage(img);
@@ -99,9 +106,7 @@ const ViewImageScreen: React.FC = () => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const boardId = urlParams.get("boardId");
-    setShowHardDelete(
-      currentUser?.role === "admin" || currentUser?.id === image?.user_id
-    );
+    setShowHardDelete(currentUser?.role === "admin");
     setBoardId(boardId);
     await getData();
     if (image && image.src) {
@@ -118,7 +123,6 @@ const ViewImageScreen: React.FC = () => {
 
     if (creatingSymbol) {
       const intervalId = setInterval(() => {
-        console.log("Checking for symbol...");
         getData();
         setShowLoading(false);
         setCreatingSymbol(false);
@@ -139,22 +143,17 @@ const ViewImageScreen: React.FC = () => {
     if (newFilteredBoards) {
       setFilteredBoards(newFilteredBoards);
     } else {
-      console.log("No boards found!");
       setBoards(allBoards["boards"]);
     }
     setImage(imgToSet);
     toggleForms(segmentType, imgToSet);
-    if (
-      imgToSet?.display_doc &&
-      imgToSet.display_doc &&
-      imgToSet.display_doc.src
-    ) {
-      setCurrentImage(imgToSet.display_doc.src);
-    } else if (imgToSet?.src) {
-      setCurrentImage(imgToSet.src);
-    } else {
+
+    if (!imgToSet?.src) {
+      console.error("No image found.");
       const imgURl = generatePlaceholderImage(imgToSet?.label);
       setCurrentImage(imgURl);
+    } else {
+      setCurrentImage(imgToSet.src);
     }
   };
 
@@ -168,11 +167,17 @@ const ViewImageScreen: React.FC = () => {
     }
   };
 
-  const handleRemoveCurrentDoc = async () => {
-    if (!image) return;
-    const result = await removeDoc(image.id, image.display_doc?.id);
+  const [showConfirmDeleteDoc, setShowConfirmDeleteDoc] = useState(false);
+
+  const handleRemoveDoc = async () => {
+    const doc = docToDelete;
+    if (!doc || !image) return;
+
+    const result = await removeDoc(image.id, doc.id);
     if (result["status"] === "ok") {
       getData();
+
+      // return result;
     } else {
       alert("Error removing display image.\n" + result["message"]);
     }
@@ -224,9 +229,7 @@ const ViewImageScreen: React.FC = () => {
     const target = e.target as HTMLImageElement;
     const currentImg = await markAsCurrent(target.id); // Ensure markAsCurrent returns a Promise
     const imgToSet = currentImg;
-    setImage(imgToSet);
-    setCurrentImage(imgToSet?.display_doc?.src ?? imgToSet.src);
-    setupData();
+    setCurrentImage(imgToSet.src);
   };
 
   const handleGenerate = async () => {
@@ -276,17 +279,14 @@ const ViewImageScreen: React.FC = () => {
   };
 
   const [newName, setNewName] = useState(image?.label ?? "");
-  const [voiceToCreate, setVoiceToCreate] = useState("alloy");
+  // const [voiceToCreate, setVoiceToCreate] = useState("alloy");
 
   const handleInputChange = (str: string) => {
-    console.log("New name: ", str);
     setNewName(str);
     handleCloneImage(str);
   };
 
   const handleCloneImage = async (name: string) => {
-    console.log("Cloning image with name: ", name);
-    console.log("newName: ", newName);
     if (!image) return;
     const result = await cloneImage(image.id, name);
     if (result) {
@@ -295,20 +295,8 @@ const ViewImageScreen: React.FC = () => {
       alert("Error cloning image.");
     }
   };
-
-  const handleCreateAudio = async () => {
-    if (!image) return;
-    const result = await createAudio(image.id, voiceToCreate);
-    if (result["status"] === "ok") {
-      setCreatingSymbol(true);
-    } else {
-      alert("Error creating symbol.\n" + result["message"]);
-    }
-  };
-
   const handleAddNextWords = async () => {
     if (!image) return;
-    console.log("Adding next words: ", nextImageWords);
     const newImageWords = [...nextImageWords, newImageWord];
     const result = await setNextWords(image.id, newImageWords);
     if (result["next_words"]) {
@@ -328,7 +316,6 @@ const ViewImageScreen: React.FC = () => {
     if (!image) return;
     setShowLoading(true);
     const result = await create_symbol(image.id);
-    // setShowLoading(false);
     if (result["status"] === "ok") {
       setCreatingSymbol(true);
     } else {
@@ -353,7 +340,6 @@ const ViewImageScreen: React.FC = () => {
       const newWords = wordsToRemove.filter((w) => w !== word);
       setWordsToRemove(newWords);
     } else {
-      console.log("Removing word: ", word);
       setWordsToRemove([...wordsToRemove, word]);
     }
   };
@@ -420,10 +406,26 @@ const ViewImageScreen: React.FC = () => {
     if (voice) {
       setShowLoading(false);
       setImage(response);
-
-      // window.location.reload();
-      // history.push(`/images/${response["id"]}`);
     }
+  };
+
+  const [docToDelete, setDocToDelete] = useState<ImageDoc | null>(null);
+
+  const handleConfirmRemoveDoc = (doc: ImageDoc) => {
+    if (doc.user_id !== currentUser?.id && !currentUser?.admin) {
+      // alert("You do not have permission to delete this image.");
+      setConfirmDeleteDocMessage(
+        `You do not have permission to delete this image.`
+      );
+      // return;
+    } else {
+      setConfirmDeleteDocMessage(
+        `Are you sure you want to delete this image? This action cannot be undone. ${doc.id}`
+      );
+
+      setDocToDelete(doc);
+    }
+    setShowConfirmDeleteDoc(true);
   };
 
   return (
@@ -610,8 +612,18 @@ const ViewImageScreen: React.FC = () => {
                         key={doc.id}
                         className={` ${
                           image.bg_color || "bg-white"
-                        } p-1 rounded-lg shadow-md`}
+                        } relative p-2 rounded-lg shadow-md`}
                       >
+                        {doc.can_edit && (
+                          <>
+                            <p>{doc.id}</p>
+                            <IonIcon
+                              icon={trashBinOutline}
+                              className="absolute top-0 right-0 hover:cursor-pointer bg-white p-1 text-red-500"
+                              onClick={() => handleConfirmRemoveDoc(doc)}
+                            />
+                          </>
+                        )}
                         <IonImg
                           id={doc.id}
                           src={doc.src}
@@ -624,6 +636,20 @@ const ViewImageScreen: React.FC = () => {
                 </div>
               </div>
             )}
+            <ConfirmAlert
+              onConfirm={() => {
+                handleRemoveDoc();
+              }}
+              onCanceled={() => {
+                setShowConfirmDeleteDoc(false);
+                setDocToDelete(null);
+              }}
+              openAlert={showConfirmDeleteDoc}
+              onDidDismiss={() => {
+                setShowConfirmDeleteDoc(false);
+              }}
+              message={confirmDeleteDocMessage}
+            />
 
             {image && boards && (
               <div className="mt-6 flex justify-center gap-1  w-full mx-auto">
@@ -652,29 +678,6 @@ const ViewImageScreen: React.FC = () => {
                       </IonList>
                     </div>
                   )}
-              </div>
-            )}
-            {currentUser?.id === image?.user_id && (
-              <div className="">
-                {image?.next_words && image?.next_words.length > 0 && (
-                  <>
-                    <IonText className="text-md block">
-                      Next words for this image:
-                    </IonText>
-                    {image?.next_words.map((word, index) => (
-                      <IonButton
-                        key={index}
-                        className="text-md hover:cursor-pointer"
-                        color={"secondary"}
-                        onClick={() => {
-                          handleFindByLabel(word);
-                        }}
-                      >
-                        {word}
-                      </IonButton>
-                    ))}
-                  </>
-                )}
               </div>
             )}
             {currentUser?.admin && (
@@ -789,19 +792,6 @@ const ViewImageScreen: React.FC = () => {
             )}
           </div>
           <div className="hidden p-4" ref={deleteImageWrapper}>
-            {image && image.display_doc?.id && (
-              <div className="mb-4 w-full md:w-1/2 mx-auto">
-                <IonText className="text-xl">
-                  Do you want to delete ONLY the above image?
-                </IonText>
-                <IonButton
-                  className="mt-2 w-full"
-                  onClick={handleRemoveCurrentDoc}
-                >
-                  Delete Current Image
-                </IonButton>
-              </div>
-            )}
             {showHardDelete && (
               <div className="m-4 pt-4 w-full md:w-1/2 mx-auto">
                 <IonText className="text-md">
