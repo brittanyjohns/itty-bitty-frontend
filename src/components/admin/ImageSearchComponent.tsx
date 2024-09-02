@@ -11,7 +11,7 @@ import {
   useIonViewWillLeave,
 } from "@ionic/react";
 import React from "react";
-import { Image } from "../../data/images";
+import { cropImage, Image, saveTempDoc } from "../../data/images";
 import ImageCropper from "../images/ImageCropper";
 import { set } from "d3";
 import { searchCircleSharp, searchSharp } from "ionicons/icons";
@@ -89,6 +89,7 @@ const ImageSearchComponent = () => {
 
   useEffect(() => {
     if (query) {
+      console.log("Searching for: ", query);
     } else {
       setImages([]);
       setPlaceholder("smile");
@@ -100,18 +101,26 @@ const ImageSearchComponent = () => {
     setLoading(true);
     try {
       const imgUrl = imageResult.link;
-      setNewImageSrc(imgUrl);
+
+      // setNewImageSrc(imgUrl);
+      let tmpLabel = imageResult.title;
       if (query === "") {
         setQuery(placeholder);
         setNewImageLabel(placeholder);
+        tmpLabel = placeholder;
       } else {
         setNewImageLabel(query);
+        tmpLabel = query;
       }
 
-      const result = true;
+      console.log("Saving image: ", imgUrl, tmpLabel);
+
+      const result = await saveTempDoc(imgUrl, tmpLabel);
       if (result) {
+        console.log("Result: ", result);
         resetSearch();
-        // alert("Image saved successfully");
+        // setNewImageSrc(result["image_url"]);
+        window.location.href = `/images/${result["id"]}`;
       } else {
         alert("Failed to save image");
       }
@@ -121,7 +130,49 @@ const ImageSearchComponent = () => {
     } finally {
       setLoading(false);
     }
+    console.log("Done with click");
   };
+  // const [showLoading, setShowLoading] = useState<boolean>(false);
+
+  // const handleFormSubmit = async (data: {
+  //   croppedImage: string;
+  //   fileExtension: string;
+  // }) => {
+  //   setShowLoading(true);
+  //   const formData = new FormData();
+  //   const strippedImage = data.croppedImage.replace(
+  //     /^data:image\/[a-z]+;base64,/,
+  //     ""
+  //   );
+
+  //   console.log("Stripped Image: ", strippedImage);
+
+  //   formData.append("cropped_image", strippedImage);
+  //   formData.append("file_extension", data.fileExtension);
+  //   if (query) {
+  //     formData.append("image[label]", query);
+  //   } else {
+  //     console.log("No query found");
+  //     setQuery(placeholder);
+  //     formData.append("image[label]", placeholder);
+  //   }
+  //   const labelToSend = formData.get("image[label]");
+  //   if (!labelToSend) {
+  //     alert("Please provide a label for the image.");
+  //     setShowLoading(false);
+  //     return;
+  //   }
+
+  //   console.log("Form Data: ", formData);
+  //   const result = formData;
+
+  //   // const result = await cropImage(formData);
+  //   alert(`Image saved successfully: ${labelToSend}`);
+
+  //   setShowLoading(false);
+  //   console.log(">>Result: ", result);
+  //   return result;
+  // };
 
   const resetSearch = () => {
     setQuery("");

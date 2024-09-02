@@ -1,6 +1,7 @@
 import { Layout } from "react-grid-layout";
 import { Board } from "./boards";
 import { BASE_URL, userHeaders } from "./constants";
+import { ImageResult } from "./search";
 export interface ImageDoc {
   id: string;
   src: string;
@@ -347,6 +348,15 @@ export const createAudio = async (id: string, voice: string) => {
     headers: userHeaders,
     method: "POST",
     body: JSON.stringify({ voice }),
+  });
+  return response.json();
+};
+
+export const saveTempDoc = async (imageUrl: string, query: string) => {
+  const response = await fetch(`${BASE_URL}images/save_temp_doc`, {
+    headers: userHeaders,
+    method: "POST",
+    body: JSON.stringify({ imageUrl, query }),
   });
   return response.json();
 };

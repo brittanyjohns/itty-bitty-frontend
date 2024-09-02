@@ -17,30 +17,21 @@ import {
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import { arrowBackCircleOutline } from "ionicons/icons";
+import ImageCropper from "../../components/images/ImageCropper";
+import MainMenu from "../../components/main_menu/MainMenu";
+import StaticMenu from "../../components/main_menu/StaticMenu";
+import MainHeader from "../MainHeader";
+import { useCurrentUser } from "../../contexts/UserContext";
 
 const EditImageScreen: React.FC = (props: any) => {
   const params = useParams<{ id: string }>();
+  const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
   const [image, setImage] = useState<Image>({
     id: "",
     src: "",
     label: "",
     bg_color: "",
   });
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Image>();
-  const onSubmit: SubmitHandler<Image> = (data) => {
-    const formData = new FormData();
-    formData.append("image[label]", data.label);
-    formData.append("image[src]", image.src || "");
-    formData.append("image[id]", image.id);
-
-    updateImage(formData);
-    props.history.push("/home");
-  };
 
   useIonViewWillEnter(() => {
     fetchImage().then((img) => {
@@ -58,34 +49,41 @@ const EditImageScreen: React.FC = (props: any) => {
 
   return (
     <>
-      <IonHeader className="bg-inherit shadow-none">
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonButton routerLink={`/images/${image.id}`}>
-              {" "}
-              {/* <IonButton routerLink="/home"> */}
-              <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
-            </IonButton>
-            <IonTitle>Edit Image</IonTitle>
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
+      <MainMenu
+        pageTitle="Images"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Images"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
 
-      <IonContent fullscreen scrollY={true}>
-        <IonText>Editing {image.label}</IonText>
-        <form className="ion-padding" onSubmit={handleSubmit(onSubmit)}>
-          <IonInput
-            value={image.label}
-            aria-label="label"
-            placeholder="Enter new image label"
-            defaultValue=""
-            {...register("label", { required: true })}
-          />
-          <IonButton className="ion-margin-top" type="submit" expand="block">
-            Save
-          </IonButton>
-        </form>
-      </IonContent>
+      <IonPage id="main-content">
+        <MainHeader
+          pageTitle="Images"
+          isWideScreen={isWideScreen}
+          startLink="/images"
+        />
+
+        <IonContent className="ion-padding">
+          <h1 className="text-center">
+            Edit image for:{" "}
+            <span className="font-bold my-2 block">{image.label}</span>
+          </h1>
+          <div className="w-full md:w-1/2 lg:w-1/2 mx-auto">
+            <ImageCropper
+              hidePaste={true}
+              existingId={image.id}
+              existingImageSrc={image.src}
+              existingLabel={image.label}
+            />
+          </div>
+        </IonContent>
+      </IonPage>
     </>
   );
 };

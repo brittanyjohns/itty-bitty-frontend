@@ -45,6 +45,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
     width: 0,
     height: 0,
   });
+  const [imgDisplay, setImgDisplay] = useState<string>("none");
   const [cropper, setCropper] = useState<Cropper>();
   const [label, setLabel] = useState<string>(existingLabel || "");
   const [fileExtension, setFileExtension] = useState<string>("");
@@ -56,20 +57,13 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
       setFileExtension(fileExtension);
       const reader = new FileReader();
 
-      console.log("File: ", file);
-
       reader.onload = (event: ProgressEvent<FileReader>) => {
         const dataUrl = event.target!.result as string;
-        console.log("Data URL: ", dataUrl);
         setImageSrc(dataUrl);
 
         // Create an image to measure dimensions
         const img = new Image();
-        // img.crossOrigin = "anonymous";
-        img.setAttribute("crossorigin", "anonymous");
-        console.log("new image: ", img);
         img.onload = () => {
-          console.log("Image dimensions: ", img.width, img.height);
           setImageDimensions({ width: img.width, height: img.height });
         };
         img.src = dataUrl;
@@ -92,8 +86,6 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
 
       // Create an image to measure dimensions
       const img = new Image();
-      // img.crossOrigin = "anonymous";
-      img.setAttribute("crossorigin", "anonymous");
       img.onload = () => {
         setImageDimensions({ width: img.width, height: img.height });
       };
@@ -114,6 +106,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
 
   useEffect(() => {
     if (existingImageSrc) {
+      console.log("Setting existing image src: ", existingImageSrc);
       setImageSrc(existingImageSrc);
     }
     if (disableCrop) {
@@ -124,17 +117,16 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
       if (imageSrc && imageElementRef.current) {
         setShowLoading(true);
         setShowPaste(false);
-        console.log("Creating cropper", imageElementRef.current);
-        // imageElementRef.current.crossOrigin = "anonymous";
+
+        console.log("Creating cropper", imageSrc);
+        console.log("Image element: ", imageElementRef.current);
 
         const cropperInstance = new Cropper(imageElementRef.current, {
           aspectRatio: 1,
           viewMode: 1,
           responsive: true,
-          checkCrossOrigin: false,
-          checkOrientation: false,
-          // checkCrossOrigin: true,
-          // checkOrientation: true,
+          // checkCrossOrigin: false,
+          // checkOrientation: false,
         });
         console.log("Cropper instance: ", cropperInstance);
         setCropper(cropperInstance);
@@ -268,7 +260,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
               ref={imageElementRef}
               src={imageSrc}
               alt="Source"
-              style={{ display: "none" }}
+              style={{ display: imgDisplay }}
             />
           </>
         )}
