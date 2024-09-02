@@ -55,6 +55,7 @@ import ConfirmAlert from "../../components/utils/ConfirmAlert";
 import { h } from "ionicons/dist/types/stencil-public-runtime";
 import { set } from "d3";
 import { get } from "react-hook-form";
+import ImageSearchComponent from "../../components/admin/ImageSearchComponent";
 
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -591,6 +592,10 @@ const ViewImageScreen: React.FC = () => {
                 <p className="text-sm">This will cost you 1 token.</p>
               </IonItem>
             </IonList>
+            <div className="w-full md:w-3/4 mx-auto p-2">
+              <h2 className="text-center">Search for images</h2>
+              {image && <ImageSearchComponent startingQuery={image?.label} />}
+            </div>
           </div>
 
           <div className="mt-6 hidden" ref={imageGridWrapper}>

@@ -17,11 +17,16 @@ import { set } from "d3";
 import { searchCircleSharp, searchSharp } from "ionicons/icons";
 import { useCurrentUser } from "../../contexts/UserContext";
 import { labelForScreenSize } from "../../data/utils";
+interface ImageSearchComponentProps {
+  startingQuery?: string;
+}
 
-const ImageSearchComponent = () => {
+const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
+  startingQuery,
+}) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(startingQuery || "");
   const [placeholder, setPlaceholder] = useState("smile");
   const [images, setImages] = useState<ImageResult[]>([]);
   const [newImageSrc, setNewImageSrc] = useState<string | null>(null);
@@ -88,12 +93,20 @@ const ImageSearchComponent = () => {
   };
 
   useEffect(() => {
+    console.log("Starting Query: ", startingQuery);
+    console.log("Query: ", query);
     if (query) {
       console.log("Searching for: ", query);
     } else {
       setImages([]);
-      setPlaceholder("smile");
-      loadInitialImages();
+      if (startingQuery) {
+        setQuery(startingQuery);
+        setPlaceholder(startingQuery);
+        loadInitialImages();
+      } else {
+        setPlaceholder("smile");
+        loadInitialImages();
+      }
     }
   }, []);
 
