@@ -230,8 +230,8 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
     <div>
       <IonLoading isOpen={loading} />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-1 p-3 bg-gray-100 rounded-md shadow-md bg-opacity-50">
-        <div className="flex items-center w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-1 p-2 md:p-6 bg-gray-50 rounded-lg border">
+        <div className="flex items-center w-full md:w-1/2 mx-auto">
           <input
             type="text"
             value={query}
@@ -253,7 +253,7 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
             <IonIcon icon={searchSharp} />
           </IonButton>
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center w-full md:w-1/2 mx-auto">
           <IonSelect
             value={imageType}
             placeholder="Image Type"

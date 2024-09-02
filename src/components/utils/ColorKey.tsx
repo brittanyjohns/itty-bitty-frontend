@@ -1,6 +1,7 @@
 import { IonButton, IonButtons, IonIcon } from "@ionic/react";
 import { eyeOffOutline, eyeOutline } from "ionicons/icons";
 import React, { useState } from "react";
+import RainbowText from "./RainbowText";
 
 const colorKeyItems = [
   { colorClass: "bg-blue-400 bg-opacity-50", label: "Nouns" },
@@ -15,7 +16,7 @@ const colorKeyItems = [
 ];
 
 const ColorKey: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   const toggleColorKey = () => {
     setIsVisible(!isVisible);
@@ -24,16 +25,20 @@ const ColorKey: React.FC = () => {
   return (
     <div className="w-full mx-auto">
       <IonButtons className="flex justify-between ml-4">
-        <IonButton onClick={toggleColorKey} className="text-xs" fill="clear">
+        <IonButton
+          onClick={toggleColorKey}
+          className="text-xs font-bold"
+          fill="clear"
+        >
           {isVisible && (
-            <IonIcon icon={eyeOffOutline} className="mr-2"></IonIcon>
+            <IonIcon icon={eyeOffOutline} className="mr-2 font-bold"></IonIcon>
           )}{" "}
-          {isVisible && "Hide"}
           {!isVisible && (
-            <IonIcon icon={eyeOutline} className="mr-2"></IonIcon>
+            <IonIcon icon={eyeOutline} className="mr-2 font-bold"></IonIcon>
           )}{" "}
-          {!isVisible && "Show"}
-          {" Color Key"}
+          <RainbowText
+            text={!isVisible ? "Show Color Key" : "Hide Color Key"}
+          />
         </IonButton>
       </IonButtons>
       {isVisible && (
