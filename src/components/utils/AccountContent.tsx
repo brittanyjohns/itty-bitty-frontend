@@ -18,9 +18,7 @@ const AccountContent: React.FC<AccountContentProps> = ({
         <div className="px-2 pb-2 rounded-lg shadow-md bg-white">
           <div className="">
             {currentUser && currentUser?.plan_type === "free" && (
-              <>
-                <h1 className="text-2xl">Dashboard</h1>
-              </>
+              <h1 className="text-2xl">Dashboard</h1>
             )}
             {currentUser && currentUser?.plan_type !== "free" && (
               <>

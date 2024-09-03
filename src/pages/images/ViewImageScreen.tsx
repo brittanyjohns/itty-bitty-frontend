@@ -29,8 +29,6 @@ import {
   setNextWords,
   create_symbol,
   cloneImage,
-  findByLabel,
-  createAudio,
 } from "../../data/images"; // Adjust imports based on actual functions
 import { markAsCurrent } from "../../data/docs"; // Adjust imports based on actual functions
 import BoardDropdown from "../../components/boards/BoardDropdown";
@@ -39,6 +37,8 @@ import {
   cloudUploadOutline,
   gridOutline,
   refreshCircleOutline,
+  searchCircleSharp,
+  searchOutline,
   trashBinOutline,
 } from "ionicons/icons";
 import MainMenu from "../../components/main_menu/MainMenu";
@@ -52,9 +52,6 @@ import AudioList from "../../components/images/AudioList";
 import InputAlert from "../../components/utils/InputAlert";
 import VoiceDropdown from "../../components/utils/VoiceDropdown";
 import ConfirmAlert from "../../components/utils/ConfirmAlert";
-import { h } from "ionicons/dist/types/stencil-public-runtime";
-import { set } from "d3";
-import { get } from "react-hook-form";
 import ImageSearchComponent from "../../components/admin/ImageSearchComponent";
 
 const ViewImageScreen: React.FC = () => {
@@ -69,6 +66,7 @@ const ViewImageScreen: React.FC = () => {
   const uploadForm = useRef<HTMLDivElement>(null);
   const generateForm = useRef<HTMLDivElement>(null);
   const imageGridWrapper = useRef<HTMLDivElement>(null);
+  const searchWrapper = useRef<HTMLDivElement>(null);
   const deleteImageWrapper = useRef<HTMLDivElement>(null);
   const [pageTitle, setPageTitle] = useState("");
   const { currentUser, isWideScreen, currentAccount, smallScreen } =
@@ -201,12 +199,14 @@ const ViewImageScreen: React.FC = () => {
       uploadForm.current?.classList.add("hidden");
       generateForm.current?.classList.remove("hidden");
       imageGridWrapper.current?.classList.add("hidden");
+      searchWrapper.current?.classList.add("hidden");
       deleteImageWrapper.current?.classList.add("hidden");
     }
     if (segmentType === "upload") {
       setPageTitle(`Upload an Image`);
       uploadForm.current?.classList.remove("hidden");
       generateForm.current?.classList.add("hidden");
+      searchWrapper.current?.classList.add("hidden");
       imageGridWrapper.current?.classList.add("hidden");
       deleteImageWrapper.current?.classList.add("hidden");
     }
@@ -214,6 +214,7 @@ const ViewImageScreen: React.FC = () => {
       setPageTitle(`Gallery for ${label}`);
       uploadForm.current?.classList.add("hidden");
       generateForm.current?.classList.add("hidden");
+      searchWrapper.current?.classList.add("hidden");
       imageGridWrapper.current?.classList.remove("hidden");
       deleteImageWrapper.current?.classList.add("hidden");
     }
@@ -221,8 +222,17 @@ const ViewImageScreen: React.FC = () => {
       setPageTitle(`Delete Image for ${label}`);
       uploadForm.current?.classList.add("hidden");
       generateForm.current?.classList.add("hidden");
+      searchWrapper.current?.classList.add("hidden");
       imageGridWrapper.current?.classList.add("hidden");
       deleteImageWrapper.current?.classList.remove("hidden");
+    }
+    if (segmentType === "search") {
+      setPageTitle(`Search for Images`);
+      uploadForm.current?.classList.add("hidden");
+      generateForm.current?.classList.add("hidden");
+      searchWrapper.current?.classList.remove("hidden");
+      imageGridWrapper.current?.classList.add("hidden");
+      deleteImageWrapper.current?.classList.add("hidden");
     }
   };
 
@@ -325,14 +335,14 @@ const ViewImageScreen: React.FC = () => {
     }
   };
 
-  const handleFindByLabel = async (word: string) => {
-    const result = await findByLabel(word);
-    if (result) {
-      history.push(`/images/${result.id}`);
-    } else {
-      alert("Error finding image by label.");
-    }
-  };
+  // const handleFindByLabel = async (word: string) => {
+  //   const result = await findByLabel(word);
+  //   if (result) {
+  //     history.push(`/images/${result.id}`);
+  //   } else {
+  //     alert("Error finding image by label.");
+  //   }
+  // };
 
   const toggleAddToRemoveList = (e: React.MouseEvent<HTMLIonTextElement>) => {
     const target = e.target as HTMLIonTextElement;
@@ -500,6 +510,16 @@ const ViewImageScreen: React.FC = () => {
                 )}
                 <IonIcon className="mt-2" icon={refreshCircleOutline} />
               </IonSegmentButton>
+              <IonSegmentButton value="search">
+                {!smallScreen ? (
+                  <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
+                    Search
+                  </IonLabel>
+                ) : (
+                  <IonLabel className="text-sm md:text-md lg:text-lg mb-2"></IonLabel>
+                )}
+                <IonIcon className="mt-2" icon={searchOutline} />
+              </IonSegmentButton>
               {showHardDelete && (
                 <IonSegmentButton value="delete">
                   {!smallScreen ? (
@@ -532,8 +552,9 @@ const ViewImageScreen: React.FC = () => {
               {currentUser && (
                 <IonButton
                   onClick={() => setOpenAlert(true)}
-                  className="text-md font-md"
+                  className="text-sm"
                   fill="outline"
+                  size="small"
                 >
                   Clone Image
                 </IonButton>
@@ -547,7 +568,7 @@ const ViewImageScreen: React.FC = () => {
               onInputChange={handleInputChange}
             />
           </div>
-          <div className="mt-6 py-3 px-1 hidden" ref={uploadForm}>
+          <div className="mt-2 py-3 px-1 hidden" ref={uploadForm}>
             <div className="w-full md:w-3/4 mx-auto m-2">
               {image && (
                 <ImageCropper
@@ -558,7 +579,7 @@ const ViewImageScreen: React.FC = () => {
               )}
             </div>
           </div>
-          <div className="mt-6 hidden" ref={generateForm}>
+          <div className="mt-2 hidden" ref={generateForm}>
             <IonList className="w-full md:w-3/4 lg:w-1/2 mx-auto" lines="none">
               <IonItem className="mt-2 border-2">
                 <IonLoading
@@ -592,13 +613,16 @@ const ViewImageScreen: React.FC = () => {
                 <p className="text-sm">This will cost you 1 token.</p>
               </IonItem>
             </IonList>
+          </div>
+
+          <div className="mt-2 hidden" ref={searchWrapper}>
             <div className="w-full md:w-3/4 mx-auto p-2">
               <h2 className="text-center">Search for images</h2>
               {image && <ImageSearchComponent startingQuery={image?.label} />}
             </div>
           </div>
 
-          <div className="mt-6 hidden" ref={imageGridWrapper}>
+          <div className="mt-2 hidden" ref={imageGridWrapper}>
             {renderImageUserInfo(currentUser)}
 
             {image && image.docs && image.docs.length > 0 && (
@@ -657,10 +681,17 @@ const ViewImageScreen: React.FC = () => {
             />
 
             {image && boards && (
-              <div className="mt-6 flex justify-center gap-1  w-full mx-auto">
+              <div className="mt-2 flex justify-center gap-1  w-full mx-auto mt-4 p-2">
                 <div className="mx-auto w-1/2">
+                  <p className="text-md">Add this image to a board:</p>
                   {boards && boards.length > 0 && (
                     <BoardDropdown imageId={image.id} boards={boards} />
+                  )}
+                </div>
+                <div className="mx-auto w-1/2">
+                  <p className="text-md">Remove this image from a board:</p>
+                  {filteredBoards && filteredBoards.length > 0 && (
+                    <BoardDropdown imageId={image.id} boards={filteredBoards} />
                   )}
                 </div>
                 {image?.user_image_boards &&
@@ -768,7 +799,7 @@ const ViewImageScreen: React.FC = () => {
                     </IonButton>
                   </div>
                 </div>
-                <div className="mt-6 w-full md:w-1/2 mx-auto">
+                <div className="mt-2 w-full md:w-1/2 mx-auto">
                   {image && image.display_doc && image.display_doc.src && (
                     <>
                       <IonText className="text-md">
@@ -785,7 +816,7 @@ const ViewImageScreen: React.FC = () => {
                     />
                   )}
                 </div>
-                <div className="mt-6 w-full md:w-1/2 mx-auto">
+                <div className="mt-2 w-full md:w-1/2 mx-auto">
                   {image && (
                     <AudioList
                       image={image}

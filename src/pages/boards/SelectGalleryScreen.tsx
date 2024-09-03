@@ -59,24 +59,24 @@ const SelectGalleryScreen: React.FC = () => {
     layout: [],
   };
   const [image, setImage] = useState<Image | null>(initialImage);
-  const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
-    if (
-      currentUser &&
-      currentUser.tokens &&
-      currentUser.tokens >= numberOfTokens
-    ) {
-      return true;
-    }
-    return false;
-  };
+  // const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
+  //   if (
+  //     currentUser &&
+  //     currentUser.tokens &&
+  //     currentUser.tokens >= numberOfTokens
+  //   ) {
+  //     return true;
+  //   }
+  //   return false;
+  // };
 
-  const handleRearrangeImages = async () => {
-    setShowLoading(true);
-    const updatedBoard = await rearrangeImages(id);
-    setBoard(updatedBoard);
-    setShowLoading(false);
-    // window.location.reload();
-  };
+  // const handleRearrangeImages = async () => {
+  //   setShowLoading(true);
+  //   const updatedBoard = await rearrangeImages(id);
+  //   setBoard(updatedBoard);
+  //   setShowLoading(false);
+  //   // window.location.reload();
+  // };
 
   const fetchBoard = async () => {
     const board = await getBoard(id); // Ensure getBoard is typed to return a Promise<Board>
@@ -216,20 +216,20 @@ const SelectGalleryScreen: React.FC = () => {
             )}
           </div>
           <div
-            className="hidden w-full md:w-5/6 mx-auto"
+            className="hidden w-full md:w-5/6 mx-auto py-3 px-1"
             ref={imageGalleryWrapper}
           >
             <div className=" mt-5 text-center">
               <IonButton
-                size="large"
+                size="small"
                 fill="outline"
                 routerLink={`/boards/${id}`}
               >
                 {" "}
-                <p className="font-bold">Return to board</p>
+                <p className="font-bold text-sm">Return to board</p>
               </IonButton>
             </div>
-            <h2 className="font-sans text-md md:text-xl lg:text-2xl text-center mt-4">
+            <h2 className="font-sans text-sm md:text-xl lg:text-xl text-center mt-4">
               Search for images - Click to add to board
             </h2>
 

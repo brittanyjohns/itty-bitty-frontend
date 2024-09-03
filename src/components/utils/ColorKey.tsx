@@ -34,7 +34,11 @@ const ColorKey: React.FC = () => {
             <IonIcon icon={eyeOffOutline} className="mr-2 font-bold"></IonIcon>
           )}{" "}
           {!isVisible && (
-            <IonIcon icon={eyeOutline} className="mr-2 font-bold"></IonIcon>
+            <IonIcon
+              color="secondary"
+              icon={eyeOutline}
+              className="mr-2 font-bold"
+            ></IonIcon>
           )}{" "}
           <RainbowText
             text={!isVisible ? "Show Color Key" : "Hide Color Key"}

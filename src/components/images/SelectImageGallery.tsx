@@ -8,17 +8,14 @@ import {
   IonActionSheet,
 } from "@ionic/react";
 import { useHistory } from "react-router";
-import { addImageToBoard, getUserBoards } from "../../data/boards";
-import { image } from "ionicons/icons";
+import { addImageToBoard } from "../../data/boards";
 import { generatePlaceholderImage } from "../../data/utils";
 
 const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
   images,
-  boardId,
   onImageClick,
   onLoadMoreImages,
   searchInput,
-  segmentType,
 }) => {
   const [remainingImages, setRemainingImages] = useState<Image[]>(images);
   const [page, setPage] = useState(1);

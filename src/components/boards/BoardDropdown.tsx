@@ -53,7 +53,7 @@ const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId, boards }) => {
     selectRef.current!.value = null;
   };
   return (
-    <IonList className="text-center w-full border border-gray-300">
+    <IonList className="text-center w-full border border-gray-300 mt-4">
       <IonItem lines="none">
         <IonSelect
           placeholder="Add to board"

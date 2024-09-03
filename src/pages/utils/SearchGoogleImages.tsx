@@ -1,5 +1,5 @@
 import React from "react";
-import { IonContent, IonPage, useIonViewWillLeave } from "@ionic/react";
+import { IonContent, IonPage } from "@ionic/react";
 import MainMenu from "../../components/main_menu/MainMenu";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
@@ -37,9 +37,7 @@ const SearchGoogleImages: React.FC = () => {
             <p className="ion-padding-top text-md">
               Search for images on Google and save them to your account
             </p>
-            <p className="ion-padding-bottom text-sm">
-              Click on an image to save it.
-            </p>
+            <p className="text-md">Click on an image to save it.</p>
           </div>
 
           <div className="ion-padding">

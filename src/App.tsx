@@ -114,7 +114,7 @@ const UserRoutes: React.FC = () => (
           exact={true}
         />
 
-        <Route path="/dashboard" component={Dashboard} exact={true} />
+        <Route path="/dashboard" component={Home} exact={true} />
         <Route path="/account-dashboard">
           <AccountDashboard />
         </Route>

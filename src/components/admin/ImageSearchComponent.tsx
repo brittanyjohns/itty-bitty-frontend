@@ -34,7 +34,8 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
   const [imageType, setImageType] = useState<string>("clipart");
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [nextStartIndex, setNextStartIndex] = useState<number>(11);
-  const { smallScreen, mediumScreen, largeScreen } = useCurrentUser();
+  const { smallScreen, mediumScreen, largeScreen, isWideScreen } =
+    useCurrentUser();
   useIonViewWillLeave(() => {
     console.log("Leaving Search Google Images");
     resetSearch();
@@ -230,8 +231,8 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
     <div>
       <IonLoading isOpen={loading} />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-1 p-2 md:p-6 bg-gray-50 rounded-lg border">
-        <div className="flex items-center w-full md:w-1/2 mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-0 bg-gray-50 rounded-lg border border-gray-200">
+        <div className="flex items-center w-full mx-auto ">
           <input
             type="text"
             value={query}
@@ -243,23 +244,23 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
           />
           <IonButton
             type="submit"
-            className="ml-1"
+            className="mx-2"
             onClick={() => {
               setImages([]);
               setPageNumber(1);
               handleSearch();
             }}
           >
-            <IonIcon icon={searchSharp} />
+            <IonIcon icon={searchSharp} size="small" />
           </IonButton>
         </div>
-        <div className="flex items-center w-full md:w-1/2 mx-auto">
+        <div className="flex items-center w-full mx-auto">
           <IonSelect
             value={imageType}
             placeholder="Image Type"
             labelPlacement="stacked"
             label="Image Type"
-            className=""
+            className="mx-2"
             selectedText={imageType}
             onIonChange={(e) => setImageType(e.detail.value)}
           >
@@ -272,7 +273,7 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
         </div>
       </div>
 
-      {images.length > 0 && (
+      {images.length > 0 && !isWideScreen && (
         <>
           <IonButtons className="flex justify-between my-4">
             <IonButton fill="outline" onClick={previousPage}>
@@ -286,11 +287,11 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
           </IonButtons>
         </>
       )}
-      <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 my-4">
+      <div className="md:mt-8 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 my-4">
         {images.map((img, index) => (
           <div
             key={index}
-            className="flex flex-col items-center cursor-pointer"
+            className="flex flex-col items-center cursor-pointer border border-gray-200 rounded-lg p-2"
             onClick={() => handleClick(img)}
           >
             <img src={img.thumbnail} alt={img.title} />
