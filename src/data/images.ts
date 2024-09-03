@@ -32,7 +32,8 @@ export interface Image {
   no_next?: boolean;
   user_next_words?: string[];
   is_placeholder?: boolean;
-  user_image_boards?: Board[];
+  user_boards?: Board[];
+  remaining_boards?: Board[];
   status?: string;
   error?: string;
   part_of_speech?: string;

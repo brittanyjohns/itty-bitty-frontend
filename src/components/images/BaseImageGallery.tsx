@@ -7,8 +7,7 @@ import "./../main.css";
 import { useHistory } from "react-router";
 import ActionList from "../utils/ActionList";
 import { removeImageFromBoard } from "../../data/boards";
-import { image } from "ionicons/icons";
-import { generatePlaceholderImage } from "../../data/utils";
+
 const BaseImageGallery: React.FC<ImageGalleryProps> = ({
   images,
   board,

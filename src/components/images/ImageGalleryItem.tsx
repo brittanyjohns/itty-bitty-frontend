@@ -1,11 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import {
-  IonAlert,
-  IonIcon,
-  IonImg,
-  useIonViewDidLeave,
-  useIonViewWillEnter,
-} from "@ionic/react";
+import { IonAlert, IonIcon, IonImg } from "@ionic/react";
 import { Image } from "../../data/images";
 import { Board, removeImageFromBoard, updateBoard } from "../../data/boards";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";

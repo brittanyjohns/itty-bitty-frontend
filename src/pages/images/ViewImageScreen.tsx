@@ -17,6 +17,7 @@ import {
   IonSegmentButton,
   IonText,
   IonTextarea,
+  useIonViewWillEnter,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
 import {
@@ -44,7 +45,7 @@ import {
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
 import ImageCropper from "../../components/images/ImageCropper";
-import { Board, getBoards } from "../../data/boards";
+import { Board, getBoards, removeImageFromBoard } from "../../data/boards";
 import { generatePlaceholderImage } from "../../data/utils";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import Tabs from "../../components/utils/Tabs";
@@ -73,8 +74,8 @@ const ViewImageScreen: React.FC = () => {
     useCurrentUser();
   const [boardId, setBoardId] = useState<string | null>(null);
   const [nextImageWords, setNextImageWords] = useState<string[]>([]);
-  const [boards, setBoards] = useState<Board[]>([]);
-  const [filteredBoards, setFilteredBoards] = useState<Board[]>([]);
+  const [remainingBoards, setRemainingBoards] = useState<Board[]>([]);
+  const [userBoards, setUserBoards] = useState<Board[]>([]);
   const [newImageWord, setNewImageWord] = useState("");
   const [wordsToRemove, setWordsToRemove] = useState<string[]>([]);
   const [creatingSymbol, setCreatingSymbol] = useState(false);
@@ -132,18 +133,11 @@ const ViewImageScreen: React.FC = () => {
 
   const getData = async () => {
     const imgToSet = await fetchImage();
-    const allBoards = await getBoards();
-    setBoards(allBoards["boards"]);
-    const newFilteredBoards = allBoards["boards"].filter((board: Board) => {
-      return image?.user_image_boards?.find(
-        (userBoard: Board) => userBoard.id !== board.id
-      );
-    });
-    if (newFilteredBoards) {
-      setFilteredBoards(newFilteredBoards);
-    } else {
-      setBoards(allBoards["boards"]);
-    }
+    // const allBoards = await getBoards();
+    console.log("Image data: ", imgToSet);
+    setRemainingBoards(imgToSet["remaining_boards"]);
+    setUserBoards(imgToSet["user_boards"]);
+    setNextImageWords(imgToSet["next_words"]);
     setImage(imgToSet);
     toggleForms(segmentType, imgToSet);
 
@@ -294,7 +288,8 @@ const ViewImageScreen: React.FC = () => {
 
   const handleInputChange = (str: string) => {
     setNewName(str);
-    handleCloneImage(str);
+    console.log("New name: ", str);
+    // handleCloneImage(str);
   };
 
   const handleCloneImage = async (name: string) => {
@@ -334,15 +329,6 @@ const ViewImageScreen: React.FC = () => {
       alert("Error creating symbol.\n" + result["message"]);
     }
   };
-
-  // const handleFindByLabel = async (word: string) => {
-  //   const result = await findByLabel(word);
-  //   if (result) {
-  //     history.push(`/images/${result.id}`);
-  //   } else {
-  //     alert("Error finding image by label.");
-  //   }
-  // };
 
   const toggleAddToRemoveList = (e: React.MouseEvent<HTMLIonTextElement>) => {
     const target = e.target as HTMLIonTextElement;
@@ -420,6 +406,16 @@ const ViewImageScreen: React.FC = () => {
     }
   };
 
+  const [boardToRemove, setBoardToRemove] = useState<Board | null>(null);
+  const [showConfirmDeleteBoard, setShowConfirmDeleteBoard] = useState(false);
+
+  const handleConfirmRemoveFromBoard = (board: Board) => {
+    const message = `Are you sure you want to remove this image from the board: ${board.name}?`;
+    setConfirmDeleteDocMessage(message);
+    setBoardToRemove(board);
+    setShowConfirmDeleteBoard(true);
+  };
+
   const [docToDelete, setDocToDelete] = useState<ImageDoc | null>(null);
 
   const handleConfirmRemoveDoc = (doc: ImageDoc) => {
@@ -438,6 +434,24 @@ const ViewImageScreen: React.FC = () => {
     }
     setShowConfirmDeleteDoc(true);
   };
+
+  const handleRemoveFromBoard = async () => {
+    const board = boardToRemove;
+    if (!board || !image) return;
+
+    const result = await removeImageFromBoard(board.id, image.id);
+    if (result["status"] === "ok") {
+      getData();
+
+      // return result;
+    } else {
+      alert("Error removing image from board");
+    }
+  };
+
+  useIonViewWillEnter(() => {
+    setupData();
+  }, []);
 
   return (
     <>
@@ -562,7 +576,7 @@ const ViewImageScreen: React.FC = () => {
             </div>
             <InputAlert
               message="Do you want to clone this image?"
-              // onConfirm={handleCloneImage}
+              onConfirm={handleCloneImage}
               onCanceled={() => setOpenAlert(false)}
               openAlert={openAlert}
               onInputChange={handleInputChange}
@@ -679,41 +693,69 @@ const ViewImageScreen: React.FC = () => {
               }}
               message={confirmDeleteDocMessage}
             />
+            <ConfirmAlert
+              onConfirm={() => {
+                handleRemoveFromBoard();
+              }}
+              onCanceled={() => {
+                setShowConfirmDeleteBoard(false);
+                setBoardToRemove(null);
+              }}
+              openAlert={showConfirmDeleteBoard}
+              onDidDismiss={() => {
+                setShowConfirmDeleteBoard(false);
+              }}
+              message={confirmDeleteDocMessage}
+            />
 
-            {image && boards && (
+            {image && remainingBoards && (
               <div className="mt-2 flex justify-center gap-1  w-full mx-auto mt-4 p-2">
                 <div className="mx-auto w-1/2">
                   <p className="text-md">Add this image to a board:</p>
-                  {boards && boards.length > 0 && (
-                    <BoardDropdown imageId={image.id} boards={boards} />
+                  {remainingBoards && remainingBoards.length > 0 && (
+                    <BoardDropdown
+                      imageId={image.id}
+                      boards={remainingBoards}
+                    />
                   )}
                 </div>
-                <div className="mx-auto w-1/2">
+                <div className=" w-1/2">
                   <p className="text-md">Remove this image from a board:</p>
-                  {filteredBoards && filteredBoards.length > 0 && (
-                    <BoardDropdown imageId={image.id} boards={filteredBoards} />
-                  )}
-                </div>
-                {image?.user_image_boards &&
-                  image?.user_image_boards?.length > 0 && (
-                    <div className="mx-auto ">
+
+                  {image?.user_boards && image?.user_boards?.length > 0 && (
+                    <div className="">
                       <IonText className="text-md">
                         This image is on the following boards:
                       </IonText>
                       <IonList>
-                        {image?.user_image_boards?.map((board) => (
+                        {image?.user_boards?.map((board) => (
                           <IonItem
                             key={board.id}
-                            routerLink={`/boards/${board.id}`}
-                            detail={true}
+                            // routerLink={`/boards/${board.id}`}
                             className="text-sm font-mono"
                           >
-                            {board.name}
+                            <IonButton
+                              className="text-sm font-md mx-2 w-full"
+                              fill="clear"
+                              routerLink={`/boards/${board.id}`}
+                            >
+                              {" "}
+                              {board.name}
+                            </IonButton>
+                            <IonIcon
+                              icon={trashBinOutline}
+                              color="danger"
+                              slot="end"
+                              onClick={() =>
+                                handleConfirmRemoveFromBoard(board)
+                              }
+                            />
                           </IonItem>
                         ))}
                       </IonList>
                     </div>
                   )}
+                </div>
               </div>
             )}
             {currentUser?.admin && (

@@ -91,6 +91,10 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
           alert("Error fetching board");
           return;
         }
+        console.log("Rearranging board...", mainBoard.id);
+        const rearrangedBoard = await rearrangeImages(mainBoard.id);
+        console.log("Rearranged board", rearrangedBoard);
+        setBoard(rearrangedBoard);
       }
       // window.location.reload();
     } else {
