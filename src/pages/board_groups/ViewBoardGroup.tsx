@@ -14,7 +14,6 @@ import {
 } from "@ionic/react";
 
 import { useParams } from "react-router";
-import "./ViewBoard.css";
 import React from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { Team } from "../../data/teams";

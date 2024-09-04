@@ -13,6 +13,7 @@ import { BetaRequest, createBetaRequest } from "../data/beta_requests";
 import { useHistory } from "react-router-dom";
 import "./MainPage.css";
 import SignUpForm from "../components/utils/SignUpForm";
+import Footer from "../components/utils/Footer";
 interface MainPageContentProps {
   ipAddr: string;
 }
@@ -96,9 +97,9 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative lower-fixed-bg">
       <div className="w-full md:w-11/12 lg:w-11/12 mx-auto">
-        <div className="flex flex-col justify-center items-center text-center py-4 lg:py-8 bg-black">
+        <div className="flex flex-col justify-center items-center text-center py-4 lg:py-8 bg-gray-900">
           <h1 className="text-2xl md:text-5xl font-bold text-white mt-4">
             Empower Your Child's Communication
           </h1>
@@ -108,7 +109,7 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
         </div>
 
         <div className="">
-          <div className="fixed-bg">
+          <div className="xfixed-bg rounded-lg shadow-lg xbg-white bg-opacity-95 p-4 md:p-8 lg:p-8 mt-4">
             <div className="flex justify-center items-center p-4">
               <IonButton
                 onClick={() => history.push("/about")}
@@ -164,34 +165,12 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
                 >
                   Go
                 </IonButton>
-
-                {/* <div className="flex justify-center items-center bg-white w-full p-1">
-                  <IonInput
-                    type="email"
-                    value={email}
-                    label=" Email"
-                    labelPlacement="stacked"
-                    fill="outline"
-                    className="mt-2"
-                    onIonInput={(e) => setEmail(e.detail.value || "")} // Assuming Ionic React
-                  />
-
-                  <IonButton
-                    className="ml-2 font-bold"
-                    size="small"
-                    color="success"
-                    type="submit"
-                    onClick={handleSubmitEmail}
-                    disabled={!email}
-                  >
-                    Go
-                  </IonButton>
-                </div> */}
               </div>
             </div>
+            <div className="h-40 md:h-20"></div>
 
-            <div className="relative h-80 md:h-96 lg:h-96 mt-5">
-              <div className="shadow-overlay text-white">
+            <div className=" h-80 md:h-96 lg:h-96 mt-5">
+              <div className="shadow-overlay text-white p-4 md:p-8 lg:p-8 bg-gray-900 bg-opacity-90 rounded-lg">
                 <section className="">
                   <div className="container mx-auto">
                     <h2 className="text-4xl font-bold text-center">Features</h2>
@@ -217,30 +196,23 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
                       ))}
                     </div>
                   </div>
-                  <div className=" h-80 md:h-96 lg:h-96 lower-fixed-bg my-8">
-                    <div className="">
-                      <div className="pt-4">
-                        <SignUpForm plan="free" />
-                      </div>
-                    </div>
-                  </div>
                 </section>
               </div>
             </div>
+            <div className="h-40 md:h-20"></div>
           </div>
         </div>
       </div>
-      <div className=" h-80 md:h-96 lg:h-96 lower-fixed-bg">
-        <div className=" ">
-          <div className="p-2 bg-white bg-opacity-80  mt-5 shadow-xl">
-            <h1>Sign Up Now!</h1>
-            <p>Sign up for a free account and start using SpeakAnyWay now!</p>
-          </div>
-          <div className="pt-4">
-            <SignUpForm plan="free" />
-          </div>
-        </div>
+      <div className=" h-80 md:h-96 lg:h-96 ">
+        {/* <div className="h-60"></div> */}
+
+        {/* <div className=" h-60">
+          <SignUpForm plan="free" />
+        </div> */}
+
+        <div className=""></div>
       </div>
+      {/* <Footer /> */}
     </div>
   );
 };

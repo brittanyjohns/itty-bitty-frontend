@@ -54,6 +54,7 @@ import InputAlert from "../../components/utils/InputAlert";
 import VoiceDropdown from "../../components/utils/VoiceDropdown";
 import ConfirmAlert from "../../components/utils/ConfirmAlert";
 import ImageSearchComponent from "../../components/admin/ImageSearchComponent";
+import Footer from "../../components/utils/Footer";
 
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();

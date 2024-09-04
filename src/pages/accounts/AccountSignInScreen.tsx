@@ -17,6 +17,7 @@ import { getImageUrl } from "../../data/utils";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
+import Footer from "../../components/utils/Footer";
 
 const AccountSignInScreen: React.FC = () => {
   const history = useHistory();
@@ -73,13 +74,8 @@ const AccountSignInScreen: React.FC = () => {
       <IonPage id="main-content">
         <MainHeader />
 
-        <div className="h-full">
-          <div
-            className="hero_main1 bg-cover bg-center  min-h-screen"
-            style={{
-              backgroundImage: `url(${getImageUrl("feature_2", "webp")})`,
-            }}
-          >
+        <IonContent className="flex flex-col items-center p-6">
+          <div className="relative lower-fixed-bg">
             <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-80">
               <h1 className="text-2xl md:text-5xl font-bold text-white">
                 Empower Your Child's Communication
@@ -88,7 +84,7 @@ const AccountSignInScreen: React.FC = () => {
                 Discover the simplicity of SpeakAnyWay.
               </p>
             </div>
-            <div className="max-w-md mx-auto bg-white bg-opacity-95 p-8 rounded-lg shadow-xl mt-20">
+            <div className="max-w-md mx-auto bg-white bg-opacity-95 p-8 shadow-xl mt-20 rounded-md">
               <h1 className="text-2xl font-bold text-center mb-3">
                 Child Sign In
               </h1>
@@ -133,8 +129,8 @@ const AccountSignInScreen: React.FC = () => {
               />
             </div>
           </div>
-        </div>
-        <IonContent className="ion-padding"></IonContent>
+          <Footer />
+        </IonContent>
       </IonPage>
     </>
   );

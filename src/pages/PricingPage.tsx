@@ -5,6 +5,7 @@ import PricingTable from "../components/utils/PricingTable";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import MainHeader from "./MainHeader";
 import StaticMenu from "../components/main_menu/StaticMenu";
+import Footer from "../components/utils/Footer";
 
 const PricingPage: React.FC = () => {
   const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
@@ -30,8 +31,11 @@ const PricingPage: React.FC = () => {
           isWideScreen={isWideScreen}
           showMenuButton={!isWideScreen}
         />
-        <IonContent>
-          <PricingTable />
+        <IonContent className="flex flex-col items-center p-6">
+          <div className="relative lower-fixed-bg">
+            <PricingTable />
+          </div>
+          <Footer />
         </IonContent>
       </IonPage>
     </>

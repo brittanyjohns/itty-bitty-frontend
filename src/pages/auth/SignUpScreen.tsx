@@ -20,6 +20,7 @@ import StaticMenu from "../../components/main_menu/StaticMenu";
 import { logInOutline } from "ionicons/icons";
 import UserHome from "../../components/utils/UserHome";
 import SignUpForm from "../../components/utils/SignUpForm";
+import Footer from "../../components/utils/Footer";
 
 interface SignUpScreenProps {
   plan: string;
@@ -113,53 +114,38 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
           endIcon={logInOutline}
           showMenuButton={!isWideScreen}
         />
-        <IonContent className="">
-          {currentUser && (
-            <>
-              <h1 className="text-2xl font-bold text-center mt-4">
-                You're already signed up.
+        <IonContent className="flex flex-col items-center p-6">
+          <div className="relative lower-fixed-bg">
+            <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-80">
+              <h1 className="text-2xl md:text-5xl font-bold text-white">
+                Empower Your Child's Communication
               </h1>
-              <UserHome userName={currentUser?.name || currentUser.email} />
-            </>
-          )}
-          {!currentUser && (
-            <div
-              className="hero_main1 bg-cover bg-center min-h-screen pb-25"
-              style={{
-                backgroundImage: `url(${getImageUrl("feature_1", "webp")})`,
-              }}
-            >
-              <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-80">
-                <h1 className="text-2xl md:text-5xl font-bold text-white">
-                  Empower Your Child's Communication
-                </h1>
-                <p className="mt-4 text-sm md:text-xl text-white">
-                  Discover the simplicity of SpeakAnyWay.
-                </p>
-              </div>
-              {emailParam && (
-                <div className="flex flex-col justify-center items-center text-center gap-1 p-2 m-2 bg-green-400 bg-opacity-95 rounded-lg w-11/12 md:w-3/4 lg:w-1/2 mx-auto">
-                  <h1 className="text-3xl font-bold text-center mt-4">
-                    Thanks for signing up! We'll be in touch soon.
-                  </h1>
-                  <div className="font-bold text-xl sm:text-sm md:text-sm  text-center">
-                    <p className="text-center p-2 text-md font-semibold">
-                      While you're waiting on the hot, new features, why not
-                      check out the existing ones?
-                    </p>
-                    <p className="text-center p-4 text-sm md:text-md">
-                      Sign up for a free account and start using SpeakAnyWay
-                      now!
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              <div className="pb-10">
-                <SignUpForm plan={plan} />
-              </div>
+              <p className="mt-4 text-sm md:text-xl text-white">
+                Discover the simplicity of SpeakAnyWay.
+              </p>
             </div>
-          )}
+            {emailParam && (
+              <div className="flex flex-col justify-center items-center text-center gap-1 p-2 m-2 bg-green-400 bg-opacity-95 rounded-lg w-11/12 md:w-3/4 lg:w-1/2 mx-auto">
+                <h1 className="text-3xl font-bold text-center mt-4">
+                  Thanks for signing up! We'll be in touch soon.
+                </h1>
+                <div className="font-bold text-xl sm:text-sm md:text-sm  text-center">
+                  <p className="text-center p-2 text-md font-semibold">
+                    While you're waiting on the hot, new features, why not check
+                    out the existing ones?
+                  </p>
+                  <p className="text-center p-4 text-sm md:text-md">
+                    Sign up for a free account and start using SpeakAnyWay now!
+                  </p>
+                </div>
+              </div>
+            )}
+
+            <div className="pb-10">
+              <SignUpForm plan={plan} />
+            </div>
+          </div>
+          <Footer />
         </IonContent>
       </IonPage>
     </>

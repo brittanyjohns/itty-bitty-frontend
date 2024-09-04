@@ -33,7 +33,6 @@ const SearchAlert: React.FC<SearchAlertProps> = ({
           {
             text: "Search",
             handler: (values) => {
-              console.log("Searching for: ", values.searchQuery);
               onSearch(values.searchQuery);
             },
           },

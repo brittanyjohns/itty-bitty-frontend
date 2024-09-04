@@ -32,7 +32,6 @@ import { ChildBoard } from "../../data/child_boards";
 interface BoardsScreenProps {
   gridType: string;
 }
-import "./ViewBoard.css";
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
 import StaticMenu from "../../components/main_menu/StaticMenu";

@@ -14,6 +14,7 @@ import BoardGrid from "../components/boards/BoardGrid";
 import StaticMenu from "../components/main_menu/StaticMenu";
 import { logInOutline } from "ionicons/icons";
 import UserHome from "../components/utils/UserHome";
+import Footer from "../components/utils/Footer";
 
 const Home: React.FC = () => {
   const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
@@ -91,8 +92,10 @@ const Home: React.FC = () => {
               boards={currentAccount.boards || []}
             />
           )}
+          <Footer />
         </IonContent>
-        {currentUser && !isWideScreen && <Tabs />}
+
+        {/* {currentUser && !isWideScreen && <Tabs />} */}
       </IonPage>
     </>
   );

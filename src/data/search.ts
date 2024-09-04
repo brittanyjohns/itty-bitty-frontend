@@ -24,7 +24,6 @@ export const imageSearch = async (
   search: string,
   params: ImageSearchParams
 ): Promise<any> => {
-  console.log("Searching for params: ", params);
   const requestInfo = {
     method: "POST",
     headers: userHeaders,

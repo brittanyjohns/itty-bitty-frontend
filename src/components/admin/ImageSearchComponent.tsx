@@ -26,6 +26,7 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
+  const [showNoResults, setShowNoResults] = useState(false);
   const [query, setQuery] = useState(startingQuery || "");
   const [placeholder, setPlaceholder] = useState("smile");
   const [images, setImages] = useState<ImageResult[]>([]);
@@ -43,22 +44,25 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
   });
 
   const loadInitialImages = async () => {
-    const params = {
-      q: placeholder,
-      imgType: imageType,
-      start: nextStartIndex,
-      num: 10,
-    };
-
-    try {
-      const imgResult = await imageSearch(placeholder, params);
-      console.log("Image Search Result: ", imgResult);
-      setImages(imgResult);
-      setNextStartIndex(imgResult[0].startIndex);
-    } catch (error) {
-      console.error("Image Search Error: ", error);
-      alert("Failed to load images");
-    }
+    // const params = {
+    //   q: placeholder,
+    //   imgType: imageType,
+    //   start: nextStartIndex,
+    //   num: 10,
+    // };
+    // try {
+    //   const imgResult = await imageSearch(placeholder, params);
+    //   console.log("Image Search Result: ", imgResult);
+    //   setImages(imgResult);
+    //   if (imgResult.length > 0) {
+    //     setNextStartIndex(imgResult[0].startIndex);
+    //   } else {
+    //     setShowNoResults(true);
+    //   }
+    // } catch (error) {
+    //   console.error("Image Search Error: ", error);
+    //   alert("Failed to load images");
+    // }
   };
 
   const handleSearch = async () => {
@@ -66,24 +70,52 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
       alert("Please enter a search query");
       return;
     }
+    await load();
 
+    // try {
+    //   const imgResult = await imageSearch(query, params);
+
+    //   if (!imgResult) {
+    //     alert("Something went wrong. Please try again later");
+    //     return;
+    //   }
+    //   setImages(imgResult);
+    //   if (imgResult.length > 0) {
+    //     setNextStartIndex(imgResult[0].startIndex);
+    //   } else {
+    //     setShowNoResults(true);
+    //   }
+    // } catch (error) {
+    //   console.error("Image Search Error: ", error);
+    //   alert("Failed to load images");
+    // } finally {
+    //   setLoading(false);
+    // }
+  };
+
+  const load = async () => {
     setLoading(true);
-    const params = {
-      q: query,
-      imgType: imageType,
-      start: nextStartIndex,
-      num: 10,
-    };
-
     try {
+      const params = {
+        q: query,
+        imgType: imageType,
+        start: nextStartIndex,
+        num: 10,
+      };
       const imgResult = await imageSearch(query, params);
+      console.log("Image Search Result: ", imgResult);
 
       if (!imgResult) {
         alert("Something went wrong. Please try again later");
         return;
       }
       setImages(imgResult);
-      setNextStartIndex(imgResult[0].startIndex);
+      if (imgResult.length > 0) {
+        console.log("Setting next start index: ", imgResult[0].startIndex);
+        setNextStartIndex(imgResult[0].startIndex);
+      } else {
+        setShowNoResults(true);
+      }
     } catch (error) {
       console.error("Image Search Error: ", error);
       alert("Failed to load images");
@@ -93,8 +125,6 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
   };
 
   useEffect(() => {
-    console.log("Starting Query: ", startingQuery);
-    console.log("Query: ", query);
     if (query) {
       console.log("Searching for: ", query);
     } else {
@@ -102,10 +132,12 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
       if (startingQuery) {
         setQuery(startingQuery);
         setPlaceholder(startingQuery);
-        loadInitialImages();
+        // loadInitialImages();
+        load();
       } else {
         setPlaceholder("smile");
-        loadInitialImages();
+        // loadInitialImages();
+        load();
       }
     }
   }, []);
@@ -229,11 +261,11 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
   ];
 
   return (
-    <div>
+    <div className="pb-5 mx-auto">
       <IonLoading isOpen={loading} />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-0 bg-gray-50 rounded-lg border border-gray-200">
-        <div className="flex items-center w-full mx-auto ">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-0 bg-gray-50 rounded-lg border border-gray-200 p-2 my-4">
+        <div className="flex items-center w-full mx-auto">
           <input
             type="text"
             value={query}
@@ -255,7 +287,7 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
             <IonIcon icon={searchSharp} size="small" />
           </IonButton>
         </div>
-        <div className="flex items-center w-full mx-auto">
+        <div className="flex items-center w-1/2 md:w-1/4 mx-auto">
           <IonSelect
             value={imageType}
             placeholder="Image Type"
@@ -273,6 +305,11 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
           </IonSelect>
         </div>
       </div>
+      {showNoResults && (
+        <div className="text-center my-4">
+          <p>No results found. Please try another search.</p>
+        </div>
+      )}
 
       {images.length > 0 && !isWideScreen && (
         <>

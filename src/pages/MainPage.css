@@ -19,13 +19,26 @@
   background-size: cover;
   min-height: 100vh;
   width: 100%;
-  padding: 20px;
+  padding-top: 20px;
+  /* padding: 20px; */
 }
 .shadow-overlay {
   position: relative;
   z-index: 2;
   background: rgba(0, 0, 0, 0.8); /*optional for some background on content */
   color: white;
+  padding: 20px;
+}
+.light-overlay {
+  position: relative;
+  z-index: 2;
+  background: rgba(
+    255,
+    255,
+    255,
+    0.4
+  ); /*optional for some background on content */
+  color: black;
   padding: 20px;
 }
 

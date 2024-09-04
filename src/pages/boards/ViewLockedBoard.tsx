@@ -25,7 +25,6 @@ import {
 } from "ionicons/icons";
 
 import { useParams } from "react-router";
-import "./ViewBoard.css";
 import React from "react";
 import FloatingWordsBtn from "../../components/utils/FloatingWordsBtn";
 import { useCurrentUser } from "../../hooks/useCurrentUser";

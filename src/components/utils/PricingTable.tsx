@@ -33,9 +33,9 @@ function PricingTable({ showHeader = true }: PricingTableProps) {
   const history = useHistory();
   // Paste the stripe-pricing-table snippet in your React component
   return (
-    <div className="relative fixed-bg ion-padding">
+    <div className="">
       {showHeader && (
-        <div className="text-cente bg-black bg-opacity-90 p-4 py-9 font-sanserif text-center">
+        <div className="text-cente bg-gray-900 bg-opacity-90 p-4 py-9 font-sanserif text-center">
           <h1 className="text-xl md:text-2xl font-bold text-white">
             Find the plan that's right for you.
           </h1>

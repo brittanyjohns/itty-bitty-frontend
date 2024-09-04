@@ -18,7 +18,6 @@ import {
   useIonViewWillEnter,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
-import "./ViewBoard.css";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import MainMenu from "../../components/main_menu/MainMenu";
 import StaticMenu from "../../components/main_menu/StaticMenu";
@@ -27,6 +26,7 @@ import MainHeader from "../MainHeader";
 import BoardView from "../../components/boards/BoardView";
 import Tabs from "../../components/utils/Tabs";
 import { refresh } from "ionicons/icons";
+import { set } from "d3";
 
 const ViewBoard: React.FC<any> = () => {
   const [board, setBoard] = useState<Board>();
@@ -62,14 +62,47 @@ const ViewBoard: React.FC<any> = () => {
     setShowEdit(board.can_edit || currentUser?.role === "admin");
 
     if (!board.layout) {
-      const rearrangedBoard = await rearrangeImages(board.id);
-      setBoard(rearrangedBoard);
-      window.location.reload();
+      setToastMessage("Board layout not found");
+      setIsOpen(true);
+      if (retryCount < 3) {
+        setRetryCount(retryCount + 1);
+      } else {
+        history.push("/boards");
+      }
+      setShowLoading(false);
+
+      // const rearrangedBoard = await rearrangeImages(board.id);
+      // setBoard(rearrangedBoard);
+
+      // window.location.reload();
     } else {
       setBoard(board);
     }
     setShowLoading(false);
   };
+
+  const [retryCount, setRetryCount] = useState(0);
+
+  useEffect(() => {
+    async function load() {
+      const board = await getBoard(params.id);
+      if (!board) {
+        console.error("Error fetching board");
+        alert("Error fetching board");
+        setShowLoading(false);
+        return;
+      }
+      if (!board.layout) {
+        setToastMessage("Board layout not found");
+        setIsOpen(true);
+        setTimeout(() => {
+          window.location.reload();
+          setShowLoading(false);
+        }, 3000);
+      }
+    }
+    load();
+  }, [retryCount]);
 
   useEffect(() => {
     if (board) {

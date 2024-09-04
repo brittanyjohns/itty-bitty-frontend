@@ -20,6 +20,7 @@ import { useCurrentUser } from "../hooks/useCurrentUser";
 import { getImageUrl } from "../data/utils";
 import MainHeader from "./MainHeader";
 import StaticMenu from "../components/main_menu/StaticMenu";
+import Footer from "../components/utils/Footer";
 const ContactUs: React.FC = () => {
   const { isWideScreen, currentAccount, currentUser } = useCurrentUser();
 
@@ -57,12 +58,9 @@ const ContactUs: React.FC = () => {
           showMenuButton={!isWideScreen}
         />
 
-        <IonContent className="flex flex-col items-center p-6 space-y-6 bg-gray-50">
-          <div
-            className="hero_main1 bg-cover bg-center  h-full w-full"
-            style={style}
-          >
-            <div className="text-center py-8 shadow-overlay">
+        <IonContent className="flex flex-col items-center p-6">
+          <div className="relative lower-fixed-bg">
+            <div className="text-center py-8 bg-gray-900 bg-opacity-90 text-white w-full">
               <h1 className="text-2xl font-bold text-center">
                 Get in touch with SpeakAnyWay
               </h1>
@@ -87,7 +85,7 @@ const ContactUs: React.FC = () => {
                 </a>
               </h3>
             </div>
-            <div className="mt-3 bv w-3/4 max-w-lg space-y-4 mx-auto p-6 bg-white shadow-lg rounded-lg bg-opacity-70">
+            <div className="mt-3 bv w-3/4 max-w-lg space-y-4 mx-auto p-6 bg-white shadow-lg rounded-lg bg-opacity-90">
               <IonItem className="w-full">
                 <IonLabel position="floating">Name</IonLabel>
                 <IonInput type="text" required></IonInput>
@@ -113,9 +111,9 @@ const ContactUs: React.FC = () => {
               </IonButton>
             </div>
           </div>
+          <Footer />
         </IonContent>
       </IonPage>
-      {currentUser && <Tabs />}
     </>
   );
 };
