@@ -38,6 +38,7 @@ export const labelForScreenSize = (
   mediumScreen?: boolean,
   largeScreen?: boolean
 ) => {
+  if (!label) return "";
   if (smallScreen && label.length > 10) {
     return label.substring(0, 10) + "...";
   }

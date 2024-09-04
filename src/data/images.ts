@@ -353,11 +353,15 @@ export const createAudio = async (id: string, voice: string) => {
   return response.json();
 };
 
-export const saveTempDoc = async (imageUrl: string, query: string) => {
+export const saveTempDoc = async (
+  imageUrl: string,
+  query: string,
+  imageId?: string
+) => {
   const response = await fetch(`${BASE_URL}images/save_temp_doc`, {
     headers: userHeaders,
     method: "POST",
-    body: JSON.stringify({ imageUrl, query }),
+    body: JSON.stringify({ imageUrl, query, imageId }),
   });
   return response.json();
 };

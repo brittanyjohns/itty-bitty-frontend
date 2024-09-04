@@ -1,5 +1,4 @@
 import { IonAlert, IonButton, IonIcon, IonLabel } from "@ionic/react";
-import { trashBinOutline } from "ionicons/icons";
 interface InputAlertProps {
   onConfirm?: () => void;
   onCanceled: () => void;
@@ -17,19 +16,25 @@ const InputAlert: React.FC<InputAlertProps> = ({
   onInputChange,
 }) => {
   const handleDismiss = (event: CustomEvent) => {
-    const input = event.detail.data.values.name;
-    console.log(`Dismissed with  input: ${input}`);
-    if (input) {
-      onInputChange(input);
+    const inputToSet = event.detail.data.values.name;
+    const role = event.detail.role;
+    console.log(`Dismissed with  input: ${inputToSet}`);
+    console.log("event", event);
+    if (inputToSet && role === "confirm") {
+      console.log("inputToSet", inputToSet);
+      onInputChange(inputToSet);
+    }
+    if (role === "cancel") {
+      onCanceled();
     }
     if (onDidDismiss) {
-      onDidDismiss(input);
+      onDidDismiss(inputToSet);
     }
   };
 
   const handleInputChange = (input: any) => {
     console.log("input", input);
-    onInputChange(input.value);
+    // onInputChange(input.value);
   };
 
   return (
@@ -48,10 +53,6 @@ const InputAlert: React.FC<InputAlertProps> = ({
           {
             text: "OK",
             role: "confirm",
-            handler: () => {
-              console.log("Alert confirmed");
-              //   onConfirm();
-            },
           },
         ]}
         onDidDismiss={handleDismiss}
@@ -59,12 +60,7 @@ const InputAlert: React.FC<InputAlertProps> = ({
           {
             name: "name",
             type: "text",
-            placeholder: "Enter your name",
-
-            handler: (input) => {
-              handleInputChange(input);
-              console.log("handler input", input);
-            },
+            placeholder: "Enter image label",
           },
         ]}
       ></IonAlert>

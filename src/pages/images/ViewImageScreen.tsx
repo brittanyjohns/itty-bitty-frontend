@@ -289,7 +289,7 @@ const ViewImageScreen: React.FC = () => {
   const handleInputChange = (str: string) => {
     setNewName(str);
     console.log("New name: ", str);
-    // handleCloneImage(str);
+    handleCloneImage(str);
   };
 
   const handleCloneImage = async (name: string) => {
@@ -576,7 +576,6 @@ const ViewImageScreen: React.FC = () => {
             </div>
             <InputAlert
               message="Do you want to clone this image?"
-              onConfirm={handleCloneImage}
               onCanceled={() => setOpenAlert(false)}
               openAlert={openAlert}
               onInputChange={handleInputChange}
@@ -632,7 +631,12 @@ const ViewImageScreen: React.FC = () => {
           <div className="mt-2 hidden" ref={searchWrapper}>
             <div className="w-full md:w-3/4 mx-auto p-2">
               <h2 className="text-center">Search for images</h2>
-              {image && <ImageSearchComponent startingQuery={image?.label} />}
+              {image && (
+                <ImageSearchComponent
+                  startingQuery={image?.label}
+                  imageId={image?.id}
+                />
+              )}
             </div>
           </div>
 

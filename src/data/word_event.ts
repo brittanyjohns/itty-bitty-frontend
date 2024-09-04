@@ -24,6 +24,9 @@ export const fetchWordEventsByUserId = async (userId: number) => {
 };
 
 export const fetchWordEventsByAccountId = async (accountId: number) => {
+  if (!accountId) {
+    return [];
+  }
   const response = await fetch(
     `${BASE_URL}word_events?account_id=${accountId}`,
     {

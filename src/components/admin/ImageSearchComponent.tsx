@@ -4,25 +4,25 @@ import {
   IonButton,
   IonButtons,
   IonIcon,
-  IonItem,
   IonLoading,
   IonSelect,
   IonSelectOption,
   useIonViewWillLeave,
 } from "@ionic/react";
 import React from "react";
-import { cropImage, Image, saveTempDoc } from "../../data/images";
+import { saveTempDoc } from "../../data/images";
 import ImageCropper from "../images/ImageCropper";
-import { set } from "d3";
-import { searchCircleSharp, searchSharp } from "ionicons/icons";
+import { searchSharp } from "ionicons/icons";
 import { useCurrentUser } from "../../contexts/UserContext";
 import { labelForScreenSize } from "../../data/utils";
 interface ImageSearchComponentProps {
   startingQuery?: string;
+  imageId?: string;
 }
 
 const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
   startingQuery,
+  imageId,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
@@ -37,7 +37,6 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
   const { smallScreen, mediumScreen, largeScreen, isWideScreen } =
     useCurrentUser();
   useIonViewWillLeave(() => {
-    console.log("Leaving Search Google Images");
     resetSearch();
     setNewImageSrc(null);
     setNewImageLabel(null);
@@ -129,7 +128,9 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
 
       console.log("Saving image: ", imgUrl, tmpLabel);
 
-      const result = await saveTempDoc(imgUrl, tmpLabel);
+      console.log("Image ID: ", imageId);
+
+      const result = await saveTempDoc(imgUrl, tmpLabel, imageId);
       if (result) {
         console.log("Result: ", result);
         resetSearch();
