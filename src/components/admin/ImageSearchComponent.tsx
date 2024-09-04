@@ -326,24 +326,25 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
         </>
       )}
       <div className="md:mt-8 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 my-4">
-        {images.map((img, index) => (
-          <div
-            key={index}
-            className="flex flex-col items-center cursor-pointer border border-gray-200 rounded-lg p-2"
-            onClick={() => handleClick(img)}
-          >
-            <img src={img.thumbnail} alt={img.title} />
-            <a href={img.link} target="_blank" rel="noreferrer">
-              {labelForScreenSize(
-                img.title,
-                200,
-                smallScreen,
-                mediumScreen,
-                largeScreen
-              )}
-            </a>
-          </div>
-        ))}
+        {images.length > 0 &&
+          images.map((img, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-center cursor-pointer border border-gray-200 rounded-lg p-2"
+              onClick={() => handleClick(img)}
+            >
+              <img src={img.thumbnail} alt={img.title} />
+              <a href={img.link} target="_blank" rel="noreferrer">
+                {labelForScreenSize(
+                  img.title,
+                  200,
+                  smallScreen,
+                  mediumScreen,
+                  largeScreen
+                )}
+              </a>
+            </div>
+          ))}
       </div>
       {images.length > 0 && (
         <IonButtons className="flex justify-between mt-8">
