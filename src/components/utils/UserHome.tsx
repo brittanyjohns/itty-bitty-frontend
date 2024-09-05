@@ -42,7 +42,7 @@ const UserHome: React.FC<UserHomeProps> = ({
                 onClick={() => history.push("/upgrade")}
               >
                 <span className="font-bold block mb-2">
-                  14 days of Free Access:{" "}
+                  8 days of Free Access:{" "}
                 </span>
                 <span className="text-2xl">
                   Enjoy all the <strong>premium</strong> features of SpeakAnyWay

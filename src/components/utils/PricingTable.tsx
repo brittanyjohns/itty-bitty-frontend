@@ -33,9 +33,9 @@ function PricingTable({ showHeader = true }: PricingTableProps) {
   const history = useHistory();
   // Paste the stripe-pricing-table snippet in your React component
   return (
-    <div className="">
+    <div className="p-4">
       {showHeader && (
-        <div className="text-cente bg-gray-900 bg-opacity-90 p-4 py-9 font-sanserif text-center">
+        <div className="text-cente bg-gray-900 p-4 py-9 font-sanserif text-center">
           <h1 className="text-xl md:text-2xl font-bold text-white">
             Find the plan that's right for you.
           </h1>
@@ -53,8 +53,8 @@ function PricingTable({ showHeader = true }: PricingTableProps) {
             </IonCardHeader>
             <IonCardContent className="text-center">
               <p>
-                Create up to unlimited custom boards, use images from our
-                library or upload your own, and more.
+                Create up to 8 custom boards, use images from our library or
+                upload your own, and more.
               </p>
               <div className="text-2xl font-bold my-2 text-green-500 font-bold text-lg bg-green-100 p-2 rounded-lg">
                 Your Current Plan
@@ -100,8 +100,8 @@ function PricingTable({ showHeader = true }: PricingTableProps) {
             </IonCardHeader>
             <IonCardContent className="text-center">
               <p>
-                Create up to unlimited custom boards, use images from our
-                library or upload your own, and more.
+                Create up to 8 custom boards, use images from our library or
+                upload your own, and more.
               </p>
               <div className="text-2xl font-bold my-4">Free Forever</div>
               <p className="mt-2">All basic features</p>
