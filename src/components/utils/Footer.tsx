@@ -40,7 +40,7 @@ const Footer: React.FC = () => {
               </a>
             </li> */}
             <li className="mb-2">
-              <a href="/contact" className="hover:underline">
+              <a href="/contact-us" className="hover:underline">
                 Contact
               </a>
             </li>
@@ -105,8 +105,18 @@ const Footer: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="mt-8 text-center text-gray-500 text-sm">
-        <p>Built with ❤️ using React, TailwindCSS & Ionic</p>
+      <div className="mt-8 text-center text-gray-500">
+        <p className="text-md">
+          Built by <span className="text-xs">❤️ </span>
+          <a
+            href="https://brittanyjohns.dev"
+            className="hover:underline"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Brittany Johns
+          </a>
+        </p>
       </div>
     </footer>
   );

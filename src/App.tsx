@@ -226,6 +226,8 @@ const UserRoutes: React.FC = () => (
         <Route path="/contact-us" component={ContactUs} exact />
         <Route path="/upgrade" component={Upgrade} exact />
         <Route path="/faq" component={About} exact />
+        <Route path="/privacy" component={About} exact />
+        <Route path="/terms" component={About} exact />
         <Route path="/about" component={About} exact />
 
         <Route path="/success" component={SuccessfulSubscription} exact />
