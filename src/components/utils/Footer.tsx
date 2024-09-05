@@ -79,17 +79,12 @@ const Footer: React.FC = () => {
           <h2 className="text-xl font-semibold mb-4">Follow Us</h2>
           <div className="flex space-x-4">
             <a
-              href="https://facebook.com/speakanyway"
+              href="https://facebook.com/speakanywayaac"
               className="hover:text-blue-400"
             >
               <IonIcon icon={logoFacebook} className="text-2xl" />
             </a>
-            <a
-              href="https://twitter.com/speakanyway"
-              className="hover:text-blue-400"
-            >
-              <IonIcon icon={logoTwitter} className="text-2xl" />
-            </a>
+
             <a
               href="https://linkedin.com/company/speakanyway"
               className="hover:text-blue-400"
@@ -97,7 +92,7 @@ const Footer: React.FC = () => {
               <IonIcon icon={logoLinkedin} className="text-2xl" />
             </a>
             <a
-              href="https://instagram.com/speakanyway"
+              href="https://facebook.com/speakanywayaac"
               className="hover:text-pink-400"
             >
               <IonIcon icon={logoInstagram} className="text-2xl" />

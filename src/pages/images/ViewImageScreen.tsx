@@ -713,56 +713,49 @@ const ViewImageScreen: React.FC = () => {
               message={confirmDeleteDocMessage}
             />
 
-            {image && remainingBoards && (
-              <div className="mt-2 flex justify-center gap-1  w-full mx-auto mt-4 p-2">
+            <div className="mt-2 flex justify-center gap-1  w-full mx-auto mt-4 p-2">
+              {image && remainingBoards && remainingBoards.length > 0 && (
                 <div className="mx-auto w-1/2">
                   <p className="text-md">Add this image to a board:</p>
-                  {remainingBoards && remainingBoards.length > 0 && (
-                    <BoardDropdown
-                      imageId={image.id}
-                      boards={remainingBoards}
-                    />
-                  )}
+                  <BoardDropdown imageId={image.id} boards={remainingBoards} />
                 </div>
+              )}
+              {image?.user_boards && image?.user_boards?.length > 0 && (
                 <div className=" w-1/2">
                   <p className="text-md">Remove this image from a board:</p>
 
-                  {image?.user_boards && image?.user_boards?.length > 0 && (
-                    <div className="">
-                      <IonText className="text-md">
-                        This image is on the following boards:
-                      </IonText>
-                      <IonList>
-                        {image?.user_boards?.map((board) => (
-                          <IonItem
-                            key={board.id}
-                            // routerLink={`/boards/${board.id}`}
-                            className="text-sm font-mono"
+                  <div className="">
+                    <IonText className="text-md">
+                      This image is on the following boards:
+                    </IonText>
+                    <IonList>
+                      {image?.user_boards?.map((board) => (
+                        <IonItem
+                          key={board.id}
+                          // routerLink={`/boards/${board.id}`}
+                          className="text-sm font-mono"
+                        >
+                          <IonButton
+                            className="text-sm font-md mx-2 w-full"
+                            fill="clear"
+                            routerLink={`/boards/${board.id}`}
                           >
-                            <IonButton
-                              className="text-sm font-md mx-2 w-full"
-                              fill="clear"
-                              routerLink={`/boards/${board.id}`}
-                            >
-                              {" "}
-                              {board.name}
-                            </IonButton>
-                            <IonIcon
-                              icon={trashBinOutline}
-                              color="danger"
-                              slot="end"
-                              onClick={() =>
-                                handleConfirmRemoveFromBoard(board)
-                              }
-                            />
-                          </IonItem>
-                        ))}
-                      </IonList>
-                    </div>
-                  )}
+                            {" "}
+                            {board.name}
+                          </IonButton>
+                          <IonIcon
+                            icon={trashBinOutline}
+                            color="danger"
+                            slot="end"
+                            onClick={() => handleConfirmRemoveFromBoard(board)}
+                          />
+                        </IonItem>
+                      ))}
+                    </IonList>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
             {currentUser?.admin && (
               <div className="mt-10 w-full md:w-3/4 mx-auto">
                 <div className="flex justify-between">
