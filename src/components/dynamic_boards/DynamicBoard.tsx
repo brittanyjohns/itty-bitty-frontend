@@ -28,7 +28,7 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 import MainMenu from "../main_menu/MainMenu";
 import { getScreenSizeName } from "../../data/utils";
 
-interface BoardViewProps {
+interface DynamicBoardProps {
   board: Board;
   showEdit: boolean;
   currentUserTeams?: any;
@@ -40,10 +40,9 @@ interface BoardViewProps {
   // handleClone?: any;
   showShare?: boolean;
   setShowLoading: any;
-  boardType?: string;
 }
 
-const BoardView: React.FC<BoardViewProps> = ({
+const DynamicBoard: React.FC<DynamicBoardProps> = ({
   board,
   showEdit,
   inputRef,
@@ -53,7 +52,6 @@ const BoardView: React.FC<BoardViewProps> = ({
   // handleClone,
   setShowLoading,
   showLoading,
-  boardType,
 }) => {
   const { currentUser } = useCurrentUser();
   const history = useHistory();
@@ -93,15 +91,10 @@ const BoardView: React.FC<BoardViewProps> = ({
   return (
     <>
       <div className="flex justify-center items-center my-3">
-        <h1>TEST{boardType}</h1>
         <IonButtons slot="end">
           {board && (
             <IonButton
-              routerLink={
-                boardType === "dynamic"
-                  ? `/dynamic_boards/${board.id}/locked`
-                  : `/boards/${board.id}/locked`
-              }
+              routerLink={`/dynamic_boards/${board.id}/locked`}
               className="mr-1 text-xs md:text-md lg:text-lg"
             >
               <IonIcon icon={chatbubbleEllipsesOutline} className="mx-2" />
@@ -150,7 +143,7 @@ const BoardView: React.FC<BoardViewProps> = ({
 
       {board && board.images && board.images.length > 0 && (
         <DraggableGrid
-          gridType={boardType || "static"}
+          gridType="dynamic"
           images={board.images}
           board={board}
           setShowIcon={setShowIcon}
@@ -181,4 +174,4 @@ const BoardView: React.FC<BoardViewProps> = ({
   );
 };
 
-export default BoardView;
+export default DynamicBoard;

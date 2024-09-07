@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
 import {
-  BoardImageResponse,
   getBoardImage,
+  BoardImage,
   setNextBoardImageWords,
   switchBoardImageMode,
 } from "../../data/board_images";
 import { IonButton } from "@ionic/react";
 import { set } from "d3";
 interface BoardImageProps {
-  boardImageId: number;
+  boardImage: BoardImage;
 }
 
-const BoardImage: React.FC<BoardImageProps> = ({ boardImageId }) => {
-  const [data, setData] = useState<BoardImageResponse | null>(null);
+const BoardImageComponent: React.FC<BoardImageProps> = ({ boardImage }) => {
+  const [data, setData] = useState<BoardImage | null>(null);
+  const boardImageId = boardImage?.id;
 
   useEffect(() => {
-    getBoardImage(boardImageId.toString()).then((response) => {
+    if (!boardImageId) return;
+    getBoardImage(boardImageId).then((response) => {
       setData(response);
     });
   }, [boardImageId]);
@@ -35,8 +37,8 @@ const BoardImage: React.FC<BoardImageProps> = ({ boardImageId }) => {
   const renderContent = () => {
     if (!data) return <p>Loading...</p>;
 
-    switch (data.action) {
-      case "speak":
+    switch (data.mode) {
+      case "static":
         return (
           <div>
             {data.label}
@@ -44,7 +46,7 @@ const BoardImage: React.FC<BoardImageProps> = ({ boardImageId }) => {
             <IonButton onClick={handleSwitchMode}>{data.mode}</IonButton>
           </div>
         );
-      case "display_next_words":
+      case "dynamic":
         return (
           <div>
             <h2>Next Words:</h2>
@@ -76,4 +78,4 @@ const BoardImage: React.FC<BoardImageProps> = ({ boardImageId }) => {
   );
 };
 
-export default BoardImage;
+export default BoardImageComponent;

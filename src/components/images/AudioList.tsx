@@ -1,14 +1,8 @@
-import {
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonImg,
-  IonLabel,
-  IonList,
-  IonIcon,
-} from "@ionic/react";
+import { IonLabel, IonList, IonIcon } from "@ionic/react";
 import { image, trashBinOutline } from "ionicons/icons";
 import { Image, deleteAudioFile } from "../../data/images";
+import { Board } from "../../data/boards";
+import { BoardImage } from "../../data/board_images";
 interface AudioListProps {
   image: Image;
   afterDeleteAudioFile: () => void;

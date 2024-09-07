@@ -20,7 +20,6 @@ import {
 
 import {
   arrowBackCircleOutline,
-  grid,
   playCircleOutline,
   trashBinOutline,
 } from "ionicons/icons";
@@ -36,91 +35,74 @@ import { clickWord } from "../../data/audits";
 import FullscreenToggle from "../../components/utils/FullscreenToggle";
 import ActivityTrackingConsent from "../../components/utils/ActivityTrackingConsent";
 import { getDynamicBoard } from "../../data/dynamic_boards";
-import LockedDynamicBoard from "../../components/board_images/LockedDynamicBoard";
-import { closeMainMenu } from "../MainHeader";
 
-const ViewLockedBoard: React.FC<any> = () => {
-  const [boardType, setBoard] = useState<Board>();
+const ViewLockedDynamicBoard: React.FC<any> = ({ boardId }) => {
+  const [board, setBoard] = useState<Board>();
   const params = useParams<{ id: string }>();
-  // const inputRef = useRef<HTMLIonInputElement>(null);
-  // const [showIcon, setShowIcon] = useState(false);
-  // const [showLoading, setShowLoading] = useState(true);
-  // const [imageCount, setImageCount] = useState(0);
-  // const { currentUser } = useCurrentUser();
-  // const [numOfColumns, setNumOfColumns] = useState(4);
-  // const [previousLabel, setPreviousLabel] = useState<string | undefined>(
-  //   undefined
-  // );
+  const inputRef = useRef<HTMLIonInputElement>(null);
+  const [showIcon, setShowIcon] = useState(false);
+  const [showLoading, setShowLoading] = useState(true);
+  const [imageCount, setImageCount] = useState(0);
+  const { currentUser } = useCurrentUser();
+  const [numOfColumns, setNumOfColumns] = useState(4);
+  const [previousLabel, setPreviousLabel] = useState<string | undefined>(
+    undefined
+  );
 
-  const getUrlPath = () => {
-    const path = window.location.pathname;
-    return path.split("/")[1];
+  const fetchBoard = async () => {
+    const board = await getDynamicBoard(params.id);
+    console.log("dynamic board", board);
+    if (!board) {
+      console.error("Error fetching board");
+      return;
+    } else {
+      const imgCount = board?.images?.length;
+      setImageCount(imgCount as number);
+      setShowLoading(false);
+
+      setBoard(board);
+      setNumOfColumns(board.number_of_columns);
+    }
   };
 
-  useEffect(() => {
-    console.log("params", params);
-    const path = getUrlPath();
-    console.log("path", path);
+  const handleImageClick = async (image: Image) => {
+    if (currentUser?.settings?.disable_audit_logging) {
+      console.log("Audit logging is disabled");
+      return;
+    }
+    const text = image.label;
+    if (previousLabel === text) {
+      console.log("Same label clicked", text);
+    } else {
+      const payload = {
+        word: text,
+        previousWord: previousLabel,
+        timestamp: new Date().toISOString(),
+        boardId: board?.id,
+      };
+      clickWord(payload);
+      setPreviousLabel(text);
+    }
+  };
+  const clearInput = () => {
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+    setAudioList([]);
+    setShowIcon(false);
+    setPreviousLabel(undefined);
+  };
+
+  useIonViewDidLeave(() => {
+    inputRef.current?.value && clearInput();
+  });
+
+  useIonViewWillEnter(() => {
+    async function fetchData() {
+      await fetchBoard();
+    }
+    fetchData();
   }, []);
-
-  // const fetchBoard = async () => {
-  //   let board;
-  //   if (boardType === "dynamic") {
-  //     board = await getDynamicBoard(params.id);
-  //   } else {
-  //     board = await getBoard(params.id);
-  //   }
-  //   if (!board) {
-  //     console.error(`Error fetching ${boardType} board`);
-  //     return;
-  //   } else {
-  //     // setImageCount(imgCount as number);
-  //     // setShowLoading(false);
-  //     console.log("board", board);
-
-  //     setBoard(board);
-  //     // setNumOfColumns(board.number_of_columns);
-  //   }
-  // };
-
-  // const handleImageClick = async (image: Image) => {
-  //   if (currentUser?.settings?.disable_audit_logging) {
-  //     console.log("Audit logging is disabled");
-  //     return;
-  //   }
-  //   const text = image.label;
-  //   if (previousLabel === text) {
-  //     console.log("Same label clicked", text);
-  //   } else {
-  //     const payload = {
-  //       word: text,
-  //       previousWord: previousLabel,
-  //       timestamp: new Date().toISOString(),
-  //       boardId: board?.id,
-  //     };
-  //     clickWord(payload);
-  //     setPreviousLabel(text);
-  //   }
-  // };
-  // const clearInput = () => {
-  //   if (inputRef.current) {
-  //     inputRef.current.value = "";
-  //   }
-  //   setAudioList([]);
-  //   setShowIcon(false);
-  //   setPreviousLabel(undefined);
-  // };
-
-  // useIonViewDidLeave(() => {
-  //   inputRef.current?.value && clearInput();
-  // });
-
-  // useIonViewWillEnter(() => {
-  //   async function fetchData() {
-  //     await fetchBoard();
-  //   }
-  //   fetchData();
-  // }, []);
 
   // const [showTrackingConsent, setShowTrackingConsent] = useState(false);
 
@@ -132,29 +114,26 @@ const ViewLockedBoard: React.FC<any> = () => {
   //   if (!trackingConsent) setShowTrackingConsent(true);
   // }, []);
 
-  // const [audioList, setAudioList] = useState<string[]>([]);
+  const [audioList, setAudioList] = useState<string[]>([]);
 
-  // const handleUpdateAudioList = (audio: string) => {
-  //   setAudioList([...audioList, audio]);
-  // };
+  const handleUpdateAudioList = (audio: string) => {
+    setAudioList([...audioList, audio]);
+  };
 
-  // const handlePlayAudioList = async () => {
-  //   await playAudioList(audioList);
-  // };
+  const handlePlayAudioList = async () => {
+    await playAudioList(audioList);
+  };
 
-  // const refresh = (e: CustomEvent) => {
-  //   setTimeout(() => {
-  //     e.detail.complete();
-  //     fetchBoard();
-  //   }, 3000);
-  // };
-  useEffect(() => {
-    closeMainMenu();
-  }, []);
+  const refresh = (e: CustomEvent) => {
+    setTimeout(() => {
+      e.detail.complete();
+      fetchBoard();
+    }, 3000);
+  };
 
   return (
     <IonPage id="view-board-page">
-      {/* <IonHeader className="bg-inherit shadow-none">
+      <IonHeader className="bg-inherit shadow-none">
         <IonToolbar>
           <IonButtons slot="start">
             <IonButton routerLink={`/boards/${board?.id}`}>
@@ -207,7 +186,7 @@ const ViewLockedBoard: React.FC<any> = () => {
 
         {board && (
           <DraggableGrid
-            gridType={"static"}
+            gridType="dynamic"
             images={board.images}
             board={board}
             setShowIcon={setShowIcon}
@@ -236,11 +215,10 @@ const ViewLockedBoard: React.FC<any> = () => {
           </div>
         )}
         {/* <FloatingWordsBtn inputRef={inputRef} words={board?.floating_words} /> */}
-      <ActivityTrackingConsent />
-      {/* </IonContent> */}
-      {params && <LockedDynamicBoard boardId={params.id} boardType="static" />}
+        <ActivityTrackingConsent />
+      </IonContent>
     </IonPage>
   );
 };
 
-export default ViewLockedBoard;
+export default ViewLockedDynamicBoard;

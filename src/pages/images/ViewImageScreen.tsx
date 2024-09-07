@@ -55,6 +55,7 @@ import VoiceDropdown from "../../components/utils/VoiceDropdown";
 import ConfirmAlert from "../../components/utils/ConfirmAlert";
 import ImageSearchComponent from "../../components/admin/ImageSearchComponent";
 import Footer from "../../components/utils/Footer";
+import { BoardImage } from "../../data/board_images";
 
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -77,6 +78,7 @@ const ViewImageScreen: React.FC = () => {
   const [nextImageWords, setNextImageWords] = useState<string[]>([]);
   const [remainingBoards, setRemainingBoards] = useState<Board[]>([]);
   const [userBoards, setUserBoards] = useState<Board[]>([]);
+  const [boardImages, setBoardImages] = useState<BoardImage[]>([]);
   const [newImageWord, setNewImageWord] = useState("");
   const [wordsToRemove, setWordsToRemove] = useState<string[]>([]);
   const [creatingSymbol, setCreatingSymbol] = useState(false);
@@ -138,6 +140,7 @@ const ViewImageScreen: React.FC = () => {
     console.log("Image data: ", imgToSet);
     setRemainingBoards(imgToSet["remaining_boards"]);
     setUserBoards(imgToSet["user_boards"]);
+    setBoardImages(imgToSet["board_images"]);
     setNextImageWords(imgToSet["next_words"]);
     setImage(imgToSet);
     toggleForms(segmentType, imgToSet);
@@ -271,7 +274,8 @@ const ViewImageScreen: React.FC = () => {
     if (!image) return;
     const result = await setNextWords(image.id);
     if (result["next_words"]) {
-      history.push(`/predictive/${image.id}`);
+      // history.push(`/predictive/${image.id}`);
+      window.location.reload();
     } else {
       alert("Error setting next words.\n" + result["message"]);
     }
@@ -793,9 +797,33 @@ const ViewImageScreen: React.FC = () => {
                   )}
                 </div>
                 <div className="text-sm font-mono w-full md:w-1/2 mx-auto">
+                  <IonText className="text-md">Board Images:</IonText>
+
                   {nextImageWords?.length > 0 && (
                     <div className="mt-2">
-                      <IonText className="text-md">Next Words:</IonText>
+                      <div className="flex flex-wrap">
+                        {boardImages.map((boardImage, index) => (
+                          <div
+                            key={index}
+                            className={`m-1 p-2 ${wordBgColor(
+                              boardImage.label
+                            )}`}
+                          >
+                            <IonButton
+                              routerLink={`/board_images/${boardImage.id}`}
+                              className="text-sm hover:cursor-pointer"
+                            >
+                              {boardImage.board_name}
+                            </IonButton>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div className="text-sm font-mono w-full md:w-1/2 mx-auto">
+                  {nextImageWords?.length > 0 && (
+                    <div className="mt-2">
                       <div className="flex flex-wrap">
                         {nextImageWords.map((word, index) => (
                           <div

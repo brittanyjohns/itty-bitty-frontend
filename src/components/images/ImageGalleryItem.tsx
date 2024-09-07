@@ -4,9 +4,16 @@ import { Image } from "../../data/images";
 import { Board, removeImageFromBoard, updateBoard } from "../../data/boards";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { starOutline, starSharp, trashBinOutline } from "ionicons/icons";
+import {
+  arrowRedoCircleOutline,
+  shareOutline,
+  starOutline,
+  starSharp,
+  trashBinOutline,
+} from "ionicons/icons";
 import { useHistory } from "react-router";
 import { generatePlaceholderImage, labelForScreenSize } from "../../data/utils";
+import { getBoardImagebyBoard } from "../../data/board_images";
 
 interface ImageGalleryItemProps {
   image: Image;
@@ -20,6 +27,8 @@ interface ImageGalleryItemProps {
   showRemoveBtn?: boolean;
   onSetDisplayImage?: any;
   rowHeight?: number;
+  imageType?: string;
+  setNextBoardId?: any;
 }
 
 const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
@@ -34,6 +43,8 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   showRemoveBtn,
   onSetDisplayImage,
   rowHeight,
+  imageType,
+  setNextBoardId,
 }) => {
   const { currentUser, smallScreen, mediumScreen, largeScreen } =
     useCurrentUser();
@@ -56,22 +67,34 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     }
   };
 
-  const handleImageClick = (image: Image) => {
+  const handleImageClick = async (image: Image) => {
     if (onImageClick) {
       onImageClick(image);
     }
 
+    console.log("Image click", imageType);
+    console.log("Image click", image);
+
     if (mute) {
       if (viewOnClick) {
-        if (board?.can_edit === true) {
-          history.push(`/images/${image.id}?boardId=${board.id}`);
+        console.log("View on click", imageType);
+        if (board && image.board_image_id) {
+          const boardImageId = image.board_image_id;
+          history.push(`/board_images/${boardImageId}`);
+
           return;
         }
+        if (board && image.id) {
+          history.push(`/board_images/${image.id}`);
+          return;
+        }
+
         history.push(`/images/${image.id}`);
         return;
       }
       return;
     }
+
     const audioSrc = image.audio;
     onPlayAudioList(audioSrc);
     const label = image.label;
@@ -92,20 +115,29 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       if (!waitToSpeak) {
         speak(label);
       }
-      return;
-    }
-    setAudioList([...audioList, audioSrc]);
+      // return;
+    } else {
+      setAudioList([...audioList, audioSrc]);
 
-    const audio = new Audio(audioSrc);
-    if (!waitToSpeak) {
-      const promise = audio.play();
-      if (promise !== undefined) {
-        promise
-          .then(() => {})
-          .catch((error) => {
-            speak(label);
-          });
+      const audio = new Audio(audioSrc);
+      if (!waitToSpeak) {
+        const promise = audio.play();
+        if (promise !== undefined) {
+          promise
+            .then(() => {})
+            .catch((error) => {
+              console.error("Error playing audio: ", error);
+              speak(label);
+            });
+        }
       }
+    }
+    console.log("After audio play");
+    if (imageType === "dynamic" && image.dynamic_board) {
+      const dynamicBoardId = image.dynamic_board?.id;
+      console.log("Dynamic board id", dynamicBoardId);
+      setNextBoardId(dynamicBoardId);
+      // history.push(`/dynamic_boards/${dynamicBoardId}/locked`);
     }
   };
 
@@ -132,6 +164,17 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     }
   };
 
+  const handleDynamicImageClick = (image: Image) => () => {
+    if (image.dynamic_board) {
+      const dynamicBoardId = image.dynamic_board
+        ? image.dynamic_board.id
+        : undefined;
+      if (dynamicBoardId) {
+        history.push(`/dynamic_boards/${dynamicBoardId}`);
+      }
+    }
+  };
+
   return (
     <div
       ref={imgRef}
@@ -139,12 +182,25 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
         image.bg_color || "bg-white"
       } rounded-sm p-2`}
     >
+      {imageType === "dynamic" && (
+        <>
+          <IonIcon
+            slot="icon-only"
+            icon={arrowRedoCircleOutline}
+            size="small"
+            onClick={handleDynamicImageClick(image)}
+            color="secondary"
+            className="tiny absolute top-0 right-0"
+          />
+        </>
+      )}
       <IonImg
         src={image.src || placeholderUrl}
         alt={image.label}
         className="ion-img-contain mx-auto"
         onClick={() => handleImageClick(image)}
       />
+      {image.id}
       {!image.is_placeholder && (
         <span
           onClick={() => handleImageClick(image)}
@@ -160,6 +216,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
         </span>
       )}
       {image.audio && <audio src={image.audio} />}
+
       {showRemoveBtn && (
         <IonIcon
           slot="icon-only"
@@ -177,7 +234,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
           size="x-small"
           onClick={() => onSetDisplayImage(image)}
           color="secondary"
-          className="absolute top-0 right-0 m-1 shadow-md bg-white bg-opacity-90 rounded-full p-1"
+          className="absolute top-0 left-0 m-1 shadow-md bg-white bg-opacity-90 rounded-full p-1"
         />
       )}
       <IonAlert

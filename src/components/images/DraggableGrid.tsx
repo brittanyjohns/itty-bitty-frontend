@@ -11,6 +11,7 @@ import ImageGalleryItem from "./ImageGalleryItem";
 import { Board, updateBoard } from "../../data/boards";
 import { Image } from "../../data/images";
 import { ChildBoard } from "../../data/child_boards";
+import { set } from "d3";
 
 interface DraggableGridProps {
   columns: number;
@@ -33,6 +34,8 @@ interface DraggableGridProps {
   screenSize?: string;
   setShowLoading: any;
   showLoading?: boolean;
+  gridType?: string;
+  setNextBoardId?: any;
 }
 const DraggableGrid: React.FC<DraggableGridProps> = ({
   images,
@@ -55,6 +58,8 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   screenSize,
   setShowLoading,
   showLoading,
+  gridType,
+  setNextBoardId,
 }) => {
   const [width, setWidth] = useState(window.innerWidth);
   const [rowHeight, setRowHeight] = useState(160);
@@ -100,6 +105,14 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
       // alert("Response: " + savedBoard);
       // setBoard(savedBoard);
     }
+  };
+
+  const determineImageType = (image: any) => {
+    if (image?.dynamic_board?.id) {
+      return "dynamic";
+    }
+
+    return "static";
   };
 
   const handleLayoutChange = (layout: any) => {
@@ -152,6 +165,8 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
           // ref={imgContainerRef}
         >
           <ImageGalleryItem
+            setNextBoardId={setNextBoardId}
+            imageType={determineImageType(img)}
             key={index}
             image={img}
             board={board}

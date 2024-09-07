@@ -90,6 +90,10 @@ import AccountDashboard from "./pages/accounts/AccountDashboard";
 import ScenariosScreen from "./pages/scenarios/ScenariosScreen";
 import ViewScenario from "./pages/scenarios/ViewScenario";
 import SearchGoogleImages from "./pages/utils/SearchGoogleImages";
+import ViewBoardImageScreen from "./pages/board_images/ViewBoardImageScreen";
+import ViewLockedDynamicBoard from "./pages/dynamic_boards/ViewLockedDynamicBoard";
+import DynamicBoardsScreen from "./pages/dynamic_boards/DynamicBoardsScreen";
+import ViewDynamicBoard from "./pages/dynamic_boards/ViewDynamicBoard";
 
 const UserRoutes: React.FC = () => (
   <UserProvider>
@@ -157,6 +161,16 @@ const UserRoutes: React.FC = () => (
           component={ViewLockedBoard}
           exact={true}
         />
+        <Route
+          path="/dynamic_boards/:id"
+          component={ViewDynamicBoard}
+          exact={true}
+        />
+        <Route
+          path="/dynamic_boards/:id/locked"
+          component={ViewLockedDynamicBoard}
+          exact={true}
+        />
         <Route path="/boards/new" component={NewBoard} exact={true} />
         <Route
           path="/boards/:id/edit"
@@ -179,6 +193,10 @@ const UserRoutes: React.FC = () => (
           <BoardsScreen gridType="user" />
         </Route>
 
+        <Route path="/dynamic_boards" exact={true}>
+          <DynamicBoardsScreen gridType="user" />
+        </Route>
+
         <Route path="/menus/new" component={NewMenu} exact={true} />
 
         <Route
@@ -187,6 +205,8 @@ const UserRoutes: React.FC = () => (
           exact={true}
         />
         <Route path="/images/:id" component={ViewImageScreen} exact={true} />
+        <Route path="/board_images/:id" component={ViewBoardImageScreen} />
+
         <Route path="/images/add" component={NewImage} exact={true} />
         <Route path="/images" component={ImagesScreen} exact={true} />
 

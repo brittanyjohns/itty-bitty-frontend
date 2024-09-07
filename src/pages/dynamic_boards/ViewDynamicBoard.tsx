@@ -1,10 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Board,
-  getBoard,
-  rearrangeImages,
-  cloneBoard,
-} from "../../data/boards";
+import { Board } from "../../data/boards";
 import {
   IonButton,
   IonContent,
@@ -25,8 +20,11 @@ import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import BoardView from "../../components/boards/BoardView";
 import Tabs from "../../components/utils/Tabs";
+import { refresh } from "ionicons/icons";
+import { set } from "d3";
+import { getDynamicBoard } from "../../data/dynamic_boards";
 
-const ViewBoard: React.FC<any> = () => {
+const ViewDynamicBoard: React.FC<any> = () => {
   const [board, setBoard] = useState<Board>();
   const params = useParams<{ id: string }>();
   const inputRef = useRef<HTMLIonInputElement>(null);
@@ -45,16 +43,16 @@ const ViewBoard: React.FC<any> = () => {
     if (isNaN(+params.id)) {
       setToastMessage("Invalid board id");
       setIsOpen(true);
-      history.push("/boards");
+      history.push("/dynamic_boards");
       setShowLoading(false);
       return;
     }
-    const board = await getBoard(params.id);
+    const board = await getDynamicBoard(params.id);
     if (!board) {
       console.error("Error fetching board");
       setToastMessage("Error fetching board");
       setIsOpen(true);
-      history.push("/boards");
+      history.push("/dynamic_boards");
       setShowLoading(false);
       return;
     }
@@ -62,12 +60,12 @@ const ViewBoard: React.FC<any> = () => {
     setShowEdit(board.can_edit || currentUser?.role === "admin");
 
     if (!board.layout) {
-      setToastMessage("Board layout not found");
+      setToastMessage("Dynamic Board layout not found");
       setIsOpen(true);
       if (retryCount < 3) {
         setRetryCount(retryCount + 1);
       } else {
-        history.push("/boards");
+        history.push("/dynamic_boards");
       }
       setShowLoading(false);
 
@@ -85,7 +83,7 @@ const ViewBoard: React.FC<any> = () => {
 
   useEffect(() => {
     async function load() {
-      const board = await getBoard(params.id);
+      const board = await getDynamicBoard(params.id);
       if (!board) {
         console.error("Error fetching board");
         alert("Error fetching board");
@@ -93,7 +91,7 @@ const ViewBoard: React.FC<any> = () => {
         return;
       }
       if (!board.layout) {
-        setToastMessage("Board layout not found");
+        setToastMessage("Dynamic Board layout not found");
         setIsOpen(true);
         setTimeout(() => {
           window.location.reload();
@@ -137,10 +135,10 @@ const ViewBoard: React.FC<any> = () => {
 
   return (
     <>
-      <MainMenu pageTitle="Boards" currentUser={currentUser} />
-      <StaticMenu pageTitle="Boards" currentUser={currentUser} />
+      <MainMenu pageTitle="Dynamic Boards" currentUser={currentUser} />
+      <StaticMenu pageTitle="Dynamic Boards" currentUser={currentUser} />
       <IonPage id="main-content">
-        <MainHeader pageTitle={board?.name || "Board"} />
+        <MainHeader pageTitle={`${board?.name || "Dynamic Board"} Dynamic`} />
         <IonContent>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
@@ -148,6 +146,7 @@ const ViewBoard: React.FC<any> = () => {
           <IonLoading message="Please wait..." isOpen={showLoading} />
           {board && (
             <BoardView
+              boardType="dynamic"
               board={board}
               showEdit={showEdit}
               showShare={true}
@@ -171,4 +170,4 @@ const ViewBoard: React.FC<any> = () => {
   );
 };
 
-export default ViewBoard;
+export default ViewDynamicBoard;

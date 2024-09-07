@@ -44,6 +44,8 @@ const BoardGridItem: React.FC<BoardListItemProps> = ({
       history.push(`/child-boards/${board.id}`);
     } else if (gridType === "child") {
       history.push(`/boards/${board.board_id}`);
+    } else if (gridType === "dynamic") {
+      history.push(`/dynamic_boards/${board.id}`);
     } else {
       history.push(`/boards/${board.id}`);
     }

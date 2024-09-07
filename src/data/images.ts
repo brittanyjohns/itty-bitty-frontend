@@ -44,6 +44,9 @@ export interface Image {
   created_at?: string;
   updated_at?: string;
   audio_files?: any[];
+  board_image_id?: string;
+  dynamic_board?: Board;
+  mode?: string;
 }
 
 export interface DraggableGridLayout {
