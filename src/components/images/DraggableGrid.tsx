@@ -164,6 +164,9 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
           className={`relative items-center cursor-pointer`}
           // ref={imgContainerRef}
         >
+          <>
+            <p>Drag</p>
+          </>
           <ImageGalleryItem
             setNextBoardId={setNextBoardId}
             imageType={determineImageType(img)}

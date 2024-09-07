@@ -62,6 +62,9 @@ const BoardView: React.FC<BoardViewProps> = ({
 
   const shouldShowRemoveBtn = currentUser?.role === "admin" || board?.can_edit;
 
+  const testing = boardType || "static";
+  console.log("BoardView testing: ", testing);
+  console.log("BoardViewlayout: ", board.layout["md"]);
   const [currentLayout, setCurrentLayout] = useState([]);
   const [currentScreenSize, setCurrentScreenSize] = useState("lg");
   const [currentNumberOfColumns, setCurrentNumberOfColumns] =
@@ -141,6 +144,7 @@ const BoardView: React.FC<BoardViewProps> = ({
         </IonButtons>
       </div>
       <IonLabel className="text-xs md:text-md lg:text-lg block text-center">
+        {boardType || "static"}
         You are currently viewing the layout for{" "}
         <span className="font-bold">
           {getScreenSizeName(currentScreenSize)}

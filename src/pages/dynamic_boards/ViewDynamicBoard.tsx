@@ -48,6 +48,7 @@ const ViewDynamicBoard: React.FC<any> = () => {
       return;
     }
     const board = await getDynamicBoard(params.id);
+    console.log("board", board);
     if (!board) {
       console.error("Error fetching board");
       setToastMessage("Error fetching board");
@@ -144,6 +145,9 @@ const ViewDynamicBoard: React.FC<any> = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <IonLoading message="Please wait..." isOpen={showLoading} />
+          <h1 className="text-center text-2xl font-bold">
+            TEMP - ViewDynamicBoard
+          </h1>
           {board && (
             <BoardView
               boardType="dynamic"

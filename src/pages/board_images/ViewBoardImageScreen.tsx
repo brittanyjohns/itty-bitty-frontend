@@ -33,6 +33,7 @@ import {
   cloudUploadOutline,
   gridOutline,
   imageOutline,
+  pencilOutline,
   refreshCircleOutline,
   searchOutline,
   trashBinOutline,
@@ -51,6 +52,7 @@ import {
   getBoardImagebyBoard,
   makeDynamicBoard,
   makeStaticBoard,
+  setNextBoardImageWords,
 } from "../../data/board_images";
 import { set } from "d3";
 import BoardImageComponent from "../../components/board_images/BoardImageComponent";
@@ -99,9 +101,12 @@ const ViewBoardImageScreen: React.FC = () => {
 
   const handleMakeDynamic = async () => {
     if (!boardImage) return;
+    console.log("Making boardImage dynamic...");
     setShowLoading(true);
     const result = await makeDynamicBoard(id);
     if (result) {
+      console.log("BoardImage made dynamic.", result);
+      setShowLoading(false);
       setupData();
     } else {
       alert("Error making boardImage dynamic.");
@@ -146,7 +151,7 @@ const ViewBoardImageScreen: React.FC = () => {
   const toggleForms = (segmentType: string) => {
     const label = boardImage?.label;
 
-    if (segmentType === "gallery") {
+    if (segmentType === "edit") {
       setPageTitle(`Gallery for ${label}`);
       dynamicWrapper.current?.classList.add("hidden");
       editWrapper.current?.classList.remove("hidden");
@@ -175,7 +180,7 @@ const ViewBoardImageScreen: React.FC = () => {
 
   const handleNextWords = async () => {
     if (!boardImage) return;
-    const result = await setNextWords(boardImage.id);
+    const result = await setNextBoardImageWords(boardImage.id);
     if (result["next_words"]) {
       console.log("Next words set.", result["next_words"]);
       // history.push(`/predictive/${boardImage.id}`);
@@ -362,15 +367,15 @@ const ViewBoardImageScreen: React.FC = () => {
                 <IonIcon className="mt-2" icon={gridOutline} />
               </IonSegmentButton>
 
-              <IonSegmentButton value="search">
+              <IonSegmentButton value="edit">
                 {!smallScreen ? (
                   <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
-                    Search
+                    Edit
                   </IonLabel>
                 ) : (
                   <IonLabel className="text-sm md:text-md lg:text-lg mb-2"></IonLabel>
                 )}
-                <IonIcon className="mt-2" icon={searchOutline} />
+                <IonIcon className="mt-2" icon={pencilOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="image">
                 {!smallScreen ? (
@@ -399,6 +404,9 @@ const ViewBoardImageScreen: React.FC = () => {
               )}
             </div>
             <div className="mt-4">
+              <h1 className="text-center text-2xl font-bold">
+                TEMP - ViewBoardImage
+              </h1>
               {boardImage?.mode}
               {boardImage?.mode !== "dynamic" && (
                 <IonButton
@@ -467,8 +475,9 @@ const ViewBoardImageScreen: React.FC = () => {
           <div className="mt-2 hidden" ref={editWrapper}>
             {renderImageUserInfo(currentUser)}
 
-            {currentUser?.admin && (
+            {currentUser && (
               <div className="mt-10 w-full md:w-3/4 mx-auto">
+                <IonText className="text-md">Edit Board Image</IonText>
                 <div className="flex justify-between">
                   <IonButton
                     onClick={handleNextWords}
@@ -488,7 +497,7 @@ const ViewBoardImageScreen: React.FC = () => {
                 </div>
 
                 <div className="text-sm font-mono w-full md:w-1/2 mx-auto">
-                  {nextImageWords?.length > 0 && (
+                  {/* {nextImageWords?.length > 0 && (
                     <div className="mt-2">
                       <IonText className="text-md">Next Words:</IonText>
                       <div className="flex flex-wrap">
@@ -507,7 +516,7 @@ const ViewBoardImageScreen: React.FC = () => {
                         ))}
                       </div>
                     </div>
-                  )}
+                  )} */}
                 </div>
                 <div className="mt-2 w-full md:w-1/2 mx-auto">
                   <IonInput

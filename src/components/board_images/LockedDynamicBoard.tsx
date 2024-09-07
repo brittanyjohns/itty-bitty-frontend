@@ -66,6 +66,8 @@ const LockedDynamicBoard: React.FC<LockedDynamicBoardProps> = ({
       board = await getBoard(currentBoardId);
     }
 
+    console.log("setting board", board);
+
     if (!board) {
       console.error("Error fetching board");
       return;
@@ -138,7 +140,7 @@ const LockedDynamicBoard: React.FC<LockedDynamicBoardProps> = ({
 
   useEffect(() => {
     fetchBoard();
-    console.log("Board", board);
+    console.log("Fetch dynamic locked Board", board);
   }, []);
 
   const [audioList, setAudioList] = useState<string[]>([]);

@@ -76,6 +76,7 @@ export const setNextBoardImageWords = async (
   id: string,
   nextWords?: string[]
 ) => {
+  console.log("Setting next words", nextWords);
   const response = await fetch(`${BASE_URL}board_images/${id}/set_next_words`, {
     headers: userHeaders,
     body: JSON.stringify({ nextWords }),
