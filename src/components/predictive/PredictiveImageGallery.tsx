@@ -2,26 +2,38 @@ import React, { useEffect, useState } from "react";
 import ImageComponent from "./ImageComponent";
 import { Image, getPredictiveImages } from "../../data/images";
 import { Board } from "../../data/boards";
+import { getPredictiveBoardImages } from "../../data/board_images";
 
 interface PredictiveImageGalleryProps {
-  predictiveBoard: Board;
-  initialImages: Image[];
-  onImageSpeak: (image: Image) => void;
+  initialImages: any[];
+  onImageSpeak: (image: any) => void;
   setImageId: (id: string) => void;
+  imageType: string;
 }
 
 const PredictiveImageGallery: React.FC<PredictiveImageGalleryProps> = ({
-  predictiveBoard: board,
   initialImages: images,
   onImageSpeak: handleImageSpeak,
   setImageId,
+  imageType,
 }) => {
-  const [currentImages, setCurrentImages] = useState<Image[]>(images);
+  const [currentImages, setCurrentImages] = useState<any[]>(images);
 
-  const handleImageClick = async (image: Image) => {
+  const handleImageClick = async (image: any) => {
     setImageId(image.id);
     handleImageSpeak(image);
-    const newImages = await getPredictiveImages(image.id);
+    let newImages: any[] = [];
+    if (imageType === "predictive") {
+      // await loadPredictiveImages(image);
+      console.log("loadPredictiveImages", image.id);
+    } else if (imageType === "board_image") {
+      console.log("loadBoardImages");
+      newImages = await getPredictiveBoardImages(image.id);
+    } else {
+      console.log("loadImages");
+      newImages = await getPredictiveImages(image.id);
+    }
+
     console.log("newImages", newImages);
     console.log("currentImages", currentImages);
     const allImages = [...newImages, ...currentImages];
@@ -32,14 +44,15 @@ const PredictiveImageGallery: React.FC<PredictiveImageGalleryProps> = ({
 
     const imagesToSet = uniqueImages.filter(
       (image) => image !== undefined
-    ) as Image[];
+    ) as any[];
 
     setCurrentImages(imagesToSet);
   };
 
   useEffect(() => {
-    console.log("board", board);
     setCurrentImages(images);
+    console.log("imageType", imageType);
+    console.log("gallery - images", images);
   }, [images]);
 
   return (

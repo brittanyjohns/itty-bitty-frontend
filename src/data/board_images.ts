@@ -60,20 +60,6 @@ export const switchBoardImageMode = async (id: string) => {
   return response.json();
 };
 
-export async function getPredictiveBoardImages(
-  boardImageId: string
-): Promise<Image[]> {
-  if (!boardImageId) {
-    return [];
-  }
-  const response = await fetch(
-    `${BASE_URL}board_images/${boardImageId}/predictive_images`,
-    { headers: userHeaders }
-  );
-  const images: Image[] = await response.json();
-  return images;
-}
-
 export const getBoardImagebyImageId = async (
   imageId: string,
   boardId: string
@@ -102,4 +88,18 @@ export async function setNextBoardImageWords(
   );
   const boardImage: BoardImage = await response.json();
   return boardImage;
+}
+
+export async function getPredictiveBoardImages(
+  boardImageId: string
+): Promise<BoardImage[]> {
+  if (!boardImageId) {
+    return [];
+  }
+  const response = await fetch(
+    `${BASE_URL}board_images/${boardImageId}/predictive_images`,
+    { headers: userHeaders }
+  );
+  const images: BoardImage[] = await response.json();
+  return images;
 }

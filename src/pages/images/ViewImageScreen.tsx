@@ -916,11 +916,15 @@ const ViewImageScreen: React.FC = () => {
                         slot="start"
                         fill="outline"
                       >
-                        Set Next Words
+                        Set Next Words {boardImage?.id}
                       </IonButton>
                     )}
                   <IonButton
-                    routerLink={`/predictive/${image?.id}`}
+                    routerLink={
+                      boardImage?.id
+                        ? `/board_images/${boardImage?.id}/predictive`
+                        : `/images/${image?.id}/predictive`
+                    }
                     className="text-sm font-mono"
                     fill="outline"
                   >
