@@ -1,3 +1,4 @@
+import { Board } from "./boards";
 import { BASE_URL, userHeaders } from "./constants";
 import { Image } from "./images";
 export interface BoardImage {
@@ -7,6 +8,11 @@ export interface BoardImage {
   audio_url: string;
   next_words: string[];
   mode: string;
+  image?: Image;
+  board_id: string;
+  image_id: string;
+  board: Board;
+  board_name: string;
 }
 interface SpeakResponse {
   id: string;
@@ -46,18 +52,6 @@ export const getBoardImage = async (
   return boardImage;
 };
 
-export const setNextBoardImageWords = async (
-  id: string,
-  nextWords?: string[]
-) => {
-  const response = await fetch(`${BASE_URL}board_images/${id}/set_next_words`, {
-    headers: userHeaders,
-    body: JSON.stringify({ nextWords }),
-    method: "PUT",
-  });
-  return response.json();
-};
-
 export const switchBoardImageMode = async (id: string) => {
   const response = await fetch(`${BASE_URL}board_images/${id}/switch_mode`, {
     headers: userHeaders,
@@ -78,4 +72,34 @@ export async function getPredictiveBoardImages(
   );
   const images: Image[] = await response.json();
   return images;
+}
+
+export const getBoardImagebyImageId = async (
+  imageId: string,
+  boardId: string
+): Promise<BoardImage> => {
+  const response = await fetch(
+    `${BASE_URL}board_images/by_image?image_id=${imageId}&board_id=${boardId}`,
+    {
+      headers: userHeaders,
+    }
+  );
+  const boardImage: BoardImage = await response.json();
+  return boardImage;
+};
+
+export async function setNextBoardImageWords(
+  boardImageId: string,
+  nextWords?: string[]
+): Promise<BoardImage> {
+  const response = await fetch(
+    `${BASE_URL}board_images/${boardImageId}/set_next_words`,
+    {
+      headers: userHeaders,
+      body: JSON.stringify({ next_words: nextWords }),
+      method: "POST",
+    }
+  );
+  const boardImage: BoardImage = await response.json();
+  return boardImage;
 }

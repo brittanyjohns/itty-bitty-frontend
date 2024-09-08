@@ -55,11 +55,18 @@ import VoiceDropdown from "../../components/utils/VoiceDropdown";
 import ConfirmAlert from "../../components/utils/ConfirmAlert";
 import ImageSearchComponent from "../../components/admin/ImageSearchComponent";
 import Footer from "../../components/utils/Footer";
+import {
+  BoardImage,
+  getBoardImagebyImageId,
+  setNextBoardImageWords,
+} from "../../data/board_images";
+import { set } from "d3";
 
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
   const [image, setImage] = useState<Image | null>(null);
+  const [boardImage, setBoardImage] = useState<BoardImage | null>(null);
   const [currentImage, setCurrentImage] = useState<string | null>("");
   const imageGrid = useRef<HTMLDivElement>(null);
   const newWordInput = useRef<HTMLIonInputElement>(null);
@@ -96,93 +103,48 @@ const ViewImageScreen: React.FC = () => {
   const [confirmDeleteDocMessage, setConfirmDeleteDocMessage] = useState(
     "Do you want to delete this image?"
   );
-  const fetchImage = async () => {
-    const img = await getImage(id);
-    setImage(img);
-    setNextImageWords(img?.next_words);
-    return img;
-  };
+  // const fetchImage = async () => {
+  //   if (!id) return;
+  //   if (id === "add") {
+  //     setSegmentType("upload");
+  //     return;
+  //   }
+  //   let boardImg;
+  //   let img;
+  //   if (boardId) {
+  //     boardImg = await getBoardImagebyImage(id, boardId);
+  //     img = boardImg.image;
+  //     setBoardImage(boardImg);
+  //   } else {
+  //     img = await getImage(id);
+  //   }
 
-  const setupData = async () => {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const boardId = urlParams.get("boardId");
-    setShowHardDelete(currentUser?.role === "admin");
-    setBoardId(boardId);
-    await getData();
-    if (image && image.src) {
-      setCurrentImage(image.src);
-    }
-  };
+  //   setImage(img);
+  //   setNextImageWords(img?.next_words);
+  //   return img;
+  // };
+
+  // const setupData = async () => {
+  // const queryString = window.location.search;
+  // const urlParams = new URLSearchParams(queryString);
+  // const boardId = urlParams.get("boardId");
+  // console.log("Board ID: ", boardId);
+  // setShowHardDelete(currentUser?.role === "admin");
+  // setBoardId(boardId);
+  // console.log("Setting up data...", boardId);
+  //   await getData();
+  //   if (image && image.src) {
+  //     setCurrentImage(image.src);
+  //   }
+  // };
 
   useEffect(() => {
-    setupData();
+    getData();
   }, []);
-
   useEffect(() => {
-    setupData();
-
-    if (creatingSymbol) {
-      const intervalId = setInterval(() => {
-        getData();
-        setShowLoading(false);
-        setCreatingSymbol(false);
-      }, 3000); // Check every 5 seconds
-      return () => clearInterval(intervalId); // Cleanup interval on component unmount
-    }
-  }, [creatingSymbol]);
-
-  const getData = async () => {
-    const imgToSet = await fetchImage();
-    // const allBoards = await getBoards();
-    console.log("Image data: ", imgToSet);
-    setRemainingBoards(imgToSet["remaining_boards"]);
-    setUserBoards(imgToSet["user_boards"]);
-    setNextImageWords(imgToSet["next_words"]);
-    setImage(imgToSet);
-    toggleForms(segmentType, imgToSet);
-
-    if (!imgToSet?.src) {
-      console.error("No image found.");
-      const imgURl = generatePlaceholderImage(imgToSet?.label);
-      setCurrentImage(imgURl);
-    } else {
-      setCurrentImage(imgToSet.src);
-    }
-  };
-
-  const handleDeleteImage = async () => {
-    if (!image) return;
-    const result = await deleteImage(image.id);
-    if (result["status"] === "ok") {
-      history.push("/images");
-    } else {
-      alert("Error deleting image..\n" + result["message"]);
-    }
-  };
-
-  const [showConfirmDeleteDoc, setShowConfirmDeleteDoc] = useState(false);
-
-  const handleRemoveDoc = async () => {
-    const doc = docToDelete;
-    if (!doc || !image) return;
-
-    const result = await removeDoc(image.id, doc.id);
-    if (result["status"] === "ok") {
-      getData();
-
-      // return result;
-    } else {
-      alert("Error removing display image.\n" + result["message"]);
-    }
-  };
-
-  const refresh = (e: CustomEvent) => {
-    setTimeout(() => {
-      e.detail.complete();
-      setupData();
-    }, 3000);
-  };
+    console.log(">>Board ID: ", boardId);
+    getData();
+  }, [boardId]);
 
   const toggleForms = (segmentType: string, imgToSet?: Image) => {
     if (!imgToSet) {
@@ -231,6 +193,90 @@ const ViewImageScreen: React.FC = () => {
     }
   };
 
+  const getData = async () => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const boardId = urlParams.get("boardId");
+    setShowHardDelete(currentUser?.role === "admin");
+    setBoardId(boardId);
+    console.log("Getting image data...", boardId);
+    if (!id) return;
+    if (id === "add") {
+      setSegmentType("upload");
+      return;
+    }
+    let boardImg;
+    let img;
+    if (boardId) {
+      boardImg = await getBoardImagebyImageId(id, boardId);
+      if (!boardImg) {
+        console.error("No board image found.");
+        history.push(`/boards/${boardId}`);
+        return;
+      }
+      img = boardImg.image;
+      console.log("Set Board Image: ", boardImg);
+      setBoardImage(boardImg);
+      setNextImageWords(boardImg["next_words"]);
+    } else {
+      img = await getImage(id);
+      console.log("Set Image: ", img);
+      if (img["next_words"]) {
+        setNextImageWords(img["next_words"]);
+      } else {
+        console.error("No next words found.");
+        setNextImageWords([]);
+      }
+    }
+    setImage(img);
+    // const allBoards = await getBoards();
+    setRemainingBoards(img["remaining_boards"]);
+    setUserBoards(img["user_boards"]);
+
+    toggleForms(segmentType, img);
+
+    if (!img?.src) {
+      console.error("No image found.");
+      const imgURl = generatePlaceholderImage(img?.label);
+      setCurrentImage(imgURl);
+    } else {
+      setCurrentImage(img.src);
+    }
+  };
+
+  const handleDeleteImage = async () => {
+    if (!image) return;
+    const result = await deleteImage(image.id);
+    if (result["status"] === "ok") {
+      history.push("/images");
+    } else {
+      alert("Error deleting image..\n" + result["message"]);
+    }
+  };
+
+  const [showConfirmDeleteDoc, setShowConfirmDeleteDoc] = useState(false);
+
+  const handleRemoveDoc = async () => {
+    const doc = docToDelete;
+    if (!doc || !image) return;
+
+    const result = await removeDoc(image.id, doc.id);
+    if (result["status"] === "ok") {
+      getData();
+
+      // return result;
+    } else {
+      alert("Error removing display image.\n" + result["message"]);
+    }
+  };
+
+  const refresh = (e: CustomEvent) => {
+    setTimeout(() => {
+      e.detail.complete();
+      getData();
+    }, 3000);
+  };
+
   const handleDocClick = async (e: React.MouseEvent<HTMLIonImgElement>) => {
     const target = e.target as HTMLImageElement;
     const currentImg = await markAsCurrent(target.id); // Ensure markAsCurrent returns a Promise
@@ -267,17 +313,8 @@ const ViewImageScreen: React.FC = () => {
     toggleForms(newSegment);
   };
 
-  const handleNextWords = async () => {
-    if (!image) return;
-    const result = await setNextWords(image.id);
-    if (result["next_words"]) {
-      history.push(`/predictive/${image.id}`);
-    } else {
-      alert("Error setting next words.\n" + result["message"]);
-    }
-  };
-
   const clearInput = () => {
+    console.log("Clearing input...");
     if (newWordInput.current) {
       newWordInput.current.value = "";
     }
@@ -303,15 +340,40 @@ const ViewImageScreen: React.FC = () => {
     }
   };
   const handleAddNextWords = async () => {
-    if (!image) return;
-    const newImageWords = [...nextImageWords, newImageWord];
-    const result = await setNextWords(image.id, newImageWords);
+    let result;
+    console.log("Setting next words...");
+    console.log("Image: ", image);
+    console.log("Board Image: ", boardImage);
+
+    //  Unique words only
+    const newImageWords = [...nextImageWords, newImageWord].filter(
+      (value, index, self) => self.indexOf(value) === index
+    );
+    if (boardImage) {
+      result = await setNextBoardImageWords(boardImage.id, newImageWords);
+    } else if (image) {
+      result = await setNextWords(image.id, newImageWords);
+    }
+    // const result = await setNextWords(image.id, newImageWords);
     if (result["next_words"]) {
       setNewImageWord("");
       clearInput();
       getData();
     } else {
       alert("Error setting next words.\n" + result["message"]);
+    }
+  };
+
+  const handleSetNewWord = (e: CustomEvent) => {
+    const target = e.target as HTMLIonInputElement;
+    console.log("New word: ", target.value);
+    if (!target.value) return;
+    setNewImageWord(target.value.toString());
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLIonInputElement>) => {
+    if (e.key === "Enter") {
+      handleAddNextWords();
     }
   };
 
@@ -343,12 +405,24 @@ const ViewImageScreen: React.FC = () => {
   };
 
   const handleDeleteSelected = async () => {
-    if (!image) return;
+    let result;
     const wordsToSet = nextImageWords.filter(
       (word) => !wordsToRemove.includes(word)
     );
-    const result = await setNextWords(image.id, wordsToSet);
+    console.log("Setting next words...", wordsToSet);
+    if (boardImage) {
+      result = await setNextBoardImageWords(boardImage.id, wordsToSet);
+    } else if (image) {
+      result = await setNextWords(image.id, wordsToSet);
+    }
+    console.log("Deleting selected words...");
+
+    console.log("Words to set: ", wordsToSet);
+    // const result = await setNextWords(image.id, wordsToSet);
     if (result["next_words"]) {
+      console.log("Words set: ", result["next_words"]);
+      // setWordsToRemove([]);
+      setNextImageWords(result["next_words"]);
       getData();
     } else {
       alert("Error setting next words.\n" + result["message"]);
@@ -450,9 +524,14 @@ const ViewImageScreen: React.FC = () => {
     }
   };
 
-  useIonViewWillEnter(() => {
-    setupData();
-  }, []);
+  const handleBoardImageClick = (clickedBoardImage: BoardImage) => {
+    setBoardImage(clickedBoardImage);
+    setBoardId(clickedBoardImage.board_id);
+    setNextImageWords(clickedBoardImage.next_words);
+    console.log("clickedBoardImage: ", clickedBoardImage);
+    window.location.href = `/images/${image?.id}?boardId=${clickedBoardImage.board_id}`;
+    // window.location.reload();
+  };
 
   return (
     <>
@@ -564,7 +643,7 @@ const ViewImageScreen: React.FC = () => {
               )}
             </div>
             <div className="mt-4">
-              {currentUser && (
+              {!boardId && currentUser && (
                 <IonButton
                   onClick={() => setOpenAlert(true)}
                   className="text-sm"
@@ -572,6 +651,20 @@ const ViewImageScreen: React.FC = () => {
                   size="small"
                 >
                   Clone Image
+                </IonButton>
+              )}
+              {boardId && currentUser && (
+                <IonButton
+                  // routerLink={`/images/${image?.id}`}
+                  onClick={() => {
+                    window.location.href = `/images/${image?.id}`;
+                    getData();
+                  }}
+                  className="text-sm"
+                  fill="outline"
+                  size="small"
+                >
+                  View Base Image
                 </IonButton>
               )}
             </div>
@@ -657,7 +750,7 @@ const ViewImageScreen: React.FC = () => {
                   {image?.docs &&
                     image.docs.map((doc, index) => (
                       <div
-                        key={doc.id}
+                        key={index}
                         className={` ${
                           image.bg_color || "bg-white"
                         } relative p-2 rounded-lg shadow-md`}
@@ -720,55 +813,112 @@ const ViewImageScreen: React.FC = () => {
                   <BoardDropdown imageId={image.id} boards={remainingBoards} />
                 </div>
               )}
-              {image?.user_boards && image?.user_boards?.length > 0 && (
-                <div className=" w-1/2">
-                  <p className="text-md">Remove this image from a board:</p>
+              {!boardImage &&
+                image?.user_boards &&
+                image?.user_boards?.length > 0 && (
+                  <div className=" w-1/2">
+                    <p className="text-md">Remove this image from a board:</p>
 
-                  <div className="">
-                    <IonText className="text-md">
-                      This image is on the following boards:
-                    </IonText>
-                    <IonList>
-                      {image?.user_boards?.map((board) => (
-                        <IonItem
-                          key={board.id}
-                          // routerLink={`/boards/${board.id}`}
-                          className="text-sm font-mono"
-                        >
-                          <IonButton
-                            className="text-sm font-md mx-2 w-full"
-                            fill="clear"
-                            routerLink={`/boards/${board.id}`}
+                    <div className="">
+                      <IonText className="text-md">
+                        This image is on the following boards:
+                      </IonText>
+                      <IonList>
+                        {image?.user_boards?.map((board) => (
+                          <IonItem
+                            key={board.id}
+                            // routerLink={`/boards/${board.id}`}
+                            className="text-sm font-mono"
                           >
-                            {" "}
-                            {board.name}
-                          </IonButton>
-                          <IonIcon
-                            icon={trashBinOutline}
-                            color="danger"
-                            slot="end"
-                            onClick={() => handleConfirmRemoveFromBoard(board)}
-                          />
-                        </IonItem>
-                      ))}
-                    </IonList>
+                            <IonButton
+                              className="text-sm font-md mx-2 w-full"
+                              fill="clear"
+                              routerLink={`/boards/${board.id}`}
+                            >
+                              {" "}
+                              {board.name}
+                            </IonButton>
+                            <IonIcon
+                              icon={trashBinOutline}
+                              color="danger"
+                              slot="end"
+                              onClick={() =>
+                                handleConfirmRemoveFromBoard(board)
+                              }
+                            />
+                          </IonItem>
+                        ))}
+                      </IonList>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
             </div>
-            {currentUser?.admin && (
+
+            <div className="mt-2 w-full md:w-3/4 mx-auto">
+              {image?.user_board_images &&
+                image?.user_board_images?.length > 0 && (
+                  <div className=" w-1/2">
+                    <div className="">
+                      <IonText className="text-md">
+                        This image has been used:{" "}
+                      </IonText>
+                      <IonText className="text-md">
+                        {image?.user_board_images?.length} times
+                      </IonText>
+                      <IonList>
+                        {image?.user_board_images?.map((bi, index) => (
+                          <IonItem
+                            key={index}
+                            // routerLink={`/boards/${board.id}`}
+                            className="text-sm font-mono"
+                          >
+                            <IonButton
+                              className={`text-sm font-md mx-2 w-full ${
+                                boardId == bi.board_id ? "bg-green-200" : ""
+                              }`}
+                              fill="clear"
+                              // routerLink={`/images/${image.id}?boardId=${bi.board_id}`}
+                              onClick={() => handleBoardImageClick(bi)}
+                            >
+                              <IonLabel
+                                className="text-sm font-mono"
+                                slot="start"
+                              >
+                                {bi.board_name}
+                              </IonLabel>
+                            </IonButton>
+                            <IonIcon
+                              icon={trashBinOutline}
+                              color="danger"
+                              slot="end"
+                              onClick={() =>
+                                handleConfirmRemoveFromBoard(bi.board)
+                              }
+                            />
+                          </IonItem>
+                        ))}
+                      </IonList>
+                    </div>
+                  </div>
+                )}
+            </div>
+
+            {image?.can_edit && (
               <div className="mt-10 w-full md:w-3/4 mx-auto">
+                <h1 className="text-center mt-4">IMAGE Next Words</h1>
                 <div className="flex justify-between">
-                  {!image?.no_next && (
-                    <IonButton
-                      onClick={handleNextWords}
-                      className="text-sm font-mono"
-                      slot="start"
-                      fill="outline"
-                    >
-                      Set Next Words
-                    </IonButton>
-                  )}
+                  {!image?.no_next &&
+                    image?.next_words &&
+                    image?.next_words?.length < 1 && (
+                      <IonButton
+                        onClick={handleAddNextWords}
+                        className="text-sm font-mono"
+                        slot="start"
+                        fill="outline"
+                      >
+                        Set Next Words
+                      </IonButton>
+                    )}
                   <IonButton
                     routerLink={`/predictive/${image?.id}`}
                     className="text-sm font-mono"
@@ -795,7 +945,9 @@ const ViewImageScreen: React.FC = () => {
                 <div className="text-sm font-mono w-full md:w-1/2 mx-auto">
                   {nextImageWords?.length > 0 && (
                     <div className="mt-2">
-                      <IonText className="text-md">Next Words:</IonText>
+                      <IonText className="text-md">
+                        nextImageWords Next Words:
+                      </IonText>
                       <div className="flex flex-wrap">
                         {nextImageWords.map((word, index) => (
                           <div
@@ -819,7 +971,8 @@ const ViewImageScreen: React.FC = () => {
                     className=""
                     ref={newWordInput}
                     placeholder="Enter word"
-                    onIonInput={(e) => setNewImageWord(e.detail.value ?? "")}
+                    onIonInput={handleSetNewWord}
+                    onKeyDown={handleKeyDown}
                   ></IonInput>
                   <div className="mt-2">
                     <IonButton
