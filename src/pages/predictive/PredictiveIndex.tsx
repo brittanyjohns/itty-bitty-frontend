@@ -16,6 +16,7 @@ import { useHistory, useParams } from "react-router";
 import Tabs from "../../components/utils/Tabs";
 import {
   arrowBackCircleOutline,
+  image,
   imageOutline,
   pencilOutline,
   playCircleOutline,
@@ -31,7 +32,11 @@ import { playAudioList } from "../../data/utils";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import MainHeader from "../MainHeader";
 import StaticMenu from "../../components/main_menu/StaticMenu";
-import { BoardImage, getPredictiveBoardImages } from "../../data/board_images";
+import {
+  BoardImage,
+  getBoardImage,
+  getPredictiveBoardImages,
+} from "../../data/board_images";
 import { set } from "d3";
 
 interface PredictiveIndexProps {
@@ -50,6 +55,7 @@ const PredictiveIndex: React.FC<PredictiveIndexProps> = ({ imageType }) => {
   );
   const [imageId, setImageId] = useState<string | undefined>(undefined);
   const [predictive, setPredictive] = useState<Board>();
+  const [boardImage, setBoardImage] = useState<BoardImage>();
 
   const history = useHistory();
 
@@ -141,10 +147,17 @@ const PredictiveIndex: React.FC<PredictiveIndexProps> = ({ imageType }) => {
     let imgs: any[] = [];
     if (imageType === "board_image") {
       console.log("getPredictiveBoardImages");
-      imgs = await getPredictiveBoardImages(startingImageId);
+      const boardImage = await getBoardImage(startingImageId);
+      console.log("boardImage", boardImage);
+      setBoardImage(boardImage);
+
+      const dynamicBoard = await getPredictiveBoardImages(startingImageId);
+      setPredictive(dynamicBoard);
+      console.log("dynamicBoard", dynamicBoard);
+      imgs = dynamicBoard.images || [];
       console.log("setStartingImages", imgs);
     } else {
-      const imgs = await getPredictiveImages(startingImageId);
+      imgs = await getPredictiveImages(startingImageId);
       console.log("setStartingImages", imgs);
     }
     setImages(imgs);
@@ -166,6 +179,7 @@ const PredictiveIndex: React.FC<PredictiveIndexProps> = ({ imageType }) => {
   const loadMoreImages = async () => {
     const predictiveBoard = await getInitialPredictive();
     console.log("predictiveBoard", predictiveBoard);
+    setPredictive(predictiveBoard);
     const newImages = predictiveBoard.images || [];
     let allImages: any[] = [];
     if (newImages) {
@@ -293,10 +307,16 @@ const PredictiveIndex: React.FC<PredictiveIndexProps> = ({ imageType }) => {
           </IonRefresher>
           {initialImages && (
             <PredictiveImageGallery
+              predictiveBoard={predictive}
+              mode={boardImage?.mode || "static"}
               imageType={imageType}
               initialImages={initialImages}
               onImageSpeak={handleImageSpeak}
               setImageId={setImageId}
+              inputRef={inputRef}
+              setShowLoading={setShowIcon}
+              setShowIcon={setShowIcon}
+              handleUpdateAudioList={handleUpdateAudioList}
             />
           )}
         </IonContent>

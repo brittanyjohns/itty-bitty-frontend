@@ -42,13 +42,11 @@ export type BoardImageResponse =
   | DisplayNextWordsResponse
   | UnknownResponse;
 
-export const getBoardImage = async (
-  id: string
-): Promise<BoardImageResponse> => {
+export const getBoardImage = async (id: string): Promise<BoardImage> => {
   const response = await fetch(`${BASE_URL}board_images/${id}`, {
     headers: userHeaders,
   });
-  const boardImage: BoardImageResponse = await response.json();
+  const boardImage: BoardImage = await response.json();
   return boardImage;
 };
 
@@ -92,14 +90,33 @@ export async function setNextBoardImageWords(
 
 export async function getPredictiveBoardImages(
   boardImageId: string
-): Promise<BoardImage[]> {
+): Promise<any> {
   if (!boardImageId) {
-    return [];
+    throw new Error("No board image id provided");
   }
   const response = await fetch(
     `${BASE_URL}board_images/${boardImageId}/predictive_images`,
     { headers: userHeaders }
   );
-  const images: BoardImage[] = await response.json();
-  return images;
+  const board: any = await response.json();
+  return board;
 }
+
+export const makeDynamicBoard = async (
+  boardImageId: string,
+  imageType?: string
+) => {
+  if (!boardImageId) {
+    throw new Error("No board image id provided");
+  }
+  let endpoint = `${BASE_URL}board_images/${boardImageId}/make_dynamic`;
+  if (imageType === "image") {
+    endpoint = `${BASE_URL}images/${boardImageId}/make_dynamic`;
+  }
+  const response = await fetch(endpoint, {
+    headers: userHeaders,
+    method: "POST",
+  });
+  const board: any = await response.json();
+  return board;
+};

@@ -48,6 +48,7 @@ export interface Image {
   audio_files?: any[];
   can_edit?: boolean;
   user_board_images?: BoardImage[];
+  user_dynamic_base_board?: Board;
 }
 
 export interface DraggableGridLayout {

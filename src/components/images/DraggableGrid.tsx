@@ -138,35 +138,36 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
         }
       }}
     >
-      {images.map((img: any, index: number) => (
-        <div
-          key={Number(img.id)}
-          data-grid={{
-            ...img.layout[currentScreenSize ?? "lg"],
-            isResizable: enableResize,
-            isBounded: true,
-            allowOverlap: false,
-            static: disableReorder,
-          }}
-          className={`relative items-center cursor-pointer`}
-          // ref={imgContainerRef}
-        >
-          <ImageGalleryItem
-            key={index}
-            image={img}
-            board={board}
-            setShowIcon={setShowIcon}
-            inputRef={inputRef}
-            mute={mute}
-            onPlayAudioList={onPlayAudioList}
-            onImageClick={onImageClick}
-            viewOnClick={viewOnClick}
-            showRemoveBtn={showRemoveBtn}
-            onSetDisplayImage={handleSetDisplayImage}
-            rowHeight={rowHeight}
-          />
-        </div>
-      ))}
+      {images &&
+        images.map((img: any, index: number) => (
+          <div
+            key={Number(img.id)}
+            data-grid={{
+              ...img.layout[currentScreenSize ?? "lg"],
+              isResizable: enableResize,
+              isBounded: true,
+              allowOverlap: false,
+              static: disableReorder,
+            }}
+            className={`relative items-center cursor-pointer`}
+            // ref={imgContainerRef}
+          >
+            <ImageGalleryItem
+              key={index}
+              image={img}
+              board={board}
+              setShowIcon={setShowIcon}
+              inputRef={inputRef}
+              mute={mute}
+              onPlayAudioList={onPlayAudioList}
+              onImageClick={onImageClick}
+              viewOnClick={viewOnClick}
+              showRemoveBtn={showRemoveBtn}
+              onSetDisplayImage={handleSetDisplayImage}
+              rowHeight={rowHeight}
+            />
+          </div>
+        ))}
     </ResponsiveGridLayout>
   );
 };
