@@ -33,9 +33,6 @@ const AudioList: React.FC<AudioListProps> = ({
     <div>
       {image && image.audio_files && image.audio_files.length > 0 && (
         <div className="w-full md:w-5/6 mx-auto text-center">
-          <IonLabel className="font-bold text-sm md:text-md lg:text-lg">
-            Click an image to display it for the word: "{image.label}"
-          </IonLabel>
           <IonList>
             {/* This needs pulled out into a separate component */}
             {image?.audio_files &&

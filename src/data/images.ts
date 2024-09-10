@@ -2,6 +2,7 @@ import { Layout } from "react-grid-layout";
 import { Board } from "./boards";
 import { BASE_URL, userHeaders } from "./constants";
 import { ImageResult } from "./search";
+import { BoardImage } from "./board_images";
 export interface ImageDoc {
   id: string;
   src: string;
@@ -33,6 +34,7 @@ export interface Image {
   user_next_words?: string[];
   is_placeholder?: boolean;
   user_boards?: Board[];
+  board_images?: BoardImage[];
   remaining_boards?: Board[];
   status?: string;
   error?: string;
@@ -44,6 +46,9 @@ export interface Image {
   created_at?: string;
   updated_at?: string;
   audio_files?: any[];
+  can_edit?: boolean;
+  user_board_images?: BoardImage[];
+  user_dynamic_base_board?: Board;
 }
 
 export interface DraggableGridLayout {

@@ -28,7 +28,8 @@ const BoardImage: React.FC<BoardImageProps> = ({ boardImageId }) => {
 
   const handleSetNextWords = () => {
     setNextBoardImageWords(boardImageId.toString()).then((response) => {
-      setData(response);
+      // setData(response);
+      console.log(response);
     });
   };
 

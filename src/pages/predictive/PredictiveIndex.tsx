@@ -10,12 +10,13 @@ import {
   IonRefresher,
   IonRefresherContent,
 } from "@ionic/react";
-import { Image, getPredictiveImages } from "../../data/images";
+import { getPredictiveImages } from "../../data/images";
 import MainMenu from "../../components/main_menu/MainMenu";
 import { useHistory, useParams } from "react-router";
 import Tabs from "../../components/utils/Tabs";
 import {
   arrowBackCircleOutline,
+  image,
   imageOutline,
   pencilOutline,
   playCircleOutline,
@@ -31,11 +32,22 @@ import { playAudioList } from "../../data/utils";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import MainHeader from "../MainHeader";
 import StaticMenu from "../../components/main_menu/StaticMenu";
+import {
+  BoardImage,
+  getBoardImage,
+  getPredictiveBoardImages,
+} from "../../data/board_images";
+import { set } from "d3";
 
-const PredictiveImagesScreen: React.FC = () => {
+interface PredictiveIndexProps {
+  imageType: string;
+}
+
+const PredictiveIndex: React.FC<PredictiveIndexProps> = ({ imageType }) => {
   const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
   const startingImageId = useParams<{ id: string }>().id;
-  const [initialImages, setImages] = useState<Image[]>([]);
+
+  const [initialImages, setImages] = useState<any[]>([]);
   const inputRef = useRef<HTMLIonInputElement>(null);
   const [showIcon, setShowIcon] = useState(false);
   const [previousLabel, setPreviousLabel] = useState<string | undefined>(
@@ -43,20 +55,23 @@ const PredictiveImagesScreen: React.FC = () => {
   );
   const [imageId, setImageId] = useState<string | undefined>(undefined);
   const [predictive, setPredictive] = useState<Board>();
+  const [boardImage, setBoardImage] = useState<BoardImage>();
 
   const history = useHistory();
 
   const fetchFirstBoard = async () => {
     const initialPredictiveBoard = await getInitialPredictive();
+    console.log("initialPredictiveBoard", initialPredictiveBoard);
     setPredictive(initialPredictiveBoard);
     const imgs = initialPredictiveBoard.images;
+    console.log("initialPredictiveBoard", imgs);
     if (!imgs) {
       return;
     }
     setImages(imgs);
   };
 
-  const handleClickWord = async (image: Image) => {
+  const handleClickWord = async (image: any) => {
     const text = image.label;
     if (previousLabel === text) {
       return;
@@ -71,7 +86,7 @@ const PredictiveImagesScreen: React.FC = () => {
     }
   };
 
-  const handleImageSpeak = (image: Image) => {
+  const handleImageSpeak = (image: any) => {
     handleClickWord(image);
     const audioSrc = image.audio;
     const label = image.label;
@@ -125,23 +140,48 @@ const PredictiveImagesScreen: React.FC = () => {
     fetchFirstBoard();
   };
 
-  const setStartingImages = async (startingImageId: string) => {
-    const imgs = await getPredictiveImages(startingImageId);
+  const setStartingImages = async (
+    startingImageId: string,
+    imageType: string
+  ) => {
+    let imgs: any[] = [];
+    if (imageType === "board_image") {
+      console.log("getPredictiveBoardImages");
+      const boardImage = await getBoardImage(startingImageId);
+      console.log("boardImage", boardImage);
+      setBoardImage(boardImage);
+
+      const dynamicBoard = await getPredictiveBoardImages(startingImageId);
+      setPredictive(dynamicBoard);
+      console.log("dynamicBoard", dynamicBoard);
+      imgs = dynamicBoard.images || [];
+      console.log("setStartingImages", imgs);
+    } else {
+      imgs = await getPredictiveImages(startingImageId);
+      console.log("setStartingImages", imgs);
+    }
     setImages(imgs);
+    // setImages(imgs);
   };
 
   useEffect(() => {
+    console.log("startingImageId", startingImageId);
     if (startingImageId) {
-      setStartingImages(startingImageId);
+      console.log("imageType: ", imageType);
+      console.log("startingImageId", startingImageId);
+      setStartingImages(startingImageId, imageType || "");
     } else {
+      console.log("fetchFirstBoard");
       fetchFirstBoard();
     }
   }, []);
 
   const loadMoreImages = async () => {
     const predictiveBoard = await getInitialPredictive();
+    console.log("predictiveBoard", predictiveBoard);
+    setPredictive(predictiveBoard);
     const newImages = predictiveBoard.images || [];
-    let allImages: Image[] = [];
+    let allImages: any[] = [];
     if (newImages) {
       allImages = [...newImages, ...initialImages];
     } else {
@@ -155,7 +195,7 @@ const PredictiveImagesScreen: React.FC = () => {
 
     const imagesToSet = uniqueImages.filter(
       (image) => image !== undefined
-    ) as Image[];
+    ) as any[];
 
     setImages(imagesToSet);
   };
@@ -265,12 +305,18 @@ const PredictiveImagesScreen: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent />
           </IonRefresher>
-          {predictive && (
+          {initialImages && (
             <PredictiveImageGallery
               predictiveBoard={predictive}
+              mode={boardImage?.mode || "static"}
+              imageType={imageType}
               initialImages={initialImages}
               onImageSpeak={handleImageSpeak}
               setImageId={setImageId}
+              inputRef={inputRef}
+              setShowLoading={setShowIcon}
+              setShowIcon={setShowIcon}
+              handleUpdateAudioList={handleUpdateAudioList}
             />
           )}
         </IonContent>
@@ -280,4 +326,4 @@ const PredictiveImagesScreen: React.FC = () => {
   );
 };
 
-export default PredictiveImagesScreen;
+export default PredictiveIndex;

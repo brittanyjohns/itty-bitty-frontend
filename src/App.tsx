@@ -42,7 +42,6 @@ import SelectGalleryScreen from "./pages/boards/SelectGalleryScreen";
 import SettingsPage from "./pages/users/SettingsPage";
 import NewScenario from "./pages/scenarios/NewScenario";
 import ViewMenuScreen from "./pages/menus/ViewMenuScreen";
-import PredictiveIndex from "./pages/predictive/PredictiveIndex";
 import TeamsScreen from "./pages/teams/TeamsScreen";
 import ViewTeamScreen from "./pages/teams/ViewTeamScreen";
 import ViewLockedBoard from "./pages/boards/ViewLockedBoard";
@@ -90,6 +89,7 @@ import AccountDashboard from "./pages/accounts/AccountDashboard";
 import ScenariosScreen from "./pages/scenarios/ScenariosScreen";
 import ViewScenario from "./pages/scenarios/ViewScenario";
 import SearchGoogleImages from "./pages/utils/SearchGoogleImages";
+import PredictiveIndex from "./pages/predictive/PredictiveIndex";
 
 const UserRoutes: React.FC = () => (
   <UserProvider>
@@ -190,12 +190,15 @@ const UserRoutes: React.FC = () => (
         <Route path="/images/add" component={NewImage} exact={true} />
         <Route path="/images" component={ImagesScreen} exact={true} />
 
-        <Route path="/predictive" component={PredictiveIndex} exact={true} />
-        <Route
-          path="/predictive/:id"
-          component={PredictiveIndex}
-          exact={true}
-        />
+        <Route path="/predictive">
+          <PredictiveIndex imageType="predictive" />
+        </Route>
+        <Route path="/images/:id/predictive">
+          <PredictiveIndex imageType="image" />
+        </Route>
+        <Route path="/board_images/:id/predictive">
+          <PredictiveIndex imageType="board_image" />
+        </Route>
 
         <Route path="/menus/:id" component={ViewMenuScreen} exact={true} />
         <Route path="/menus/new" component={NewMenu} exact={true} />
