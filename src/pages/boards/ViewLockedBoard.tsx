@@ -60,13 +60,6 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
 
       setBoard(board);
       setNumOfColumns(board.number_of_columns);
-
-      if (board?.status === "pending") {
-        console.log("Board is pending");
-        setTimeout(() => {
-          window.location.reload();
-        }, 3000);
-      }
     }
   };
 
@@ -76,6 +69,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
       return;
     }
     const text = image.label;
+    console.log("Image clicked", image);
     if (previousLabel === text) {
       console.log("Same label clicked", text);
     } else {

@@ -283,11 +283,12 @@ export async function removeDoc(
 
 export async function setNextWords(
   imageId: string,
-  nextWords?: string[]
+  nextWords?: string[],
+  run_job?: boolean
 ): Promise<any> {
   const response = await fetch(`${BASE_URL}images/${imageId}/set_next_words`, {
     headers: userHeaders,
-    body: JSON.stringify({ next_words: nextWords }),
+    body: JSON.stringify({ next_words: nextWords, run_job }),
     method: "POST",
   });
   return response.json();
@@ -363,6 +364,7 @@ export const saveTempDoc = async (
   query: string,
   imageId?: string
 ) => {
+  console.log("Save Temp Doc", imageUrl, query, imageId);
   const response = await fetch(`${BASE_URL}images/save_temp_doc`, {
     headers: userHeaders,
     method: "POST",

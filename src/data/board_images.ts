@@ -74,13 +74,14 @@ export const getBoardImagebyImageId = async (
 
 export async function setNextBoardImageWords(
   boardImageId: string,
-  nextWords?: string[]
+  nextWords?: string[],
+  run_job?: boolean
 ): Promise<BoardImage> {
   const response = await fetch(
     `${BASE_URL}board_images/${boardImageId}/set_next_words`,
     {
       headers: userHeaders,
-      body: JSON.stringify({ next_words: nextWords }),
+      body: JSON.stringify({ next_words: nextWords, run_job }),
       method: "POST",
     }
   );

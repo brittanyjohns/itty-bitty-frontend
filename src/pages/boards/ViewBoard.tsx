@@ -49,12 +49,12 @@ const ViewBoard: React.FC<any> = () => {
       setIsOpen(true);
       history.push("/boards");
       setShowLoading(false);
+      history.push("/boards");
       return;
     }
     const board = await getBoard(params.id);
     if (!board) {
       console.error("Error fetching board");
-      alert("Error fetching board");
       setShowLoading(false);
       return;
     }
@@ -88,7 +88,7 @@ const ViewBoard: React.FC<any> = () => {
       const board = await getBoard(params.id);
       if (!board) {
         console.error("Error fetching board");
-        alert("Error fetching board");
+        history.push("/boards");
         setShowLoading(false);
         return;
       }

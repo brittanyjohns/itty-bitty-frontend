@@ -54,6 +54,7 @@ const ImagesScreen: React.FC = () => {
 
   const fetchUserImages = async () => {
     const fetchedUserImages = await getUserImages();
+    console.log("User images: ", fetchedUserImages);
     setUserImages(fetchedUserImages);
   };
 
@@ -182,6 +183,16 @@ const ImagesScreen: React.FC = () => {
               placeholder="Search existing images"
             ></IonSearchbar>
           </div>
+          <div className="p-2 w-7/8 md:w-5/6 mx-auto">
+            <IonButton
+              className="w-full"
+              onClick={() =>
+                history.push(`/boards/${currentUser?.dynamic_board_id}`)
+              }
+            >
+              View Dynamic Images
+            </IonButton>
+          </div>
           {showCreateBtn && (
             <IonList>
               <IonItem slot="start" className="w-full">
@@ -200,6 +211,7 @@ const ImagesScreen: React.FC = () => {
               </IonItem>
             </IonList>
           )}
+
           <SelectImageGallery
             images={images}
             onLoadMoreImages={handleGetMoreImages}

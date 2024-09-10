@@ -30,6 +30,7 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
       setPage(1);
     }
     const imgs = await onLoadMoreImages(page, searchInput);
+    console.log("Images: ", imgs);
     setRemainingImages(imgs);
   };
 
@@ -43,7 +44,10 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
   }, [page, searchInput]);
 
   useEffect(() => {
-    setRemainingImages(images);
+    if (images) {
+      console.log("Images: ", images);
+      setRemainingImages(images);
+    }
   }, [images]);
 
   const handleOnImageClick = (event: any, image: Image) => {
@@ -87,6 +91,11 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
     setShowActionList(false);
   };
 
+  useEffect(() => {
+    // fetchUserBoards();
+    console.log("images: ", images);
+  }, []);
+
   return (
     <div className="h-full">
       <div>
@@ -104,10 +113,7 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
         </IonButtons>
       </div>
       <div className="mt-1">
-        <div
-          className="my-auto mx-auto grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-1"
-          key={remainingImages.length}
-        >
+        <div className="my-auto mx-auto grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-1">
           {remainingImages &&
             remainingImages.map((image, i) => (
               <div
@@ -141,11 +147,11 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
                 />
               </div>
             ))}
-          {remainingImages.length < 1 && (
+          {remainingImages && remainingImages.length < 1 && (
             <p className="col-span-3 text-center">No images found</p>
           )}
         </div>
-        {remainingImages.length > 12 && (
+        {remainingImages?.length > 12 && (
           <IonButtons class="flex justify-between w-full my-3 text-center">
             <IonButton
               disabled={page <= 1}

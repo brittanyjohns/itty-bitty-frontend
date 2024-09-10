@@ -37,6 +37,7 @@ export interface User {
   free_trial?: boolean;
   trial_days_left?: number;
   trial_expired?: boolean;
+  dynamic_board_id?: number;
 }
 export interface VoiceSetting {
   name?: string;

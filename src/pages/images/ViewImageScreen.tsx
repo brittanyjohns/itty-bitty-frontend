@@ -344,7 +344,7 @@ const ViewImageScreen: React.FC = () => {
       alert("Error cloning image.");
     }
   };
-  const handleAddNextWords = async () => {
+  const handleAddNextWords = async (run_job: boolean = false) => {
     let result;
     console.log("Setting next words...");
     console.log("Image: ", image);
@@ -355,9 +355,13 @@ const ViewImageScreen: React.FC = () => {
       (value, index, self) => self.indexOf(value) === index
     );
     if (boardImage) {
-      result = await setNextBoardImageWords(boardImage.id, newImageWords);
+      result = await setNextBoardImageWords(
+        boardImage.id,
+        newImageWords,
+        run_job
+      );
     } else if (image) {
-      result = await setNextWords(image.id, newImageWords);
+      result = await setNextWords(image.id, newImageWords, run_job);
     }
     // const result = await setNextWords(image.id, newImageWords);
     if (result["next_words"]) {
@@ -438,7 +442,7 @@ const ViewImageScreen: React.FC = () => {
     if (nextImageWords.length > 0) {
       return (
         <div className="mt-10 w-full md:w-3/4 mx-auto">
-          <h1 className="text-center mt-4">IMAGE Next Words</h1>
+          <h1 className="text-center mt-4"> Next Words</h1>
 
           <div className="flex justify-between">
             <IonButton
@@ -451,6 +455,14 @@ const ViewImageScreen: React.FC = () => {
               fill="outline"
             >
               View Predictive
+            </IonButton>
+            <IonButton
+              onClick={() => handleAddNextWords(true)}
+              className="text-sm font-mono"
+              slot="start"
+              fill="outline"
+            >
+              Set Next Words {boardImage?.id}
             </IonButton>
             <IonButton
               onClick={createSymbol}
@@ -488,7 +500,7 @@ const ViewImageScreen: React.FC = () => {
             image?.next_words &&
             image?.next_words?.length < 1 && (
               <IonButton
-                onClick={handleAddNextWords}
+                onClick={() => handleAddNextWords(false)}
                 className="text-sm font-mono"
                 slot="start"
                 fill="outline"
@@ -981,7 +993,8 @@ const ViewImageScreen: React.FC = () => {
                 {nextImageWords?.length > 0 && (
                   <div className="mt-2">
                     <IonText className="text-md">
-                      nextImageWords Next Words: {boardImage?.mode}
+                      {boardImage ? "BOARD IMAGE" : "IMAGE"} Next Words:{" "}
+                      {boardImage?.mode || "static"}
                     </IonText>
                     <div className="flex flex-wrap">
                       {nextImageWords.map((word, index) => (
@@ -1012,7 +1025,7 @@ const ViewImageScreen: React.FC = () => {
                 <div className="mt-2">
                   <IonButton
                     className="mt-2 w-full"
-                    onClick={handleAddNextWords}
+                    onClick={() => handleAddNextWords(false)}
                     fill="outline"
                   >
                     Add Word
