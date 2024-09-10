@@ -33,6 +33,7 @@ const BoardGrid = ({ boards, gridType, loadBoards }: BoardGridProps) => {
   };
 
   useEffect(() => {
+    console.log("Grid type", gridType);
     if (loadBoards) {
       loadBoards();
     }

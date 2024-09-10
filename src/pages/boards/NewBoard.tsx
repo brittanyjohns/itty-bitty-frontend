@@ -6,6 +6,8 @@ import {
   IonHeader,
   IonIcon,
   IonInput,
+  IonItem,
+  IonLoading,
   IonPage,
   IonTitle,
   IonToolbar,
@@ -22,18 +24,22 @@ import MainHeader from "../MainHeader";
 import Tabs from "../../components/utils/Tabs";
 import { NewBoardPayload } from "../../data/boards";
 const NewBoard: React.FC = (props: any) => {
-  // const handleSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   handleOnSubmit();
-  // };
+  const [wordList, setWordList] = React.useState<string[]>([]);
+  const submitBtnRef = useRef<HTMLIonButtonElement>(null);
+  const [showLoading, setShowLoading] = React.useState(false);
   const handleOnSubmit = async () => {
     if (!name) {
       alert("Please enter a name");
       return;
     }
+    setShowLoading(true);
+    submitBtnRef.current?.setAttribute("disabled", "true");
     const boardToCreate: NewBoardPayload = {
       name,
     };
+    if (wordList.length > 0) {
+      boardToCreate.word_list = wordList;
+    }
     const newBoard = await createBoard(boardToCreate);
     if (!newBoard) {
       console.error("Error creating board");
@@ -43,11 +49,15 @@ const NewBoard: React.FC = (props: any) => {
       props.history.push(`/boards/${newBoard.id}`);
     }
     setName("");
+    setWordList([]);
+    submitBtnRef.current?.removeAttribute("disabled");
+    setShowLoading(false);
     return;
   };
 
   useIonViewDidLeave(() => {
     setName("");
+    setWordList([]);
   });
 
   const scenarioBtnRef = useRef<HTMLIonButtonElement>(null);
@@ -74,6 +84,10 @@ const NewBoard: React.FC = (props: any) => {
     scratchDivRef.current?.classList.add("hidden");
   }, []);
 
+  useEffect(() => {
+    console.log("Word list: ", wordList);
+  }, [wordList]);
+
   const handleNameChange = (e: CustomEvent) => {
     setName(e.detail.value);
   };
@@ -94,6 +108,7 @@ const NewBoard: React.FC = (props: any) => {
       />
 
       <IonPage id="main-content">
+        <IonLoading message="Please wait..." isOpen={showLoading} />
         <MainHeader
           pageTitle="New Board"
           isWideScreen={isWideScreen}
@@ -112,20 +127,60 @@ const NewBoard: React.FC = (props: any) => {
               </span>
             </IonButton>
             <div className="hidden" ref={scratchDivRef}>
-              <IonInput
-                aria-label="Name"
-                placeholder="Name"
-                value={name}
-                onIonInput={handleNameChange}
-              />
+              <IonItem>
+                <IonInput
+                  aria-label="Name"
+                  placeholder="Name"
+                  value={name}
+                  onIonInput={handleNameChange}
+                />
+              </IonItem>
+              <IonItem>
+                <IonInput
+                  value={wordList.join(", ")}
+                  placeholder="Enter words separated by commas"
+                  onIonChange={(e) => {
+                    setWordList(e.detail.value!.split(","));
+                  }}
+                />
+              </IonItem>
+
               <IonButton
-                className=""
+                className="my-2"
                 type="submit"
                 expand="block"
                 onClick={handleOnSubmit}
+                ref={submitBtnRef}
               >
                 Create
               </IonButton>
+              <div className="text-sm">Example: cat, dog, fish, bird</div>
+              <div className="text-sm">
+                Leave blank to create a blank board <br></br> Words can be added
+                later
+              </div>
+              <hr></hr>
+              <div className="text-sm text-gray-500 my-2 p-2">
+                <h2 className="text-lg font-bold">Core words</h2>
+                <p className="text-sm text-gray-500">
+                  I, You, Up, Down, In, Out, On, Off, Stop, Go, Yes, No, More,
+                  Like, Don't like, Help, Want, Need, Have,
+                </p>
+              </div>
+              <div className="text-sm text-gray-500 my-2 p-2">
+                <h2 className="text-lg font-bold">Common phrases</h2>
+                <p className="text-sm text-gray-500">
+                  My name is, What is your name?, How are you?, I am fine, thank
+                  you, I need help, I am hungry, I am thirsty, I am tired
+                </p>
+              </div>
+              <div className="text-sm text-gray-500 my-2 p-2">
+                <h2 className="text-lg font-bold">Routine steps</h2>
+                <p className="text-sm text-gray-500">
+                  Brush teeth, Wash hands, Wash face, Take a bath, Take a
+                  shower, Comb hair, Brush hair, Put on clothes
+                </p>
+              </div>
             </div>
 
             <IonButton

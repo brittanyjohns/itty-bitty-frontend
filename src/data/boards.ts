@@ -6,6 +6,7 @@ export interface NewBoardPayload {
   name: string;
   description?: string;
   number_of_columns?: number;
+  word_list?: string[];
 }
 export interface Board {
   id: string;

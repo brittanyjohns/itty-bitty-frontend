@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   IonButton,
+  IonButtons,
   IonContent,
   IonHeader,
   IonIcon,
@@ -535,7 +536,7 @@ const ViewImageScreen: React.FC = () => {
                 )}
                 <IonIcon className="mt-2" icon={searchOutline} />
               </IonSegmentButton>
-              {showHardDelete && (
+              {/* {showHardDelete && (
                 <IonSegmentButton value="delete">
                   {!smallScreen ? (
                     <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
@@ -546,7 +547,7 @@ const ViewImageScreen: React.FC = () => {
                   )}
                   <IonIcon className="mt-2" icon={trashBinOutline} />
                 </IonSegmentButton>
-              )}
+              )} */}
             </IonSegment>
           </IonHeader>
           <div className="ion-justify-content-center ion-align-items-center ion-text-center pt-1">
@@ -564,15 +565,26 @@ const ViewImageScreen: React.FC = () => {
               )}
             </div>
             <div className="mt-4">
-              {currentUser && (
-                <IonButton
-                  onClick={() => setOpenAlert(true)}
-                  className="text-sm"
-                  fill="outline"
-                  size="small"
-                >
-                  Clone Image
-                </IonButton>
+              {currentUser && image?.can_edit && (
+                <IonButtons className="flex justify-center">
+                  <IonButton
+                    onClick={() => setOpenAlert(true)}
+                    className="text-sm"
+                    fill="outline"
+                    size="small"
+                  >
+                    Clone Image
+                  </IonButton>
+
+                  <IonButton
+                    className="mt-2 "
+                    color="danger"
+                    fill="outline"
+                    onClick={handleDeleteImage}
+                  >
+                    Delete Image
+                  </IonButton>
+                </IonButtons>
               )}
             </div>
             <InputAlert
@@ -643,6 +655,7 @@ const ViewImageScreen: React.FC = () => {
 
           <div className="mt-2 hidden" ref={imageGridWrapper}>
             {renderImageUserInfo(currentUser)}
+            <div className="w-full md:w-3/4 mx-auto"></div>
 
             {image && image.docs && image.docs.length > 0 && (
               <div className="w-full md:w-5/6 mx-auto text-center">
@@ -713,27 +726,29 @@ const ViewImageScreen: React.FC = () => {
               message={confirmDeleteDocMessage}
             />
 
-            <div className="mt-2 flex justify-center gap-1  w-full mx-auto mt-4 p-2">
-              {image && remainingBoards && remainingBoards.length > 0 && (
-                <div className="mx-auto w-1/2">
-                  <p className="text-md">Add this image to a board:</p>
-                  <BoardDropdown imageId={image.id} boards={remainingBoards} />
-                </div>
-              )}
-              {image?.user_boards && image?.user_boards?.length > 0 && (
-                <div className=" w-1/2">
-                  <p className="text-md">Remove this image from a board:</p>
-
-                  <div className="">
-                    <IonText className="text-md">
-                      This image is on the following boards:
+            <div className="mt-10 w-full md:w-3/4 mx-auto">
+              <div className="flex justify-center">
+                {image && remainingBoards && remainingBoards.length > 0 && (
+                  <div className="mx-3">
+                    <p className="text-sm">Add this image to a board:</p>
+                    <BoardDropdown
+                      imageId={image.id}
+                      boards={remainingBoards}
+                    />
+                  </div>
+                )}
+                {image?.user_boards && image?.user_boards?.length > 0 && (
+                  <div className="mx-3">
+                    <IonText className="text-sm">
+                      This image is currently being used by the following
+                      boards:
                     </IonText>
                     <IonList>
                       {image?.user_boards?.map((board) => (
                         <IonItem
                           key={board.id}
-                          // routerLink={`/boards/${board.id}`}
-                          className="text-sm font-mono"
+                          lines="none"
+                          className="text-sm font-bold mb-1 border rounded-lg"
                         >
                           <IonButton
                             className="text-sm font-md mx-2 w-full"
@@ -746,6 +761,7 @@ const ViewImageScreen: React.FC = () => {
                           <IonIcon
                             icon={trashBinOutline}
                             color="danger"
+                            className="hover:cursor-pointer"
                             slot="end"
                             onClick={() => handleConfirmRemoveFromBoard(board)}
                           />
@@ -753,8 +769,8 @@ const ViewImageScreen: React.FC = () => {
                       ))}
                     </IonList>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
             {currentUser?.admin && (
               <div className="mt-10 w-full md:w-3/4 mx-auto">
@@ -868,16 +884,7 @@ const ViewImageScreen: React.FC = () => {
             )}
           </div>
           <div className="hidden p-4" ref={deleteImageWrapper}>
-            {showHardDelete && (
-              <div className="m-4 pt-4 w-full md:w-1/2 mx-auto">
-                <IonText className="text-md">
-                  Do you want to delete this image AND all variations of it?
-                </IonText>
-                <IonButton className="mt-2 w-full" onClick={handleDeleteImage}>
-                  Delete Everything
-                </IonButton>
-              </div>
-            )}
+            <h1>Placeholder</h1>
           </div>
         </IonContent>
         <Tabs />

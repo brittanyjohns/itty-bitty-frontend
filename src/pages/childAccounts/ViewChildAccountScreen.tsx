@@ -98,7 +98,7 @@ const ViewChildAccountScreen: React.FC = () => {
     if (!currentUser) {
       setLoading(false);
       console.log("No current user");
-      return;
+      // return;
     }
     let events: WordEvent[] = [];
 
@@ -115,11 +115,6 @@ const ViewChildAccountScreen: React.FC = () => {
     fetchUserBoards();
     loadWordEvents();
   }, []);
-  // useEffect(() => {
-  //   fetchChildAccount();
-  //   fetchUserBoards();
-  //   loadWordEvents();
-  // }, [currentUser]);
 
   const handleSegmentChange = (e: CustomEvent) => {
     const newSegment = e.detail.value;

@@ -44,6 +44,7 @@ export interface Image {
   created_at?: string;
   updated_at?: string;
   audio_files?: any[];
+  can_edit?: boolean;
 }
 
 export interface DraggableGridLayout {

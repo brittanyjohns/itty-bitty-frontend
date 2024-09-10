@@ -13,7 +13,7 @@ import {
   useIonViewWillEnter,
 } from "@ionic/react";
 
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import React from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { Team } from "../../data/teams";
@@ -35,6 +35,9 @@ const ViewBoardGroup: React.FC<ViewBoardGroupProps> = ({ locked }) => {
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [currentUserTeams, setCurrentUserTeams] = useState<Team[]>();
   const { isWideScreen, currentAccount, currentUser } = useCurrentUser();
+  const history = useHistory();
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [toastMessage, setToastMessage] = React.useState("");
 
   const fetchBoardGroup = async () => {
     const boardGroup = await getBoardGroup(params.id);
@@ -42,8 +45,9 @@ const ViewBoardGroup: React.FC<ViewBoardGroupProps> = ({ locked }) => {
 
     if (!boardGroup) {
       console.error("Error fetching boardGroup");
-      setShowLoading(false);
-      alert("Error fetching boardGroup");
+      setToastMessage("Error fetching group");
+      setIsOpen(true);
+      history.push("/board_groups");
       return;
     }
 

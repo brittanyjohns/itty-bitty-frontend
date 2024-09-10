@@ -110,6 +110,15 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
       setCurrentLayout(layout);
     }
   };
+
+  const handleBreakpointChange = (newBreakpoint: string, newCols: number) => {
+    console.log("Breakpoint change: ", newBreakpoint, newCols);
+    setCurrentScreenSize(newBreakpoint);
+    setCurrentNumberOfColumns(newCols);
+    if (updateScreenSize) {
+      updateScreenSize(newBreakpoint);
+    }
+  };
   return (
     <ResponsiveGridLayout
       className="layout"
@@ -131,11 +140,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
       compactType={compactType}
       preventCollision={preventCollision}
       onBreakpointChange={(newBreakpoint, newCols) => {
-        setCurrentNumberOfColumns(newCols);
-        setCurrentScreenSize(newBreakpoint);
-        if (updateScreenSize) {
-          updateScreenSize(newBreakpoint, newCols);
-        }
+        handleBreakpointChange(newBreakpoint, newCols);
       }}
     >
       {images.map((img: any, index: number) => (

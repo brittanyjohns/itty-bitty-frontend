@@ -54,8 +54,10 @@ const ViewBoard: React.FC<any> = () => {
     const board = await getBoard(params.id);
     if (!board) {
       console.error("Error fetching board");
-      alert("Error fetching board");
-      setShowLoading(false);
+      console.error("Error fetching board");
+      setToastMessage("Error fetching board");
+      setIsOpen(true);
+      history.push("/boards");
       return;
     }
 
@@ -87,9 +89,11 @@ const ViewBoard: React.FC<any> = () => {
     async function load() {
       const board = await getBoard(params.id);
       if (!board) {
-        console.error("Error fetching board");
-        alert("Error fetching board");
         setShowLoading(false);
+        console.error("Error fetching board");
+        setToastMessage("Error fetching board");
+        setIsOpen(true);
+        history.push("/boards");
         return;
       }
       if (!board.layout) {
