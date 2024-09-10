@@ -161,7 +161,8 @@ const EditBoardScreen: React.FC = () => {
 
   useEffect(() => {
     loadPage();
-  }, []);
+    console.log("Loading page");
+  }, [id]);
 
   const toggleForms = (segmentType: string) => {
     if (segmentType === "edit") {

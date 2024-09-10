@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { IonLabel, IonButton, IonInput } from "@ionic/react";
 
-import { ChildAccount, createChildAccount } from "../../data/child_accounts";
+import {
+  ChildAccount,
+  createChildAccount,
+  updateChildAccount,
+} from "../../data/child_accounts";
 import { User } from "../../data/users";
 import { useHistory } from "react-router";
+import { set } from "d3";
 
 interface ChildAccountFormProps {
   // onSave: () => void;
@@ -32,17 +37,27 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
   );
 
   const onSave = async () => {
+    let childAccountResult: ChildAccount;
+    if (password !== passwordConfirmation) {
+      alert("Password and Password Confirmation do not match");
+      return;
+    }
+    if (!currentUser?.id) {
+      alert("Please sign in");
+      return;
+    }
     if (existingChildAccount) {
       // updateChildAccount();
+      console.log("updateChildAccount");
+      childAccountResult = await updateChildAccount({
+        ...existingChildAccount,
+        name: name,
+        username: username,
+        password: password,
+        password_confirmation: passwordConfirmation,
+      });
+      console.log("childAccountResult", childAccountResult);
     } else {
-      if (password !== passwordConfirmation) {
-        alert("Password and Password Confirmation do not match");
-        return;
-      }
-      if (!currentUser?.id) {
-        alert("Please sign in");
-        return;
-      }
       const childAccount: ChildAccount = {
         name: name,
         username: username,
@@ -50,26 +65,21 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
         password: password,
         password_confirmation: passwordConfirmation,
       };
-      const childAccountCreateResult = await createChildAccount(childAccount);
-      if (
-        childAccountCreateResult.errors &&
-        childAccountCreateResult.errors.length > 0
-      ) {
-        setChildAccount(childAccountCreateResult);
-        alert(
-          `Error creating child account: ${childAccountCreateResult.errors}`
-        );
-      } else {
-        alert("Child Account created successfully");
+      childAccountResult = await createChildAccount(childAccount);
+      if (childAccountResult.errors && childAccountResult.errors.length > 0) {
+        alert(`Error updating child account: ${childAccountResult.errors}`);
         history.push("/child-accounts");
         window.location.reload();
+      } else {
+        setChildAccount(childAccountResult);
       }
     }
   };
 
   const onCancel = () => {
-    // history.push("/child_accounts");
-    window.location.reload();
+    history.push("/child_accounts");
+    setChildAccount(null);
+    // window.location.reload();
   };
 
   useEffect(() => {

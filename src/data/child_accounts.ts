@@ -17,6 +17,7 @@ export interface ChildAccount {
   settings?: any; // TODO: Define Settings interface
   error?: string;
   parent_name?: string;
+  passcode?: string;
 }
 
 export async function createChildAccount(
@@ -29,6 +30,22 @@ export async function createChildAccount(
   };
   const response = await fetch(
     `${BASE_URL}users/${payload.user_id}/child_accounts`,
+    requestInfo
+  );
+  const result = await response.json();
+  return result;
+}
+
+export async function updateChildAccount(
+  payload: ChildAccount
+): Promise<ChildAccount> {
+  const requestInfo = {
+    method: "PUT",
+    headers: userHeaders,
+    body: JSON.stringify(payload),
+  };
+  const response = await fetch(
+    `${BASE_URL}users/${payload.user_id}/child_accounts/${payload.id}`,
     requestInfo
   );
   const result = await response.json();

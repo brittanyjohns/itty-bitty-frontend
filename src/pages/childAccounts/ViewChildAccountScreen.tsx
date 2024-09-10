@@ -16,6 +16,8 @@ import {
   IonSpinner,
   IonLabel,
   IonItem,
+  IonInput,
+  IonInputPasswordToggle,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
 import { getChildAccount, ChildAccount } from "../../data/child_accounts"; // Adjust imports based on actual functions
@@ -51,6 +53,7 @@ const ViewChildAccountScreen: React.FC = () => {
   const history = useHistory();
   const [wordEvents, setWordEvents] = useState<WordEvent[]>([]);
   const { currentUser, currentAccount, isWideScreen } = useCurrentUser();
+  const [showPasscode, setShowPasscode] = useState(false);
 
   const fetchChildAccount = async () => {
     if (!currentUser?.id) {
@@ -97,12 +100,9 @@ const ViewChildAccountScreen: React.FC = () => {
     setLoading(true);
     if (!currentUser) {
       setLoading(false);
-      console.log("No current user");
       // return;
     }
     let events: WordEvent[] = [];
-
-    console.log("Fetching word events for account: ", id);
 
     events = await fetchWordEventsByAccountId(Number(id));
     console.log("Word Events: ", events);
@@ -201,13 +201,10 @@ const ViewChildAccountScreen: React.FC = () => {
             </IonSegment>
           )}
           {segmentType === "childAccountTab" && (
-            <div className="mt-4">
-              <h1 className="text-2xl text-center">
-                {childAccount?.name || childAccount?.username}'s Account
-              </h1>
+            <div className="pt-4">
               {childAccount && (
-                <div className="w-full md:w-2/3 mx-auto">
-                  <IonList>
+                <div className="w-full md:w-2/3 mx-auto p-4 border mt-4">
+                  <IonList className="p-4">
                     <IonItem className="flex justify-between">
                       <IonLabel className="text-2xl"> Name</IonLabel>
                       <IonText>{childAccount.name}</IonText>
@@ -216,9 +213,16 @@ const ViewChildAccountScreen: React.FC = () => {
                       <IonLabel className="text-2xl"> Username</IonLabel>
                       <IonText>{childAccount.username}</IonText>
                     </IonItem>
+
                     <IonItem>
-                      <IonLabel># of Boards</IonLabel>
-                      <IonText>{childAccount.boards?.length}</IonText>
+                      <IonInput
+                        type="password"
+                        label="Passcode"
+                        labelPlacement="stacked"
+                        value={childAccount.passcode}
+                      >
+                        <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
+                      </IonInput>
                     </IonItem>
                   </IonList>
                 </div>
@@ -242,14 +246,18 @@ const ViewChildAccountScreen: React.FC = () => {
                 )}
               </div>
               <div className="mt-4">
-                <h1 className="text-2xl text-center mt-4">
-                  Currently Assigned Boards
-                </h1>
-                <BoardGrid
-                  boards={boards}
-                  gridType="child"
-                  loadBoards={fetchChildAccount}
-                />
+                {boards.length > 0 && (
+                  <h1 className="text-2xl text-center mt-4">
+                    Currently Assigned Boards
+                  </h1>
+                )}
+                <div className="w-full md:w-3/4 mx-auto">
+                  <BoardGrid
+                    boards={boards}
+                    gridType="child"
+                    loadBoards={fetchChildAccount}
+                  />
+                </div>
               </div>
             </div>
           )}

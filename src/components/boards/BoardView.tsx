@@ -189,7 +189,6 @@ const BoardView: React.FC<BoardViewProps> = ({
           setShowLoading={setShowLoading}
           showLoading={showLoading}
           updateScreenSize={(newScreenSize: string, newCols: number) => {
-            console.log("Breakpoint change: ", newScreenSize, newCols);
             setCurrentNumberOfColumns(newCols);
             setCurrentScreenSize(newScreenSize);
           }}

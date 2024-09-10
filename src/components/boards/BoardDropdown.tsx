@@ -46,7 +46,7 @@ const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId, boards }) => {
         setShowLoading(false);
         setIsOpen(true);
         setBoardId(response["board"]["id"]);
-        history.push(`/boards/${response["board"]["id"]}`);
+        history.push(`/boards/${response["board"]["id"]}/edit`);
       }
     }
     addSelectedImageToBoard();

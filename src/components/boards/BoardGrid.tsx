@@ -40,35 +40,36 @@ const BoardGrid = ({ boards, gridType, loadBoards }: BoardGridProps) => {
   }, [currentBoards]);
 
   return (
-    <div
-      className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-1"
-      ref={gridRef}
-    >
-      {boards &&
-        boards.map((board, i) => (
-          <div
-            id={board.id}
-            className="rounded-md flex relative p-2"
-            key={board.id}
-          >
-            <BoardGridItem
-              board={board}
-              gridType={gridType}
-              showRemoveBtn={currentUser && gridType === "child" ? true : false}
-              removeChildBoard={handleRemoveBoard}
-            />
-          </div>
-        ))}
+    <>
+      <div
+        className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-1 mb-3"
+        ref={gridRef}
+      >
+        {boards &&
+          boards.map((board, i) => (
+            <div
+              id={board.id}
+              className="rounded-md flex relative p-2"
+              key={board.id}
+            >
+              <BoardGridItem
+                board={board}
+                gridType={gridType}
+                showRemoveBtn={
+                  currentUser && gridType === "child" ? true : false
+                }
+                removeChildBoard={handleRemoveBoard}
+              />
+            </div>
+          ))}
+      </div>
       {currentUser && boards?.length === 0 && (
-        <div className="text-center">
+        <div className="w-full mx-auto text-center">
           <p className="text-lg">No boards found</p>
-
-          <IonButton routerLink="/boards/new" color="primary">
-            Create a new board
-          </IonButton>
+          <p className="text-sm">Create a new board to get started</p>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
