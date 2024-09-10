@@ -267,3 +267,31 @@ export async function cloneBoard(id: string): Promise<Board> {
   const board: Board = await response.json();
   return board;
 }
+
+export async function createAdditionalImages(
+  id: string,
+  number: number
+): Promise<any> {
+  const requestInfo = {
+    method: "POST",
+    headers: userHeaders,
+    body: JSON.stringify({ number }),
+  };
+  const response = await fetch(
+    `${BASE_URL}boards/${id}/create_additional_images`,
+    requestInfo
+  );
+  const board: Board = await response.json();
+  return board;
+}
+
+export async function getAddionalImages(id: string, number: number) {
+  const response = await fetch(
+    `${BASE_URL}boards/${id}/additional_words?num_of_words=${number}`,
+    {
+      headers: userHeaders,
+    }
+  );
+  const images: any = await response.json();
+  return images;
+}

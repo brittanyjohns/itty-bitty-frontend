@@ -10,6 +10,8 @@ import {
   IonList,
   IonLoading,
   IonPage,
+  IonSelect,
+  IonSelectOption,
   IonText,
   IonTextarea,
   IonToast,
@@ -17,6 +19,7 @@ import {
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
 import {
+  add,
   appsOutline,
   arrowBackCircleOutline,
   contractOutline,
@@ -32,6 +35,8 @@ import {
   saveLayout,
   rearrangeImages,
   deleteBoard,
+  createAdditionalImages,
+  getAddionalImages,
 } from "../../data/boards"; // Adjust imports based on actual functions
 import { generateImage } from "../../data/images";
 import { Image } from "../../data/images";
@@ -45,6 +50,7 @@ import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import ConfirmAlert from "../../components/utils/ConfirmAlert";
 import { getScreenSizeName } from "../../data/utils";
+import { set } from "d3";
 
 const EditBoardScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -61,6 +67,8 @@ const EditBoardScreen: React.FC = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isToastOpen, setIsToastOpen] = useState(false);
+  const [additionalWords, setAdditionalWords] = useState<string[]>([]);
+  const [numberOfWords, setNumberOfWords] = useState(15);
   const [loadingMessage, setLoadingMessage] = useState("Loading board");
   const {
     currentUser,
@@ -246,6 +254,41 @@ const EditBoardScreen: React.FC = () => {
     history.push(`/boards/${board?.id}`);
   };
 
+  const handleCreateAdditionalImages = async () => {
+    setLoadingMessage("Creating additional images");
+    setShowLoading(true);
+    if (!board?.id) {
+      console.error("Board ID is missing");
+      return;
+    }
+    const updatedBoard = await createAdditionalImages(board?.id, numberOfWords);
+    setBoard(updatedBoard);
+    setShowLoading(false);
+    const message = "Additional images created";
+    setToastMessage(message);
+    setIsToastOpen(true);
+    // history.push(`/boards/${board?.id}`);
+  };
+
+  const handleGetAdditionalImages = async () => {
+    setLoadingMessage("Getting additional images");
+    setShowLoading(true);
+    if (!board?.id) {
+      console.error("Board ID is missing");
+      return;
+    }
+    const result = await getAddionalImages(board?.id, numberOfWords);
+    const words = result["additional_words"];
+    setAdditionalWords(words);
+    setShowLoading(false);
+
+    const message = "Additional images created";
+    setToastMessage(message);
+    setIsToastOpen(true);
+
+    // history.push(`/boards/${board?.id}`);
+  };
+
   useEffect(() => {
     setGridLayout(currentLayout);
   }, [currentLayout]);
@@ -281,7 +324,7 @@ const EditBoardScreen: React.FC = () => {
             <div className="w-11/12 lg:w-1/2 mx-auto">
               <div className=" mt-5 text-center">
                 <IonButton
-                  size="large"
+                  size="default"
                   fill="outline"
                   routerLink={`/boards/${id}`}
                 >
@@ -289,6 +332,45 @@ const EditBoardScreen: React.FC = () => {
                   <p className="font-bold my-2">Return to board</p>
                 </IonButton>
               </div>
+              {currentUser?.admin && (
+                <div className=" mt-5 text-center">
+                  <IonButtons>
+                    <IonButton
+                      onClick={handleCreateAdditionalImages}
+                      size="default"
+                      fill="outline"
+                    >
+                      {" "}
+                      <p className="font-bold my-2">
+                        Create {numberOfWords} additional images
+                      </p>
+                    </IonButton>
+                    <IonButton
+                      onClick={handleGetAdditionalImages}
+                      size="default"
+                      fill="outline"
+                    >
+                      {" "}
+                      <p className="font-bold my-2">Get additional words</p>
+                    </IonButton>
+                    <IonSelect
+                      label="Number of words"
+                      labelPlacement="stacked"
+                      className="w-1/2 md:w-1/4 mx-auto"
+                      value={numberOfWords}
+                      placeholder="Select number of words"
+                      onIonChange={(e) => setNumberOfWords(e.detail.value)}
+                    >
+                      <IonSelectOption value={5}>5</IonSelectOption>
+                      <IonSelectOption value={10}>10</IonSelectOption>
+                      <IonSelectOption value={15}>15</IonSelectOption>
+                      <IonSelectOption value={20}>20</IonSelectOption>
+                      <IonSelectOption value={25}>25</IonSelectOption>
+                      <IonSelectOption value={30}>30</IonSelectOption>
+                    </IonSelect>
+                  </IonButtons>
+                </div>
+              )}
               <h1 className="text-center text-2xl font-bold">
                 Editing {board?.name || "Board"}
               </h1>
@@ -306,6 +388,20 @@ const EditBoardScreen: React.FC = () => {
                   <p className="text-center font-bold text-lg">
                     This board currently has {board.images.length} images.
                   </p>
+
+                  {currentUser?.admin && (
+                    <div className="p-4">
+                      <h1 className="text-center text-2xl font-bold">
+                        {additionalWords.length} additional words
+                      </h1>
+                      {additionalWords &&
+                        additionalWords.map((word, index) => (
+                          <span key={index} className="mx-1">
+                            {word}
+                          </span>
+                        ))}
+                    </div>
+                  )}
                   <p className="text-center font-mono text-md">
                     Drag and drop to rearrange the layout.
                   </p>
