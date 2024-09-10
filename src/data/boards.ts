@@ -275,7 +275,7 @@ export async function createAdditionalImages(
   const requestInfo = {
     method: "POST",
     headers: userHeaders,
-    body: JSON.stringify({ number }),
+    body: JSON.stringify({ num_of_words: number }),
   };
   const response = await fetch(
     `${BASE_URL}boards/${id}/create_additional_images`,
