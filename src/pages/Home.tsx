@@ -96,7 +96,7 @@ const Home: React.FC = () => {
           )}
           <Footer />
         </IonContent>
-        <Tabs />
+        {currentUser && <Tabs />}
 
         {/* {currentUser && !isWideScreen && <Tabs />} */}
       </IonPage>
