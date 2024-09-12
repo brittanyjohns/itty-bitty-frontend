@@ -78,19 +78,6 @@ const Footer: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="mt-8 text-center text-gray-500">
-        <p className="text-sm">
-          Built with <span className="text-xs">❤️ </span> by{" "}
-          <a
-            href="https://brittanyjohns.dev"
-            className="hover:underline text-white"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Brittany Johns
-          </a>
-        </p>
-      </div>
     </footer>
   );
 };
