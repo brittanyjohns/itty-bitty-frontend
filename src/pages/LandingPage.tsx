@@ -39,11 +39,7 @@ const LandingPage: React.FC = () => {
           </IonButtons>
         </div>
 
-        <div className="xfixed-bg rounded-lg shadow-lg xbg-white bg-opacity-95 p-4 md:p-8 lg:p-8 mt-2">
-          <div className="flex justify-center items-center p-4">
-            {/* <InlineSignUp plan="free" /> */}
-          </div>
-        </div>
+        <div className="xfixed-bg rounded-lg shadow-lg xbg-white bg-opacity-95 p-4 md:p-8 lg:p-8 mt-2"></div>
       </div>
 
       {/* Features Section */}
@@ -51,17 +47,13 @@ const LandingPage: React.FC = () => {
         id="features"
         className="pb-6 pt-6 px-6 bg-black text-white bg-opacity-85 blur-box"
       >
-        <h2 className="text-4xl font-bold text-center mb-8">Features</h2>
-        <h3 className="text-xl md:text-2xl md:text-2xl font-serif font-bold mb-4 pb-2 text-center">
+        <h2 className="text-2xl  md:text-3xl lg:text-4xl font-bold text-center mb-8">
+          Features
+        </h2>
+        <h3 className="text-xl md:text-2xl lg:text-3xl font-bold mb-4 pb-2 text-center">
           Multiple ways of creating a communication board
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
-          <img
-            src={getImageUrl(`image_5`, "webp")}
-            alt="Communication board creation"
-            className="h-80 object-contain hover:object-scale-down rounded-lg shadow-md mx-auto"
-          />
-
           <div className="text-white p-1 rounded-lg shadow-md">
             <ul className="list-none">
               <li className="mt-2 p-2 rounded-lg shadow-md border">
@@ -103,6 +95,11 @@ const LandingPage: React.FC = () => {
               </li>
             </ul>
           </div>
+          <img
+            src={getImageUrl(`image_5`, "webp")}
+            alt="Communication board creation"
+            className="h-80 object-contain hover:object-scale-down rounded-lg shadow-md mx-auto"
+          />
         </div>
       </section>
 
@@ -111,7 +108,7 @@ const LandingPage: React.FC = () => {
         id="custom-boards"
         className="pb-12 pt-6 px-6 bg-black text-white bg-opacity-85 blur-box"
       >
-        <h3 className="text-xl md:text-2xl md:text-2xl font-serif font-bold mb-4 pb-2 text-center">
+        <h3 className="text-xl md:text-3xl lg:text-4xl font-bold mb-4 pb-2 text-center">
           Customizable Communication Boards
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
@@ -180,7 +177,7 @@ const LandingPage: React.FC = () => {
         id="custom-boards"
         className="pb-12 pt-6 px-6 bg-black text-white bg-opacity-85 blur-box"
       >
-        <h3 className="text-xl md:text-2xl md:text-2xl font-serif font-bold mb-4 pb-2 text-center">
+        <h3 className="text-xl md:text-3xl lg:text-4xl font-bold mb-4 pb-2 text-center">
           Easily Add Images to Your Boards
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
@@ -250,7 +247,7 @@ const LandingPage: React.FC = () => {
         id="custom-boards"
         className="pb-12 pt-6 px-6 bg-black text-white bg-opacity-85 blur-box"
       >
-        <h3 className="text-xl md:text-2xl md:text-2xl font-serif font-bold mb-4 pb-2 text-center">
+        <h3 className="text-xl md:text-3xl lg:text-4xl font-bold mb-4 pb-2 text-center">
           Child Account Management
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
