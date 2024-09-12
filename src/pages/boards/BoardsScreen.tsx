@@ -39,7 +39,7 @@ import StaticMenu from "../../components/main_menu/StaticMenu";
 const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   const { currentAccount, currentUser, isWideScreen } = useCurrentUser();
   const [boards, setBoards] = useState<Board[]>([]);
-  const [childBoards, setChildBoards] = useState<ChildBoard[]>([]);
+  const [childBoards, setChildBoards] = useState<any[]>([]);
   const [presetBoards, setPresetBoards] = useState<Board[]>([]);
   const [userBoards, setUserBoards] = useState<Board[]>([]);
   const [scenarioBoards, setScenarioBoards] = useState<Board[]>([]);

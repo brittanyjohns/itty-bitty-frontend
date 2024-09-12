@@ -110,9 +110,9 @@ const ViewBoard: React.FC<any> = () => {
 
   useEffect(() => {
     if (board) {
-      if (smallScreen) setNumOfColumns(board.small_screen_columns);
-      else if (mediumScreen) setNumOfColumns(board.medium_screen_columns);
-      else if (largeScreen) setNumOfColumns(board.large_screen_columns);
+      if (smallScreen) setNumOfColumns(board?.small_screen_columns || 4);
+      else if (mediumScreen) setNumOfColumns(board?.medium_screen_columns || 4);
+      else if (largeScreen) setNumOfColumns(board?.large_screen_columns || 4);
     }
   }, [smallScreen, mediumScreen, largeScreen, board]);
 
