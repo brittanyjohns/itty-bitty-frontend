@@ -129,6 +129,7 @@ export const updateBoard = (board: Board | ChildBoard) => {
     medium_screen_columns: board.medium_screen_columns,
     large_screen_columns: board.large_screen_columns,
     voice: board.voice,
+    display_image_url: board.display_image_url,
   };
   const updatedBoard = fetch(`${BASE_URL}boards/${board.id}`, {
     method: "PUT",

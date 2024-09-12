@@ -173,27 +173,30 @@ const BoardView: React.FC<BoardViewProps> = ({
         screens ({currentNumberOfColumns} columns).
       </IonLabel>
 
-      {board && board.images && board.images.length > 0 && (
-        <DraggableGrid
-          images={board.images}
-          board={board}
-          setShowIcon={setShowIcon}
-          inputRef={inputRef}
-          columns={currentNumberOfColumns}
-          disableReorder={true}
-          mute={true}
-          viewOnClick={true}
-          showRemoveBtn={shouldShowRemoveBtn}
-          setCurrentLayout={handleCurrentLayout}
-          preventCollision={true}
-          setShowLoading={setShowLoading}
-          showLoading={showLoading}
-          updateScreenSize={(newScreenSize: string, newCols: number) => {
-            setCurrentNumberOfColumns(newCols);
-            setCurrentScreenSize(newScreenSize);
-          }}
-        />
-      )}
+      {currentBoard &&
+        currentBoard.images &&
+        currentBoard.images.length > 0 && (
+          <DraggableGrid
+            images={board.images}
+            board={currentBoard}
+            setBoard={setBoard}
+            setShowIcon={setShowIcon}
+            inputRef={inputRef}
+            columns={currentNumberOfColumns}
+            disableReorder={true}
+            mute={true}
+            viewOnClick={true}
+            showRemoveBtn={shouldShowRemoveBtn}
+            setCurrentLayout={handleCurrentLayout}
+            preventCollision={true}
+            setShowLoading={setShowLoading}
+            showLoading={showLoading}
+            updateScreenSize={(newScreenSize: string, newCols: number) => {
+              setCurrentNumberOfColumns(newCols);
+              setCurrentScreenSize(newScreenSize);
+            }}
+          />
+        )}
 
       {imageCount && imageCount < 1 && (
         <div className="text-center pt-32">

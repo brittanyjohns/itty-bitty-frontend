@@ -536,18 +536,6 @@ const ViewImageScreen: React.FC = () => {
                 )}
                 <IonIcon className="mt-2" icon={searchOutline} />
               </IonSegmentButton>
-              {/* {showHardDelete && (
-                <IonSegmentButton value="delete">
-                  {!smallScreen ? (
-                    <IonLabel className="text-sm md:text-md lg:text-lg mb-2">
-                      Delete
-                    </IonLabel>
-                  ) : (
-                    <IonLabel className="text-sm md:text-md lg:text-lg mb-2"></IonLabel>
-                  )}
-                  <IonIcon className="mt-2" icon={trashBinOutline} />
-                </IonSegmentButton>
-              )} */}
             </IonSegment>
           </IonHeader>
           <div className="ion-justify-content-center ion-align-items-center ion-text-center pt-1">
@@ -670,7 +658,7 @@ const ViewImageScreen: React.FC = () => {
                   {image?.docs &&
                     image.docs.map((doc, index) => (
                       <div
-                        key={doc.id}
+                        key={index}
                         className={` ${
                           image.bg_color || "bg-white"
                         } relative p-2 rounded-lg shadow-md`}

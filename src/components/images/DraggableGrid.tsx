@@ -33,6 +33,7 @@ interface DraggableGridProps {
   screenSize?: string;
   setShowLoading: any;
   showLoading?: boolean;
+  setBoard?: any;
 }
 const DraggableGrid: React.FC<DraggableGridProps> = ({
   images,
@@ -55,6 +56,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   screenSize,
   setShowLoading,
   showLoading,
+  setBoard,
 }) => {
   const [width, setWidth] = useState(window.innerWidth);
   const [rowHeight, setRowHeight] = useState(160);
@@ -96,9 +98,10 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
 
       const savedBoard = await updateBoard(updatingBoard);
       setShowLoading(false);
-      window.location.reload();
+      // window.location.reload();
+      console.log("Response: ", savedBoard);
       // alert("Response: " + savedBoard);
-      // setBoard(savedBoard);
+      setBoard(savedBoard);
     }
   };
 
