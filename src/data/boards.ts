@@ -15,10 +15,10 @@ export interface Board {
   predefined?: boolean;
   parent_type?: string;
   display_image_url?: string | null;
-  number_of_columns: number;
-  small_screen_columns: number;
-  medium_screen_columns: number;
-  large_screen_columns: number;
+  number_of_columns?: number;
+  small_screen_columns?: number;
+  medium_screen_columns?: number;
+  large_screen_columns?: number;
   images?: Image[];
   error?: string;
   floating_words?: string[];
@@ -33,6 +33,7 @@ export interface Board {
   layout?: any;
   bg_color?: string;
   audio_url?: string;
+  word_list?: string[];
 }
 
 // export interface PredictiveBoard {
@@ -51,19 +52,6 @@ export const getBoards = () => {
 
   return boards;
 };
-
-// export const updateGridSize = (id: string, size: number) => {
-//     const updatedBoard = fetch(`${BASE_URL}boards/${id}/update_grid_size`, {
-//         method: 'PUT',
-//         headers: userHeaders,
-//         body: JSON.stringify({ number_of_columns: size }),
-//     })
-//         .then(response => response.json())
-//         .then(data => data)
-//         .catch(error => console.error('Error updating board: ', error));
-
-//     return updatedBoard;
-// }
 
 export const saveLayout = (id: string, layout: any, screen_size: string) => {
   const updatedBoard = fetch(`${BASE_URL}boards/${id}/save_layout`, {
@@ -133,10 +121,19 @@ export async function createBoard(board: NewBoardPayload): Promise<Board> {
 }
 
 export const updateBoard = (board: Board | ChildBoard) => {
+  const payload = {
+    name: board.name,
+    description: board.description,
+    number_of_columns: board.number_of_columns,
+    small_screen_columns: board.small_screen_columns,
+    medium_screen_columns: board.medium_screen_columns,
+    large_screen_columns: board.large_screen_columns,
+    voice: board.voice,
+  };
   const updatedBoard = fetch(`${BASE_URL}boards/${board.id}`, {
     method: "PUT",
     headers: userHeaders,
-    body: JSON.stringify(board),
+    body: JSON.stringify({ board: payload, word_list: board.word_list }),
   })
     .then((response) => response.json())
     .then((data) => data)
@@ -285,7 +282,7 @@ export async function createAdditionalImages(
   return board;
 }
 
-export async function getAddionalImages(id: string, number: number) {
+export async function getAdditionalWords(id: string, number: number) {
   const response = await fetch(
     `${BASE_URL}boards/${id}/additional_words?num_of_words=${number}`,
     {
@@ -294,4 +291,15 @@ export async function getAddionalImages(id: string, number: number) {
   );
   const images: any = await response.json();
   return images;
+}
+
+export async function getWords(name: string, number: number) {
+  const response = await fetch(
+    `${BASE_URL}boards/words?name=${name}&num_of_words=${number}`,
+    {
+      headers: userHeaders,
+    }
+  );
+  const words: any = await response.json();
+  return words;
 }

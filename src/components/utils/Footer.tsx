@@ -9,8 +9,8 @@ import {
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-gray-900 text-white py-4 px-2">
-      <div className=" mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="bg-gray-900 text-white py-4 px-4 md:pl-8 lg:pl-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
         {/* Company Info */}
         <div>
           <h2 className="text-xl font-bold mb-4">SpeakAnyWay</h2>
@@ -21,57 +21,35 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Quick Links */}
-        <div>
+        <div className="text-white">
           <h2 className="text-xl font-semibold mb-4">Quick Links</h2>
-          <ul>
+          <ul className="list-[square] list-inside">
             <li className="mb-2">
-              <a href="/about" className="hover:underline">
+              <a href="/about" className="hover:underline text-white">
                 About Us
               </a>
             </li>
             <li className="mb-2">
-              <a href="/pricing" className="hover:underline">
+              <a href="/pricing" className="hover:underline text-white">
                 Pricing
               </a>
             </li>
-            {/* <li className="mb-2">
-              <a href="/blog" className="hover:underline">
-                Blog
-              </a>
-            </li> */}
             <li className="mb-2">
-              <a href="/contact-us" className="hover:underline">
+              <a href="/contact-us" className="hover:underline text-white">
                 Contact
               </a>
             </li>
             <li className="mb-2">
-              <a href="/privacy" className="hover:underline">
+              <a href="/privacy" className="hover:underline text-white">
                 Privacy Policy
               </a>
             </li>
             <li className="mb-2">
-              <a href="/terms" className="hover:underline">
+              <a href="/terms" className="hover:underline text-white">
                 Terms of Service
               </a>
             </li>
           </ul>
-        </div>
-
-        {/* Newsletter */}
-        <div>
-          <h2 className="text-xl font-semibold mb-4">Newsletter</h2>
-          <p className="mb-4">Subscribe to get the latest updates.</p>
-          <form className="flex flex-col space-y-3">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="px-4 py-2 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <IonIcon
-              icon="send"
-              className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-white transition-colors duration-200 cursor-pointer"
-            />
-          </form>
         </div>
 
         {/* Social Media */}
@@ -80,20 +58,20 @@ const Footer: React.FC = () => {
           <div className="flex space-x-4">
             <a
               href="https://facebook.com/speakanywayaac"
-              className="hover:text-blue-400"
+              className="hover:text-blue-600 text-white"
             >
               <IonIcon icon={logoFacebook} className="text-2xl" />
             </a>
 
             <a
               href="https://linkedin.com/company/speakanyway"
-              className="hover:text-blue-400"
+              className="hover:text-blue-600 text-white"
             >
               <IonIcon icon={logoLinkedin} className="text-2xl" />
             </a>
             <a
               href="https://facebook.com/speakanywayaac"
-              className="hover:text-pink-400"
+              className="hover:text-blue-600 text-white"
             >
               <IonIcon icon={logoInstagram} className="text-2xl" />
             </a>
@@ -101,11 +79,11 @@ const Footer: React.FC = () => {
         </div>
       </div>
       <div className="mt-8 text-center text-gray-500">
-        <p className="text-md">
-          Built by <span className="text-xs">❤️ </span>
+        <p className="text-sm">
+          Built with <span className="text-xs">❤️ </span> by{" "}
           <a
             href="https://brittanyjohns.dev"
-            className="hover:underline"
+            className="hover:underline text-white"
             target="_blank"
             rel="noreferrer"
           >

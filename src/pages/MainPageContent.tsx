@@ -99,7 +99,7 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
   return (
     <div className="relative lower-fixed-bg">
       <div className="w-full md:w-11/12 lg:w-11/12 mx-auto">
-        <div className="flex flex-col justify-center items-center text-center py-4 lg:py-8 bg-gray-900">
+        <div className="flex flex-col justify-center items-center text-center py-4 lg:py-8">
           <h1 className="text-2xl md:text-5xl font-bold text-white mt-4">
             Empower Your Child's Communication
           </h1>
@@ -129,7 +129,7 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
                 Demo
               </IonButton>
             </div>
-            <div className="relative h-80 md:h-96 lg:h-96 w-11/12 md:w-1/2 lg:w-1/2 mx-auto">
+            {/* <div className="relative h-80 md:h-96 lg:h-96 w-11/12 md:w-1/2 lg:w-1/2 mx-auto">
               <div className="p-0 bg-white bg-opacity-95 absolute bottom-45 left-0 right-0 mt-5 shadow-xl  p-4  rounded-lg">
                 <IonToast
                   isOpen={isOpen}
@@ -166,11 +166,11 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
                   Go
                 </IonButton>
               </div>
-            </div>
+            </div> */}
             <div className="h-40 md:h-20"></div>
 
             <div className=" h-80 md:h-96 lg:h-96 mt-5">
-              <div className="shadow-overlay text-white p-4 md:p-8 lg:p-8 bg-gray-900 bg-opacity-90 rounded-lg">
+              <div className="shadow-overlay text-white p-4 md:p-8 lg:p-8 bg-opacity-90 rounded-lg">
                 <section className="">
                   <div className="container mx-auto">
                     <h2 className="text-4xl font-bold text-center">Features</h2>

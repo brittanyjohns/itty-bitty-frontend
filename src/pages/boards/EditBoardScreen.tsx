@@ -3,6 +3,7 @@ import {
   IonButton,
   IonButtons,
   IonContent,
+  IonHeader,
   IonIcon,
   IonInput,
   IonItem,
@@ -10,6 +11,8 @@ import {
   IonList,
   IonLoading,
   IonPage,
+  IonSegment,
+  IonSegmentButton,
   IonSelect,
   IonSelectOption,
   IonText,
@@ -21,9 +24,16 @@ import { useHistory, useParams } from "react-router";
 import {
   add,
   appsOutline,
+  arrowBackCircle,
   arrowBackCircleOutline,
+  cloudUploadOutline,
   contractOutline,
+  createOutline,
+  gridOutline,
+  helpBuoyOutline,
   imagesOutline,
+  pencilOutline,
+  pencilSharp,
   saveOutline,
   shareOutline,
 } from "ionicons/icons";
@@ -36,7 +46,7 @@ import {
   rearrangeImages,
   deleteBoard,
   createAdditionalImages,
-  getAddionalImages,
+  getAdditionalWords,
 } from "../../data/boards"; // Adjust imports based on actual functions
 import { generateImage } from "../../data/images";
 import { Image } from "../../data/images";
@@ -51,14 +61,15 @@ import MainHeader from "../MainHeader";
 import ConfirmAlert from "../../components/utils/ConfirmAlert";
 import { getScreenSizeName } from "../../data/utils";
 import { set } from "d3";
+import SuggestionForm from "../../components/boards/SuggestionForm";
 
 const EditBoardScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [board, setBoard] = useState<Board | null>(null);
   const [showLoading, setShowLoading] = useState(false);
   const [segmentType, setSegmentType] = useState("edit");
-  const uploadForm = useRef<HTMLDivElement>(null);
-  const generateForm = useRef<HTMLDivElement>(null);
+  const helpTab = useRef<HTMLDivElement>(null);
+  const layoutTab = useRef<HTMLDivElement>(null);
   const editForm = useRef<HTMLDivElement>(null);
   const [remainingImages, setRemainingImages] = useState<Image[]>(); // State for the remaining images
   const [searchInput, setSearchInput] = useState("");
@@ -141,9 +152,11 @@ const EditBoardScreen: React.FC = () => {
 
   useEffect(() => {
     if (board) {
-      if (smallScreen) setNumberOfColumns(board.small_screen_columns);
-      else if (mediumScreen) setNumberOfColumns(board.medium_screen_columns);
-      else if (largeScreen) setNumberOfColumns(board.large_screen_columns);
+      if (smallScreen) setNumberOfColumns(board?.small_screen_columns || 4);
+      else if (mediumScreen)
+        setNumberOfColumns(board?.medium_screen_columns || 8);
+      else if (largeScreen)
+        setNumberOfColumns(board?.large_screen_columns || 12);
     }
   }, [smallScreen, mediumScreen, largeScreen, board]);
 
@@ -169,61 +182,26 @@ const EditBoardScreen: React.FC = () => {
 
   useEffect(() => {
     loadPage();
-    console.log("Loading page");
-  }, [id]);
+  }, []);
 
   const toggleForms = (segmentType: string) => {
     if (segmentType === "edit") {
-      uploadForm.current?.classList.add("hidden");
-      generateForm.current?.classList.add("hidden");
+      helpTab.current?.classList.add("hidden");
+      layoutTab.current?.classList.add("hidden");
       editForm.current?.classList.remove("hidden");
     }
-  };
-
-  const handleGenerate = async () => {
-    if (!checkCurrentUserTokens()) {
-      alert(
-        "Sorry, you do not have enough tokens to generate an image. Please purchase more tokens to continue."
-      );
-      console.error("User does not have enough tokens");
-      return;
+    if (segmentType === "layout") {
+      helpTab.current?.classList.add("hidden");
+      layoutTab.current?.classList.remove("hidden");
+      editForm.current?.classList.add("hidden");
     }
-    if (!image) {
-      console.error("Image is missing");
-      return;
+    if (segmentType === "board") {
+      history.push(`/boards/${id}`);
     }
-    const formData = new FormData();
-    formData.append("image[label]", image.label);
-    if (image.image_prompt) {
-      formData.append("image[image_prompt]", image.image_prompt);
-    }
-    setLoadingMessage("Generating image");
-    setShowLoading(true);
-    const updatedImage = await generateImage(formData); // Ensure generateImage returns a Promise<Image>
-    if (!board?.id) {
-      console.error("Board ID is missing");
-      return;
-    }
-    await addImageToBoard(board.id, updatedImage.id); // Ensure addImageToBoard returns a Promise<Board>
-    setImage(initialImage);
-
-    setShowLoading(false);
-    const message = `Image added to board: ${updatedImage.label}`;
-    setToastMessage(message);
-    // history.push(`/boards/${board.id}`);
-  };
-
-  const handleImagePromptInput = (e: CustomEvent) => {
-    const newPrompt = e.detail.value;
-    if (image) {
-      setImage({ ...image, image_prompt: newPrompt });
-    }
-  };
-
-  const handleLabelInput = (e: CustomEvent) => {
-    const newLabel = e.detail.value;
-    if (image) {
-      setImage({ ...image, label: newLabel });
+    if (segmentType === "help") {
+      helpTab.current?.classList.remove("hidden");
+      layoutTab.current?.classList.add("hidden");
+      editForm.current?.classList.add("hidden");
     }
   };
 
@@ -270,23 +248,11 @@ const EditBoardScreen: React.FC = () => {
     // history.push(`/boards/${board?.id}`);
   };
 
-  const handleGetAdditionalImages = async () => {
-    setLoadingMessage("Getting additional images");
-    setShowLoading(true);
-    if (!board?.id) {
-      console.error("Board ID is missing");
-      return;
-    }
-    const result = await getAddionalImages(board?.id, numberOfWords);
-    const words = result["additional_words"];
-    setAdditionalWords(words);
-    setShowLoading(false);
-
-    const message = "Additional images created";
-    setToastMessage(message);
-    setIsToastOpen(true);
-
-    // history.push(`/boards/${board?.id}`);
+  const handleSegmentChange = (e: CustomEvent) => {
+    const newSegment = e.detail.value;
+    console.log("New segment: ", newSegment);
+    setSegmentType(newSegment);
+    toggleForms(newSegment);
   };
 
   useEffect(() => {
@@ -319,61 +285,53 @@ const EditBoardScreen: React.FC = () => {
           startIcon={arrowBackCircleOutline}
           startLink={`/boards/${board?.id}`}
         />
-        <IonContent className="ion-padding">
+        <IonContent>
+          <IonHeader className="bg-inherit shadow-none">
+            <IonSegment
+              value={segmentType}
+              onIonChange={handleSegmentChange}
+              className=""
+            >
+              <IonSegmentButton value="edit">
+                {!smallScreen ? (
+                  <IonLabel className="">Edit</IonLabel>
+                ) : (
+                  <IonLabel className=""></IonLabel>
+                )}
+                <IonIcon className="mt-2" icon={createOutline} />
+              </IonSegmentButton>
+              <IonSegmentButton value="help">
+                {!smallScreen ? (
+                  <IonLabel className="">Help</IonLabel>
+                ) : (
+                  <IonLabel className=""></IonLabel>
+                )}
+                <IonIcon className="mt-2" icon={helpBuoyOutline} />
+              </IonSegmentButton>
+              <IonSegmentButton value="layout">
+                {!smallScreen ? (
+                  <IonLabel className="">Layout</IonLabel>
+                ) : (
+                  <IonLabel className="text-sm md:text-md lg:text-lg"></IonLabel>
+                )}
+
+                <IonIcon className="mt-2" icon={gridOutline} />
+              </IonSegmentButton>
+            </IonSegment>
+          </IonHeader>
           <div className=" " ref={editForm}>
             <div className="w-11/12 lg:w-1/2 mx-auto">
               <div className=" mt-5 text-center">
                 <IonButton
-                  size="default"
-                  fill="outline"
-                  routerLink={`/boards/${id}`}
+                  className="mx-2"
+                  fill="clear"
+                  size="small"
+                  onClick={() => history.push(`/boards/${id}`)}
                 >
-                  {" "}
-                  <p className="font-bold my-2">Return to board</p>
+                  <IonIcon icon={arrowBackCircle} />
+                  <IonLabel className="text-xs ml-1">Back to board</IonLabel>
                 </IonButton>
               </div>
-              {currentUser?.admin && (
-                <div className=" mt-5 text-center">
-                  <IonButtons>
-                    <IonButton
-                      onClick={handleCreateAdditionalImages}
-                      size="default"
-                      fill="outline"
-                    >
-                      {" "}
-                      <p className="font-bold my-2">
-                        Create {numberOfWords} additional images
-                      </p>
-                    </IonButton>
-                    <IonButton
-                      onClick={handleGetAdditionalImages}
-                      size="default"
-                      fill="outline"
-                    >
-                      {" "}
-                      <p className="font-bold my-2">Get additional words</p>
-                    </IonButton>
-                    <IonSelect
-                      label="Number of words"
-                      labelPlacement="stacked"
-                      className="w-1/2 md:w-1/4 mx-auto"
-                      value={numberOfWords}
-                      placeholder="Select number of words"
-                      onIonChange={(e) => setNumberOfWords(e.detail.value)}
-                    >
-                      <IonSelectOption value={5}>5</IonSelectOption>
-                      <IonSelectOption value={10}>10</IonSelectOption>
-                      <IonSelectOption value={15}>15</IonSelectOption>
-                      <IonSelectOption value={20}>20</IonSelectOption>
-                      <IonSelectOption value={25}>25</IonSelectOption>
-                      <IonSelectOption value={30}>30</IonSelectOption>
-                    </IonSelect>
-                  </IonButtons>
-                </div>
-              )}
-              <h1 className="text-center text-2xl font-bold">
-                Editing {board?.name || "Board"}
-              </h1>
               {board && (
                 <BoardForm
                   board={board}
@@ -382,6 +340,25 @@ const EditBoardScreen: React.FC = () => {
                 />
               )}
             </div>
+          </div>
+
+          <div className="mt-6 py-3 px-1 hidden text-center" ref={helpTab}>
+            {currentUser && (
+              <div className=" mt-5 text-center">
+                {board && (
+                  <SuggestionForm
+                    board={board}
+                    setBoard={setBoard}
+                    setIsToastOpen={setIsToastOpen}
+                    setToastMessage={setToastMessage}
+                    setShowLoading={setShowLoading}
+                    setLoadingMessage={setLoadingMessage}
+                  />
+                )}
+              </div>
+            )}
+          </div>
+          <div className="mt-2 hidden" ref={layoutTab}>
             <div className="my-2 px-2 lg:px-8">
               {board && board.images && board.images.length > 0 && (
                 <div className="pb-10">
@@ -389,19 +366,6 @@ const EditBoardScreen: React.FC = () => {
                     This board currently has {board.images.length} images.
                   </p>
 
-                  {currentUser?.admin && (
-                    <div className="p-4">
-                      <h1 className="text-center text-2xl font-bold">
-                        {additionalWords.length} additional words
-                      </h1>
-                      {additionalWords &&
-                        additionalWords.map((word, index) => (
-                          <span key={index} className="mx-1">
-                            {word}
-                          </span>
-                        ))}
-                    </div>
-                  )}
                   <p className="text-center font-mono text-md">
                     Drag and drop to rearrange the layout.
                   </p>
@@ -499,66 +463,11 @@ const EditBoardScreen: React.FC = () => {
               />
             </div>
           </div>
-
-          <div className="mt-6 py-3 px-1 hidden text-center" ref={uploadForm}>
-            <IonText className="text-lg">Upload your own image</IonText>
-            {board && image && (
-              <ImageCropper
-                existingId={image.id}
-                boardId={board.id}
-                existingLabel={image.label}
-              />
-            )}
-          </div>
-          <div className="mt-2 hidden" ref={generateForm}>
-            <IonList className="" lines="none">
-              <IonItem className="my-2">
-                <IonText className="font-bold text-xl mt-2">
-                  Generate an board with AI
-                </IonText>
-              </IonItem>
-
-              <IonItem className="mt-2 border-2">
-                {board && (
-                  <IonInput
-                    className=""
-                    aria-label="label"
-                    value={image?.label}
-                    placeholder="Enter label"
-                    onIonInput={handleLabelInput}
-                  ></IonInput>
-                )}
-              </IonItem>
-              <IonItem className="mt-2 border-2">
-                <IonLoading
-                  className="loading-icon"
-                  cssClass="loading-icon"
-                  isOpen={showLoading}
-                  message={loadingMessage}
-                />
-                {board && (
-                  <IonTextarea
-                    className=""
-                    placeholder="Enter prompt"
-                    onIonInput={handleImagePromptInput}
-                  ></IonTextarea>
-                )}
-              </IonItem>
-              <IonItem className="mt-2">
-                <IonButton className="w-full text-lg" onClick={handleGenerate}>
-                  Generate Image
-                </IonButton>
-              </IonItem>
-              <IonItem className="mt-2 font-mono text-center">
-                <IonText className="text-md">
-                  This will generate an board based on the prompt you enter.
-                </IonText>
-              </IonItem>
-              <IonItem className="mt-2 font-mono text-center text-red-400">
-                <IonText className="ml-6"> It will cost 1 credit.</IonText>
-              </IonItem>
-            </IonList>
-          </div>
+          <IonLoading
+            message={loadingMessage}
+            isOpen={showLoading}
+            duration={2000}
+          />
           <IonToast
             isOpen={isToastOpen}
             message={toastMessage}

@@ -1,4 +1,4 @@
-import { Board, createBoard } from "../../data/boards";
+import { Board, createBoard, getWords } from "../../data/boards";
 import {
   IonButton,
   IonButtons,
@@ -9,6 +9,7 @@ import {
   IonItem,
   IonLoading,
   IonPage,
+  IonTextarea,
   IonTitle,
   IonToolbar,
   useIonViewDidLeave,
@@ -23,6 +24,7 @@ import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import Tabs from "../../components/utils/Tabs";
 import { NewBoardPayload } from "../../data/boards";
+import { set } from "d3";
 const NewBoard: React.FC = (props: any) => {
   const [wordList, setWordList] = React.useState<string[]>([]);
   const submitBtnRef = useRef<HTMLIonButtonElement>(null);
@@ -65,6 +67,29 @@ const NewBoard: React.FC = (props: any) => {
   const scratchBtnRef = useRef<HTMLIonButtonElement>(null);
 
   const [name, setName] = React.useState("");
+  const [suggestedWords, setSuggestedWords] = React.useState("");
+  const suggestionBtnRef = useRef<HTMLIonButtonElement>(null);
+  const handleGetWords = async () => {
+    if (!name) {
+      alert("Please enter a name");
+      return;
+    }
+    suggestionBtnRef.current?.setAttribute("disabled", "true");
+    const result = await getWords(name, 24);
+    if (!result) {
+      console.error("Error getting words");
+      return;
+    }
+    console.log("Result: ", result);
+    const words = result.join(", ");
+
+    const newWords = result.filter((word: string) => !wordList.includes(word));
+    setWordList([...wordList, ...newWords]);
+    setSuggestedWords(words);
+
+    console.log("Word list: ", wordList);
+    suggestionBtnRef.current?.removeAttribute("disabled");
+  };
 
   const { currentUser, currentAccount, isWideScreen } = useCurrentUser();
 
@@ -79,10 +104,6 @@ const NewBoard: React.FC = (props: any) => {
     scratchDivRef.current?.classList.add("hidden");
     scenarioBtnRef.current?.classList.remove("hidden");
   });
-
-  useEffect(() => {
-    scratchDivRef.current?.classList.add("hidden");
-  }, []);
 
   useEffect(() => {
     console.log("Word list: ", wordList);
@@ -127,17 +148,20 @@ const NewBoard: React.FC = (props: any) => {
               </span>
             </IonButton>
             <div className="hidden" ref={scratchDivRef}>
-              <IonItem>
+              <IonItem className="my-4 p-2 border rounded" lines="none">
                 <IonInput
-                  aria-label="Name"
-                  placeholder="Name"
+                  label="Board Name"
+                  labelPlacement="stacked"
                   value={name}
                   onIonInput={handleNameChange}
                 />
               </IonItem>
-              <IonItem>
-                <IonInput
+              <IonItem className="my-4" lines="none">
+                <IonTextarea
+                  rows={5}
                   value={wordList.join(", ")}
+                  label="Word List"
+                  labelPlacement="stacked"
                   placeholder="Enter words separated by commas"
                   onIonChange={(e) => {
                     setWordList(e.detail.value!.split(","));
@@ -154,32 +178,37 @@ const NewBoard: React.FC = (props: any) => {
               >
                 Create
               </IonButton>
-              <div className="text-sm">Example: cat, dog, fish, bird</div>
+
+              <div className="text-sm text-gray-500 my-2 p-2">
+                <IonButton
+                  fill="outline"
+                  onClick={handleGetWords}
+                  ref={suggestionBtnRef}
+                >
+                  Get suggestions
+                </IonButton>
+              </div>
               <div className="text-sm">
-                Leave blank to create a blank board <br></br> Words can be added
-                later
+                <p className="text-sm text-gray-500">
+                  Enter a name and a list of words separated by commas to create
+                  a new board.
+                </p>
+                <p className="text-sm text-gray-500">
+                  You can also get suggestions based on the name you enter.
+                </p>
               </div>
               <hr></hr>
+              <h1 className="text-lg font-bold">Examples:</h1>
+
               <div className="text-sm text-gray-500 my-2 p-2">
-                <h2 className="text-lg font-bold">Core words</h2>
-                <p className="text-sm text-gray-500">
-                  I, You, Up, Down, In, Out, On, Off, Stop, Go, Yes, No, More,
-                  Like, Don't like, Help, Want, Need, Have,
-                </p>
-              </div>
-              <div className="text-sm text-gray-500 my-2 p-2">
-                <h2 className="text-lg font-bold">Common phrases</h2>
-                <p className="text-sm text-gray-500">
-                  My name is, What is your name?, How are you?, I am fine, thank
-                  you, I need help, I am hungry, I am thirsty, I am tired
-                </p>
-              </div>
-              <div className="text-sm text-gray-500 my-2 p-2">
-                <h2 className="text-lg font-bold">Routine steps</h2>
-                <p className="text-sm text-gray-500">
-                  Brush teeth, Wash hands, Wash face, Take a bath, Take a
-                  shower, Comb hair, Brush hair, Put on clothes
-                </p>
+                <IonItem>
+                  <p>Board Name: Animals</p>
+                  <p>Word List: cat, dog, fish, bird, elephant</p>
+                </IonItem>
+                <IonItem>
+                  <p>Board Name: Food</p>
+                  <p>Word List: apple, banana, orange, pizza, sandwich</p>
+                </IonItem>
               </div>
             </div>
 

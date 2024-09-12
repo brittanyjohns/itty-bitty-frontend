@@ -23,6 +23,8 @@ export interface ChildBoard {
   large_screen_columns: number;
   medium_screen_columns: number;
   small_screen_columns: number;
+  word_list?: string[];
+  bg_color?: string;
 }
 
 const signedInToken =

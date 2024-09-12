@@ -15,6 +15,7 @@ import StaticMenu from "../components/main_menu/StaticMenu";
 import { logInOutline } from "ionicons/icons";
 import UserHome from "../components/utils/UserHome";
 import Footer from "../components/utils/Footer";
+import LandingPage from "./LandingPage";
 
 const Home: React.FC = () => {
   const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
@@ -75,7 +76,8 @@ const Home: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <div className="bg-inherit shadow-none w-full mx-auto">
+          <LandingPage />
+          {/* <div className="bg-inherit shadow-none w-full mx-auto">
             {(currentUser && (
               <UserHome
                 userName={currentUser?.name || currentUser.email}
@@ -84,7 +86,7 @@ const Home: React.FC = () => {
                 tokens={currentUser?.tokens ? currentUser.tokens : 0}
               />
             )) || <MainPageContent ipAddr={ip} />}
-          </div>
+          </div> */}
 
           {currentAccount && (
             <BoardGrid
@@ -94,6 +96,7 @@ const Home: React.FC = () => {
           )}
           <Footer />
         </IonContent>
+        <Tabs />
 
         {/* {currentUser && !isWideScreen && <Tabs />} */}
       </IonPage>

@@ -20,7 +20,7 @@ const UserHome: React.FC<UserHomeProps> = ({
   useIonViewWillEnter(() => {});
 
   return (
-    <div className="bg-gray-100 text-gray-900">
+    <div className="flex flex-col items-center justify-center">
       <div className="p-2">
         <h1 className="text-4xl font-bold mb-4 text-center">
           Welcome to SpeakAnyWay!
@@ -42,7 +42,7 @@ const UserHome: React.FC<UserHomeProps> = ({
                 onClick={() => history.push("/upgrade")}
               >
                 <span className="font-bold block mb-2">
-                  8 days of Free Access:{" "}
+                  7 days of Free Access:{" "}
                 </span>
                 <span className="text-2xl">
                   Enjoy all the <strong>premium</strong> features of SpeakAnyWay

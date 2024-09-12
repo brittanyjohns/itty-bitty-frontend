@@ -33,16 +33,16 @@ interface SampleVoiceResponse {
 }
 const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   const [gridSize, setGridSize] = React.useState<number>(
-    board.number_of_columns
+    board.number_of_columns || 1
   );
   const [smallScreenColumns, setSmallScreenColumns] = React.useState<number>(
-    board.small_screen_columns
+    board?.small_screen_columns || 1
   );
   const [mediumScreenColumns, setMediumScreenColumns] = React.useState<number>(
-    board.medium_screen_columns
+    board?.medium_screen_columns || 1
   );
   const [largeScreenColumns, setLargeScreenColumns] = React.useState<number>(
-    board.large_screen_columns
+    board?.large_screen_columns || 1
   );
   const [isOpen, setIsOpen] = React.useState(false);
   const [voice, setVoice] = React.useState(board.voice);
@@ -114,6 +114,7 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
     const voice = event.detail.value;
     setVoice(voice);
     playSampleVoice(voice);
+    console.log("Voice: ", voice);
     const updateBoard = { ...board, voice: event.detail.value };
     setBoard(updateBoard);
   };
@@ -151,69 +152,7 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
             onIonInput={(e) => setBoard({ ...board, name: e.detail.value! })}
           ></IonInput>
         </IonItem>
-        {currentUser?.admin && (
-          <IonItem className="mb-4">
-            <IonCheckbox
-              checked={board?.predefined}
-              onIonChange={(e) =>
-                setBoard({ ...board, predefined: e.detail.checked })
-              }
-            />
-            <label className="ml-2">Predefined</label>
-          </IonItem>
-        )}
         <IonItem className="mb-4">
-          <IonLabel>Large Screens {"(> 1000px)"}:</IonLabel>
-          <IonSelect
-            label="Number of Columns:"
-            placeholder="Select # of columns"
-            name="large_screen_columns"
-            className="mr-2"
-            onIonChange={handleColumnSizeChange}
-            value={largeScreenColumns}
-          >
-            {gridSizeOptions.map((size) => (
-              <IonSelectOption key={size} value={size}>
-                {size}
-              </IonSelectOption>
-            ))}
-          </IonSelect>
-        </IonItem>
-        <IonItem className="mb-4">
-          <IonLabel>Medium Screens {"(< 1000px)"}:</IonLabel>
-          <IonSelect
-            label="Number of Columns:"
-            placeholder="Select # of columns"
-            name="medium_screen_columns"
-            className="mr-2"
-            onIonChange={handleColumnSizeChange}
-            value={mediumScreenColumns}
-          >
-            {gridSizeOptions.map((size) => (
-              <IonSelectOption key={size} value={size}>
-                {size}
-              </IonSelectOption>
-            ))}
-          </IonSelect>
-        </IonItem>
-        <IonItem className="mb-4">
-          <IonLabel>Small Screens {"(< 600px)"}:</IonLabel>
-          <IonSelect
-            label="Number of Columns:"
-            placeholder="Select # of columns"
-            name="small_screen_columns"
-            className="mr-2"
-            onIonChange={handleColumnSizeChange}
-            value={smallScreenColumns}
-          >
-            {gridSizeOptions.map((size) => (
-              <IonSelectOption key={size} value={size}>
-                {size}
-              </IonSelectOption>
-            ))}
-          </IonSelect>
-        </IonItem>
-        <IonItem>
           <IonSelect
             label="Voice:"
             placeholder="Select Voice"
@@ -230,6 +169,81 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
             ))}
           </IonSelect>
         </IonItem>
+        {currentUser?.admin && (
+          <IonItem className="mb-4" lines="none">
+            <IonLabel>Predefined:</IonLabel>
+            <IonCheckbox
+              labelPlacement="start"
+              checked={board?.predefined}
+              onIonChange={(e) =>
+                setBoard({ ...board, predefined: e.detail.checked })
+              }
+            />
+          </IonItem>
+        )}
+        <IonList className="mb-4 border">
+          <IonItem className="mb-4" lines="none">
+            <IonLabel slot="start" className="text-left">
+              Screen Size
+            </IonLabel>
+            <IonLabel slot="end" className="text-right">
+              Number of Columns:
+            </IonLabel>
+          </IonItem>
+          <IonItem className="mb-4">
+            <IonLabel>Small Screens {"(< 600px)"}:</IonLabel>
+            <IonSelect
+              slot="end"
+              aria-label="Number of Columns:"
+              name="small_screen_columns"
+              className="mr-2"
+              onIonChange={handleColumnSizeChange}
+              value={smallScreenColumns}
+            >
+              {gridSizeOptions.map((size) => (
+                <IonSelectOption key={size} value={size}>
+                  {size}
+                </IonSelectOption>
+              ))}
+            </IonSelect>
+          </IonItem>
+
+          <IonItem className="mb-4">
+            <IonLabel>Medium Screens {"(< 1000px)"}:</IonLabel>
+            <IonSelect
+              slot="end"
+              aria-label="Number of Columns:"
+              name="medium_screen_columns"
+              className="mr-2"
+              onIonChange={handleColumnSizeChange}
+              value={mediumScreenColumns}
+            >
+              {gridSizeOptions.map((size) => (
+                <IonSelectOption key={size} value={size}>
+                  {size}
+                </IonSelectOption>
+              ))}
+            </IonSelect>
+          </IonItem>
+          <IonItem className="mb-4">
+            <IonLabel>Large Screens {"(> 1000px)"}:</IonLabel>
+            <IonSelect
+              aria-label="Number of Columns:"
+              name="large_screen_columns"
+              slot="end"
+              className="mr-2"
+              onIonChange={handleColumnSizeChange}
+              value={largeScreenColumns}
+            >
+              {gridSizeOptions.map((size) => (
+                <IonSelectOption key={size} value={size}>
+                  {size}
+                </IonSelectOption>
+              ))}
+            </IonSelect>
+          </IonItem>
+        </IonList>
+
         {/* <IonButtons className="mt-4"> */}
         <IonButton
           onClick={handleSubmit}
