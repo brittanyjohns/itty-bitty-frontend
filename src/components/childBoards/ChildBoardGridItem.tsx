@@ -1,13 +1,5 @@
-import {
-  IonActionSheet,
-  IonImg,
-  IonItem,
-  IonLabel,
-  IonText,
-} from "@ionic/react";
-// import "./BoardListItem.css";
+import { IonImg, IonText } from "@ionic/react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import ActionList from "../utils/ActionList";
 import { useHistory } from "react-router";
 import { generatePlaceholderImage } from "../../data/utils";
 import { ChildBoard } from "../../data/child_boards";

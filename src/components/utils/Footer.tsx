@@ -9,10 +9,10 @@ import {
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-gray-900 text-white py-4 px-4 md:pl-8 lg:pl-8">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+    <footer className="bg-gray-900 text-white py-2 px-4 md:pl-8 lg:pl-8">
+      <div className="flex flex-col md:flex-row lg:flex-row justify-between items-start">
         {/* Company Info */}
-        <div>
+        <div className="text-white mt-4 pt-4">
           <h2 className="text-xl font-bold mb-4">SpeakAnyWay</h2>
           <p className="mb-4">Empowering communication, one step at a time.</p>
           <p>
@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Quick Links */}
-        <div className="text-white">
+        <div className="text-white mt-4 py-4">
           <h2 className="text-xl font-semibold mb-4">Quick Links</h2>
           <ul className="list-[square] list-inside">
             <li className="mb-2">
@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Social Media */}
-        <div>
+        <div className="text-white mt-4 py-4">
           <h2 className="text-xl font-semibold mb-4">Follow Us</h2>
           <div className="flex space-x-4">
             <a

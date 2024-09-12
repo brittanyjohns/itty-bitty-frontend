@@ -48,63 +48,54 @@ const InlineSignUp = ({ plan }: InlineSignUpProps) => {
 
   return (
     <>
-      {currentUser ? (
-        <>
-          <h1 className="text-2xl font-bold text-center mt-4">
-            You're already signed up.
-          </h1>
-          <UserHome userName={currentUser?.name || currentUser.email} />
-        </>
-      ) : (
-        <div className="w-full max-w-4xl mx-auto">
-          <form
-            className="flex flex-col lg:flex-row justify-between items-center lg:space-x-4 p-4"
-            style={{ gap: "20px" }}
+      <div className="w-full max-w-4xl mx-auto">
+        <form
+          className="flex flex-col lg:flex-row justify-between items-center lg:space-x-4 p-4"
+          style={{ gap: "20px" }}
+        >
+          <IonInput
+            value={email}
+            fill="outline"
+            className="w-full lg:w-1/3 border-b border-gray-300"
+            placeholder="Email"
+            onIonInput={(e) => setEmail(e.detail.value!)}
+          />
+          <IonInput
+            type="password"
+            fill="outline"
+            className="w-full lg:w-1/3 border-b border-gray-300"
+            placeholder="Password"
+            onIonInput={(e) => setPassword(e.detail.value!)}
+          />
+          <IonInput
+            type="password"
+            fill="outline"
+            className="w-full lg:w-1/3 border-b border-gray-300"
+            placeholder="Confirm Password"
+            onIonInput={(e) => setPasswordConfirmation(e.detail.value!)}
+          />
+          <IonButton
+            color="primary"
+            size="default"
+            className=" lg:mt-0 lg:ml-4 w-full lg:w-auto"
+            onClick={handleSignUp}
           >
-            <IonInput
-              value={email}
-              fill="outline"
-              className="w-full lg:w-1/3 border-b border-gray-300"
-              placeholder="Email"
-              onIonInput={(e) => setEmail(e.detail.value!)}
-            />
-            <IonInput
-              type="password"
-              fill="outline"
-              className="w-full lg:w-1/3 border-b border-gray-300"
-              placeholder="Password"
-              onIonInput={(e) => setPassword(e.detail.value!)}
-            />
-            <IonInput
-              type="password"
-              fill="outline"
-              className="w-full lg:w-1/3 border-b border-gray-300"
-              placeholder="Confirm Password"
-              onIonInput={(e) => setPasswordConfirmation(e.detail.value!)}
-            />
-            <IonButton
-              color="primary"
-              size="default"
-              className=" lg:mt-0 lg:ml-4 w-full lg:w-auto"
-              onClick={handleSignUp}
-            >
-              Sign Up
-            </IonButton>
-          </form>
+            Sign Up
+          </IonButton>
+        </form>
 
-          <div className="text-center mt-4">
-            <p className="font-medium">Already have an account?</p>
-            <IonButton
-              fill="outline"
-              color="medium"
-              className="mt-2"
-              onClick={() => history.push("/sign-in")}
-            >
-              Sign In
-            </IonButton>
-          </div>
+        <div className="text-center mt-4">
+          <p className="font-medium">Already have an account?</p>
+          <IonButton
+            fill="outline"
+            color="medium"
+            className="mt-2"
+            onClick={() => history.push("/sign-in")}
+          >
+            Sign In
+          </IonButton>
         </div>
-      )}
+      </div>
     </>
   );
 };

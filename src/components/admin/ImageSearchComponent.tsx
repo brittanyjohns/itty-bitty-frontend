@@ -4,6 +4,7 @@ import {
   IonButton,
   IonButtons,
   IonIcon,
+  IonInput,
   IonLoading,
   IonSelect,
   IonSelectOption,
@@ -28,6 +29,9 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
   const [loading, setLoading] = useState(false);
   const [showNoResults, setShowNoResults] = useState(false);
   const [query, setQuery] = useState(startingQuery || "");
+  const [imgColorType, setImgColorType] = useState<string>("color");
+  const imgColorTypes = ["color", "gray", "mono", "trans"];
+  const [orTerms, setOrTerms] = useState<string>("");
   const [placeholder, setPlaceholder] = useState("smile");
   const [images, setImages] = useState<ImageResult[]>([]);
   const [newImageSrc, setNewImageSrc] = useState<string | null>(null);
@@ -43,54 +47,12 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
     setNewImageLabel(null);
   });
 
-  const loadInitialImages = async () => {
-    // const params = {
-    //   q: placeholder,
-    //   imgType: imageType,
-    //   start: nextStartIndex,
-    //   num: 10,
-    // };
-    // try {
-    //   const imgResult = await imageSearch(placeholder, params);
-    //   console.log("Image Search Result: ", imgResult);
-    //   setImages(imgResult);
-    //   if (imgResult.length > 0) {
-    //     setNextStartIndex(imgResult[0].startIndex);
-    //   } else {
-    //     setShowNoResults(true);
-    //   }
-    // } catch (error) {
-    //   console.error("Image Search Error: ", error);
-    //   alert("Failed to load images");
-    // }
-  };
-
   const handleSearch = async () => {
     if (!query) {
       alert("Please enter a search query");
       return;
     }
     await load();
-
-    // try {
-    //   const imgResult = await imageSearch(query, params);
-
-    //   if (!imgResult) {
-    //     alert("Something went wrong. Please try again later");
-    //     return;
-    //   }
-    //   setImages(imgResult);
-    //   if (imgResult.length > 0) {
-    //     setNextStartIndex(imgResult[0].startIndex);
-    //   } else {
-    //     setShowNoResults(true);
-    //   }
-    // } catch (error) {
-    //   console.error("Image Search Error: ", error);
-    //   alert("Failed to load images");
-    // } finally {
-    //   setLoading(false);
-    // }
   };
 
   const load = async () => {
@@ -101,9 +63,13 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
         imgType: imageType,
         start: nextStartIndex,
         num: 10,
+        imgColorType: imgColorType,
+        orTerms: orTerms,
       };
+      if (query === "") {
+        return;
+      }
       const imgResult = await imageSearch(query, params);
-      console.log("Image Search Result: ", imgResult);
 
       if (!imgResult) {
         alert("Something went wrong. Please try again later");
@@ -179,47 +145,6 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
     }
     console.log("Done with click");
   };
-  // const [showLoading, setShowLoading] = useState<boolean>(false);
-
-  // const handleFormSubmit = async (data: {
-  //   croppedImage: string;
-  //   fileExtension: string;
-  // }) => {
-  //   setShowLoading(true);
-  //   const formData = new FormData();
-  //   const strippedImage = data.croppedImage.replace(
-  //     /^data:image\/[a-z]+;base64,/,
-  //     ""
-  //   );
-
-  //   console.log("Stripped Image: ", strippedImage);
-
-  //   formData.append("cropped_image", strippedImage);
-  //   formData.append("file_extension", data.fileExtension);
-  //   if (query) {
-  //     formData.append("image[label]", query);
-  //   } else {
-  //     console.log("No query found");
-  //     setQuery(placeholder);
-  //     formData.append("image[label]", placeholder);
-  //   }
-  //   const labelToSend = formData.get("image[label]");
-  //   if (!labelToSend) {
-  //     alert("Please provide a label for the image.");
-  //     setShowLoading(false);
-  //     return;
-  //   }
-
-  //   console.log("Form Data: ", formData);
-  //   const result = formData;
-
-  //   // const result = await cropImage(formData);
-  //   alert(`Image saved successfully: ${labelToSend}`);
-
-  //   setShowLoading(false);
-  //   console.log(">>Result: ", result);
-  //   return result;
-  // };
 
   const resetSearch = () => {
     setQuery("");
@@ -303,7 +228,28 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
               </IonSelectOption>
             ))}
           </IonSelect>
+          <IonSelect
+            value={imgColorType}
+            placeholder="Color Type"
+            labelPlacement="stacked"
+            label="Color Type"
+            className="mx-2"
+            selectedText={imgColorType}
+            onIonChange={(e) => setImgColorType(e.detail.value)}
+          >
+            {imgColorTypes.map((type, index) => (
+              <IonSelectOption key={index} value={type}>
+                {type}
+              </IonSelectOption>
+            ))}
+          </IonSelect>
         </div>
+        <IonInput
+          value={orTerms}
+          placeholder="OR Terms"
+          label="OR Terms"
+          onIonChange={(e) => setOrTerms(e.detail.value || "")}
+        />
       </div>
       {showNoResults && (
         <div className="text-center my-4">
