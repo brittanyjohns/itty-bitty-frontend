@@ -607,7 +607,7 @@ const ViewImageScreen: React.FC = () => {
                     className=""
                     placeholder="Enter prompt"
                     value={image.image_prompt}
-                    onIonInput={(e) =>
+                    onIonInput={(e: any) =>
                       setImage({ ...image, image_prompt: e.detail.value! })
                     }
                   ></IonTextarea>
@@ -823,7 +823,9 @@ const ViewImageScreen: React.FC = () => {
                     className=""
                     ref={newWordInput}
                     placeholder="Enter word"
-                    onIonInput={(e) => setNewImageWord(e.detail.value ?? "")}
+                    onIonInput={(e: any) =>
+                      setNewImageWord(e.detail.value ?? "")
+                    }
                   ></IonInput>
                   <div className="mt-2">
                     <IonButton

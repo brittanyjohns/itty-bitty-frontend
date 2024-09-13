@@ -98,7 +98,7 @@ const SignInScreen: React.FC = () => {
                   <h1 className="text-2xl font-bold text-center mb-3">
                     Sign In
                   </h1>
-                  <form onSubmit={(e) => e.preventDefault()}>
+                  <form onSubmit={(e: any) => e.preventDefault()}>
                     <IonInput
                       label="Email"
                       labelPlacement="stacked"
@@ -106,7 +106,7 @@ const SignInScreen: React.FC = () => {
                       fill="solid"
                       className="mt-4"
                       placeholder="Enter your email"
-                      onIonChange={(e) => setEmail(e.detail.value!)}
+                      onIonChange={(e: any) => setEmail(e.detail.value!)}
                       clearInput
                     />
 
@@ -118,7 +118,7 @@ const SignInScreen: React.FC = () => {
                       fill="solid"
                       className="mt-4"
                       placeholder="Enter your password"
-                      onIonChange={(e) => setPassword(e.detail.value!)}
+                      onIonChange={(e: any) => setPassword(e.detail.value!)}
                       clearInput
                     />
                     <IonButton

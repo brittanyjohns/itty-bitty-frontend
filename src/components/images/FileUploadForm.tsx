@@ -75,7 +75,7 @@ const FileUploadForm: React.FC<FileUploadFormProps> = ({
       {!hideLabel && (
         <IonInput
           value={label}
-          onIonChange={(e) => setLabel(e.detail.value!)}
+          onIonChange={(e: any) => setLabel(e.detail.value!)}
           type="text"
           labelPlacement="floating"
           label="Image Label"

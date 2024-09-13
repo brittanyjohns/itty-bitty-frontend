@@ -60,7 +60,7 @@ const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId, boards }) => {
             placeholder="Add to board"
             className="text-sm text-wrap text-center"
             name="boardId"
-            onIonChange={(e) => handleSelectChange(e)}
+            onIonChange={(e: any) => handleSelectChange(e)}
             ref={selectRef}
           >
             {boards &&

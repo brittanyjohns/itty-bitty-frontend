@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 
 import { addImageListToBoard, Board } from "../data/boards";
-import { IonButton, IonContent, IonInput, IonItem, IonLabel } from "@ionic/react";
+import {
+  IonButton,
+  IonContent,
+  IonInput,
+  IonItem,
+  IonLabel,
+} from "@ionic/react";
 
 const WordListForm = ({ boardId, reloadBoardAndImages }: any) => {
   const [currentWord, setCurrentWord] = useState("");
@@ -28,8 +34,7 @@ const WordListForm = ({ boardId, reloadBoardAndImages }: any) => {
 
   const reload = () => {
     reloadBoardAndImages();
-  }
-
+  };
 
   return (
     <IonContent style={styles.container}>
@@ -37,7 +42,7 @@ const WordListForm = ({ boardId, reloadBoardAndImages }: any) => {
         <IonLabel position="floating">Label</IonLabel>
         <IonInput
           value={currentWord}
-          onIonChange={(e) => setCurrentWord(e.detail.value!)}
+          onIonChange={(e: any) => setCurrentWord(e.detail.value!)}
           type="text"
           required
         />

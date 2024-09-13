@@ -123,7 +123,7 @@ const SettingsPage: React.FC = () => {
                 <IonInput
                   value={name}
                   placeholder="No Name Set"
-                  onIonChange={(e) => setName(e.detail.value!)}
+                  onIonChange={(e: any) => setName(e.detail.value!)}
                 ></IonInput>
               </IonItem>
               <IonItem>

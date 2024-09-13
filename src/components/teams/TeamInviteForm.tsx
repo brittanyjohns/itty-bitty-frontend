@@ -62,7 +62,7 @@ const TeamInviteForm: React.FC<TeamInviteFormProps> = ({
         <div className="text-center">
           <IonSelect
             placeholder="Select Role"
-            onIonChange={(e) => setRole(e.detail.value)}
+            onIonChange={(e: any) => setRole(e.detail.value)}
           >
             <IonSelectOption value="admin">Admin</IonSelectOption>
             <IonSelectOption value="member">Member</IonSelectOption>

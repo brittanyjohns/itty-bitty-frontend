@@ -196,7 +196,7 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
             value={query}
             ref={inputRef}
             className="w-full"
-            onChange={(e) => handleInput(e.target.value)}
+            onChange={(e: any) => handleInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={`Search for images (e.g. ${placeholder})`}
           />
@@ -220,7 +220,7 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
             label="Image Type"
             className="mx-2"
             selectedText={imageType}
-            onIonChange={(e) => setImageType(e.detail.value)}
+            onIonChange={(e: any) => setImageType(e.detail.value)}
           >
             {imageTypes.map((type, index) => (
               <IonSelectOption key={index} value={type}>
@@ -235,7 +235,7 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
             label="Color Type"
             className="mx-2"
             selectedText={imgColorType}
-            onIonChange={(e) => setImgColorType(e.detail.value)}
+            onIonChange={(e: any) => setImgColorType(e.detail.value)}
           >
             {imgColorTypes.map((type, index) => (
               <IonSelectOption key={index} value={type}>
@@ -248,7 +248,7 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
           value={orTerms}
           placeholder="OR Terms"
           label="OR Terms"
-          onIonChange={(e) => setOrTerms(e.detail.value || "")}
+          onIonChange={(e: any) => setOrTerms(e.detail.value || "")}
         />
       </div>
       {showNoResults && (

@@ -162,7 +162,7 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({
           <IonCheckbox
             checked={predefined}
             value={predefined}
-            onIonChange={(e) =>
+            onIonChange={(e: any) =>
               handleCheckboxChange("predefined", e.detail.checked)
             }
           />

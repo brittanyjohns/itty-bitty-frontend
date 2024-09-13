@@ -37,7 +37,7 @@ const BoardGridDropdown: React.FC<BoardGridDropdownProps> = ({
           placeholder={gridSize.toString()}
           className=""
           name="number_of_columns"
-          onIonChange={(e) => handleSelectChange(e)}
+          onIonChange={(e: any) => handleSelectChange(e)}
           ref={selectRef}
         >
           {gridSizes.map((size: number) => (

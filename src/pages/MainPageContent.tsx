@@ -151,7 +151,7 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
                   labelPlacement="floating"
                   fill="outline"
                   className="mt-2"
-                  onIonInput={(e) => setEmail(e.detail.value || "")} // Assuming Ionic React
+                  onIonInput={(e: any) => setEmail(e.detail.value || "")} // Assuming Ionic React
                 />
 
                 <IonButton

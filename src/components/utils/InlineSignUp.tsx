@@ -58,21 +58,21 @@ const InlineSignUp = ({ plan }: InlineSignUpProps) => {
             fill="outline"
             className="w-full lg:w-1/3 border-b border-gray-300"
             placeholder="Email"
-            onIonInput={(e) => setEmail(e.detail.value!)}
+            onIonInput={(e: any) => setEmail(e.detail.value!)}
           />
           <IonInput
             type="password"
             fill="outline"
             className="w-full lg:w-1/3 border-b border-gray-300"
             placeholder="Password"
-            onIonInput={(e) => setPassword(e.detail.value!)}
+            onIonInput={(e: any) => setPassword(e.detail.value!)}
           />
           <IonInput
             type="password"
             fill="outline"
             className="w-full lg:w-1/3 border-b border-gray-300"
             placeholder="Confirm Password"
-            onIonInput={(e) => setPasswordConfirmation(e.detail.value!)}
+            onIonInput={(e: any) => setPasswordConfirmation(e.detail.value!)}
           />
           <IonButton
             color="primary"

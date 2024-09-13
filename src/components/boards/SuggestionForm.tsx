@@ -103,7 +103,7 @@ const SuggestionForm = ({
               label="Board Name"
               labelPlacement="stacked"
               placeholder="Enter board name"
-              onIonChange={(e) => {
+              onIonChange={(e: any) => {
                 board.name = e.detail.value!;
               }}
             />
@@ -115,7 +115,7 @@ const SuggestionForm = ({
               className=""
               value={numberOfWords}
               placeholder="Select number of words"
-              onIonChange={(e) => setNumberOfWords(e.detail.value)}
+              onIonChange={(e: any) => setNumberOfWords(e.detail.value)}
             >
               <IonSelectOption value={5}>5</IonSelectOption>
               <IonSelectOption value={10}>10</IonSelectOption>
@@ -151,7 +151,7 @@ const SuggestionForm = ({
                   value={additionalWords.join(", ")}
                   aria-loabel="Word List"
                   placeholder="Enter words separated by commas"
-                  onIonChange={(e) => {
+                  onIonChange={(e: any) => {
                     setAdditionalWords(e.detail.value!.split(","));
                   }}
                 />

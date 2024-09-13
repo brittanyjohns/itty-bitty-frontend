@@ -163,10 +163,10 @@ const BaseImageGallery: React.FC<ImageGalleryProps> = ({
             className="min-h-20 h-full flex relative w-full hover:cursor-pointer text-center"
             onClick={() => handleImageClick(image)}
             key={image.id}
-            onTouchStart={(e) => handleButtonPress(e)}
-            onPointerDown={(e) => handlePointerDown(e)}
-            onTouchEnd={(e) => handleButtonRelease(e)}
-            onMouseDown={(e) => handleButtonPress(e)} // For desktop
+            onTouchStart={(e: any) => handleButtonPress(e)}
+            onPointerDown={(e: any) => handlePointerDown(e)}
+            onTouchEnd={(e: any) => handleButtonRelease(e)}
+            onMouseDown={(e: any) => handleButtonPress(e)} // For desktop
             onMouseUp={handleButtonRelease} // For desktop
             onMouseLeave={handleButtonRelease} // Cancel on mouse leave to handle edge cases
           >

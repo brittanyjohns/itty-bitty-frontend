@@ -65,7 +65,7 @@ const VoiceDropdown: React.FC<VoiceDropdownProps> = ({
           placeholder="Select Voice to create new audio file"
           className="text-sm text-wrap text-center"
           name="voiceId"
-          onIonChange={(e) => handleSelectChange(e)}
+          onIonChange={(e: any) => handleSelectChange(e)}
           ref={selectRef}
         >
           {voices &&

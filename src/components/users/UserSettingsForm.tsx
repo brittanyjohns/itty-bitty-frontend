@@ -141,7 +141,7 @@ const UserSettingsForm: React.FC<UserSettingsFormProps> = ({
                     <IonSelect
                       aria-label={`Select ${setting.label}`}
                       value={getNestedProperty(settings, setting.key, "")}
-                      onIonChange={(e) =>
+                      onIonChange={(e: any) =>
                         handleChange(setting.key, e.detail.value)
                       }
                       placeholder={`Select ${setting.label}`}
@@ -166,7 +166,7 @@ const UserSettingsForm: React.FC<UserSettingsFormProps> = ({
                       aria-label={setting.label}
                       className="ml-4"
                       checked={getNestedProperty(settings, setting.key, false)}
-                      onIonChange={(e) =>
+                      onIonChange={(e: any) =>
                         handleChange(setting.key, e.detail.checked)
                       }
                     />

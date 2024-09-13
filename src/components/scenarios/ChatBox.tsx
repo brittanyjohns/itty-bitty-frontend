@@ -120,7 +120,9 @@ const ChatBox: React.FC<ScenarioFormProps> = ({ scenario, setShowLoading }) => {
                     <IonTextarea
                       className="m-3 pl-4"
                       value={currentAnswer}
-                      onIonInput={(e) => handleAnswerChange(e.detail.value!, i)}
+                      onIonInput={(e: any) =>
+                        handleAnswerChange(e.detail.value!, i)
+                      }
                       required
                       placeholder="  Type your answer here"
                     ></IonTextarea>

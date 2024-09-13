@@ -121,7 +121,7 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({
           </p>
           <IonInput
             value={boardName}
-            onIonInput={(e) => handleBoardName(e.detail.value!)}
+            onIonInput={(e: any) => handleBoardName(e.detail.value!)}
             placeholder="Ex: 'First day at a new job'"
             className="border rounded md:w-3/4 lg:w-1/2 mx-auto"
           />
@@ -131,7 +131,7 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({
           </p>
           <IonTextarea
             value={promptText}
-            onIonInput={(e) => handlePromptInput(e.detail.value!)}
+            onIonInput={(e: any) => handlePromptInput(e.detail.value!)}
             placeholder="Ex: 'You are the new employee at a tech company.'"
             className="border rounded md:w-1/2 lg:w-1/2 mx-auto"
           />
@@ -140,7 +140,7 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({
           <IonSelect
             label="Age of person"
             value={ageRange}
-            onIonChange={(e) => setAgeRange(e.detail.value)}
+            onIonChange={(e: any) => setAgeRange(e.detail.value)}
             placeholder="Select Age Range"
             className=""
           >
@@ -154,7 +154,7 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({
           <IonSelect
             label="Number of Images"
             value={numberOfImages}
-            onIonChange={(e) => handleNumberSelection(e.detail.value)}
+            onIonChange={(e: any) => handleNumberSelection(e.detail.value)}
             className=""
           >
             {imageOptions.map((option) => (
@@ -167,7 +167,9 @@ const NewScenarioForm: React.FC<NewScenarioFormProps> = ({
             <IonSelect
               label="Token Limit"
               value={tokenLimit}
-              onIonChange={(e) => setTokenLimit(parseInt(e.detail.value, 10))}
+              onIonChange={(e: any) =>
+                setTokenLimit(parseInt(e.detail.value, 10))
+              }
               className=""
             >
               {tokenOptions.map((option) => (

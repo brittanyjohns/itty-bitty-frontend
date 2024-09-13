@@ -127,7 +127,7 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
           <IonInput
             label="Username"
             value={username}
-            onIonInput={(e) => setUsername(e.detail.value!)}
+            onIonInput={(e: any) => setUsername(e.detail.value!)}
             className=""
             fill="outline"
           />
@@ -137,7 +137,7 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
             label="Password"
             value={password}
             type="password"
-            onIonInput={(e) => setPassword(e.detail.value!)}
+            onIonInput={(e: any) => setPassword(e.detail.value!)}
             className=""
             fill="outline"
           />
@@ -147,7 +147,7 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
             label="Confirm Password"
             value={passwordConfirmation}
             type="password"
-            onIonInput={(e) => setPasswordConfirmation(e.detail.value!)}
+            onIonInput={(e: any) => setPasswordConfirmation(e.detail.value!)}
             className=""
             fill="outline"
           />

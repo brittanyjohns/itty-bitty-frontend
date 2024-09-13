@@ -149,7 +149,9 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
             label="Name:"
             value={board?.name}
             placeholder="Enter Board Name"
-            onIonInput={(e) => setBoard({ ...board, name: e.detail.value! })}
+            onIonInput={(e: any) =>
+              setBoard({ ...board, name: e.detail.value! })
+            }
           ></IonInput>
         </IonItem>
         <IonItem className="mb-4">
@@ -175,7 +177,7 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
             <IonCheckbox
               labelPlacement="start"
               checked={board?.predefined}
-              onIonChange={(e) =>
+              onIonChange={(e: any) =>
                 setBoard({ ...board, predefined: e.detail.checked })
               }
             />

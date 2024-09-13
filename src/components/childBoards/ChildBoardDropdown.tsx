@@ -88,7 +88,7 @@ const ChildBoardDropdown: React.FC<ChildBoardDropdownProps> = ({
           placeholder="Select a board"
           className="text-sm text-wrap text-center"
           name="boardId"
-          onIonChange={(e) => handleSelectChange(e)}
+          onIonChange={(e: any) => handleSelectChange(e)}
           ref={selectRef}
         >
           {boards &&

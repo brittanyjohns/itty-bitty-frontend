@@ -65,7 +65,7 @@ const UserForm: React.FC<UsersFormProps> = ({
             <IonInput
               value={name}
               placeholder="No Name Set"
-              onIonChange={(e) => setName(e.detail.value!)}
+              onIonChange={(e: any) => setName(e.detail.value!)}
             ></IonInput>
           </IonItem>
           <IonItem>
@@ -85,7 +85,7 @@ const UserForm: React.FC<UsersFormProps> = ({
               <IonSelect
                 label="Plan Type"
                 value={planOptions[planOptions.indexOf(planType)]}
-                onIonChange={(e) => handlePlanSelection(e.detail.value)}
+                onIonChange={(e: any) => handlePlanSelection(e.detail.value)}
                 className=""
                 disabled={true}
               >

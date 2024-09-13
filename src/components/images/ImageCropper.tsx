@@ -228,7 +228,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
               labelPlacement="stacked"
               label="Image Label"
               required
-              onIonChange={(e) => setLabel(e.detail.value!)}
+              onIonChange={(e: any) => setLabel(e.detail.value!)}
               className="p-2 my-2 pl-2"
             />
           ) : null}

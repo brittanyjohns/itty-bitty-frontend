@@ -163,7 +163,7 @@ const NewBoard: React.FC = (props: any) => {
                   label="Word List"
                   labelPlacement="stacked"
                   placeholder="Enter words separated by commas"
-                  onIonChange={(e) => {
+                  onIonChange={(e: any) => {
                     setWordList(e.detail.value!.split(","));
                   }}
                 />

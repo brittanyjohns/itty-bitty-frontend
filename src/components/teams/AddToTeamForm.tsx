@@ -31,7 +31,7 @@ const AddToTeamForm: React.FC<AddToTeamFormProps> = ({
       <IonSelect
         interface="action-sheet"
         placeholder="Select a team"
-        onIonChange={(e) => setTeam(e.detail.value)}
+        onIonChange={(e: any) => setTeam(e.detail.value)}
         className=""
         id="team-select"
       >

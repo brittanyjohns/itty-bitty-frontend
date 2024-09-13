@@ -216,7 +216,9 @@ const NewMenu: React.FC = (props: any) => {
                     placeholder="Enter token limit"
                     className="w-full md:w-1/2 mx-auto"
                     value={tokenLimit}
-                    onIonInput={(e) => setTokenLimit(parseInt(e.detail.value!))}
+                    onIonInput={(e: any) =>
+                      setTokenLimit(parseInt(e.detail.value!))
+                    }
                     required
                   ></IonInput>
                 </IonItem>

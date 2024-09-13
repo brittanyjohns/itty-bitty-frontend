@@ -82,14 +82,14 @@ const ForgotPasswordScreen: React.FC = () => {
                 <h1 className="text-2xl font-bold text-center mb-3">
                   Forgot Password
                 </h1>
-                <form onSubmit={(e) => e.preventDefault()}>
+                <form onSubmit={(e: any) => e.preventDefault()}>
                   <IonItem lines="full" className="mb-4">
                     <IonInput
                       label="Email"
                       labelPlacement="stacked"
                       value={email}
                       placeholder="Enter your email"
-                      onIonChange={(e) => setEmail(e.detail.value!)}
+                      onIonChange={(e: any) => setEmail(e.detail.value!)}
                       clearInput
                       required
                     />
