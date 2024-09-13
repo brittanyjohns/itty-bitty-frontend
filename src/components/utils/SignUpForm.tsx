@@ -107,7 +107,7 @@ const SignUpForm = ({ plan }: SignUpFormProps) => {
               className="mt-4"
               label="Email"
               labelPlacement="stacked"
-              onIonInput={(e) => handleEmail(e.detail.value!)}
+              onIonInput={(e: any) => handleEmail(e.detail.value!)}
             ></IonInput>
           </div>
           <div className="mb-6">
@@ -118,7 +118,7 @@ const SignUpForm = ({ plan }: SignUpFormProps) => {
               className="mt-4"
               labelPlacement="stacked"
               value={password}
-              onIonInput={(e) => handlePassword(e.detail.value!)}
+              onIonInput={(e: any) => handlePassword(e.detail.value!)}
             ></IonInput>
           </div>
           <div className="mb-6">
@@ -128,7 +128,9 @@ const SignUpForm = ({ plan }: SignUpFormProps) => {
               fill="solid"
               value={passwordConfirmation}
               labelPlacement="stacked"
-              onIonInput={(e) => handlePasswordConfirmation(e.detail.value!)}
+              onIonInput={(e: any) =>
+                handlePasswordConfirmation(e.detail.value!)
+              }
               className="mt-4"
             ></IonInput>
           </div>

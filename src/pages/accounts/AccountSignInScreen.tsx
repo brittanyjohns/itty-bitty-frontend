@@ -88,7 +88,7 @@ const AccountSignInScreen: React.FC = () => {
               <h1 className="text-2xl font-bold text-center mb-3">
                 Child Sign In
               </h1>
-              <form onSubmit={(e) => e.preventDefault()}>
+              <form onSubmit={(e: any) => e.preventDefault()}>
                 <IonInput
                   label="Username"
                   labelPlacement="stacked"
@@ -96,7 +96,7 @@ const AccountSignInScreen: React.FC = () => {
                   fill="solid"
                   className="mt-4"
                   placeholder="Enter your username"
-                  onIonInput={(e) => setUsername(e.detail.value!)}
+                  onIonInput={(e: any) => setUsername(e.detail.value!)}
                   clearInput
                 />
 

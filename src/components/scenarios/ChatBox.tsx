@@ -87,7 +87,7 @@ const ChatBox: React.FC<ScenarioFormProps> = ({ scenario, setShowLoading }) => {
 
       <div className="my-5 p-1  border shadow-md">
         {scenario.questions && (
-          <IonList class="mt-3 px-2 py-10" lines="none">
+          <IonList className="mt-3 px-2 py-10" lines="none">
             {questions.map((q: any, i: number) => (
               <div key={i}>
                 <IonItem className="mt-2 font-serif w-full" lines="none">

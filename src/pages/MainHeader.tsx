@@ -71,7 +71,7 @@ const MainHeader: React.FC<MainHeaderProps> = (props) => {
             )}
             <IonTitle className="text-center">{props.pageTitle}</IonTitle>
             {props.endLink && (
-              <IonButtons class="p-0" slot="end">
+              <IonButtons className="p-0" slot="end">
                 <IonButton routerLink={props.endLink}>
                   <IonIcon
                     icon={props.endIcon || addCircleOutline}

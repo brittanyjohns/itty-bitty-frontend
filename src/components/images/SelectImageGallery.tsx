@@ -90,7 +90,7 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
   return (
     <div className="h-full">
       <div>
-        <IonButtons class="flex justify-between w-full text-center">
+        <IonButtons className="flex justify-between w-full text-center">
           <IonButton
             disabled={page <= 1}
             onClick={() => setPage((oldPage) => Math.max(1, oldPage - 1))}
@@ -146,7 +146,7 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
           )}
         </div>
         {remainingImages.length > 12 && (
-          <IonButtons class="flex justify-between w-full my-3 text-center">
+          <IonButtons className="flex justify-between w-full my-3 text-center">
             <IonButton
               disabled={page <= 1}
               onClick={() => setPage((oldPage) => Math.max(1, oldPage - 1))}
