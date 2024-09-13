@@ -86,3 +86,24 @@ ion-segment-button ion-icon {
 .scroll-content {
   overflow-y: auto !important;
 }
+body,
+html,
+#root,
+ion-app,
+ion-page,
+.ion-page,
+ion-content {
+  height: 100%;
+  width: 100%;
+}
+
+ion-content::part(scroll)::-webkit-scrollbar {
+  display: none;
+}
+ion-page::part(scroll)::-webkit-scrollbar {
+  display: none;
+}
+ion-content::part(scroll) {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
