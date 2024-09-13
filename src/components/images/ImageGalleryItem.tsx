@@ -148,7 +148,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       {!image.is_placeholder && (
         <span
           onClick={() => handleImageClick(image)}
-          className="bg-white bg-opacity-95 w-full font-medium tracking-tighter leading-tight text-xs md:text-sm lg:text-sm absolute bottom-0 left-0 shadow-md"
+          className="bg-white xbg-opacity-95 w-full font-medium tracking-tighter leading-tight text-xs md:text-sm lg:text-sm absolute bottom-0 left-0 shadow-md"
         >
           {labelForScreenSize(
             image.label,

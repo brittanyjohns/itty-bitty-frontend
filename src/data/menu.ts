@@ -80,6 +80,22 @@ const menuLinks: MenuLink[] = [
     icon: gridOutline,
     id: 4,
   },
+
+  {
+    endpoint: "/images",
+    name: "Images",
+    slug: "images",
+    icon: imagesOutline,
+    id: 6,
+  },
+
+  {
+    endpoint: "/scenarios",
+    name: "Scenarios",
+    slug: "scenarios",
+    icon: imageOutline,
+    id: 9997,
+  },
   {
     endpoint: "/menus",
     name: "Menus",
@@ -87,13 +103,6 @@ const menuLinks: MenuLink[] = [
     icon: fastFoodOutline,
     pro: true,
     id: 5,
-  },
-  {
-    endpoint: "/images",
-    name: "Images",
-    slug: "images",
-    icon: imagesOutline,
-    id: 6,
   },
   {
     endpoint: "/child-accounts",
@@ -132,13 +141,7 @@ const menuLinks: MenuLink[] = [
     icon: peopleCircleOutline,
     id: 12654654,
   },
-  {
-    endpoint: "/scenarios",
-    name: "Scenarios",
-    slug: "scenarios",
-    icon: imageOutline,
-    id: 9997,
-  },
+
   {
     endpoint: "/predictive",
     name: "Predictive",

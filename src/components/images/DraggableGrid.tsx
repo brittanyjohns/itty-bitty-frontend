@@ -69,8 +69,9 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   }, [width, currentNumberOfColumns, rowHeight]);
 
   const updateRowHeight = () => {
-    const adjustWidth = width - 10;
+    const adjustWidth = width - 20;
     const dynamicRowHeight = Math.floor(adjustWidth / currentNumberOfColumns);
+    console.log("Dynamic Row Height: ", dynamicRowHeight);
     setRowHeight(dynamicRowHeight);
   };
 
