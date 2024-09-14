@@ -24,16 +24,16 @@ ion-toolbar {
 
   /* --border-color: #255380; */
   /* --border-width: 2px 0; */
-  --border-style: double;
-  --min-height: 80px;
+  /* --border-style: double; */
+  /* --min-height: 80px; */
   /* --padding-top: 20px;
     --padding-bottom: 20px; */
 }
 
-ion-toolbar ion-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-}
+/* ion-toolbar ion-title { */
+/* font-size: 1.5rem; */
+/* font-weight: 700; */
+/* } */
 
 ion-toolbar ion-buttons {
   --padding-start: 10px;
@@ -63,26 +63,28 @@ ion-toolbar ion-buttons ion-menu-button {
 ion-toolbar ion-buttons ion-back-button {
   --color: rgb(238, 238, 238);
 }
+ion-segment {
+  --color: rgb(238, 238, 238);
+  --background: none;
+  --indicator-color: #badef8;
+  --background-checked: #13496f;
+  --background-focused: #13496f;
+  --background-hover: #13496f;
+  --color-checked: rgb(238, 238, 238);
+}
 
 ion-segment-button {
   /* --color: rgb(238, 238, 238); */
-  /* --background: #bcc3c8; */
-  --indicator-color: #badef8;
+  --background: none;
+  --padding-bottom: 10px;
+  --margin-top: 5px;
+  /* --indicator-color: #badef8; */
   /* --background-checked: #13496f;
     --background-focused: #13496f;
     --background-hover: #13496f; */
   /* --color-checked: rgb(238, 238, 238); */
 }
 
-ion-segment-button ion-label {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #13496f;
-}
-
-ion-segment-button ion-icon {
-  font-size: 1.5rem;
-}
 .scroll-content {
   overflow-y: auto !important;
 }

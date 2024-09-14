@@ -7,6 +7,7 @@ import {
   IonAlert,
   IonButtons,
   IonLabel,
+  IonLoading,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import { User, signIn } from "../../data/users";
@@ -25,13 +26,18 @@ const SignInScreen: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [showAlert, setShowAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showLoading, setShowLoading] = useState(false);
   const { setCurrentUser, isWideScreen, currentUser, currentAccount } =
     useCurrentUser();
 
   const handleSignIn = async () => {
+    console.log("Signing in...");
     const user: User = { email, password };
     try {
+      setShowLoading(true);
+
       const response = await signIn(user);
+      console.log("Sign in response: ", response);
       if (response && response.token) {
         localStorage.setItem("token", response.token);
         setCurrentUser(response.user);
@@ -40,8 +46,14 @@ const SignInScreen: React.FC = () => {
       } else if (response && response.error) {
         setErrorMessage(response.error);
         setShowAlert(true);
+      } else {
+        setErrorMessage("Something went wrong. Please try again later.");
+        setShowAlert(true);
       }
+      setShowLoading(false);
     } catch (error) {
+      setShowLoading(false);
+      console.error("Error signing in: ", error);
       setErrorMessage("Error signing in: " + error);
       setShowAlert(true);
     }
@@ -67,6 +79,11 @@ const SignInScreen: React.FC = () => {
       />
 
       <IonPage id="main-content">
+        <IonLoading
+          isOpen={showLoading}
+          onDidDismiss={() => setShowLoading(false)}
+          message={"Please wait..."}
+        />
         <MainHeader
           pageTitle="Sign In"
           isWideScreen={isWideScreen}

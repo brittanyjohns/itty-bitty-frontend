@@ -45,6 +45,7 @@ export interface Board {
 // }
 
 export const getBoards = () => {
+  console.log("userHeaders", userHeaders);
   const boards = fetch(`${BASE_URL}boards`, { headers: userHeaders }) // `localhostboards
     .then((response) => response.json())
     .then((data) => data)

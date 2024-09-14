@@ -53,31 +53,29 @@ const BoardDropdown: React.FC<BoardDropdownProps> = ({ imageId, boards }) => {
     selectRef.current!.value = null;
   };
   return (
-    <div className="border rounded-md w-full">
-      <IonList className="">
-        <IonItem lines="none">
-          <IonSelect
-            placeholder="Add to board"
-            className="text-sm text-wrap text-center"
-            name="boardId"
-            onIonChange={(e: any) => handleSelectChange(e)}
-            ref={selectRef}
-          >
-            {boards &&
-              boards.map((board: { id?: any; name: any }) => (
-                <IonSelectOption key={board.id} value={board.id}>
-                  {board.name}
-                </IonSelectOption>
-              ))}
-          </IonSelect>
-        </IonItem>
-        <IonToast
-          isOpen={isOpen}
-          message={toastMessage}
-          onDidDismiss={() => setIsOpen(false)}
-          duration={2000}
-        ></IonToast>
-      </IonList>
+    <div className="border rounded-md w-full p-1">
+      <div className="p-1">
+        <IonSelect
+          placeholder="Add to board"
+          className="text-sm w-full"
+          name="boardId"
+          onIonChange={(e: any) => handleSelectChange(e)}
+          ref={selectRef}
+        >
+          {boards &&
+            boards.map((board: { id?: any; name: any }) => (
+              <IonSelectOption key={board.id} value={board.id}>
+                {board.name}
+              </IonSelectOption>
+            ))}
+        </IonSelect>
+      </div>
+      <IonToast
+        isOpen={isOpen}
+        message={toastMessage}
+        onDidDismiss={() => setIsOpen(false)}
+        duration={2000}
+      ></IonToast>
     </div>
   );
 };

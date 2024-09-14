@@ -71,25 +71,6 @@ const BoardView: React.FC<BoardViewProps> = ({
   const [currentNumberOfColumns, setCurrentNumberOfColumns] =
     useState(numOfColumns);
 
-  const handleClone = async () => {
-    setShowLoading(true);
-    try {
-      const clonedBoard = await cloneBoard(board.id);
-      if (clonedBoard) {
-        const updatedBoard = await rearrangeImages(clonedBoard.id);
-        setBoard(updatedBoard || clonedBoard);
-        history.push(`/boards/${clonedBoard.id}`);
-      } else {
-        console.error("Error cloning board");
-        alert("Error cloning board");
-      }
-    } catch (error) {
-      console.error("Error cloning board: ", error);
-      alert("Error cloning board");
-    }
-    setShowLoading(false);
-  };
-
   const handleCurrentLayout = (layout: any) => {
     setCurrentLayout(layout);
   };
@@ -112,18 +93,6 @@ const BoardView: React.FC<BoardViewProps> = ({
             >
               <IonIcon icon={chatbubbleEllipsesOutline} className="mx-2" />
               <IonLabel>Speak</IonLabel>
-            </IonButton>
-          )}
-          {handleClone && (
-            <IonButton
-              onClick={handleClone}
-              className="mr-1 text-xs md:text-md lg:text-lg"
-            >
-              <IonIcon
-                icon={copyOutline}
-                className="mx-1 text-xs md:text-md lg:text-lg"
-              />
-              <IonLabel>Clone</IonLabel>
             </IonButton>
           )}
           {board && showEdit && (
@@ -170,7 +139,7 @@ const BoardView: React.FC<BoardViewProps> = ({
         <span className="font-bold">
           {getScreenSizeName(currentScreenSize)}
         </span>{" "}
-        screens ({currentNumberOfColumns} columns).
+        screens.
       </IonLabel>
 
       {currentBoard &&

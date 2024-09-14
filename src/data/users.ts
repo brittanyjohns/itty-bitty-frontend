@@ -54,19 +54,51 @@ export interface UserSetting {
   [key: string]: any; // Index signature for dynamic keys
 }
 
-export const signIn = (user: User) => {
-  const response = fetch(`${BASE_URL}v1/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(user),
-  })
-    .then((response) => response.json())
-    .then((data) => data)
-    .catch((error) => console.error("Error signing in: ", error));
+// export const signIn = (user: User) => {
+//   const response = fetch(`${BASE_URL}v1/login`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(user),
+//   })
+//     .then((response) => response.json())
+//     .then((data) => data)
+//     .catch((error) => console.error("Error signing in: ", error));
 
-  return response;
+//   return response;
+// };
+
+export const signIn = async (user: User): Promise<any> => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000); // Set timeout to 5 seconds
+
+  try {
+    const response = await fetch(`${BASE_URL}v1/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId); // Clear timeout if fetch completes in time
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error: any) {
+    if (error.name === "AbortError") {
+      console.error("Request timed out");
+    } else {
+      console.error("Error signing in: ", error);
+    }
+    return null;
+  }
 };
 
 export const signUp = (user: User) => {

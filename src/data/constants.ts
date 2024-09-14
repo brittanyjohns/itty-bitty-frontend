@@ -18,10 +18,14 @@ export const STRIPE_PAYMENT_LINK_URL = import.meta.env
 export const STRIPE_CUSTOMER_PORTAL_URL = import.meta.env
   .VITE_STRIPE_CUSTOMER_PORTAL_URL;
 
+const userToken = localStorage.getItem("token");
+console.log("userToken", userToken);
 export const userHeaders = {
   "Content-Type": "application/json",
   Authorization: `Bearer ${localStorage.getItem("token")}`,
 };
+
+console.log("userHeaders", userHeaders);
 
 export const childAccountHeaders = {
   "Content-Type": "application/json",

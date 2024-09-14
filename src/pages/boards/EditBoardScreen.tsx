@@ -28,6 +28,7 @@ import {
   arrowBackCircleOutline,
   cloudUploadOutline,
   contractOutline,
+  copyOutline,
   createOutline,
   gridOutline,
   helpBuoyOutline,
@@ -47,6 +48,7 @@ import {
   deleteBoard,
   createAdditionalImages,
   getAdditionalWords,
+  cloneBoard,
 } from "../../data/boards"; // Adjust imports based on actual functions
 import { generateImage } from "../../data/images";
 import { Image } from "../../data/images";
@@ -110,6 +112,7 @@ const EditBoardScreen: React.FC = () => {
   };
   const [image, setImage] = useState<Image | null>(initialImage);
   const [openAlert, setOpenAlert] = useState(false);
+  const [cloneIsOpen, setCloneIsOpen] = useState(false);
   const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
     if (
       currentUser &&
@@ -180,6 +183,30 @@ const EditBoardScreen: React.FC = () => {
     setPage(1);
   });
 
+  const handleClone = async () => {
+    setShowLoading(true);
+    try {
+      if (!board) {
+        console.error("Board is missing");
+        alert("Board is missing");
+        return;
+      }
+      const clonedBoard = await cloneBoard(board.id);
+      if (clonedBoard) {
+        const updatedBoard = await rearrangeImages(clonedBoard.id);
+        setBoard(updatedBoard || clonedBoard);
+        history.push(`/boards/${clonedBoard.id}`);
+      } else {
+        console.error("Error cloning board");
+        alert("Error cloning board");
+      }
+    } catch (error) {
+      console.error("Error cloning board: ", error);
+      alert("Error cloning board");
+    }
+    setShowLoading(false);
+  };
+
   useEffect(() => {
     loadPage();
   }, []);
@@ -197,6 +224,12 @@ const EditBoardScreen: React.FC = () => {
     }
     if (segmentType === "board") {
       history.push(`/boards/${id}`);
+    }
+    if (segmentType === "clone") {
+      helpTab.current?.classList.add("hidden");
+      layoutTab.current?.classList.add("hidden");
+      editForm.current?.classList.add("hidden");
+      setCloneIsOpen(true);
     }
     if (segmentType === "help") {
       helpTab.current?.classList.remove("hidden");
@@ -292,6 +325,14 @@ const EditBoardScreen: React.FC = () => {
               onIonChange={handleSegmentChange}
               className=""
             >
+              <IonSegmentButton value="clone">
+                {!smallScreen ? (
+                  <IonLabel className="">Clone</IonLabel>
+                ) : (
+                  <IonLabel className=""></IonLabel>
+                )}
+                <IonIcon className="mt-2" icon={copyOutline} />
+              </IonSegmentButton>
               <IonSegmentButton value="edit">
                 {!smallScreen ? (
                   <IonLabel className="">Edit</IonLabel>
@@ -340,6 +381,13 @@ const EditBoardScreen: React.FC = () => {
                 />
               )}
             </div>
+            <ConfirmAlert
+              onConfirm={handleClone}
+              onCanceled={() => {}}
+              openAlert={cloneIsOpen}
+              message="Are you sure you want to CLONE this board?"
+              onDidDismiss={() => setCloneIsOpen(false)}
+            />
           </div>
 
           <div className="mt-6 py-3 px-1 hidden text-center" ref={helpTab}>
@@ -374,7 +422,7 @@ const EditBoardScreen: React.FC = () => {
                     <span className="font-bold">
                       {getScreenSizeName(currentScreenSize)}
                     </span>{" "}
-                    screens ({currentNumberOfColumns} columns).
+                    screens
                   </p>
                   <div>
                     <div className="h-5 my-3"></div>

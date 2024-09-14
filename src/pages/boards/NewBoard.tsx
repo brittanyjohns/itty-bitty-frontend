@@ -135,8 +135,8 @@ const NewBoard: React.FC = (props: any) => {
           isWideScreen={isWideScreen}
           startLink="/boards"
         />
-        <IonContent className="ion-padding">
-          <div className="w-1/2 mx-auto h-1/4 grid grid-rows-2 gap-4">
+        <IonContent>
+          <div className="w-5/6 md:w-3/4 mx-auto h-1/4 grid grid-rows-2 gap-4">
             <IonButton
               className=""
               expand="block"
@@ -148,6 +148,14 @@ const NewBoard: React.FC = (props: any) => {
               </span>
             </IonButton>
             <div className="hidden" ref={scratchDivRef}>
+              <h1 className="text-lg font-bold">Create a new board</h1>
+              <h2 className="text-sm text-gray-500">
+                Enter a name and a list of words separated by commas to create a
+                new board.
+              </h2>
+              <h2 className="text-sm text-gray-500">
+                You can also get suggestions based on the name you enter.
+              </h2>
               <IonItem className="my-4 p-2 border rounded" lines="none">
                 <IonInput
                   label="Board Name"
@@ -156,7 +164,7 @@ const NewBoard: React.FC = (props: any) => {
                   onIonInput={handleNameChange}
                 />
               </IonItem>
-              <IonItem className="my-4" lines="none">
+              <IonItem className="my-4  border rounded" lines="none">
                 <IonTextarea
                   rows={5}
                   value={wordList.join(", ")}
@@ -168,6 +176,16 @@ const NewBoard: React.FC = (props: any) => {
                   }}
                 />
               </IonItem>
+              <div className="text-sm text-gray-500 my-2 p-1">
+                <IonButton
+                  fill="outline"
+                  onClick={handleGetWords}
+                  ref={suggestionBtnRef}
+                  expand="block"
+                >
+                  Get suggestions
+                </IonButton>
+              </div>
 
               <IonButton
                 className="my-2"
@@ -178,38 +196,6 @@ const NewBoard: React.FC = (props: any) => {
               >
                 Create
               </IonButton>
-
-              <div className="text-sm text-gray-500 my-2 p-2">
-                <IonButton
-                  fill="outline"
-                  onClick={handleGetWords}
-                  ref={suggestionBtnRef}
-                >
-                  Get suggestions
-                </IonButton>
-              </div>
-              <div className="text-sm">
-                <p className="text-sm text-gray-500">
-                  Enter a name and a list of words separated by commas to create
-                  a new board.
-                </p>
-                <p className="text-sm text-gray-500">
-                  You can also get suggestions based on the name you enter.
-                </p>
-              </div>
-              <hr></hr>
-              <h1 className="text-lg font-bold">Examples:</h1>
-
-              <div className="text-sm text-gray-500 my-2 p-2">
-                <IonItem>
-                  <p>Board Name: Animals</p>
-                  <p>Word List: cat, dog, fish, bird, elephant</p>
-                </IonItem>
-                <IonItem>
-                  <p>Board Name: Food</p>
-                  <p>Word List: apple, banana, orange, pizza, sandwich</p>
-                </IonItem>
-              </div>
             </div>
 
             <IonButton

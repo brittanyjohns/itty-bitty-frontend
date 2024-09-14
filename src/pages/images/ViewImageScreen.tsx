@@ -714,7 +714,7 @@ const ViewImageScreen: React.FC = () => {
               message={confirmDeleteDocMessage}
             />
 
-            <div className="mt-10 w-full md:w-3/4 mx-auto">
+            <div className="mt-10 w-full md:w-5/6 mx-auto">
               <div className="flex justify-center">
                 {image && remainingBoards && remainingBoards.length > 0 && (
                   <div className="mx-3">
