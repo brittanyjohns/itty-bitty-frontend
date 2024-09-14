@@ -37,6 +37,7 @@ import {
   pencilSharp,
   saveOutline,
   shareOutline,
+  trashBinOutline,
 } from "ionicons/icons";
 import {
   getBoard,
@@ -64,6 +65,8 @@ import ConfirmAlert from "../../components/utils/ConfirmAlert";
 import { getScreenSizeName } from "../../data/utils";
 import { set } from "d3";
 import SuggestionForm from "../../components/boards/SuggestionForm";
+import { h } from "ionicons/dist/types/stencil-public-runtime";
+import ConfirmDeleteAlert from "../../components/utils/ConfirmAlert";
 
 const EditBoardScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -96,11 +99,18 @@ const EditBoardScreen: React.FC = () => {
   const [showEdit, setShowEdit] = useState(false);
   const params = useParams<{ id: string }>();
   const [currentLayout, setCurrentLayout] = useState([]);
-  // const [screenSize, setScreenSize] = useState("lg");
   const [currentScreenSize, setCurrentScreenSize] = useState("lg");
   const [currentNumberOfColumns, setCurrentNumberOfColumns] =
     useState(numberOfColumns);
 
+  const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
+  const handleDeleteBoard = async () => {
+    if (!board) return;
+    setShowLoading(true);
+    await deleteBoard(board.id);
+    history.push("/boards");
+    setShowLoading(false);
+  };
   const initialImage = {
     id: "",
     src: "",
@@ -141,7 +151,6 @@ const EditBoardScreen: React.FC = () => {
     const updatedBoard = await rearrangeImages(id);
     setBoard(updatedBoard);
     setShowLoading(false);
-    // history.push(`/boards/${board?.id}`);
     window.location.reload();
   };
 
@@ -149,7 +158,6 @@ const EditBoardScreen: React.FC = () => {
     const board = await getBoard(id); // Ensure getBoard is typed to return a Promise<Board>
     setBoard(board);
 
-    // setNumberOfColumns(board.number_of_columns);
     return board;
   };
 
@@ -181,6 +189,8 @@ const EditBoardScreen: React.FC = () => {
   useIonViewWillEnter(() => {
     setSearchInput("");
     setPage(1);
+    setSegmentType("edit");
+    toggleForms("edit");
   });
 
   const handleClone = async () => {
@@ -222,15 +232,10 @@ const EditBoardScreen: React.FC = () => {
       layoutTab.current?.classList.remove("hidden");
       editForm.current?.classList.add("hidden");
     }
-    if (segmentType === "board") {
+    if (segmentType === "board" || segmentType === "back") {
       history.push(`/boards/${id}`);
     }
-    if (segmentType === "clone") {
-      helpTab.current?.classList.add("hidden");
-      layoutTab.current?.classList.add("hidden");
-      editForm.current?.classList.add("hidden");
-      setCloneIsOpen(true);
-    }
+
     if (segmentType === "help") {
       helpTab.current?.classList.remove("hidden");
       layoutTab.current?.classList.add("hidden");
@@ -257,7 +262,6 @@ const EditBoardScreen: React.FC = () => {
       gridLayout,
       currentScreenSize
     );
-    console.log("Updated board: ", updatedBoard);
     const message = "Board layout saved";
     setToastMessage(message);
     setIsToastOpen(true);
@@ -265,25 +269,8 @@ const EditBoardScreen: React.FC = () => {
     history.push(`/boards/${board?.id}`);
   };
 
-  const handleCreateAdditionalImages = async () => {
-    setLoadingMessage("Creating additional images");
-    setShowLoading(true);
-    if (!board?.id) {
-      console.error("Board ID is missing");
-      return;
-    }
-    const updatedBoard = await createAdditionalImages(board?.id, numberOfWords);
-    setBoard(updatedBoard);
-    setShowLoading(false);
-    const message = "Additional images created";
-    setToastMessage(message);
-    setIsToastOpen(true);
-    // history.push(`/boards/${board?.id}`);
-  };
-
   const handleSegmentChange = (e: CustomEvent) => {
     const newSegment = e.detail.value;
-    console.log("New segment: ", newSegment);
     setSegmentType(newSegment);
     toggleForms(newSegment);
   };
@@ -325,13 +312,13 @@ const EditBoardScreen: React.FC = () => {
               onIonChange={handleSegmentChange}
               className=""
             >
-              <IonSegmentButton value="clone">
+              <IonSegmentButton value="back">
                 {!smallScreen ? (
-                  <IonLabel className="">Clone</IonLabel>
+                  <IonLabel className="">Back</IonLabel>
                 ) : (
                   <IonLabel className=""></IonLabel>
                 )}
-                <IonIcon className="mt-2" icon={copyOutline} />
+                <IonIcon className="mt-2" icon={arrowBackCircle} />
               </IonSegmentButton>
               <IonSegmentButton value="edit">
                 {!smallScreen ? (
@@ -355,7 +342,6 @@ const EditBoardScreen: React.FC = () => {
                 ) : (
                   <IonLabel className="text-sm md:text-md lg:text-lg"></IonLabel>
                 )}
-
                 <IonIcon className="mt-2" icon={gridOutline} />
               </IonSegmentButton>
             </IonSegment>
@@ -363,15 +349,29 @@ const EditBoardScreen: React.FC = () => {
           <div className=" " ref={editForm}>
             <div className="w-11/12 lg:w-1/2 mx-auto">
               <div className=" mt-5 text-center">
-                <IonButton
-                  className="mx-2"
-                  fill="clear"
-                  size="small"
-                  onClick={() => history.push(`/boards/${id}`)}
-                >
-                  <IonIcon icon={arrowBackCircle} />
-                  <IonLabel className="text-xs ml-1">Back to board</IonLabel>
-                </IonButton>
+                <IonButtons className="flex justify-center">
+                  <IonButton
+                    className="mx-2"
+                    fill="outline"
+                    size="small"
+                    onClick={() => setCloneIsOpen(true)}
+                  >
+                    <IonIcon icon={copyOutline} className="mx-2" />
+                    <IonLabel className="text-xs ml-1">Clone</IonLabel>
+                  </IonButton>
+                  {board && showEdit && (
+                    <IonButton
+                      className="mx-2"
+                      fill="outline"
+                      size="small"
+                      color={"danger"}
+                      onClick={() => setOpenDeleteAlert(true)}
+                    >
+                      <IonIcon icon={trashBinOutline} className="mx-2" />
+                      <IonLabel>Delete</IonLabel>
+                    </IonButton>
+                  )}
+                </IonButtons>
               </div>
               {board && (
                 <BoardForm
@@ -381,6 +381,16 @@ const EditBoardScreen: React.FC = () => {
                 />
               )}
             </div>
+            <ConfirmDeleteAlert
+              openAlert={openDeleteAlert}
+              message={
+                "Are you sure you want to DELETE this board? This action cannot be undone."
+              }
+              onConfirm={handleDeleteBoard}
+              onCanceled={() => {
+                setOpenDeleteAlert(false);
+              }}
+            />
             <ConfirmAlert
               onConfirm={handleClone}
               onCanceled={() => {}}

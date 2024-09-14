@@ -11,13 +11,12 @@ import {
   IonToast,
 } from "@ionic/react";
 import { useParams } from "react-router";
-import { addCircleOutline } from "ionicons/icons";
+import { addCircleOutline, create, createOutline } from "ionicons/icons";
 import {
   getBoard,
   addImageToBoard,
   Board,
   getRemainingImages,
-  rearrangeImages,
 } from "../../data/boards"; // Adjust imports based on actual functions
 import { createImage, getMoreImages } from "../../data/images";
 import { Image } from "../../data/images";
@@ -59,24 +58,6 @@ const SelectGalleryScreen: React.FC = () => {
     layout: [],
   };
   const [image, setImage] = useState<Image | null>(initialImage);
-  // const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
-  //   if (
-  //     currentUser &&
-  //     currentUser.tokens &&
-  //     currentUser.tokens >= numberOfTokens
-  //   ) {
-  //     return true;
-  //   }
-  //   return false;
-  // };
-
-  // const handleRearrangeImages = async () => {
-  //   setShowLoading(true);
-  //   const updatedBoard = await rearrangeImages(id);
-  //   setBoard(updatedBoard);
-  //   setShowLoading(false);
-  //   // window.location.reload();
-  // };
 
   const fetchBoard = async () => {
     const board = await getBoard(id); // Ensure getBoard is typed to return a Promise<Board>
@@ -200,7 +181,8 @@ const SelectGalleryScreen: React.FC = () => {
           pageTitle={board?.name}
           isWideScreen={isWideScreen}
           showMenuButton={!isWideScreen}
-          endLink="/boards/new"
+          endLink={`/boards/${id}/edit`}
+          endIcon={createOutline}
         />
         <IonContent>
           <div className="mt-3 py-3 px-1 hidden" ref={uploadForm}>

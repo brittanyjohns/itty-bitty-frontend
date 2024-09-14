@@ -135,8 +135,6 @@ const ViewImageScreen: React.FC = () => {
 
   const getData = async () => {
     const imgToSet = await fetchImage();
-    // const allBoards = await getBoards();
-    console.log("Image data: ", imgToSet);
     setRemainingBoards(imgToSet["remaining_boards"]);
     setUserBoards(imgToSet["user_boards"]);
     setNextImageWords(imgToSet["next_words"]);
@@ -290,7 +288,6 @@ const ViewImageScreen: React.FC = () => {
 
   const handleInputChange = (str: string) => {
     setNewName(str);
-    console.log("New name: ", str);
     handleCloneImage(str);
   };
 

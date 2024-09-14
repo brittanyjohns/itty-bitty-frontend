@@ -54,7 +54,6 @@ const BoardView: React.FC<BoardViewProps> = ({
   setShowIcon,
   imageCount,
   numOfColumns,
-  // handleClone,
   setShowLoading,
   showLoading,
 }) => {
@@ -62,7 +61,6 @@ const BoardView: React.FC<BoardViewProps> = ({
   const history = useHistory();
   const [showShare, setShowShare] = useState(false);
   const [currentBoard, setBoard] = useState<Board>(board);
-  const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
 
   const shouldShowRemoveBtn = currentUser?.role === "admin" || board?.can_edit;
 
@@ -73,13 +71,6 @@ const BoardView: React.FC<BoardViewProps> = ({
 
   const handleCurrentLayout = (layout: any) => {
     setCurrentLayout(layout);
-  };
-
-  const handleDeleteBoard = async () => {
-    setShowLoading(true);
-    await deleteBoard(board.id);
-    history.push("/boards");
-    setShowLoading(false);
   };
 
   return (
@@ -113,26 +104,7 @@ const BoardView: React.FC<BoardViewProps> = ({
               <IonLabel>Add</IonLabel>
             </IonButton>
           )}
-          {board && showEdit && (
-            <IonButton
-              onClick={() => setOpenDeleteAlert(true)}
-              className="mr-1 text-xs text-xs md:text-md lg:text-lg"
-            >
-              <IonIcon icon={trashBinOutline} className="mx-2" />
-              <IonLabel>Delete</IonLabel>
-            </IonButton>
-          )}
         </IonButtons>
-        <ConfirmDeleteAlert
-          openAlert={openDeleteAlert}
-          message={
-            "Are you sure you want to DELETE this board? This action cannot be undone."
-          }
-          onConfirm={handleDeleteBoard}
-          onCanceled={() => {
-            setOpenDeleteAlert(false);
-          }}
-        />
       </div>
       <IonLabel className="text-xs md:text-md lg:text-lg block text-center">
         You are currently viewing the layout for{" "}
