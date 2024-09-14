@@ -56,32 +56,37 @@ const ViewChildAccountScreen: React.FC = () => {
   const [showPasscode, setShowPasscode] = useState(false);
 
   const fetchChildAccount = async () => {
-    if (!currentUser?.id) {
-      console.error("No current user");
-      setLoading(false);
-      return;
-    }
+    console.log("Fetching child account...");
+    // if (!currentUser?.id) {
+    //   console.error("No current user");
+    //   setLoading(false);
+    //   return;
+    // }
     if (id === "new") {
       setLoading(false);
       setSegmentType("newAccountTab");
       return;
     }
-    const childAccountToSet = await getChildAccount(Number(id), currentUser.id);
 
-    if (!childAccountToSet) {
-      console.error("Error fetching childAccount");
-      setLoading(false);
-      return;
-    }
+    let childAccountToSet: ChildAccount | undefined = undefined;
+
+    // if (currentUser?.id) {
+    //   console.log("Current user is child account");
+    childAccountToSet = await getChildAccount(Number(id), currentUser?.id || 0);
+    // }
+
+    console.log("Child Account: ", childAccountToSet);
+
+    // if (!childAccountToSet) {
+    //   setLoading(false);
+    //   return;
+    // }
     setChildAccount(childAccountToSet);
     if (childAccountToSet?.boards) {
       setBoards(childAccountToSet.boards);
     }
-    const userBoards = currentUser.boards;
-    if (!userBoards) {
-      console.error("Error fetching boards ");
-      return;
-    }
+    const userBoards = currentUser?.boards || [];
+
     setUserBoards(userBoards);
     setLoading(false);
   };
@@ -90,7 +95,7 @@ const ViewChildAccountScreen: React.FC = () => {
     const fetchedBoards = currentUser?.boards;
     setUserBoards(fetchedBoards || []);
     if (!fetchedBoards) {
-      console.error("Error fetching boards");
+      // console.error("Error fetching boards");
       return;
     }
     setUserBoards(fetchedBoards);
@@ -111,6 +116,8 @@ const ViewChildAccountScreen: React.FC = () => {
   };
 
   useEffect(() => {
+    console.log("Fetching child account...");
+    console.log("Current user: ", currentUser);
     fetchChildAccount();
     fetchUserBoards();
     loadWordEvents();

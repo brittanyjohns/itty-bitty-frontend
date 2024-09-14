@@ -4,6 +4,7 @@ import React, {
   useState,
   useEffect,
   ReactNode,
+  useMemo,
 } from "react";
 import { getCurrentUser, isUserSignedIn, User } from "../data/users";
 import { getPlatforms } from "@ionic/react";
@@ -13,6 +14,7 @@ import {
   getCurrentAccount,
   isAccountSignedIn,
 } from "../data/child_accounts";
+import { set } from "d3";
 
 // Define the shape of the context
 export interface UserContextType {
@@ -54,10 +56,29 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   });
   const largeScreen = useMediaQuery({ query: "(min-width: 769px)" });
 
+  // const fetchUser = async () => {
+  //   const user = await getCurrentUser();
+  //   if (user) setCurrentUser(user);
+  //   else setCurrentUser(null);
+  //   return user;
+  // };
+  // let retryCount = 0; // Retry 3 times
+  const [retryCount, setRetryCount] = useState(0);
+  useMemo(() => {
+    setRetryCount(0);
+  }, []);
   const fetchUser = async () => {
+    // let retryCount = 0;
+    console.log("Fetching user...", retryCount);
     const user = await getCurrentUser();
     if (user) setCurrentUser(user);
-    else setCurrentUser(null);
+    {
+      setRetryCount(retryCount + 1);
+      if (retryCount < 3) {
+        console.log("Retrying...");
+      }
+    }
+    console.log("User: ", user);
     return user;
   };
 

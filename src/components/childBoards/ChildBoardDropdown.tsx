@@ -38,11 +38,11 @@ const ChildBoardDropdown: React.FC<ChildBoardDropdownProps> = ({
   const handleSelectChange = (e: CustomEvent) => {
     const boardId = e.detail.value;
     setShowLoading(true);
-    if (!currentUser?.id) {
-      console.error("No current user");
-      setShowLoading(false);
-      return;
-    }
+    // if (!currentUser?.id) {
+    //   console.error("No current user");
+    //   setShowLoading(false);
+    //   return;
+    // }
     async function addSelectedBoardToAccount() {
       const response = await assignBoardToChildAccount(
         currentUser?.id || 0,
