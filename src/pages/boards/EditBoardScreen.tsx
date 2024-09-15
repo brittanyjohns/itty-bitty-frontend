@@ -5,68 +5,45 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonInput,
-  IonItem,
   IonLabel,
-  IonList,
   IonLoading,
   IonPage,
   IonSegment,
   IonSegmentButton,
-  IonSelect,
-  IonSelectOption,
-  IonText,
-  IonTextarea,
   IonToast,
   useIonViewWillEnter,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
 import {
-  add,
   appsOutline,
   arrowBackCircle,
   arrowBackCircleOutline,
-  cloudUploadOutline,
   contractOutline,
-  copyOutline,
   createOutline,
   gridOutline,
   helpBuoyOutline,
   imagesOutline,
-  pencilOutline,
-  pencilSharp,
   saveOutline,
-  shareOutline,
-  trashBinOutline,
 } from "ionicons/icons";
 import {
   getBoard,
-  addImageToBoard,
   Board,
   getRemainingImages,
   saveLayout,
   rearrangeImages,
   deleteBoard,
-  createAdditionalImages,
-  getAdditionalWords,
-  cloneBoard,
 } from "../../data/boards"; // Adjust imports based on actual functions
-import { generateImage } from "../../data/images";
 import { Image } from "../../data/images";
 import BoardForm from "../../components/boards/BoardForm";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/utils/Tabs";
 import DraggableGrid from "../../components/images/DraggableGrid";
 import MainMenu from "../../components/main_menu/MainMenu";
-import ImageCropper from "../../components/images/ImageCropper";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import ConfirmAlert from "../../components/utils/ConfirmAlert";
 import { getScreenSizeName } from "../../data/utils";
-import { set } from "d3";
 import SuggestionForm from "../../components/boards/SuggestionForm";
-import { h } from "ionicons/dist/types/stencil-public-runtime";
-import ConfirmDeleteAlert from "../../components/utils/ConfirmAlert";
 
 const EditBoardScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -83,8 +60,7 @@ const EditBoardScreen: React.FC = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isToastOpen, setIsToastOpen] = useState(false);
-  const [additionalWords, setAdditionalWords] = useState<string[]>([]);
-  const [numberOfWords, setNumberOfWords] = useState(15);
+
   const [loadingMessage, setLoadingMessage] = useState("Loading board");
   const {
     currentUser,
@@ -103,26 +79,8 @@ const EditBoardScreen: React.FC = () => {
   const [currentNumberOfColumns, setCurrentNumberOfColumns] =
     useState(numberOfColumns);
 
-  const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
-  const handleDeleteBoard = async () => {
-    if (!board) return;
-    setShowLoading(true);
-    await deleteBoard(board.id);
-    history.push("/boards");
-    setShowLoading(false);
-  };
-  const initialImage = {
-    id: "",
-    src: "",
-    label: "",
-    image_prompt: "",
-    audio: "",
-    bg_color: "",
-    layout: [],
-  };
-  const [image, setImage] = useState<Image | null>(initialImage);
   const [openAlert, setOpenAlert] = useState(false);
-  const [cloneIsOpen, setCloneIsOpen] = useState(false);
+  // const [cloneIsOpen, setCloneIsOpen] = useState(false);
   const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
     if (
       currentUser &&
@@ -192,30 +150,6 @@ const EditBoardScreen: React.FC = () => {
     setSegmentType("edit");
     toggleForms("edit");
   });
-
-  const handleClone = async () => {
-    setShowLoading(true);
-    try {
-      if (!board) {
-        console.error("Board is missing");
-        alert("Board is missing");
-        return;
-      }
-      const clonedBoard = await cloneBoard(board.id);
-      if (clonedBoard) {
-        const updatedBoard = await rearrangeImages(clonedBoard.id);
-        setBoard(updatedBoard || clonedBoard);
-        history.push(`/boards/${clonedBoard.id}`);
-      } else {
-        console.error("Error cloning board");
-        alert("Error cloning board");
-      }
-    } catch (error) {
-      console.error("Error cloning board: ", error);
-      alert("Error cloning board");
-    }
-    setShowLoading(false);
-  };
 
   useEffect(() => {
     loadPage();
@@ -348,31 +282,6 @@ const EditBoardScreen: React.FC = () => {
           </IonHeader>
           <div className=" " ref={editForm}>
             <div className="w-11/12 lg:w-1/2 mx-auto">
-              <div className=" mt-5 text-center">
-                <IonButtons className="flex justify-center">
-                  <IonButton
-                    className="mx-2"
-                    fill="outline"
-                    size="small"
-                    onClick={() => setCloneIsOpen(true)}
-                  >
-                    <IonIcon icon={copyOutline} className="mx-2" />
-                    <IonLabel className="text-xs ml-1">Clone</IonLabel>
-                  </IonButton>
-                  {board && showEdit && (
-                    <IonButton
-                      className="mx-2"
-                      fill="outline"
-                      size="small"
-                      color={"danger"}
-                      onClick={() => setOpenDeleteAlert(true)}
-                    >
-                      <IonIcon icon={trashBinOutline} className="mx-2" />
-                      <IonLabel>Delete</IonLabel>
-                    </IonButton>
-                  )}
-                </IonButtons>
-              </div>
               {board && (
                 <BoardForm
                   board={board}
@@ -381,23 +290,6 @@ const EditBoardScreen: React.FC = () => {
                 />
               )}
             </div>
-            <ConfirmDeleteAlert
-              openAlert={openDeleteAlert}
-              message={
-                "Are you sure you want to DELETE this board? This action cannot be undone."
-              }
-              onConfirm={handleDeleteBoard}
-              onCanceled={() => {
-                setOpenDeleteAlert(false);
-              }}
-            />
-            <ConfirmAlert
-              onConfirm={handleClone}
-              onCanceled={() => {}}
-              openAlert={cloneIsOpen}
-              message="Are you sure you want to CLONE this board?"
-              onDidDismiss={() => setCloneIsOpen(false)}
-            />
           </div>
 
           <div className="mt-6 py-3 px-1 hidden text-center" ref={helpTab}>

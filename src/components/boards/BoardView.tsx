@@ -32,6 +32,7 @@ import MainMenu from "../main_menu/MainMenu";
 import { getScreenSizeName } from "../../data/utils";
 import ConfirmDeleteAlert from "../utils/ConfirmAlert";
 import { set } from "d3";
+import ConfirmAlert from "../utils/ConfirmAlert";
 
 interface BoardViewProps {
   board: Board;
@@ -73,6 +74,40 @@ const BoardView: React.FC<BoardViewProps> = ({
     setCurrentLayout(layout);
   };
 
+  const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
+  const [cloneIsOpen, setCloneIsOpen] = useState(false);
+  const handleDeleteBoard = async () => {
+    if (!board) return;
+    setShowLoading(true);
+    await deleteBoard(board.id);
+    history.push("/boards");
+    setShowLoading(false);
+  };
+
+  const handleClone = async () => {
+    setShowLoading(true);
+    try {
+      if (!board) {
+        console.error("Board is missing");
+        alert("Board is missing");
+        return;
+      }
+      const clonedBoard = await cloneBoard(board.id);
+      if (clonedBoard) {
+        const updatedBoard = await rearrangeImages(clonedBoard.id);
+        setBoard(updatedBoard || clonedBoard);
+        history.push(`/boards/${clonedBoard.id}`);
+      } else {
+        console.error("Error cloning board");
+        alert("Error cloning board");
+      }
+    } catch (error) {
+      console.error("Error cloning board: ", error);
+      alert("Error cloning board");
+    }
+    setShowLoading(false);
+  };
+
   return (
     <>
       <div className="flex justify-center items-center my-3">
@@ -105,6 +140,48 @@ const BoardView: React.FC<BoardViewProps> = ({
             </IonButton>
           )}
         </IonButtons>
+      </div>
+      <div className=" my-2 text-center">
+        <IonButtons className="flex justify-center">
+          <IonButton
+            className="mx-2"
+            fill="clear"
+            size="small"
+            onClick={() => setCloneIsOpen(true)}
+          >
+            <IonIcon icon={copyOutline} className="mx-2" />
+            <IonLabel className="text-xs ml-1">Clone</IonLabel>
+          </IonButton>
+          {board && showEdit && (
+            <IonButton
+              className="mx-2"
+              fill="clear"
+              size="small"
+              color={"danger"}
+              onClick={() => setOpenDeleteAlert(true)}
+            >
+              <IonIcon icon={trashBinOutline} className="mx-2" />
+              <IonLabel>Delete</IonLabel>
+            </IonButton>
+          )}
+        </IonButtons>
+        <ConfirmDeleteAlert
+          openAlert={openDeleteAlert}
+          message={
+            "Are you sure you want to DELETE this board? This action cannot be undone."
+          }
+          onConfirm={handleDeleteBoard}
+          onCanceled={() => {
+            setOpenDeleteAlert(false);
+          }}
+        />
+        <ConfirmAlert
+          onConfirm={handleClone}
+          onCanceled={() => {}}
+          openAlert={cloneIsOpen}
+          message="Are you sure you want to CLONE this board?"
+          onDidDismiss={() => setCloneIsOpen(false)}
+        />
       </div>
       <IonLabel className="text-xs md:text-md lg:text-lg block text-center">
         You are currently viewing the layout for{" "}
