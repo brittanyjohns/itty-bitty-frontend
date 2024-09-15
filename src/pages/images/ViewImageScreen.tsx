@@ -565,7 +565,7 @@ const ViewImageScreen: React.FC = () => {
                     className="mt-2 "
                     color="danger"
                     fill="outline"
-                    onClick={handleDeleteImage}
+                    onClick={() => setShowConfirmDeleteDoc(true)}
                   >
                     Delete Image
                   </IonButton>
