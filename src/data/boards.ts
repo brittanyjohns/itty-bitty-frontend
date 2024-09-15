@@ -34,6 +34,8 @@ export interface Board {
   bg_color?: string;
   audio_url?: string;
   word_list?: string[];
+  x_margin?: number;
+  y_margin?: number;
 }
 
 // export interface PredictiveBoard {
@@ -54,11 +56,21 @@ export const getBoards = () => {
   return boards;
 };
 
-export const saveLayout = (id: string, layout: any, screen_size: string) => {
+export interface BoardMargins {
+  xMargin: number;
+  yMargin: number;
+}
+
+export const saveLayout = (
+  id: string,
+  layout: any,
+  screen_size: string,
+  { xMargin, yMargin }: BoardMargins
+) => {
   const updatedBoard = fetch(`${BASE_URL}boards/${id}/save_layout`, {
     method: "POST",
     headers: userHeaders,
-    body: JSON.stringify({ layout, screen_size }),
+    body: JSON.stringify({ layout, screen_size, xMargin, yMargin }),
   })
     .then((response) => response.json())
     .then((data) => data)

@@ -10,6 +10,8 @@ import {
   IonPage,
   IonSegment,
   IonSegmentButton,
+  IonSelect,
+  IonSelectOption,
   IonToast,
   useIonViewWillEnter,
 } from "@ionic/react";
@@ -32,7 +34,7 @@ import {
   saveLayout,
   rearrangeImages,
   deleteBoard,
-} from "../../data/boards"; // Adjust imports based on actual functions
+} from "../../data/boards";
 import { Image } from "../../data/images";
 import BoardForm from "../../components/boards/BoardForm";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
@@ -49,11 +51,14 @@ const EditBoardScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [board, setBoard] = useState<Board | null>(null);
   const [showLoading, setShowLoading] = useState(false);
-  const [segmentType, setSegmentType] = useState("edit");
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const initialSegmentType = urlParams.get("segment") || "edit";
+  const [segmentType, setSegmentType] = useState(initialSegmentType);
   const helpTab = useRef<HTMLDivElement>(null);
   const layoutTab = useRef<HTMLDivElement>(null);
   const editForm = useRef<HTMLDivElement>(null);
-  const [remainingImages, setRemainingImages] = useState<Image[]>(); // State for the remaining images
+  const [remainingImages, setRemainingImages] = useState<Image[]>();
   const [searchInput, setSearchInput] = useState("");
   const [page, setPage] = useState(1);
   const history = useHistory();
@@ -76,59 +81,35 @@ const EditBoardScreen: React.FC = () => {
   const params = useParams<{ id: string }>();
   const [currentLayout, setCurrentLayout] = useState([]);
   const [currentScreenSize, setCurrentScreenSize] = useState("lg");
+  const [xMargin, setXMargin] = useState(board?.x_margin || 0);
+  const [yMargin, setYMargin] = useState(0);
   const [currentNumberOfColumns, setCurrentNumberOfColumns] =
     useState(numberOfColumns);
 
   const [openAlert, setOpenAlert] = useState(false);
-  // const [cloneIsOpen, setCloneIsOpen] = useState(false);
-  const checkCurrentUserTokens = (numberOfTokens: number = 1) => {
-    if (
-      currentUser &&
-      currentUser.tokens &&
-      currentUser.tokens >= numberOfTokens
-    ) {
-      return true;
-    }
-    return false;
-  };
+  const [preventCollision, setPreventCollision] = useState(false);
 
   const removeBoard = async () => {
+    if (!board || !board) {
+      return;
+    }
     try {
-      const boardId = params.id;
-      // Implement delete board logic
-      await deleteBoard(boardId);
-      window.location.href = "/boards";
+      await deleteBoard(board.id);
+      history.push("/boards");
     } catch (error) {
       console.error("Error removing board: ", error);
       alert("Error removing board");
     }
   };
 
-  const handleRearrangeImages = async () => {
-    setShowLoading(true);
-    const updatedBoard = await rearrangeImages(id);
-    setBoard(updatedBoard);
-    setShowLoading(false);
-    window.location.reload();
-  };
-
+  // Fetch board data and initialize state
   const fetchBoard = async () => {
-    const board = await getBoard(id); // Ensure getBoard is typed to return a Promise<Board>
+    const board = await getBoard(id);
     setBoard(board);
-
     return board;
   };
 
-  useEffect(() => {
-    if (board) {
-      if (smallScreen) setNumberOfColumns(board?.small_screen_columns || 4);
-      else if (mediumScreen)
-        setNumberOfColumns(board?.medium_screen_columns || 8);
-      else if (largeScreen)
-        setNumberOfColumns(board?.large_screen_columns || 12);
-    }
-  }, [smallScreen, mediumScreen, largeScreen, board]);
-
+  // Fetch remaining images
   const fetchRemaining = async (id: string, page: number) => {
     const remainingImgs = await getRemainingImages(id, page, searchInput);
     setRemainingImages(remainingImgs);
@@ -144,6 +125,34 @@ const EditBoardScreen: React.FC = () => {
     setShowLoading(false);
   };
 
+  // Ensure the form visibility based on segment type
+  const toggleForms = (segmentType: string) => {
+    if (segmentType === "edit") {
+      helpTab.current?.classList.add("hidden");
+      layoutTab.current?.classList.add("hidden");
+      editForm.current?.classList.remove("hidden");
+    } else if (segmentType === "layout") {
+      helpTab.current?.classList.add("hidden");
+      layoutTab.current?.classList.remove("hidden");
+      editForm.current?.classList.add("hidden");
+    } else if (segmentType === "help") {
+      helpTab.current?.classList.remove("hidden");
+      layoutTab.current?.classList.add("hidden");
+      editForm.current?.classList.add("hidden");
+    }
+  };
+
+  // Adjust layout based on screen size
+  useEffect(() => {
+    if (board) {
+      if (smallScreen) setNumberOfColumns(board?.small_screen_columns || 4);
+      else if (mediumScreen)
+        setNumberOfColumns(board?.medium_screen_columns || 8);
+      else if (largeScreen)
+        setNumberOfColumns(board?.large_screen_columns || 12);
+    }
+  }, [smallScreen, mediumScreen, largeScreen, board]);
+
   useIonViewWillEnter(() => {
     setSearchInput("");
     setPage(1);
@@ -155,36 +164,17 @@ const EditBoardScreen: React.FC = () => {
     loadPage();
   }, []);
 
-  const toggleForms = (segmentType: string) => {
-    if (segmentType === "edit") {
-      helpTab.current?.classList.add("hidden");
-      layoutTab.current?.classList.add("hidden");
-      editForm.current?.classList.remove("hidden");
+  const handleLayoutReload = async () => {
+    if (!board?.id) {
+      console.error("Board ID is missing");
+      return;
     }
-    if (segmentType === "layout") {
-      helpTab.current?.classList.add("hidden");
-      layoutTab.current?.classList.remove("hidden");
-      editForm.current?.classList.add("hidden");
-    }
-    if (segmentType === "board" || segmentType === "back") {
-      history.push(`/boards/${id}`);
-    }
-
-    if (segmentType === "help") {
-      helpTab.current?.classList.remove("hidden");
-      layoutTab.current?.classList.add("hidden");
-      editForm.current?.classList.add("hidden");
-    }
+    setSegmentType("layout");
+    toggleForms("layout");
+    window.location.href = `/boards/${board.id}/edit?segment=layout`;
   };
 
-  const handleCurrentLayout = (layout: any) => {
-    setCurrentLayout(layout);
-  };
-
-  const setGrid = (layout: any) => {
-    setGridLayout(layout);
-  };
-
+  // Save layout
   const handleSaveLayout = async () => {
     if (!board?.id) {
       console.error("Board ID is missing");
@@ -194,7 +184,8 @@ const EditBoardScreen: React.FC = () => {
     const updatedBoard = await saveLayout(
       board.id,
       gridLayout,
-      currentScreenSize
+      currentScreenSize,
+      { xMargin, yMargin }
     );
     const message = "Board layout saved";
     setToastMessage(message);
@@ -207,13 +198,32 @@ const EditBoardScreen: React.FC = () => {
     const newSegment = e.detail.value;
     setSegmentType(newSegment);
     toggleForms(newSegment);
+    console.log("Segment changed to: ", newSegment);
+    if (newSegment === "layout") {
+      handleLayoutReload();
+    }
+    if (newSegment === "back") {
+      history.goBack();
+    } else {
+      window.location.href = `/boards/${board?.id}/edit?segment=${newSegment}`;
+    }
   };
 
-  useEffect(() => {
-    setGridLayout(currentLayout);
-  }, [currentLayout]);
+  const handleCurrentLayout = (layout: any) => {
+    setCurrentLayout(layout);
+  };
 
-  const [preventCollision, setPreventCollision] = useState(false);
+  const setGrid = (layout: any) => {
+    setGridLayout(layout);
+  };
+
+  const handleRearrangeImages = async () => {
+    setShowLoading(true);
+    const updatedBoard = await rearrangeImages(id);
+    setBoard(updatedBoard);
+    setShowLoading(false);
+    window.location.reload();
+  };
 
   return (
     <>
@@ -229,7 +239,6 @@ const EditBoardScreen: React.FC = () => {
         currentUser={currentUser}
         currentAccount={currentAccount}
       />
-
       <IonPage id="main-content">
         <MainHeader
           pageTitle={`Edit ${board?.name}`}
@@ -247,35 +256,19 @@ const EditBoardScreen: React.FC = () => {
               className=""
             >
               <IonSegmentButton value="back">
-                {!smallScreen ? (
-                  <IonLabel className="">Back</IonLabel>
-                ) : (
-                  <IonLabel className=""></IonLabel>
-                )}
+                <IonLabel>Back</IonLabel>
                 <IonIcon className="mt-2" icon={arrowBackCircle} />
               </IonSegmentButton>
               <IonSegmentButton value="edit">
-                {!smallScreen ? (
-                  <IonLabel className="">Edit</IonLabel>
-                ) : (
-                  <IonLabel className=""></IonLabel>
-                )}
+                <IonLabel>Edit</IonLabel>
                 <IonIcon className="mt-2" icon={createOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="help">
-                {!smallScreen ? (
-                  <IonLabel className="">Help</IonLabel>
-                ) : (
-                  <IonLabel className=""></IonLabel>
-                )}
+                <IonLabel>Help</IonLabel>
                 <IonIcon className="mt-2" icon={helpBuoyOutline} />
               </IonSegmentButton>
               <IonSegmentButton value="layout">
-                {!smallScreen ? (
-                  <IonLabel className="">Layout</IonLabel>
-                ) : (
-                  <IonLabel className="text-sm md:text-md lg:text-lg"></IonLabel>
-                )}
+                <IonLabel>Layout</IonLabel>
                 <IonIcon className="mt-2" icon={gridOutline} />
               </IonSegmentButton>
             </IonSegment>
@@ -312,6 +305,17 @@ const EditBoardScreen: React.FC = () => {
             <div className="my-2 px-2 lg:px-8">
               {board && board.images && board.images.length > 0 && (
                 <div className="pb-10">
+                  <IonButtons>
+                    <IonButton
+                      onClick={handleLayoutReload}
+                      color="primary"
+                      fill="outline"
+                      size="small"
+                    >
+                      <IonIcon icon={appsOutline} className="mx-2" />
+                      <IonLabel className="mx-1">Reload Layout</IonLabel>
+                    </IonButton>
+                  </IonButtons>
                   <p className="text-center font-bold text-lg">
                     This board currently has {board.images.length} images.
                   </p>
@@ -327,6 +331,40 @@ const EditBoardScreen: React.FC = () => {
                     screens
                   </p>
                   <div>
+                    <div className="w-1/2 mx-auto flex justify-center items-center">
+                      <IonSelect
+                        value={xMargin}
+                        placeholder="X Margin"
+                        labelPlacement="stacked"
+                        label="X Margin"
+                        className="mx-2"
+                        fill="outline"
+                        selectedText={xMargin.toString()}
+                        onIonChange={(e: any) => setXMargin(e.detail.value)}
+                      >
+                        {[0, 5, 10, 15, 20, 25, 30].map((type, index) => (
+                          <IonSelectOption key={index} value={type}>
+                            {type}
+                          </IonSelectOption>
+                        ))}
+                      </IonSelect>
+                      <IonSelect
+                        value={yMargin}
+                        placeholder="Y Margin"
+                        labelPlacement="stacked"
+                        label="Y Margin"
+                        fill="outline"
+                        className="mx-2"
+                        selectedText={yMargin.toString()}
+                        onIonChange={(e: any) => setYMargin(e.detail.value)}
+                      >
+                        {[0, 5, 10, 15, 20, 25, 30].map((type, index) => (
+                          <IonSelectOption key={index} value={type}>
+                            {type}
+                          </IonSelectOption>
+                        ))}
+                      </IonSelect>
+                    </div>
                     <div className="h-5 my-3"></div>
                     {board && (
                       <DraggableGrid
@@ -338,6 +376,8 @@ const EditBoardScreen: React.FC = () => {
                         enableResize={true}
                         viewOnClick={false}
                         showRemoveBtn={false}
+                        xMargin={xMargin}
+                        yMargin={yMargin}
                         compactType={null}
                         preventCollision={preventCollision}
                         setShowLoading={setShowLoading}

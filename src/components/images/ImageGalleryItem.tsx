@@ -20,6 +20,7 @@ interface ImageGalleryItemProps {
   showRemoveBtn?: boolean;
   onSetDisplayImage?: any;
   rowHeight?: number;
+  setRowHeight?: any;
 }
 
 const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
@@ -34,10 +35,11 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   showRemoveBtn,
   onSetDisplayImage,
   rowHeight,
+  setRowHeight,
 }) => {
-  const { currentUser, smallScreen, mediumScreen, largeScreen } =
-    useCurrentUser();
   const imgRef = useRef<HTMLDivElement>(null);
+  const { currentUser, smallScreen, mediumScreen, largeScreen, isMobile } =
+    useCurrentUser();
   const [audioList, setAudioList] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const placeholderUrl = useMemo(
@@ -55,6 +57,45 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       alert("Error removing image");
     }
   };
+
+  const handleResize = () => {
+    if (imgRef.current) {
+      const width = imgRef.current.clientWidth;
+      if (isMobile && smallScreen) {
+        setRowHeight(width * 1.2);
+      } else {
+        setRowHeight(width);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (imgRef.current) {
+      console.log("Current client - Image ref: ", imgRef.current.clientWidth);
+      handleResize(); // Ensure imgRef is available before calling handleResize
+    } else {
+      console.log("Image ref is null");
+    }
+
+    const resizeListener = () => {
+      if (imgRef.current) {
+        handleResize();
+      }
+    };
+
+    window.addEventListener("resize", resizeListener);
+    return () => {
+      window.removeEventListener("resize", resizeListener);
+    };
+  }, [imgRef.current]); // Updated useEffect to check imgRef.current
+
+  useEffect(() => {
+    console.log("Current client - Image ref: ", imgRef.current?.clientWidth);
+
+    if (imgRef.current?.clientWidth) {
+      handleResize(); // Ensure imgRef.current is not null before calling handleResize
+    }
+  }, [imgRef.current?.clientWidth]);
 
   const handleImageClick = (image: Image) => {
     if (onImageClick) {

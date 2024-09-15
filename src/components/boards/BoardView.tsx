@@ -13,6 +13,8 @@ import {
   IonItem,
   IonLabel,
   IonLoading,
+  IonSelect,
+  IonSelectOption,
   IonText,
 } from "@ionic/react";
 import {
@@ -62,7 +64,6 @@ const BoardView: React.FC<BoardViewProps> = ({
   const history = useHistory();
   const [showShare, setShowShare] = useState(false);
   const [currentBoard, setBoard] = useState<Board>(board);
-
   const shouldShowRemoveBtn = currentUser?.role === "admin" || board?.can_edit;
 
   const [currentLayout, setCurrentLayout] = useState([]);
@@ -209,6 +210,8 @@ const BoardView: React.FC<BoardViewProps> = ({
             preventCollision={true}
             setShowLoading={setShowLoading}
             showLoading={showLoading}
+            xMargin={board.x_margin}
+            yMargin={board.y_margin}
             updateScreenSize={(newScreenSize: string, newCols: number) => {
               setCurrentNumberOfColumns(newCols);
               setCurrentScreenSize(newScreenSize);

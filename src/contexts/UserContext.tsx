@@ -21,6 +21,7 @@ export interface UserContextType {
   currentUser: User | null;
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
   isDesktop: boolean;
+  isMobile: boolean;
   isWideScreen: boolean;
   platforms: string[];
   currentAccount: ChildAccount | null;
@@ -47,6 +48,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const platforms = getPlatforms();
   const isDesktop = platforms.includes("desktop");
+  const isMobile = platforms.includes("mobile");
 
   // Media queries
   const isWideScreen = useMediaQuery({ query: "(min-width: 768px)" });
@@ -111,6 +113,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         setCurrentAccount,
         currentAccount,
         isDesktop,
+        isMobile,
         platforms,
         smallScreen,
         mediumScreen,
