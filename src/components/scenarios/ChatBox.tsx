@@ -33,6 +33,7 @@ const ChatBox: React.FC<ScenarioFormProps> = ({ scenario, setShowLoading }) => {
   };
 
   useEffect(() => {
+    console.log("updatedScenario", updatedScenario);
     if (updatedScenario.question_1) {
       setQuestion(updatedScenario.question_1);
     }
@@ -46,6 +47,13 @@ const ChatBox: React.FC<ScenarioFormProps> = ({ scenario, setShowLoading }) => {
   const handleSubmit = async () => {
     setShowLoading(true);
     const finalizing = questionNumber === 2;
+
+    console.log("finalizing", finalizing);
+    console.log("questionNumber", questionNumber);
+    console.log("currentAnswer", currentAnswer);
+
+    const answerKey = `question_${questionNumber}`;
+    const tmpCurrentAnswer = answers[questionNumber] || currentAnswer;
 
     const updatedScenario = await answerQuestion(
       scenario.id!,

@@ -130,7 +130,6 @@ const EditBoardScreen: React.FC = () => {
     setShowLoading(true);
     const boardToSet = await fetchBoard();
     fetchRemaining(boardToSet.id, 1);
-    toggleForms(segmentType);
     const userCanEdit = boardToSet.can_edit || currentUser?.role === "admin";
     setShowEdit(userCanEdit);
     setShowLoading(false);
@@ -167,11 +166,11 @@ const EditBoardScreen: React.FC = () => {
   useIonViewWillEnter(() => {
     setSearchInput("");
     setPage(1);
-    setSegmentType("layout");
-    toggleForms("layout");
   });
 
   useEffect(() => {
+    setSegmentType(initialSegmentType);
+    toggleForms(initialSegmentType);
     loadPage();
   }, []);
 
@@ -180,8 +179,6 @@ const EditBoardScreen: React.FC = () => {
       console.error("Board ID is missing");
       return;
     }
-    setSegmentType("layout");
-    toggleForms("layout");
     window.location.href = `/boards/${board.id}/edit?segment=layout`;
   };
 
@@ -207,15 +204,19 @@ const EditBoardScreen: React.FC = () => {
 
   const handleSegmentChange = (e: CustomEvent) => {
     const newSegment = e.detail.value;
-    setSegmentType(newSegment);
-    toggleForms(newSegment);
+
     if (newSegment === "layout") {
       handleLayoutReload();
+      return;
     }
     if (newSegment === "back") {
-      history.goBack();
+      history.push(`/boards/${board?.id}`);
     } else {
-      window.location.href = `/boards/${board?.id}/edit?segment=${newSegment}`;
+      console.log("newSegment: ", newSegment);
+      setSegmentType(newSegment);
+      toggleForms(newSegment);
+      loadPage();
+      // window.location.href = `/boards/${board?.id}/edit?segment=${newSegment}`;
     }
   };
 

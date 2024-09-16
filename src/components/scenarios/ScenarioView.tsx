@@ -73,7 +73,7 @@ const ScenarioView: React.FC<ScenarioViewProps> = ({
           )}
           {scenario && showEdit && (
             <IonButton
-              routerLink={`/scenarios/${scenario.id}/gallery`}
+              routerLink={`/boards/${scenario.board_id}/gallery`}
               className="mr-1 text-xs text-xs md:text-md lg:text-lg"
             >
               <IonIcon icon={imageOutline} className="mx-2" />

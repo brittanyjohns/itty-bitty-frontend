@@ -149,7 +149,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
     >
       {images.map((img: any, index: number) => (
         <div
-          key={Number(img.id)}
+          key={index}
           data-grid={{
             ...img.layout[currentScreenSize ?? "lg"],
             isResizable: enableResize,
