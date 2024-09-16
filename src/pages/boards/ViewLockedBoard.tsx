@@ -26,7 +26,6 @@ import {
 
 import { useParams } from "react-router";
 import React from "react";
-import FloatingWordsBtn from "../../components/utils/FloatingWordsBtn";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import DraggableGrid from "../../components/images/DraggableGrid";
 import { playAudioList } from "../../data/utils";
@@ -56,6 +55,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
     } else {
       const imgCount = board?.images?.length;
       setImageCount(imgCount as number);
+      setCurrentLayout(board.layout);
       setShowLoading(false);
 
       setBoard(board);
@@ -101,6 +101,27 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
     }
     fetchData();
   }, []);
+
+  const [xMargin, setXMargin] = useState(0);
+  const [yMargin, setYMargin] = useState(0);
+  const [currentLayout, setCurrentLayout] = useState([]);
+  const [currentScreenSize, setCurrentScreenSize] = useState("lg");
+
+  useEffect(() => {
+    if (board) {
+      setBoard(board);
+      const layout = board.layout[currentScreenSize];
+      const margin = board.margin_settings[currentScreenSize];
+      setCurrentLayout(layout);
+      if (margin) {
+        setXMargin(margin.x);
+        setYMargin(margin.y);
+      } else {
+        setXMargin(0);
+        setYMargin(0);
+      }
+    }
+  }, [board]);
 
   // const [showTrackingConsent, setShowTrackingConsent] = useState(false);
 
@@ -196,6 +217,8 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
             viewOnClick={false}
             showRemoveBtn={false}
             setShowLoading={setShowLoading}
+            xMargin={xMargin}
+            yMargin={yMargin}
           />
         )}
         {imageCount < 1 && (

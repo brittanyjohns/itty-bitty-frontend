@@ -1,7 +1,4 @@
-// google_images
-
 import { userHeaders, BASE_URL } from "./constants";
-import { Image } from "./images";
 export interface ImageResult {
   link: string;
   title: string;

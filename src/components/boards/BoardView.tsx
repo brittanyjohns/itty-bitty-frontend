@@ -62,7 +62,6 @@ const BoardView: React.FC<BoardViewProps> = ({
 }) => {
   const { currentUser } = useCurrentUser();
   const history = useHistory();
-  const [showShare, setShowShare] = useState(false);
   const [currentBoard, setBoard] = useState<Board>(board);
   const shouldShowRemoveBtn = currentUser?.role === "admin" || board?.can_edit;
 
@@ -74,6 +73,33 @@ const BoardView: React.FC<BoardViewProps> = ({
   const handleCurrentLayout = (layout: any) => {
     setCurrentLayout(layout);
   };
+
+  const [xMargin, setXMargin] = useState(0);
+  const [yMargin, setYMargin] = useState(0);
+
+  useEffect(() => {
+    if (board) {
+      setBoard(board);
+      const layout = board.layout[currentScreenSize];
+      const margin = board.margin_settings[currentScreenSize];
+      setCurrentLayout(layout);
+      if (margin) {
+        setXMargin(margin.x);
+        setYMargin(margin.y);
+      } else {
+        setXMargin(0);
+        setYMargin(0);
+      }
+    }
+  }, [board]);
+
+  useEffect(() => {
+    if (currentBoard && currentBoard.layout) {
+      const layout = currentBoard.layout[currentScreenSize];
+      console.log("layout: ", layout);
+      setCurrentLayout(layout);
+    }
+  }, [currentBoard]);
 
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
   const [cloneIsOpen, setCloneIsOpen] = useState(false);
@@ -210,8 +236,8 @@ const BoardView: React.FC<BoardViewProps> = ({
             preventCollision={true}
             setShowLoading={setShowLoading}
             showLoading={showLoading}
-            xMargin={board.x_margin}
-            yMargin={board.y_margin}
+            xMargin={xMargin}
+            yMargin={yMargin}
             updateScreenSize={(newScreenSize: string, newCols: number) => {
               setCurrentNumberOfColumns(newCols);
               setCurrentScreenSize(newScreenSize);

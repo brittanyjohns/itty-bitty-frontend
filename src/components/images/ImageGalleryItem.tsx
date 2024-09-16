@@ -38,6 +38,9 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   setRowHeight,
 }) => {
   const imgRef = useRef<HTMLDivElement>(null);
+  // const imgRef = useRef();
+  const [imgRefElement, setImgRef] = useState<HTMLDivElement | null>(null);
+
   const { currentUser, smallScreen, mediumScreen, largeScreen, isMobile } =
     useCurrentUser();
   const [audioList, setAudioList] = useState<string[]>([]);
@@ -48,10 +51,20 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   );
   const history = useHistory();
 
+  useEffect(() => {
+    if (imgRefElement) {
+      console.log("Current client - Image ref: ", imgRefElement);
+      console.log("Current client - Image ref: ", imgRefElement?.clientWidth);
+      handleResize();
+    }
+  }, [imgRefElement]);
+
   const removeImage = async () => {
     try {
       await removeImageFromBoard(board.id, image.id);
-      imgRef.current?.remove();
+      if (imgRef) {
+        imgRef.current?.remove();
+      }
     } catch (error) {
       console.error("Error removing image: ", error);
       alert("Error removing image");
@@ -66,19 +79,22 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       } else {
         setRowHeight(width);
       }
+    } else {
+      setRowHeight(imgRefElement?.clientWidth || 0);
+      console.log("Image ref is null");
     }
   };
 
   useEffect(() => {
-    if (imgRef.current) {
-      console.log("Current client - Image ref: ", imgRef.current.clientWidth);
+    if (imgRef?.current) {
+      console.log("Current client - Image ref: ", imgRef?.current.clientWidth);
       handleResize(); // Ensure imgRef is available before calling handleResize
     } else {
       console.log("Image ref is null");
     }
 
     const resizeListener = () => {
-      if (imgRef.current) {
+      if (imgRef?.current) {
         handleResize();
       }
     };
@@ -87,15 +103,20 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     return () => {
       window.removeEventListener("resize", resizeListener);
     };
-  }, [imgRef.current]); // Updated useEffect to check imgRef.current
+  }, [imgRef?.current]); // Updated useEffect to check imgRef.current
 
   useEffect(() => {
-    console.log("Current client - Image ref: ", imgRef.current?.clientWidth);
+    console.log("Current client - Image ref: ", imgRef?.current);
+    console.log("Current client - Image ref: ", imgRef?.current?.clientWidth);
 
-    if (imgRef.current?.clientWidth) {
+    if (imgRef?.current?.clientWidth) {
       handleResize(); // Ensure imgRef.current is not null before calling handleResize
     }
-  }, [imgRef.current?.clientWidth]);
+  }, [imgRef?.current?.clientWidth]);
+
+  useEffect(() => {
+    handleResize();
+  }, []);
 
   const handleImageClick = (image: Image) => {
     if (onImageClick) {
@@ -175,7 +196,9 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
 
   return (
     <div
-      ref={imgRef}
+      ref={(el) => {
+        setImgRef(el);
+      }}
       className={`relative cursor-pointer ${
         image.bg_color || "bg-white"
       } rounded-sm p-2`}

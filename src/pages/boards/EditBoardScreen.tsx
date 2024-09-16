@@ -46,6 +46,7 @@ import MainHeader from "../MainHeader";
 import ConfirmAlert from "../../components/utils/ConfirmAlert";
 import { getScreenSizeName } from "../../data/utils";
 import SuggestionForm from "../../components/boards/SuggestionForm";
+import { set } from "d3";
 
 const EditBoardScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -53,7 +54,7 @@ const EditBoardScreen: React.FC = () => {
   const [showLoading, setShowLoading] = useState(false);
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const initialSegmentType = urlParams.get("segment") || "edit";
+  const initialSegmentType = urlParams.get("segment") || "layout";
   const [segmentType, setSegmentType] = useState(initialSegmentType);
   const helpTab = useRef<HTMLDivElement>(null);
   const layoutTab = useRef<HTMLDivElement>(null);
@@ -81,8 +82,12 @@ const EditBoardScreen: React.FC = () => {
   const params = useParams<{ id: string }>();
   const [currentLayout, setCurrentLayout] = useState([]);
   const [currentScreenSize, setCurrentScreenSize] = useState("lg");
-  const [xMargin, setXMargin] = useState(board?.x_margin || 0);
-  const [yMargin, setYMargin] = useState(0);
+  const [xMargin, setXMargin] = useState(
+    board?.layout[currentScreenSize].x_margin
+  );
+  const [yMargin, setYMargin] = useState(
+    board?.layout[currentScreenSize].y_margin
+  );
   const [currentNumberOfColumns, setCurrentNumberOfColumns] =
     useState(numberOfColumns);
 
@@ -105,6 +110,12 @@ const EditBoardScreen: React.FC = () => {
   // Fetch board data and initialize state
   const fetchBoard = async () => {
     const board = await getBoard(id);
+    const layout = board.layout[currentScreenSize];
+    setGridLayout(layout);
+    setXMargin(board.margin_settings[currentScreenSize]?.x);
+    setYMargin(board.margin_settings[currentScreenSize]?.y);
+    setCurrentLayout(layout);
+
     setBoard(board);
     return board;
   };
@@ -156,8 +167,8 @@ const EditBoardScreen: React.FC = () => {
   useIonViewWillEnter(() => {
     setSearchInput("");
     setPage(1);
-    setSegmentType("edit");
-    toggleForms("edit");
+    setSegmentType("layout");
+    toggleForms("layout");
   });
 
   useEffect(() => {
@@ -198,7 +209,6 @@ const EditBoardScreen: React.FC = () => {
     const newSegment = e.detail.value;
     setSegmentType(newSegment);
     toggleForms(newSegment);
-    console.log("Segment changed to: ", newSegment);
     if (newSegment === "layout") {
       handleLayoutReload();
     }
@@ -208,6 +218,12 @@ const EditBoardScreen: React.FC = () => {
       window.location.href = `/boards/${board?.id}/edit?segment=${newSegment}`;
     }
   };
+
+  const marginValues = [
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+    21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
+    40,
+  ];
 
   const handleCurrentLayout = (layout: any) => {
     setCurrentLayout(layout);
@@ -339,10 +355,10 @@ const EditBoardScreen: React.FC = () => {
                         label="X Margin"
                         className="mx-2"
                         fill="outline"
-                        selectedText={xMargin.toString()}
+                        selectedText={xMargin ? xMargin.toString() : ""}
                         onIonChange={(e: any) => setXMargin(e.detail.value)}
                       >
-                        {[0, 5, 10, 15, 20, 25, 30].map((type, index) => (
+                        {marginValues.map((type, index) => (
                           <IonSelectOption key={index} value={type}>
                             {type}
                           </IonSelectOption>
@@ -355,10 +371,10 @@ const EditBoardScreen: React.FC = () => {
                         label="Y Margin"
                         fill="outline"
                         className="mx-2"
-                        selectedText={yMargin.toString()}
+                        selectedText={yMargin ? yMargin.toString() : ""}
                         onIonChange={(e: any) => setYMargin(e.detail.value)}
                       >
-                        {[0, 5, 10, 15, 20, 25, 30].map((type, index) => (
+                        {marginValues.map((type, index) => (
                           <IonSelectOption key={index} value={type}>
                             {type}
                           </IonSelectOption>

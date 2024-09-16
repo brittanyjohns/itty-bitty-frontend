@@ -62,7 +62,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   yMargin = 0,
 }) => {
   const [width, setWidth] = useState(window.innerWidth);
-  const [rowHeight, setRowHeight] = useState(160);
+  const [rowHeight, setRowHeight] = useState(0);
 
   const [currentNumberOfColumns, setCurrentNumberOfColumns] = useState(columns);
   // const [boardLayout, setBoardLayout] = useState(board?.layout);

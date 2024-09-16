@@ -8,6 +8,13 @@ export interface NewBoardPayload {
   number_of_columns?: number;
   word_list?: string[];
 }
+
+// interface BoardMarginSettings {
+//   lg?: { x: number; y: number };
+//   md?: { x: number; y: number };
+//   sm?: { x: number; y: number };
+// }
+
 export interface Board {
   id: string;
   name: string;
@@ -34,8 +41,7 @@ export interface Board {
   bg_color?: string;
   audio_url?: string;
   word_list?: string[];
-  x_margin?: number;
-  y_margin?: number;
+  margin_settings: any;
 }
 
 // export interface PredictiveBoard {
