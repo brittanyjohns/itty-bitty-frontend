@@ -129,44 +129,6 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
                 Demo
               </IonButton>
             </div>
-            {/* <div className="relative h-80 md:h-96 lg:h-96 w-11/12 md:w-1/2 lg:w-1/2 mx-auto">
-              <div className="p-0 bg-white bg-opacity-95 absolute bottom-45 left-0 right-0 mt-5 shadow-xl  p-4  rounded-lg">
-                <IonToast
-                  isOpen={isOpen}
-                  message={toastMessage}
-                  onDidDismiss={() => setIsOpen(false)}
-                  duration={2000}
-                ></IonToast>
-                <p className="text-xl font-bold text-center my-2">
-                  Stay updated on all things SpeakAnyWay!
-                </p>
-                <p className="text-center text-lg font-md mb-4">
-                  We're working on mobile apps for Android and iOS{" "}
-                </p>
-
-                <IonInput
-                  type="email"
-                  value={email}
-                  label="Email"
-                  labelPlacement="floating"
-                  fill="outline"
-                  className="mt-2"
-                  onIonInput={(e: any) => setEmail(e.detail.value || "")} // Assuming Ionic React
-                />
-
-                <IonButton
-                  className="font-bold mt-2 py-3 w-full md:w-1/2 lg:w-1/2 mx-auto"
-                  size="large"
-                  expand="block"
-                  color="success"
-                  type="submit"
-                  onClick={handleSubmitEmail}
-                  disabled={!email}
-                >
-                  Go
-                </IonButton>
-              </div>
-            </div> */}
             <div className="h-40 md:h-20"></div>
 
             <div className=" h-80 md:h-96 lg:h-96 mt-5">

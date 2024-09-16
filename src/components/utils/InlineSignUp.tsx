@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { IonInput, IonButton, IonCard } from "@ionic/react";
 import { NewUser, signUp } from "../../data/users";
 import { useHistory, useLocation } from "react-router-dom";
-import UserHome from "../../components/utils/UserHome";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 interface InlineSignUpProps {
@@ -15,7 +14,6 @@ const InlineSignUp = ({ plan }: InlineSignUpProps) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
-  const { currentUser } = useCurrentUser();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);

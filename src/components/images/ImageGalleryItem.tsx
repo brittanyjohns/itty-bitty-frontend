@@ -39,7 +39,9 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
 }) => {
   const imgRef = useRef<HTMLDivElement>(null);
   // const imgRef = useRef();
-  const [imgRefElement, setImgRef] = useState<HTMLDivElement | null>(null);
+  const [imgRefElement, setImgRef] = useState<HTMLDivElement | null>(
+    imgRef.current
+  );
 
   const { currentUser, smallScreen, mediumScreen, largeScreen, isMobile } =
     useCurrentUser();
@@ -72,8 +74,8 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   };
 
   const handleResize = () => {
-    if (imgRef.current) {
-      const width = imgRef.current.clientWidth;
+    if (imgRefElement?.clientWidth) {
+      const width = imgRefElement?.clientWidth;
       if (isMobile && smallScreen) {
         setRowHeight(width * 1.2);
       } else {
@@ -81,7 +83,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       }
     } else {
       setRowHeight(imgRefElement?.clientWidth || 0);
-      console.log("Image ref is null");
+      console.log("Image ref is null", imgRefElement?.clientWidth);
     }
   };
 

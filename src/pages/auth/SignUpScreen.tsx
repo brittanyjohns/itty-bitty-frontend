@@ -1,24 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {
-  IonPage,
-  IonContent,
-  IonInput,
-  IonButton,
-  IonButtons,
-  IonHeader,
-  IonMenuButton,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
+import { IonPage, IonContent } from "@ionic/react";
 import { NewUser, signUp } from "../../data/users";
 import { useHistory, useLocation } from "react-router-dom";
 import MainMenu from "../../components/main_menu/MainMenu";
-import { getImageUrl } from "../../data/utils";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import MainHeader from "../MainHeader";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import { logInOutline } from "ionicons/icons";
-import UserHome from "../../components/utils/UserHome";
 import SignUpForm from "../../components/utils/SignUpForm";
 import Footer from "../../components/utils/Footer";
 

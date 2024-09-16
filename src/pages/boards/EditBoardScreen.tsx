@@ -347,7 +347,7 @@ const EditBoardScreen: React.FC = () => {
                     screens
                   </p>
                   <div>
-                    <div className="w-1/2 mx-auto flex justify-center items-center mt-6">
+                    <div className="w-5/6 md:w-1/2 mx-auto flex justify-center items-center mt-6">
                       <IonSelect
                         value={xMargin}
                         placeholder="X Margin"

@@ -109,3 +109,7 @@ ion-content::part(scroll) {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+a {
+  cursor: pointer;
+}

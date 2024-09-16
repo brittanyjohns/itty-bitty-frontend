@@ -1,20 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-  IonPage,
-  IonContent,
-  IonInput,
-  IonButton,
-  IonItem,
-  IonCard,
-} from "@ionic/react";
+import { IonInput, IonButton, IonCard } from "@ionic/react";
 import { NewUser, signUp } from "../../data/users";
 import { useHistory, useLocation } from "react-router-dom";
-import MainMenu from "../../components/main_menu/MainMenu";
-import { getImageUrl } from "../../data/utils";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import MainHeader from "../../pages/MainHeader";
-import StaticMenu from "../../components/main_menu/StaticMenu";
-import { logInOutline } from "ionicons/icons";
 import UserHome from "../../components/utils/UserHome";
 
 interface SignUpFormProps {
@@ -29,6 +17,12 @@ const SignUpForm = ({ plan }: SignUpFormProps) => {
   const [password, setPassword] = useState<string>("");
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
   const { isWideScreen, currentAccount, currentUser } = useCurrentUser();
+
+  useEffect(() => {
+    if (currentUser) {
+      history.push("/welcome");
+    }
+  }, [currentUser]);
 
   const getQueryParams = (search: string) => {
     return new URLSearchParams(search);
