@@ -320,18 +320,18 @@ const EditBoardScreen: React.FC = () => {
                     This board currently has {board.images.length} images.
                   </p>
 
-                  <p className="text-center font-mono text-md">
+                  <p className="text-center font-mono text-md my-2">
                     Drag and drop to rearrange the layout.
                   </p>
-                  <p className="text-center text-lg ">
-                    You are currently viewing the layout for{" "}
+                  <p className="text-center text-lg mb-2">
+                    You are currently editing the layout for{" "}
                     <span className="font-bold">
                       {getScreenSizeName(currentScreenSize)}
                     </span>{" "}
                     screens
                   </p>
                   <div>
-                    <div className="w-1/2 mx-auto flex justify-center items-center">
+                    <div className="w-1/2 mx-auto flex justify-center items-center mt-6">
                       <IonSelect
                         value={xMargin}
                         placeholder="X Margin"
