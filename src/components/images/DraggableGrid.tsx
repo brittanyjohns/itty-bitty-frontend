@@ -35,8 +35,8 @@ interface DraggableGridProps {
   setShowLoading: any;
   showLoading?: boolean;
   setBoard?: any;
-  xMargin?: number;
-  yMargin?: number;
+  xMargin: number;
+  yMargin: number;
 }
 const DraggableGrid: React.FC<DraggableGridProps> = ({
   images,
@@ -59,8 +59,8 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   screenSize,
   setShowLoading,
   setBoard,
-  xMargin = 0,
-  yMargin = 0,
+  xMargin,
+  yMargin,
 }) => {
   const [width, setWidth] = useState(window.innerWidth);
   const [rowHeight, setRowHeight] = useState(0);
@@ -69,12 +69,30 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   const [currentNumberOfColumns, setCurrentNumberOfColumns] = useState(columns);
   // const [boardLayout, setBoardLayout] = useState(board?.layout);
   const [currentScreenSize, setCurrentScreenSize] = useState(screenSize);
+  // const initialMarginSettings: [number, number] | null = [
+  //   xMargin ?? 0,
+  //   yMargin ?? 0,
+  // ];
+  // const [marginSettings, setMarginSettings] = useState<
+  //   [number, number] | undefined
+  // >(initialMarginSettings);
   useEffect(() => {
     updateRowHeight();
   }, [width, currentNumberOfColumns, rowHeight]);
 
+  useEffect(() => {
+    console.log("board: ", board);
+    if (xMargin !== undefined && yMargin !== undefined) {
+      console.log("Setting margin settings", [xMargin, yMargin]);
+    } else {
+      console.log("Margin settings not found");
+    }
+  }, [xMargin, yMargin, currentScreenSize]);
+
   const updateRowHeight = () => {
-    const adjustWidth = width;
+    console.log("Image ref offsetWidth: ", imgRef?.offsetWidth);
+    console.log("Image ref clientWidth: ", imgRef?.clientWidth);
+    const adjustWidth = width + 5;
     const dynamicRowHeight = Math.floor(adjustWidth / currentNumberOfColumns);
     setRowHeight(dynamicRowHeight);
   };
@@ -114,6 +132,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
     setCurrentScreenSize(newBreakpoint);
     setCurrentNumberOfColumns(newCols);
     if (updateScreenSize) {
+      console.log("newBreakpoint: ", newBreakpoint);
       updateScreenSize(newBreakpoint);
     }
   };

@@ -62,6 +62,8 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   };
 
   const handleResize = () => {
+    console.log("Image ref offsetWidth: ", imgRefElement?.offsetWidth);
+    console.log("Image ref clientWidth: ", imgRefElement?.clientWidth);
     if (imgRefElement?.clientWidth) {
       const width = imgRefElement.clientWidth;
       console.log("Image width: ", width);
@@ -164,7 +166,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       }}
       className={`relative cursor-pointer ${
         image.bg_color || "bg-white"
-      } rounded-sm p-2`}
+      } rounded-sm p-1`}
       style={{ minHeight: "100px" }} // Set minimum height to avoid collapse while loading
     >
       <IonImg

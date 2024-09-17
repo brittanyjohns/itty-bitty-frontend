@@ -108,10 +108,12 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const [currentScreenSize, setCurrentScreenSize] = useState("lg");
 
   useEffect(() => {
+    console.log("board?.margin_settings: ", board?.margin_settings);
     if (board) {
       setBoard(board);
       const layout = board.layout[currentScreenSize];
       const margin = board.margin_settings[currentScreenSize];
+      console.log("currentScreenSize: ", currentScreenSize);
       setCurrentLayout(layout);
       if (margin) {
         setXMargin(margin.x);
@@ -121,7 +123,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
         setYMargin(0);
       }
     }
-  }, [board]);
+  }, [board, currentScreenSize]);
 
   // const [showTrackingConsent, setShowTrackingConsent] = useState(false);
 
@@ -219,6 +221,9 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
             setShowLoading={setShowLoading}
             xMargin={xMargin}
             yMargin={yMargin}
+            updateScreenSize={(newScreenSize: string) => {
+              setCurrentScreenSize(newScreenSize);
+            }}
           />
         )}
         {imageCount < 1 && (

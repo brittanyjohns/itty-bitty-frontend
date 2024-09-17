@@ -93,6 +93,23 @@ const EditBoardScreen: React.FC = () => {
   const [openAlert, setOpenAlert] = useState(false);
   const [preventCollision, setPreventCollision] = useState(false);
 
+  useEffect(() => {
+    console.log("board?.margin_settings: ", board?.margin_settings);
+    if (board) {
+      const layout = board.layout[currentScreenSize];
+      const margin = board.margin_settings[currentScreenSize];
+      console.log("currentScreenSize: ", currentScreenSize);
+      setCurrentLayout(layout);
+      if (margin) {
+        setXMargin(margin.x);
+        setYMargin(margin.y);
+      } else {
+        setXMargin(0);
+        setYMargin(0);
+      }
+    }
+  }, [board, currentScreenSize]);
+
   const removeBoard = async () => {
     if (!board || !board) {
       return;
@@ -108,6 +125,7 @@ const EditBoardScreen: React.FC = () => {
 
   // Fetch board data and initialize state
   const fetchBoard = async () => {
+    console.log("Current screen size: ", currentScreenSize);
     const board = await getBoard(id);
     const layout = board.layout[currentScreenSize];
     setGridLayout(layout);
@@ -347,7 +365,7 @@ const EditBoardScreen: React.FC = () => {
                   <div>
                     <div className="w-5/6 md:w-1/2 mx-auto flex justify-center items-center mt-6">
                       <IonSelect
-                        value={xMargin}
+                        value={board?.margin_settings[currentScreenSize]?.x}
                         placeholder="X Margin"
                         labelPlacement="stacked"
                         label="X Margin"
@@ -363,7 +381,7 @@ const EditBoardScreen: React.FC = () => {
                         ))}
                       </IonSelect>
                       <IonSelect
-                        value={yMargin}
+                        value={board?.margin_settings[currentScreenSize]?.y}
                         placeholder="Y Margin"
                         labelPlacement="stacked"
                         label="Y Margin"
@@ -396,11 +414,8 @@ const EditBoardScreen: React.FC = () => {
                         preventCollision={preventCollision}
                         setShowLoading={setShowLoading}
                         setCurrentLayout={handleCurrentLayout}
-                        updateScreenSize={(
-                          newScreenSize: string,
-                          newCols: number
-                        ) => {
-                          setCurrentNumberOfColumns(newCols);
+                        updateScreenSize={(newScreenSize: string) => {
+                          console.log("New screen size: ", newScreenSize);
                           setCurrentScreenSize(newScreenSize);
                         }}
                       />
