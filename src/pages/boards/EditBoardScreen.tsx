@@ -337,7 +337,7 @@ const EditBoardScreen: React.FC = () => {
             <div className="my-2 px-2 lg:px-8">
               {board && board.images && board.images.length > 0 && (
                 <div className="pb-10">
-                  <IonButtons>
+                  <IonButtons className="mb-2">
                     <IonButton
                       onClick={handleLayoutReload}
                       color="primary"
@@ -352,10 +352,10 @@ const EditBoardScreen: React.FC = () => {
                     This board currently has {board.images.length} images.
                   </p>
 
-                  <p className="text-center font-mono text-md my-2">
+                  <p className="text-center font-md text-md my-2">
                     Drag and drop to rearrange the layout.
                   </p>
-                  <p className="text-center text-lg mb-2">
+                  <p className="text-center text-sm md:text-md lg:text-lg my-2">
                     You are currently editing the layout for{" "}
                     <span className="font-bold">
                       {getScreenSizeName(currentScreenSize)}
@@ -397,7 +397,41 @@ const EditBoardScreen: React.FC = () => {
                         ))}
                       </IonSelect>
                     </div>
-                    <div className="h-5 my-3"></div>
+                    <div className="my-5">
+                      <IonButtons className="flex justify-between">
+                        <IonButton
+                          className="text-sm md:text-md lg:text-lg"
+                          onClick={() => setOpenAlert(true)}
+                          color={"danger"}
+                          fill="outline"
+                          size="small"
+                        >
+                          <IonIcon icon={appsOutline} className="mx-2" />
+                          <IonLabel className="mx-1">Reset Layout </IonLabel>
+                        </IonButton>
+                        <IonButton
+                          className="text-sm md:text-md lg:text-lg"
+                          onClick={() => setPreventCollision(!preventCollision)}
+                          color={"primary"}
+                          fill={preventCollision ? "solid" : "outline"}
+                          size="small"
+                        >
+                          <IonIcon icon={contractOutline} className="mx-2" />
+                          <IonLabel className="mx-1">
+                            Prevent Collision: {preventCollision ? "On" : "Off"}
+                          </IonLabel>
+                        </IonButton>
+                        <IonButton
+                          className="text-sm md:text-md lg:text-lg"
+                          onClick={handleSaveLayout}
+                          size="large"
+                          fill="outline"
+                        >
+                          <IonIcon icon={saveOutline} className="mx-1" />
+                          <IonLabel className="mx-2">Save Layout</IonLabel>
+                        </IonButton>
+                      </IonButtons>
+                    </div>
                     {board && (
                       <DraggableGrid
                         board={board}
@@ -433,7 +467,7 @@ const EditBoardScreen: React.FC = () => {
             <div className="mt-5">
               <IonButtons className="flex justify-between">
                 <IonButton
-                  className="text-lg"
+                  className="text-sm md:text-md lg:text-lg"
                   onClick={() => setOpenAlert(true)}
                   color={"danger"}
                   fill="outline"
@@ -443,7 +477,7 @@ const EditBoardScreen: React.FC = () => {
                   <IonLabel className="mx-1">Reset Layout </IonLabel>
                 </IonButton>
                 <IonButton
-                  className="text-md"
+                  className="text-sm md:text-md lg:text-lg"
                   onClick={() => setPreventCollision(!preventCollision)}
                   color={"primary"}
                   fill={preventCollision ? "solid" : "outline"}
@@ -455,7 +489,7 @@ const EditBoardScreen: React.FC = () => {
                   </IonLabel>
                 </IonButton>
                 <IonButton
-                  className="text-lg"
+                  className="text-sm md:text-md lg:text-lg"
                   onClick={handleSaveLayout}
                   size="large"
                   fill="outline"

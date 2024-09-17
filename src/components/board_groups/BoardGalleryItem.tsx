@@ -66,108 +66,30 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
   };
 
   const handleBoardClick = (board: Board) => {
-    let playAudioList = false;
-    if (mute) {
-      console.log("Mute is on, not playing audio");
-      if (viewOnClick) {
-        if (boardGroup?.id) {
-          history.push(`/boards/${board.id}?boardGroupId=${boardGroup.id}`);
-        }
-        history.push(`/boards/${board.id}`);
-      }
-      return;
-    } else {
-      console.log("Mute is off, playing audio");
-      playAudioList = true;
-    }
-    const audioSrc = board.audio_url;
-    if (!audioSrc) {
-      console.log("No audio for board: ", board);
-    } else {
-      if (onPlayAudioList) {
-        console.log("Playing audio list: ", audioSrc);
-        onPlayAudioList(audioSrc);
-      }
-    }
-    const name = board.name;
-    if (inputRef?.current) {
-      inputRef.current.value += ` ${name}`;
-      if (setShowIcon) {
-        if (inputRef.current?.value) {
-          setShowIcon(true);
-        } else {
-          setShowIcon(false);
-        }
-      }
-    }
-
-    const waitToSpeak = currentUser?.settings?.wait_to_speak || false;
-
-    if (!audioSrc) {
-      console.log("No audio for board: ", board);
-      if (!waitToSpeak) {
-        console.log("No audio, speaking name: ", name);
-        // TODO: Uncomment this line
-        // speak(name);
-      }
-    } else {
-      if (!waitToSpeak) {
-        playAudioList = true;
-      }
-    }
-    if (playAudioList && audioSrc && audioList) {
-      setAudioList([...audioList, audioSrc]);
-    }
-    const audio = new Audio(audioSrc);
-    if (!waitToSpeak) {
-      console.log("Playing audio: ", audioSrc);
-      const promise = audio.play();
-      if (promise !== undefined) {
-        promise
-          .then(() => {})
-          .catch((error) => {
-            speak(name);
-          });
-      }
-    }
-
     if (viewOnClick) {
-      if (boardGroup?.id) {
-        history.push(`/boards/${board.id}?boardGroupId=${boardGroup.id}`);
-        return;
-      }
       history.push(`/boards/${board.id}`);
-      return;
-    }
-    if (viewLockOnClick) {
-      if (boardGroup?.id) {
-        history.push(
-          `/boards/${board.id}/locked?boardGroupId=${boardGroup.id}`
-        );
-        return;
-      }
-      history.push(`/boards/${board.id}`);
-      return;
+    } else {
+      console.log("Board clicked: ", board);
     }
     if (onBoardClick) {
       onBoardClick(board);
     }
   };
 
-  const speak = async (text: string) => {
-    const language = currentUser?.settings?.voice?.language || "en-US";
-    const rate = currentUser?.settings?.voice?.rate || 1.0;
-    const pitch = currentUser?.settings?.voice?.pitch || 1.0;
-    const volume = currentUser?.settings?.voice?.volume || 1.0;
-    await TextToSpeech.speak({
-      text: text,
-      lang: language,
-      rate: rate,
-      pitch: pitch,
-      volume: volume,
-      category: "ambient",
-    });
-  };
+  // const speak = async (text: string) => {
+  //   const language = currentUser?.settings?.voice?.language || "en-US";
+  //   const rate = currentUser?.settings?.voice?.rate || 1.0;
+  //   const pitch = currentUser?.settings?.voice?.pitch || 1.0;
+  //   const volume = currentUser?.settings?.voice?.volume || 1.0;
+  //   await TextToSpeech.speak({
+  //     text: text,
+  //     lang: language,
+  //     rate: rate,
+  //     pitch: pitch,
+  //     volume: volume,
+  //     category: "ambient",
+  //   });
+  // };
 
   const boardStarIcon = (board: Board) => {
     if (boardGroup?.display_image_url === board.display_image_url) {

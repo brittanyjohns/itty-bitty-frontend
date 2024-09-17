@@ -28,15 +28,16 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({ menuLink }) => {
     if (!currentUser) {
       return false;
     }
+    if (currentUser?.admin) {
+      return false;
+    }
     if (freeTrial) {
       if (premiumFeatures.includes(slug)) {
         return true;
       }
       return false;
     }
-    if (currentUser?.admin) {
-      return false;
-    }
+
     if (currentUser?.pro) {
       return false;
     }

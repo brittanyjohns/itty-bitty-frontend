@@ -105,7 +105,7 @@ export const getFilterList = (
   const links = getMenu();
   const adminLinks = [
     "home",
-    // "groups",
+    "groups",
     "dashboard",
     "sign-out",
     "boards",
@@ -121,7 +121,7 @@ export const getFilterList = (
   ];
   const professionalLinks = [
     "home",
-    "groups",
+    // "groups",
     "dashboard",
     "sign-out",
     "boards",
