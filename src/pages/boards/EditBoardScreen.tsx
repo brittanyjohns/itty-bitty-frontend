@@ -211,11 +211,9 @@ const EditBoardScreen: React.FC = () => {
     if (newSegment === "back") {
       history.push(`/boards/${board?.id}`);
     } else {
-      console.log("newSegment: ", newSegment);
       setSegmentType(newSegment);
       toggleForms(newSegment);
       loadPage();
-      // window.location.href = `/boards/${board?.id}/edit?segment=${newSegment}`;
     }
   };
 
@@ -230,7 +228,6 @@ const EditBoardScreen: React.FC = () => {
   };
 
   const setGrid = (layout: any) => {
-    console.log("Setting grid layout: ", layout);
     setGridLayout(layout);
   };
 
@@ -345,7 +342,7 @@ const EditBoardScreen: React.FC = () => {
                     <span className="font-bold">
                       {getScreenSizeName(currentScreenSize)}
                     </span>{" "}
-                    screens
+                    screens with {numberOfColumns} columns.
                   </p>
                   <div>
                     <div className="w-5/6 md:w-1/2 mx-auto flex justify-center items-center mt-6">

@@ -74,32 +74,14 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   }, [width, currentNumberOfColumns, rowHeight]);
 
   const updateRowHeight = () => {
-    console.log("Width: ", width);
     const adjustWidth = width;
     const dynamicRowHeight = Math.floor(adjustWidth / currentNumberOfColumns);
-    console.log("Dynamic Row Height: ", dynamicRowHeight);
     setRowHeight(dynamicRowHeight);
   };
 
-  // useEffect(() => {
-  //   updateRowHeight();
-  //   const handleResize = () => {
-  //     const currentWidth = window.innerWidth;
-  //     setWidth(currentWidth);
-  //   };
-
-  //   window.addEventListener("resize", handleResize);
-
-  //   return () => {
-  //     window.removeEventListener("resize", handleResize);
-  //   };
-  // }, []);
-
   useEffect(() => {
-    console.log("ImgRef: ", imgRef);
     if (imgRef) {
       const width = imgRef.clientWidth;
-      console.log("Image width: ", width);
       setRowHeight(width);
       updateRowHeight();
     }
@@ -120,7 +102,6 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   };
 
   const handleLayoutChange = (layout: any) => {
-    console.log("Layout: ", layout);
     if (onLayoutChange) {
       onLayoutChange(layout);
     }
@@ -188,7 +169,6 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
             rowHeight={rowHeight}
             setRowHeight={setRowHeight}
             setImgRef={(element: HTMLDivElement) => {
-              console.log("From Grid - Image ref: ", element?.clientWidth);
               setImgRef(element);
             }}
           />
