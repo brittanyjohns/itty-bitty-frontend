@@ -46,7 +46,6 @@ import MainHeader from "../MainHeader";
 import ConfirmAlert from "../../components/utils/ConfirmAlert";
 import { getScreenSizeName } from "../../data/utils";
 import SuggestionForm from "../../components/boards/SuggestionForm";
-import { set } from "d3";
 
 const EditBoardScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -231,6 +230,7 @@ const EditBoardScreen: React.FC = () => {
   };
 
   const setGrid = (layout: any) => {
+    console.log("Setting grid layout: ", layout);
     setGridLayout(layout);
   };
 

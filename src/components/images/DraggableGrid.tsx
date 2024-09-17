@@ -11,6 +11,7 @@ import ImageGalleryItem from "./ImageGalleryItem";
 import { Board, updateBoard } from "../../data/boards";
 import { Image } from "../../data/images";
 import { ChildBoard } from "../../data/child_boards";
+import { set } from "d3";
 
 interface DraggableGridProps {
   columns: number;
@@ -63,19 +64,21 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
 }) => {
   const [width, setWidth] = useState(window.innerWidth);
   const [rowHeight, setRowHeight] = useState(0);
+  const [imgRef, setImgRef] = useState<HTMLDivElement | null>(null);
 
   const [currentNumberOfColumns, setCurrentNumberOfColumns] = useState(columns);
   // const [boardLayout, setBoardLayout] = useState(board?.layout);
   const [currentScreenSize, setCurrentScreenSize] = useState(screenSize);
-  // useEffect(() => {
-  //   updateRowHeight();
-  // }, [width, currentNumberOfColumns, rowHeight]);
+  useEffect(() => {
+    updateRowHeight();
+  }, [width, currentNumberOfColumns, rowHeight]);
 
   const updateRowHeight = () => {
-    // const adjustWidth = width - 20;
-    // const dynamicRowHeight = Math.floor(adjustWidth / currentNumberOfColumns);
-    // console.log("Dynamic Row Height: ", dynamicRowHeight);
-    // setRowHeight(dynamicRowHeight);
+    console.log("Width: ", width);
+    const adjustWidth = width;
+    const dynamicRowHeight = Math.floor(adjustWidth / currentNumberOfColumns);
+    console.log("Dynamic Row Height: ", dynamicRowHeight);
+    setRowHeight(dynamicRowHeight);
   };
 
   // useEffect(() => {
@@ -92,6 +95,16 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   //   };
   // }, []);
 
+  useEffect(() => {
+    console.log("ImgRef: ", imgRef);
+    if (imgRef) {
+      const width = imgRef.clientWidth;
+      console.log("Image width: ", width);
+      setRowHeight(width);
+      updateRowHeight();
+    }
+  }, [imgRef]);
+
   const handleSetDisplayImage = async (image: Image) => {
     setShowLoading(true);
     if (board) {
@@ -107,6 +120,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   };
 
   const handleLayoutChange = (layout: any) => {
+    console.log("Layout: ", layout);
     if (onLayoutChange) {
       onLayoutChange(layout);
     }
@@ -149,7 +163,7 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
     >
       {images.map((img: any, index: number) => (
         <div
-          key={index}
+          key={img.id}
           data-grid={{
             ...img.layout[currentScreenSize ?? "lg"],
             isResizable: enableResize,
@@ -173,6 +187,10 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
             onSetDisplayImage={handleSetDisplayImage}
             rowHeight={rowHeight}
             setRowHeight={setRowHeight}
+            setImgRef={(element: HTMLDivElement) => {
+              console.log("From Grid - Image ref: ", element?.clientWidth);
+              setImgRef(element);
+            }}
           />
         </div>
       ))}

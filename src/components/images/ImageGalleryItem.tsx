@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { IonAlert, IonIcon, IonImg } from "@ionic/react";
 import { Image } from "../../data/images";
-import { Board, removeImageFromBoard, updateBoard } from "../../data/boards";
+import { removeImageFromBoard } from "../../data/boards";
 import { TextToSpeech } from "@capacitor-community/text-to-speech";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { starOutline, starSharp, trashBinOutline } from "ionicons/icons";
@@ -21,6 +21,7 @@ interface ImageGalleryItemProps {
   onSetDisplayImage?: any;
   rowHeight?: number;
   setRowHeight?: any;
+  setImgRef?: any;
 }
 
 const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
@@ -36,36 +37,23 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   onSetDisplayImage,
   rowHeight,
   setRowHeight,
+  setImgRef,
 }) => {
-  const imgRef = useRef<HTMLDivElement>(null);
-  // const imgRef = useRef();
-  const [imgRefElement, setImgRef] = useState<HTMLDivElement | null>(
-    imgRef.current
+  const [imgRefElement, setImgRefElement] = useState<HTMLDivElement | null>(
+    null
   );
-
-  const { currentUser, smallScreen, mediumScreen, largeScreen, isMobile } =
-    useCurrentUser();
+  const [isImageLoaded, setIsImageLoaded] = useState(false); // Track if the image is fully loaded
+  const { currentUser, smallScreen, isMobile } = useCurrentUser();
   const [audioList, setAudioList] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const placeholderUrl = useMemo(
-    () => generatePlaceholderImage(image.label),
-    [image.label]
-  );
+  const placeholderUrl = generatePlaceholderImage(image.label);
   const history = useHistory();
-
-  useEffect(() => {
-    if (imgRefElement) {
-      console.log("Current client - Image ref: ", imgRefElement);
-      console.log("Current client - Image ref: ", imgRefElement?.clientWidth);
-      handleResize();
-    }
-  }, [imgRefElement]);
 
   const removeImage = async () => {
     try {
       await removeImageFromBoard(board.id, image.id);
-      if (imgRef) {
-        imgRef.current?.remove();
+      if (imgRefElement) {
+        imgRefElement.remove();
       }
     } catch (error) {
       console.error("Error removing image: ", error);
@@ -75,50 +63,30 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
 
   const handleResize = () => {
     if (imgRefElement?.clientWidth) {
-      const width = imgRefElement?.clientWidth;
+      const width = imgRefElement.clientWidth;
+      console.log("Image width: ", width);
       if (isMobile && smallScreen) {
-        setRowHeight(width * 1.2);
+        setRowHeight(width * 1.2); // Adjust height based on width
       } else {
         setRowHeight(width);
       }
     } else {
-      setRowHeight(imgRefElement?.clientWidth || 0);
-      console.log("Image ref is null", imgRefElement?.clientWidth);
+      setRowHeight(0);
+      console.log("Image ref is null or undefined");
     }
   };
 
-  useEffect(() => {
-    if (imgRef?.current) {
-      console.log("Current client - Image ref: ", imgRef?.current.clientWidth);
-      handleResize(); // Ensure imgRef is available before calling handleResize
-    } else {
-      console.log("Image ref is null");
+  // Track when the image has loaded
+  useLayoutEffect(() => {
+    if (isImageLoaded && imgRefElement) {
+      handleResize(); // Trigger resize after the image is fully loaded
     }
+  }, [isImageLoaded, imgRefElement]);
 
-    const resizeListener = () => {
-      if (imgRef?.current) {
-        handleResize();
-      }
-    };
-
-    window.addEventListener("resize", resizeListener);
-    return () => {
-      window.removeEventListener("resize", resizeListener);
-    };
-  }, [imgRef?.current]); // Updated useEffect to check imgRef.current
-
-  useEffect(() => {
-    console.log("Current client - Image ref: ", imgRef?.current);
-    console.log("Current client - Image ref: ", imgRef?.current?.clientWidth);
-
-    if (imgRef?.current?.clientWidth) {
-      handleResize(); // Ensure imgRef.current is not null before calling handleResize
-    }
-  }, [imgRef?.current?.clientWidth]);
-
-  useEffect(() => {
-    handleResize();
-  }, []);
+  // Handle image load event
+  const handleImageLoad = () => {
+    setIsImageLoaded(true);
+  };
 
   const handleImageClick = (image: Image) => {
     if (onImageClick) {
@@ -142,11 +110,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     if (inputRef?.current) {
       inputRef.current.value += ` ${label}`;
       if (setShowIcon) {
-        if (inputRef.current?.value) {
-          setShowIcon(true);
-        } else {
-          setShowIcon(false);
-        }
+        setShowIcon(Boolean(inputRef.current.value));
       }
     }
 
@@ -164,11 +128,9 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     if (!waitToSpeak) {
       const promise = audio.play();
       if (promise !== undefined) {
-        promise
-          .then(() => {})
-          .catch((error) => {
-            speak(label);
-          });
+        promise.catch(() => {
+          speak(label);
+        });
       }
     }
   };
@@ -179,49 +141,51 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     const pitch = currentUser?.settings?.voice?.pitch || 1.0;
     const volume = currentUser?.settings?.voice?.volume || 1.0;
     await TextToSpeech.speak({
-      text: text,
+      text,
       lang: language,
-      rate: rate,
-      pitch: pitch,
-      volume: volume,
+      rate,
+      pitch,
+      volume,
       category: "ambient",
     });
   };
 
   const imageStarIcon = (image: Image) => {
-    if (image.src && board?.display_image_url === image.src) {
-      return starSharp;
-    } else {
-      return starOutline;
-    }
+    return image.src && board?.display_image_url === image.src
+      ? starSharp
+      : starOutline;
   };
 
   return (
     <div
       ref={(el) => {
+        setImgRefElement(el);
         setImgRef(el);
       }}
       className={`relative cursor-pointer ${
         image.bg_color || "bg-white"
       } rounded-sm p-2`}
+      style={{ minHeight: "100px" }} // Set minimum height to avoid collapse while loading
     >
       <IonImg
         src={image.src || placeholderUrl}
         alt={image.label}
         className="ion-img-contain mx-auto"
         onClick={() => handleImageClick(image)}
+        onLoad={handleImageLoad} // Ensure resize after image fully loads
+        style={{ width: "100%", height: "auto" }} // Make sure the image takes full width
       />
       {!image.is_placeholder && (
         <span
           onClick={() => handleImageClick(image)}
-          className="bg-white xbg-opacity-95 w-full font-medium tracking-tighter leading-tight text-xs md:text-sm lg:text-sm absolute bottom-0 left-0 shadow-md"
+          className="bg-white bg-opacity-95 w-full font-medium tracking-tighter leading-tight text-xs md:text-sm lg:text-sm absolute bottom-0 left-0 shadow-md"
         >
           {labelForScreenSize(
             image.label,
             rowHeight,
             smallScreen,
-            mediumScreen,
-            largeScreen
+            false, // Assuming mediumScreen and largeScreen can be false
+            false
           )}
         </span>
       )}
