@@ -21,10 +21,8 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
   const [page, setPage] = useState(1);
   const [showActionList, setShowActionList] = useState(false);
   const [selectedImage, setSelectedImage] = useState<Image | null>(null);
-  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   // const placeholderUrl = useMemo(() => generatePlaceholderImage(image.label), [image.label]);
   const [userBoards, setUserBoards] = useState([]);
-  const history = useHistory();
   const fetchImages = async () => {
     if (searchInput.length > 1) {
       setPage(1);
@@ -33,11 +31,6 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
     setRemainingImages(imgs);
   };
 
-  // const fetchUserBoards = async () => {
-  //   // Fetch user boards
-  //   const fetchedBoards = await getUserBoards();
-  //   setUserBoards(fetchedBoards["boards"]);
-  // };
   useEffect(() => {
     fetchImages();
   }, [page, searchInput]);
@@ -49,39 +42,6 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
   const handleOnImageClick = (event: any, image: Image) => {
     onImageClick(image);
   };
-
-  const handleActionSelected = async (
-    action: string,
-    imageId: string,
-    selectedBoardId: string
-  ) => {
-    if (action === "add") {
-      if (!selectedBoardId) {
-        console.error("Board ID not provided");
-        return;
-      }
-      const result = await addImageToBoard(selectedBoardId, imageId);
-      console.log("Image added to board: ", result);
-      alert("Image added to board");
-    } else {
-      console.log("Unknown action: ", action);
-    }
-  };
-
-  const setBoardButtons = () => {
-    const imageBtns = userBoards.map((board: any) => {
-      return {
-        text: board.name,
-        handler: () => {
-          if (selectedImage) {
-            handleActionSelected("add", selectedImage.id, board.id);
-          }
-        },
-      };
-    });
-    return imageBtns;
-  };
-  const imageBtns = setBoardButtons();
 
   const onClose = () => {
     setShowActionList(false);
@@ -133,12 +93,6 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
                     <source src={image.audio} type="audio/aac" />
                   </audio>
                 </div>
-                <IonActionSheet
-                  isOpen={showActionList}
-                  onDidDismiss={onClose}
-                  header={`Add ${selectedImage?.label} to board`}
-                  buttons={imageBtns}
-                />
               </div>
             ))}
           {remainingImages.length < 1 && (

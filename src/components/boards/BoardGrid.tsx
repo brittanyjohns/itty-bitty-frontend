@@ -11,28 +11,18 @@ interface BoardGridProps {
   loadBoards?: any;
   searchInput?: string;
 }
-const BoardGrid = ({
-  boards,
-  gridType,
-  loadBoards,
-  searchInput,
-}: BoardGridProps) => {
+const BoardGrid = ({ boards, gridType, loadBoards }: BoardGridProps) => {
   const { currentUser } = useCurrentUser();
   const gridRef = createRef<HTMLDivElement>();
-  const [currentBoards, setCurrentBoards] = useState<Board[] | ChildBoard[]>(
-    boards
-  );
+  const [currentBoards, setCurrentBoards] = useState<any>(boards);
 
   const handleRemoveBoard = async (board: Board) => {
-    console.log("remove board", board);
-    console.log("gridType", gridType);
     if (!board) return;
     if (currentUser && gridType === "child") {
       try {
         await deleteChildBoard(board.id);
         const updatedBoards = boards.filter((b) => b.id !== board.id);
         setCurrentBoards(updatedBoards);
-        console.log("updatedBoards", updatedBoards);
       } catch (error) {
         console.error("Error removing board: ", error);
         alert("Error removing board");

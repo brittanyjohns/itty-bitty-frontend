@@ -143,13 +143,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
     }
 
     if (boardsToSet && boardsToSet?.length > 0) {
-      return (
-        <BoardGrid
-          gridType={gridType}
-          boards={boardsToSet}
-          searchInput={searchInput}
-        />
-      );
+      return <BoardGrid gridType={gridType} boards={boardsToSet} />;
     } else if (boardsToSet?.length === 0 && gridType === "user") {
       return (
         <>
