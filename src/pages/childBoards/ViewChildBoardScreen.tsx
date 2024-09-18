@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { createRef, useEffect, useRef, useState } from "react";
 import { ChildBoard, getChildBoard } from "../../data/child_boards";
 import { AUTO_REFRESH_RATE, REFRESH_RATE } from "../../data/constants";
 import {
@@ -17,6 +17,7 @@ import {
 
 import {
   arrowBackCircleOutline,
+  create,
   playCircleOutline,
   trashBinOutline,
 } from "ionicons/icons";
@@ -101,12 +102,10 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   };
 
   useEffect(() => {
-    const shouldSetShowText =
-      currentAccount?.settings?.enable_text_display && audioList.length > 0;
+    const shouldSetShowText = currentAccount?.settings?.enable_text_display;
+    console.log("shouldSetShowText", shouldSetShowText);
     setShowText(shouldSetShowText);
-    const shouldSetShowImages =
-      currentAccount?.settings?.enable_image_display &&
-      selectedImageSrcs.length > 0;
+    const shouldSetShowImages = currentAccount?.settings?.enable_image_display;
     setShowImages(shouldSetShowImages);
 
     setShowHeader(
@@ -200,50 +199,39 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
           <p className="text-center text-sm md:text-md lg:text-lg xl:text-xl font-bold">
             {board?.name}
           </p>
-          {!showHeader && (
-            <p className="text-center text-xs md:text-sm lg:text-md">
-              Click an image to begin speaking
-            </p>
-          )}
-        </IonToolbar>
-        {showHeader && (
-          <IonToolbar>
-            {showImages && <ImageList imageSrcList={selectedImageSrcs} />}
-            {showText && (
-              <div className="bg-inherit">
-                <IonInput
-                  placeholder="Click an image to begin speaking"
-                  ref={inputRef}
-                  readonly={true}
-                  type="text"
-                  className="ml-3 text-sm md:text-md lg:text-lg xl:text-xl text-center"
-                ></IonInput>
-              </div>
+          {showImages && <ImageList imageSrcList={selectedImageSrcs} />}
+          <div className="bg-inherit">
+            <IonInput
+              placeholder="Click an image to begin speaking"
+              ref={inputRef}
+              readonly={true}
+              type="text"
+              className="ml-3 text-sm md:text-md lg:text-lg xl:text-xl text-center"
+            ></IonInput>
+          </div>
+          <IonButtons slot="end">
+            {showIcon && (
+              <IonButton size="small" onClick={handlePlayAudioList}>
+                <IonIcon
+                  slot="icon-only"
+                  className="tiny"
+                  icon={playCircleOutline}
+                ></IonIcon>
+              </IonButton>
             )}
-            <IonButtons slot="end">
-              {showIcon && (
-                <IonButton size="small" onClick={handlePlayAudioList}>
-                  <IonIcon
-                    slot="icon-only"
-                    className="tiny"
-                    icon={playCircleOutline}
-                  ></IonIcon>
-                </IonButton>
-              )}
 
-              {showIcon && (
-                <IonButton size="small" onClick={() => clearInput()}>
-                  <IonIcon
-                    slot="icon-only"
-                    className="tiny"
-                    icon={trashBinOutline}
-                    onClick={() => clearInput()}
-                  ></IonIcon>
-                </IonButton>
-              )}
-            </IonButtons>
-          </IonToolbar>
-        )}
+            {showIcon && (
+              <IonButton size="small" onClick={() => clearInput()}>
+                <IonIcon
+                  slot="icon-only"
+                  className="tiny"
+                  icon={trashBinOutline}
+                  onClick={() => clearInput()}
+                ></IonIcon>
+              </IonButton>
+            )}
+          </IonButtons>
+        </IonToolbar>
       </IonHeader>
       <IonContent>
         <IonLoading message="Please wait..." isOpen={showLoading} />

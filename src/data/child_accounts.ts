@@ -1,6 +1,7 @@
 import { Board } from "./boards";
 import { User } from "./users";
 import { userHeaders, BASE_URL, childAccountHeaders } from "./constants";
+import { ChildBoard } from "./child_boards";
 interface Error {
   [key: string]: string[];
 }
@@ -15,7 +16,7 @@ export interface ChildAccount {
   errors?: any;
   password?: string;
   password_confirmation?: string;
-  boards?: Board[];
+  boards?: ChildBoard[];
   settings?: any; // TODO: Define Settings interface
   error?: string;
   parent_name?: string;

@@ -18,7 +18,7 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { trashBinOutline } from "ionicons/icons";
 
 interface BoardListItemProps {
-  board: Board;
+  board: Board | ChildBoard;
   gridType?: string;
   setShowIcon?: (show: boolean) => void;
   inputRef?: React.RefObject<HTMLInputElement>;

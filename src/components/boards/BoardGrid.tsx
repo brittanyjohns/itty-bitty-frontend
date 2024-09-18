@@ -3,10 +3,10 @@ import { Board } from "../../data/boards";
 import { IonButton } from "@ionic/react";
 import BoardGridItem from "./BoardGridItem";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { deleteChildBoard } from "../../data/child_boards";
+import { ChildBoard, deleteChildBoard } from "../../data/child_boards";
 
 interface BoardGridProps {
-  boards: Board[];
+  boards: Board[] | ChildBoard[];
   gridType?: string;
   loadBoards?: any;
   searchInput?: string;
@@ -19,7 +19,9 @@ const BoardGrid = ({
 }: BoardGridProps) => {
   const { currentUser } = useCurrentUser();
   const gridRef = createRef<HTMLDivElement>();
-  const [currentBoards, setCurrentBoards] = useState<Board[]>(boards);
+  const [currentBoards, setCurrentBoards] = useState<Board[] | ChildBoard[]>(
+    boards
+  );
 
   const handleRemoveBoard = async (board: Board) => {
     console.log("remove board", board);
