@@ -40,6 +40,7 @@ import Tabs from "../../components/utils/Tabs";
 import WordCloudChart from "../../components/utils/WordCloudChart";
 import { WordEvent, fetchWordEventsByAccountId } from "../../data/word_event";
 import WordNetworkGraph from "../../components/utils/WordNetworkGraph";
+import { set } from "d3";
 
 const ViewChildAccountScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -53,15 +54,8 @@ const ViewChildAccountScreen: React.FC = () => {
   const history = useHistory();
   const [wordEvents, setWordEvents] = useState<WordEvent[]>([]);
   const { currentUser, currentAccount, isWideScreen } = useCurrentUser();
-  const [showPasscode, setShowPasscode] = useState(false);
 
   const fetchChildAccount = async () => {
-    console.log("Fetching child account...");
-    // if (!currentUser?.id) {
-    //   console.error("No current user");
-    //   setLoading(false);
-    //   return;
-    // }
     if (id === "new") {
       setLoading(false);
       setSegmentType("newAccountTab");
@@ -70,17 +64,8 @@ const ViewChildAccountScreen: React.FC = () => {
 
     let childAccountToSet: ChildAccount | undefined = undefined;
 
-    // if (currentUser?.id) {
-    //   console.log("Current user is child account");
     childAccountToSet = await getChildAccount(Number(id), currentUser?.id || 0);
-    // }
 
-    console.log("Child Account: ", childAccountToSet);
-
-    // if (!childAccountToSet) {
-    //   setLoading(false);
-    //   return;
-    // }
     setChildAccount(childAccountToSet);
     if (childAccountToSet?.boards) {
       setBoards(childAccountToSet.boards);
@@ -88,39 +73,29 @@ const ViewChildAccountScreen: React.FC = () => {
     const userBoards = currentUser?.boards || [];
 
     setUserBoards(userBoards);
-    setLoading(false);
   };
 
   const fetchUserBoards = async () => {
     const fetchedBoards = currentUser?.boards;
-    setUserBoards(fetchedBoards || []);
-    if (!fetchedBoards) {
-      // console.error("Error fetching boards");
-      return;
-    }
-    setUserBoards(fetchedBoards);
+    const remainingBoards = fetchedBoards?.filter(
+      (board) => !boards.find((b) => b.id === board.id)
+    );
+    setUserBoards(remainingBoards || []);
   };
 
   const loadWordEvents = async () => {
-    setLoading(true);
-    if (!currentUser) {
-      setLoading(false);
-      // return;
-    }
     let events: WordEvent[] = [];
 
     events = await fetchWordEventsByAccountId(Number(id));
-    console.log("Word Events: ", events);
-    setLoading(false);
     setWordEvents(events);
   };
 
   useEffect(() => {
-    console.log("Fetching child account...");
-    console.log("Current user: ", currentUser);
+    setLoading(true);
     fetchChildAccount();
     fetchUserBoards();
     loadWordEvents();
+    setLoading(false);
   }, []);
 
   const handleSegmentChange = (e: CustomEvent) => {
@@ -294,32 +269,26 @@ const ViewChildAccountScreen: React.FC = () => {
             <div className="ion-padding border">
               <div className="flex flex-col justify-center items-center text-center">
                 <div className="text-2xl text-gray-500">
-                  🚧 BETA Features 🚧 <br></br>{" "}
-                  <span className="text-md font-bold">Under Construction</span>
-                  <br></br>{" "}
                   <p className="text-sm">Word Events & Word Relationships</p>
+                  🚧{" "}
+                  <span className="text-md font-mono">
+                    Under Construction
+                  </span>{" "}
+                  🚧
                 </div>
-                <div className="text-center">
-                  <p className="text-2xl">What are Word Events?</p>
-                  <p className="text-md">
+                <div className="text-center mt-4">
+                  <p className="text-2xl font-bold">What are Word Events?</p>
+                  <p className="text-sm">
                     Word Events are a collection of words that are spoken by
-                    users. <br></br>They are used to generate Word Clouds and
-                    Word Relationships. <br></br>
+                    users.
+                  </p>
+                  <p className="text-sm">
+                    They're used to generate Word Clouds and Word Relationships.
                   </p>
                 </div>
-                <IonButtons slot="end">
-                  <IonButton
-                    onClick={loadWordEvents}
-                    className="mt-4"
-                    color="primary"
-                    fill="outline"
-                  >
-                    Refresh
-                  </IonButton>
-                </IonButtons>
               </div>
               {loading && <IonSpinner />}
-              <div className=" ">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="overflow-hidden">
                   <h1 className="text-2xl mt-4">Word Usage Cloud</h1>
                   <WordCloudChart wordEvents={wordEvents} />

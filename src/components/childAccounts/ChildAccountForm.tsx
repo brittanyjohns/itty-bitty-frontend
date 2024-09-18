@@ -5,6 +5,7 @@ import {
   IonInput,
   IonToast,
   IonicSafeString,
+  IonCheckbox,
 } from "@ionic/react";
 
 import {
@@ -16,6 +17,7 @@ import { User } from "../../data/users";
 import { useHistory } from "react-router";
 import { set } from "d3";
 import { alertCircleOutline } from "ionicons/icons";
+import { h } from "ionicons/dist/types/stencil-public-runtime";
 
 interface ChildAccountFormProps {
   // onSave: () => void;
@@ -47,6 +49,12 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
   const [toastMessage, setToastMessage] = React.useState<any>();
   const [showLoading, setShowLoading] = React.useState(false);
   const [errors, setErrors] = useState<any>(null);
+  const [imageDisplay, setImageDisplay] = useState(
+    existingChildAccount?.settings?.enable_image_display || false
+  );
+  const [textDisplay, setTextDisplay] = useState(
+    existingChildAccount?.settings?.enable_text_display || false
+  );
 
   const onSave = async () => {
     let childAccountResult: ChildAccount;
@@ -59,13 +67,16 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
       return;
     }
     if (existingChildAccount) {
-      // updateChildAccount();
       childAccountResult = await updateChildAccount({
         ...existingChildAccount,
         name: name,
         username: username,
         password: password,
         password_confirmation: passwordConfirmation,
+        settings: {
+          enable_image_display: imageDisplay,
+          enable_text_display: textDisplay,
+        },
       });
     } else {
       const childAccount: ChildAccount = {
@@ -74,6 +85,10 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
         user_id: currentUser.id,
         password: password,
         password_confirmation: passwordConfirmation,
+        settings: {
+          enable_image_display: imageDisplay,
+          enable_text_display: textDisplay,
+        },
       };
       childAccountResult = await createChildAccount(childAccount);
       if (childAccountResult.errors) {
@@ -83,17 +98,16 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
         // window.location.reload();
       } else {
         setChildAccount(childAccountResult);
+        history.push(`/child-accounts/${childAccountResult.id}`);
       }
     }
   };
 
   useEffect(() => {
-    console.log("errors", errors);
     if (errors) {
       const errorMessages = Object.keys(errors).map((key) => {
         return `${key}: ${errors[key]}`;
       });
-      console.log("errorMessages", errorMessages);
       const errorList = new IonicSafeString(
         errorMessages.map((msg) => `<li>${msg}</li>`).join("")
       );
@@ -107,10 +121,6 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
     setChildAccount(null);
   };
 
-  // useEffect(() => {
-  //   setChildAccount(childAccount);
-  // }, [childAccount]);
-
   const handleNameChange = (e: CustomEvent) => {
     setName(e.detail.value);
   };
@@ -123,7 +133,7 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full md:w-1/2 lg:w-1/2 mx-auto mt-4"
+      className="w-full md:w-3/4 mx-auto mt-4 p-4 bg-white shadow-md rounded-lg"
     >
       <div className="flex flex-col gap-4">
         <div className="text-center">
@@ -163,6 +173,24 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
             className=""
             fill="outline"
           />
+        </div>
+        <div className="">
+          <IonCheckbox
+            checked={imageDisplay}
+            onIonChange={(e) => setImageDisplay(e.detail.checked)}
+            // labelPlacement="fixed"
+          >
+            <IonLabel className="mx-3">Enable Image Display</IonLabel>
+          </IonCheckbox>
+        </div>
+        <div className="">
+          <IonCheckbox
+            checked={textDisplay}
+            onIonChange={(e) => setTextDisplay(e.detail.checked)}
+            // labelPlacement="fixed"
+          >
+            <IonLabel className="mx-3">Enable Text Display</IonLabel>
+          </IonCheckbox>
         </div>
       </div>
       <IonToast

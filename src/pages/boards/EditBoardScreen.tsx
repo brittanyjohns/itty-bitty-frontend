@@ -87,18 +87,14 @@ const EditBoardScreen: React.FC = () => {
   const [yMargin, setYMargin] = useState(
     board?.layout[currentScreenSize]?.y_margin
   );
-  const [currentNumberOfColumns, setCurrentNumberOfColumns] =
-    useState(numberOfColumns);
 
   const [openAlert, setOpenAlert] = useState(false);
   const [preventCollision, setPreventCollision] = useState(false);
 
   useEffect(() => {
-    console.log("board?.margin_settings: ", board?.margin_settings);
     if (board) {
       const layout = board.layout[currentScreenSize];
       const margin = board.margin_settings[currentScreenSize];
-      console.log("currentScreenSize: ", currentScreenSize);
       setCurrentLayout(layout);
       if (margin) {
         setXMargin(margin.x);

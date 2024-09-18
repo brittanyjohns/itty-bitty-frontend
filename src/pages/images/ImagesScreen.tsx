@@ -1,4 +1,4 @@
-import { createRef, useEffect, useState } from "react";
+import { createRef, useEffect, useRef, useState } from "react";
 import {
   IonButton,
   IonContent,
@@ -42,7 +42,6 @@ const ImagesScreen: React.FC = () => {
   const [pageTitle, setPageTitle] = useState("Image Gallery");
   const [showLoading, setShowLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("Loading images");
-  const inputRef = createRef<HTMLIonInputElement>();
   const [showCreateBtn, setShowCreateBtn] = useState(false);
   const { currentUser, currentAccount, isWideScreen } = useCurrentUser();
   const fetchImages = async () => {
@@ -175,6 +174,11 @@ const ImagesScreen: React.FC = () => {
             <IonSearchbar
               debounce={1000}
               onIonInput={handleSearchInput}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleGetMoreImages(page, searchInput);
+                }
+              }}
               onIonClear={() => clearInput()}
               animated={true}
               className="mt-4"

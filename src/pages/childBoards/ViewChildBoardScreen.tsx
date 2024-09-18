@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ChildBoard, getChildBoard } from "../../data/child_boards";
-import { REFRESH_RATE } from "../../data/constants";
+import { AUTO_REFRESH_RATE, REFRESH_RATE } from "../../data/constants";
 import {
   IonButton,
   IonButtons,
@@ -8,14 +8,11 @@ import {
   IonHeader,
   IonIcon,
   IonInput,
-  IonItem,
   IonLoading,
   IonPage,
   IonRefresher,
-  IonRefresherContent,
   IonToolbar,
   useIonViewDidLeave,
-  useIonViewWillEnter,
 } from "@ionic/react";
 
 import {
@@ -26,14 +23,14 @@ import {
 
 import { useParams } from "react-router";
 import React from "react";
-import FloatingWordsBtn from "../../components/utils/FloatingWordsBtn";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import DraggableGrid from "../../components/images/DraggableGrid";
-import { playAudioList } from "../../data/utils";
+import { generatePlaceholderImage, playAudioList } from "../../data/utils";
 import { Image } from "../../data/images";
 import { clickWord } from "../../data/audits";
 
 import FullscreenToggle from "../../components/utils/FullscreenToggle";
+import ImageList from "../../components/utils/ImageList";
 
 const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<ChildBoard>();
@@ -47,6 +44,40 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   const [previousLabel, setPreviousLabel] = useState<string | undefined>(
     undefined
   );
+
+  const [showText, setShowText] = useState(
+    currentAccount?.settings?.enable_text_display
+  );
+
+  const [showHeader, setShowHeader] = useState(true);
+
+  const [xMargin, setXMargin] = useState(0);
+  const [yMargin, setYMargin] = useState(0);
+  const [currentLayout, setCurrentLayout] = useState([]);
+  const [currentScreenSize, setCurrentScreenSize] = useState("lg");
+
+  const [audioList, setAudioList] = useState<string[]>([]);
+  const [account, setAccount] = useState(currentAccount);
+
+  const [selectedImageSrcs, setSelectedImageSrcs] = useState<string[]>([]);
+  const [showImages, setShowImages] = useState(
+    selectedImageSrcs.length > 0 ? true : false
+  );
+  useEffect(() => {
+    if (board) {
+      setBoard(board);
+      const layout = board.layout[currentScreenSize];
+      const margin = board.margin_settings[currentScreenSize];
+      setCurrentLayout(layout);
+      if (margin) {
+        setXMargin(margin.x);
+        setYMargin(margin.y);
+      } else {
+        setXMargin(0);
+        setYMargin(0);
+      }
+    }
+  }, [board, currentScreenSize]);
 
   useIonViewDidLeave(() => {
     inputRef.current?.value && clearInput();
@@ -69,14 +100,41 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
     }
   };
 
+  useEffect(() => {
+    const shouldSetShowText =
+      currentAccount?.settings?.enable_text_display && audioList.length > 0;
+    setShowText(shouldSetShowText);
+    const shouldSetShowImages =
+      currentAccount?.settings?.enable_image_display &&
+      selectedImageSrcs.length > 0;
+    setShowImages(shouldSetShowImages);
+
+    setShowHeader(
+      shouldSetShowImages || shouldSetShowText || audioList.length > 0
+    );
+  }, [selectedImageSrcs, audioList]);
+
   const handleImageClick = async (image: Image) => {
+    if (currentAccount?.settings?.enable_image_display) {
+      let imgSrc = image.src;
+      if (!imgSrc) {
+        const placeholderUrl = generatePlaceholderImage(image.label);
+        imgSrc = placeholderUrl;
+      }
+
+      const sourcesToSet = [...selectedImageSrcs, imgSrc];
+
+      setSelectedImageSrcs(sourcesToSet);
+      setShowIcon(true);
+      setShowImages(true);
+    }
+
     if (currentUser?.settings?.disable_audit_logging) {
       console.log("Audit logging is disabled");
       return;
     }
     const text = image.label;
     if (previousLabel === text) {
-      console.log("Same label clicked", text);
     } else {
       const payload = {
         word: text,
@@ -96,6 +154,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
     setAudioList([]);
     setShowIcon(false);
     setPreviousLabel(undefined);
+    setSelectedImageSrcs([]);
   };
 
   useIonViewDidLeave(() => {
@@ -107,11 +166,9 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
 
     const intervalId = setInterval(() => {
       fetchBoard();
-    }, REFRESH_RATE); // Fetch child boards every 45 seconds
+    }, AUTO_REFRESH_RATE); // Fetch child boards every 30 seconds
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
-  }, [currentAccount]);
-
-  const [audioList, setAudioList] = useState<string[]>([]);
+  }, [account]);
 
   const handleUpdateAudioList = (audio: string) => {
     setAudioList([...audioList, audio]);
@@ -131,8 +188,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   return (
     <IonPage id="view-board-page">
       <FullscreenToggle />
-
-      <p className="text-center text-sm">{board?.name}</p>
+      <IonRefresher slot="fixed" onIonRefresh={refresh} />
 
       <IonHeader className="bg-inherit shadow-none">
         <IonToolbar>
@@ -141,45 +197,58 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
           </IonButtons>
-          <IonItem slot="start" className="pl-2 w-full">
-            <IonInput
-              placeholder="Click an image to begin speaking"
-              ref={inputRef}
-              readonly={true}
-              className="w-full text-sm text-justify"
-            ></IonInput>
-          </IonItem>
-          <IonButtons slot="start">
-            {showIcon && (
-              <IonButton size="small" onClick={handlePlayAudioList}>
-                <IonIcon
-                  slot="icon-only"
-                  className="tiny"
-                  icon={playCircleOutline}
-                  // onClick={() => speak(inputRef.current?.value as string)}
-                ></IonIcon>
-              </IonButton>
-            )}
-          </IonButtons>
-          <IonButtons slot="end">
-            {showIcon && (
-              <IonButton size="small" onClick={() => clearInput()}>
-                <IonIcon
-                  slot="icon-only"
-                  className="tiny"
-                  icon={trashBinOutline}
-                  onClick={() => clearInput()}
-                ></IonIcon>
-              </IonButton>
-            )}
-          </IonButtons>
+          <p className="text-center text-sm md:text-md lg:text-lg xl:text-xl font-bold">
+            {board?.name}
+          </p>
+          {!showHeader && (
+            <p className="text-center text-xs md:text-sm lg:text-md">
+              Click an image to begin speaking
+            </p>
+          )}
         </IonToolbar>
+        {showHeader && (
+          <IonToolbar>
+            {showImages && <ImageList imageSrcList={selectedImageSrcs} />}
+            {showText && (
+              <div className="bg-inherit">
+                <IonInput
+                  placeholder="Click an image to begin speaking"
+                  ref={inputRef}
+                  readonly={true}
+                  type="text"
+                  className="ml-3 text-sm md:text-md lg:text-lg xl:text-xl text-center"
+                ></IonInput>
+              </div>
+            )}
+            <IonButtons slot="end">
+              {showIcon && (
+                <IonButton size="small" onClick={handlePlayAudioList}>
+                  <IonIcon
+                    slot="icon-only"
+                    className="tiny"
+                    icon={playCircleOutline}
+                  ></IonIcon>
+                </IonButton>
+              )}
+
+              {showIcon && (
+                <IonButton size="small" onClick={() => clearInput()}>
+                  <IonIcon
+                    slot="icon-only"
+                    className="tiny"
+                    icon={trashBinOutline}
+                    onClick={() => clearInput()}
+                  ></IonIcon>
+                </IonButton>
+              )}
+            </IonButtons>
+          </IonToolbar>
+        )}
       </IonHeader>
-      <IonContent fullscreen scrollY={true}>
+      <IonContent>
         <IonLoading message="Please wait..." isOpen={showLoading} />
         {board && (
           <DraggableGrid
-            setShowLoading={setShowLoading}
             images={board.images}
             board={board}
             setShowIcon={setShowIcon}
@@ -191,6 +260,12 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
             onImageClick={handleImageClick}
             viewOnClick={false}
             showRemoveBtn={false}
+            setShowLoading={setShowLoading}
+            xMargin={xMargin}
+            yMargin={yMargin}
+            updateScreenSize={(newScreenSize: string) => {
+              setCurrentScreenSize(newScreenSize);
+            }}
           />
         )}
         {imageCount < 1 && (
@@ -206,7 +281,6 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
             />
           </div>
         )}
-        {/* <FloatingWordsBtn inputRef={inputRef} words={board?.floating_words} /> */}
       </IonContent>
     </IonPage>
   );

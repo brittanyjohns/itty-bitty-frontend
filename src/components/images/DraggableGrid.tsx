@@ -81,17 +81,12 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
   }, [width, currentNumberOfColumns, rowHeight]);
 
   useEffect(() => {
-    console.log("board: ", board);
     if (xMargin !== undefined && yMargin !== undefined) {
-      console.log("Setting margin settings", [xMargin, yMargin]);
     } else {
-      console.log("Margin settings not found");
     }
   }, [xMargin, yMargin, currentScreenSize]);
 
   const updateRowHeight = () => {
-    console.log("Image ref offsetWidth: ", imgRef?.offsetWidth);
-    console.log("Image ref clientWidth: ", imgRef?.clientWidth);
     const adjustWidth = width + 5;
     const dynamicRowHeight = Math.floor(adjustWidth / currentNumberOfColumns);
     setRowHeight(dynamicRowHeight);

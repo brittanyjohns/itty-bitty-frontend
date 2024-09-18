@@ -25,6 +25,7 @@ export interface ChildBoard {
   small_screen_columns: number;
   word_list?: string[];
   bg_color?: string;
+  margin_settings?: any;
 }
 
 const signedInToken =

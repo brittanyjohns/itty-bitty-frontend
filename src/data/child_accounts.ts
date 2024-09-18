@@ -35,13 +35,13 @@ export async function createChildAccount(
     requestInfo
   );
   const result = await response.json();
-  console.log("createChildAccount result", result);
   return result;
 }
 
 export async function updateChildAccount(
   payload: ChildAccount
 ): Promise<ChildAccount> {
+  console.log("updateChildAccount", payload);
   const requestInfo = {
     method: "PUT",
     headers: userHeaders,

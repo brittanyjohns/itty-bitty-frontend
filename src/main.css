@@ -19,15 +19,15 @@
 ion-toolbar {
   /* --background: #18547e; */
   --tw-bg-opacity: 1;
-  --background: rgb(17 24 39 / var(--tw-bg-opacity));
+  --background: rgb(24, 24, 24);
   --color: rgb(238, 238, 238);
 
   /* --border-color: #255380; */
   /* --border-width: 2px 0; */
   /* --border-style: double; */
   /* --min-height: 80px; */
-  /* --padding-top: 20px;
-    --padding-bottom: 20px; */
+  /* --padding-top: 1px;
+  --padding-bottom: 0px; */
 }
 
 /* ion-toolbar ion-title { */
@@ -36,8 +36,8 @@ ion-toolbar {
 /* } */
 
 ion-toolbar ion-buttons {
-  --padding-start: 10px;
-  --padding-end: 10px;
+  /* --padding-start: 10px; */
+  /* --padding-end: 10px; */
 }
 
 ion-toolbar ion-buttons ion-button {

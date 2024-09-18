@@ -109,12 +109,10 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const [currentScreenSize, setCurrentScreenSize] = useState("lg");
 
   useEffect(() => {
-    console.log("board?.margin_settings: ", board?.margin_settings);
     if (board) {
       setBoard(board);
       const layout = board.layout[currentScreenSize];
       const margin = board.margin_settings[currentScreenSize];
-      console.log("currentScreenSize: ", currentScreenSize);
       setCurrentLayout(layout);
       if (margin) {
         setXMargin(margin.x);
