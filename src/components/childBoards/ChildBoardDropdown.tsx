@@ -37,12 +37,8 @@ const ChildBoardDropdown: React.FC<ChildBoardDropdownProps> = ({
 
   const handleSelectChange = (e: CustomEvent) => {
     const boardId = e.detail.value;
+    console.log("boardId", boardId);
     setShowLoading(true);
-    // if (!currentUser?.id) {
-    //   console.error("No current user");
-    //   setShowLoading(false);
-    //   return;
-    // }
     async function addSelectedBoardToAccount() {
       const response = await assignBoardToChildAccount(
         currentUser?.id || 0,
@@ -88,13 +84,13 @@ const ChildBoardDropdown: React.FC<ChildBoardDropdownProps> = ({
           placeholder="Select a board"
           className="text-sm text-wrap text-center"
           name="boardId"
-          onIonChange={(e: any) => handleSelectChange(e)}
+          onIonChange={handleSelectChange}
           ref={selectRef}
         >
           {boards &&
             boards.map((board: { id?: any; name: any }) => (
               <IonSelectOption key={board.id} value={board.id}>
-                {board.name}
+                {board.name} {board.id}
               </IonSelectOption>
             ))}
         </IonSelect>

@@ -40,7 +40,6 @@ import Tabs from "../../components/utils/Tabs";
 import WordCloudChart from "../../components/utils/WordCloudChart";
 import { WordEvent, fetchWordEventsByAccountId } from "../../data/word_event";
 import WordNetworkGraph from "../../components/utils/WordNetworkGraph";
-import { set } from "d3";
 import { ChildBoard } from "../../data/child_boards";
 
 const ViewChildAccountScreen: React.FC = () => {
@@ -80,17 +79,12 @@ const ViewChildAccountScreen: React.FC = () => {
   const fetchUserBoards = async () => {
     const fetchedBoards = currentUser?.boards;
     const remainingBoards = fetchedBoards?.filter((board) => {
-      console.log(">>> id", board.id);
-      console.log(">>>", boards[0]);
       return !boards.some((b) => b.board_id === board.id);
     });
-    console.log("fetchUserBoards", remainingBoards);
     setUserBoards(remainingBoards || []);
   };
 
   useEffect(() => {
-    console.log("useEffect", boards);
-    console.log("useEffect2", userBoards);
     setLoading(true);
     fetchUserBoards();
     setLoading(false);
@@ -226,33 +220,51 @@ const ViewChildAccountScreen: React.FC = () => {
           )}
           {segmentType === "boardTab" && (
             <div className="mt-4">
-              <div className="flex justify-center">
-                <h1 className="text-lg md:text-xl text-center">
-                  Select which boards this account can access
-                </h1>
-              </div>
-              <div className="w-full md:w-1/2 mx-auto">
-                {childAccount && (
-                  <ChildBoardDropdown
-                    childAccount={childAccount}
-                    boards={userBoards}
-                    onSuccess={fetchChildAccount}
-                  />
-                )}
-              </div>
-              <div className="mt-4">
+              {userBoards.length > 0 && (
+                <>
+                  <div className="flex justify-center">
+                    <h1 className="text-lg md:text-xl text-center">
+                      Select which boards this account can access
+                    </h1>
+                  </div>
+                  <div className="w-full md:w-1/2 mx-auto">
+                    {childAccount && (
+                      <ChildBoardDropdown
+                        childAccount={childAccount}
+                        boards={userBoards}
+                        onSuccess={fetchChildAccount}
+                      />
+                    )}
+                  </div>
+                </>
+              )}
+
+              {userBoards.length === 0 && (
+                <div className="w-full mx-auto text-center">
+                  <p className="text-lg">All boards are already assigned</p>
+                  <p className="text-sm">
+                    Create a new board to assign to this account
+                  </p>
+                  <IonButton
+                    className="mt-4"
+                    color={"success"}
+                    onClick={() => history.push("/boards/new")}
+                  >
+                    Create New Board
+                  </IonButton>
+                </div>
+              )}
+              <div className="mt-4 w-full p-4 md:w-3/4 mx-auto">
                 {boards.length > 0 && (
                   <h1 className="text-2xl text-center mt-4">
                     Currently Assigned Boards
                   </h1>
                 )}
-                <div className="w-full md:w-3/4 mx-auto">
-                  <BoardGrid
-                    boards={boards}
-                    gridType="child"
-                    loadBoards={fetchChildAccount}
-                  />
-                </div>
+                <BoardGrid
+                  boards={boards}
+                  gridType="child"
+                  loadBoards={fetchChildAccount}
+                />
               </div>
             </div>
           )}
