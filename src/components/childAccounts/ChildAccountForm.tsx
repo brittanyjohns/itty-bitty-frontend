@@ -117,7 +117,7 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
   }, [errors]);
 
   const onCancel = () => {
-    history.push("/child_accounts");
+    history.push("/child-accounts");
     setChildAccount(null);
   };
 

@@ -41,6 +41,7 @@ import WordCloudChart from "../../components/utils/WordCloudChart";
 import { WordEvent, fetchWordEventsByAccountId } from "../../data/word_event";
 import WordNetworkGraph from "../../components/utils/WordNetworkGraph";
 import { set } from "d3";
+import { ChildBoard } from "../../data/child_boards";
 
 const ViewChildAccountScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -48,7 +49,7 @@ const ViewChildAccountScreen: React.FC = () => {
     undefined
   );
   const [segmentType, setSegmentType] = useState("childAccountTab");
-  const [boards, setBoards] = useState<Board[]>([]);
+  const [boards, setBoards] = useState<ChildBoard[]>([]);
   const [userBoards, setUserBoards] = useState<Board[]>([]);
   const [loading, setLoading] = useState(false);
   const history = useHistory();
@@ -68,6 +69,7 @@ const ViewChildAccountScreen: React.FC = () => {
 
     setChildAccount(childAccountToSet);
     if (childAccountToSet?.boards) {
+      console.log("childAccountToSet.boards", childAccountToSet.boards);
       setBoards(childAccountToSet.boards);
     }
     const userBoards = currentUser?.boards || [];
@@ -77,11 +79,22 @@ const ViewChildAccountScreen: React.FC = () => {
 
   const fetchUserBoards = async () => {
     const fetchedBoards = currentUser?.boards;
-    const remainingBoards = fetchedBoards?.filter(
-      (board) => !boards.find((b) => b.id === board.id)
-    );
+    const remainingBoards = fetchedBoards?.filter((board) => {
+      console.log(">>> id", board.id);
+      console.log(">>>", boards[0]);
+      return !boards.some((b) => b.board_id === board.id);
+    });
+    console.log("fetchUserBoards", remainingBoards);
     setUserBoards(remainingBoards || []);
   };
+
+  useEffect(() => {
+    console.log("useEffect", boards);
+    console.log("useEffect2", userBoards);
+    setLoading(true);
+    fetchUserBoards();
+    setLoading(false);
+  }, [boards]);
 
   const loadWordEvents = async () => {
     let events: WordEvent[] = [];
