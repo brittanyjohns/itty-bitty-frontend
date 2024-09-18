@@ -1,7 +1,9 @@
 import { Board } from "./boards";
 import { User } from "./users";
 import { userHeaders, BASE_URL, childAccountHeaders } from "./constants";
-
+interface Error {
+  [key: string]: string[];
+}
 export interface ChildAccount {
   id?: number;
   user_id: number;
@@ -10,7 +12,7 @@ export interface ChildAccount {
   created_at?: string;
   updated_at?: string;
   user?: User;
-  errors?: string[];
+  errors?: any;
   password?: string;
   password_confirmation?: string;
   boards?: Board[];
@@ -33,6 +35,7 @@ export async function createChildAccount(
     requestInfo
   );
   const result = await response.json();
+  console.log("createChildAccount result", result);
   return result;
 }
 

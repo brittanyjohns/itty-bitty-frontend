@@ -9,8 +9,14 @@ interface BoardGridProps {
   boards: Board[];
   gridType?: string;
   loadBoards?: any;
+  searchInput?: string;
 }
-const BoardGrid = ({ boards, gridType, loadBoards }: BoardGridProps) => {
+const BoardGrid = ({
+  boards,
+  gridType,
+  loadBoards,
+  searchInput,
+}: BoardGridProps) => {
   const { currentUser } = useCurrentUser();
   const gridRef = createRef<HTMLDivElement>();
   const [currentBoards, setCurrentBoards] = useState<Board[]>(boards);

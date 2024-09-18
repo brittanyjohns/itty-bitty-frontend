@@ -39,14 +39,13 @@ import {
   cloudUploadOutline,
   gridOutline,
   refreshCircleOutline,
-  searchCircleSharp,
   searchOutline,
   trashBinOutline,
 } from "ionicons/icons";
 import MainMenu from "../../components/main_menu/MainMenu";
 import MainHeader from "../MainHeader";
 import ImageCropper from "../../components/images/ImageCropper";
-import { Board, getBoards, removeImageFromBoard } from "../../data/boards";
+import { Board, removeImageFromBoard } from "../../data/boards";
 import { generatePlaceholderImage } from "../../data/utils";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import Tabs from "../../components/utils/Tabs";
@@ -55,7 +54,6 @@ import InputAlert from "../../components/utils/InputAlert";
 import VoiceDropdown from "../../components/utils/VoiceDropdown";
 import ConfirmAlert from "../../components/utils/ConfirmAlert";
 import ImageSearchComponent from "../../components/admin/ImageSearchComponent";
-import Footer from "../../components/utils/Footer";
 
 const ViewImageScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();

@@ -9,6 +9,7 @@ import {
   IonPage,
   IonRefresher,
   IonRefresherContent,
+  IonSearchbar,
   IonSegment,
   IonSegmentButton,
   IonTitle,
@@ -45,9 +46,12 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   const [scenarioBoards, setScenarioBoards] = useState<Board[]>([]);
   const [segmentType, setSegmentType] = useState("user");
   const [pageTitle, setPageTitle] = useState("Your Boards");
+  const [searchInput, setSearchInput] = useState("");
+  const [page, setPage] = useState(1);
+  const [onlyUserImages, setOnlyUserImages] = useState(false);
 
   const fetchBoards = async () => {
-    const fetchedBoards = await getBoards();
+    const fetchedBoards = await getBoards(searchInput, page, onlyUserImages);
     if (gridType === "child") {
       if (!currentAccount) {
         console.error("No current account found");
@@ -67,10 +71,27 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
     }
   };
 
+  const handleSearchInput = async (event: CustomEvent) => {
+    const query = event.detail.value.toLowerCase();
+    console.log("query", query);
+    setSearchInput(query);
+    setPage(1); // Reset to first page on new search
+  };
+
+  const clearInput = () => {
+    setSearchInput("");
+    setPage(1); // Reset to first page on new search
+  };
+
   useIonViewWillEnter(() => {
     fetchBoards();
     toggle(segmentType);
-  });
+  }, []);
+
+  useEffect(() => {
+    fetchBoards();
+    toggle(segmentType);
+  }, []);
 
   useIonViewWillLeave(() => {
     setSegmentType("user");
@@ -80,7 +101,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   useEffect(() => {
     fetchBoards();
     toggle(segmentType);
-  }, []);
+  }, [searchInput, page]);
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
@@ -122,7 +143,13 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
     }
 
     if (boardsToSet && boardsToSet?.length > 0) {
-      return <BoardGrid gridType={gridType} boards={boardsToSet} />;
+      return (
+        <BoardGrid
+          gridType={gridType}
+          boards={boardsToSet}
+          searchInput={searchInput}
+        />
+      );
     } else if (boardsToSet?.length === 0 && gridType === "user") {
       return (
         <>
@@ -210,6 +237,17 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
                 </IonSegmentButton>
               </IonSegment>
             )}
+          </div>
+          <div className="p-2 w-7/8 md:w-5/6 mx-auto">
+            <IonSearchbar
+              debounce={1000}
+              onIonInput={handleSearchInput}
+              onIonClear={() => clearInput()}
+              animated={true}
+              className="mt-4"
+              value={searchInput}
+              placeholder="Search existing images"
+            ></IonSearchbar>
           </div>
           {segmentType === "user" && renderBoardGrid("user", boards)}
 

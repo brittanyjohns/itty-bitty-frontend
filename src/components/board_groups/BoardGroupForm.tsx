@@ -68,7 +68,7 @@ const BoardGroupForm: React.FC<BoardGroupFormProps> = ({
 
   const fetchBoards = async () => {
     try {
-      const fetchedBoards = await getBoards();
+      const fetchedBoards = await getBoards("", 1);
       setBoards(fetchedBoards["boards"]);
       setUserBoards(fetchedBoards["boards"]);
       setScenarioBoards(fetchedBoards["scenarios"]);

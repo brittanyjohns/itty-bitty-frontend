@@ -24,7 +24,7 @@ import {
   trashBinOutline,
 } from "ionicons/icons";
 
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import React from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import DraggableGrid from "../../components/images/DraggableGrid";
@@ -43,6 +43,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const [imageCount, setImageCount] = useState(0);
   const { currentUser } = useCurrentUser();
   const [numOfColumns, setNumOfColumns] = useState(4);
+  const history = useHistory();
   const [previousLabel, setPreviousLabel] = useState<string | undefined>(
     undefined
   );
@@ -145,6 +146,10 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
     await playAudioList(audioList);
   };
 
+  const goToBoard = () => {
+    history.push("/boards");
+  };
+
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
       e.detail.complete();
@@ -157,7 +162,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
       <IonHeader className="bg-inherit shadow-none">
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton routerLink={`/boards/${board?.id}`}>
+            <IonButton onClick={goToBoard}>
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
           </IonButtons>

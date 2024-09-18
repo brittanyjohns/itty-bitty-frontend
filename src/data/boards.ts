@@ -1,6 +1,7 @@
 import { Image } from "./images";
 import { BASE_URL, userHeaders } from "./constants";
 import { ChildBoard } from "./child_boards";
+import { search } from "ionicons/icons";
 export interface NewBoardPayload {
   id?: string;
   name: string;
@@ -52,9 +53,18 @@ export interface Board {
 //   images: Image[];
 // }
 
-export const getBoards = () => {
+export const getBoards = (
+  searchTerm: string,
+  page: number,
+  userOnly?: boolean
+) => {
   console.log("userHeaders", userHeaders);
-  const boards = fetch(`${BASE_URL}boards`, { headers: userHeaders }) // `localhostboards
+  const boards = fetch(
+    `${BASE_URL}boards?page=${page}&query=${searchTerm}&user_only=${
+      userOnly ? "1" : "0"
+    }`,
+    { headers: userHeaders }
+  ) // `localhostboards
     .then((response) => response.json())
     .then((data) => data)
     .catch((error) => console.error("Error fetching data: ", error));

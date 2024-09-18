@@ -82,10 +82,10 @@ const EditBoardScreen: React.FC = () => {
   const [currentLayout, setCurrentLayout] = useState([]);
   const [currentScreenSize, setCurrentScreenSize] = useState("lg");
   const [xMargin, setXMargin] = useState(
-    board?.layout[currentScreenSize].x_margin
+    board?.layout[currentScreenSize]?.x_margin
   );
   const [yMargin, setYMargin] = useState(
-    board?.layout[currentScreenSize].y_margin
+    board?.layout[currentScreenSize]?.y_margin
   );
   const [currentNumberOfColumns, setCurrentNumberOfColumns] =
     useState(numberOfColumns);

@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { IonLabel, IonButton, IonInput } from "@ionic/react";
+import {
+  IonLabel,
+  IonButton,
+  IonInput,
+  IonToast,
+  IonicSafeString,
+} from "@ionic/react";
 
 import {
   ChildAccount,
@@ -9,6 +15,7 @@ import {
 import { User } from "../../data/users";
 import { useHistory } from "react-router";
 import { set } from "d3";
+import { alertCircleOutline } from "ionicons/icons";
 
 interface ChildAccountFormProps {
   // onSave: () => void;
@@ -36,6 +43,11 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
     existingChildAccount?.password || ""
   );
 
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [toastMessage, setToastMessage] = React.useState<any>();
+  const [showLoading, setShowLoading] = React.useState(false);
+  const [errors, setErrors] = useState<any>(null);
+
   const onSave = async () => {
     let childAccountResult: ChildAccount;
     if (password !== passwordConfirmation) {
@@ -48,7 +60,6 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
     }
     if (existingChildAccount) {
       // updateChildAccount();
-      console.log("updateChildAccount");
       childAccountResult = await updateChildAccount({
         ...existingChildAccount,
         name: name,
@@ -56,7 +67,6 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
         password: password,
         password_confirmation: passwordConfirmation,
       });
-      console.log("childAccountResult", childAccountResult);
     } else {
       const childAccount: ChildAccount = {
         name: name,
@@ -66,25 +76,40 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
         password_confirmation: passwordConfirmation,
       };
       childAccountResult = await createChildAccount(childAccount);
-      if (childAccountResult.errors && childAccountResult.errors.length > 0) {
-        alert(`Error updating child account: ${childAccountResult.errors}`);
-        history.push("/child-accounts");
-        window.location.reload();
+      if (childAccountResult.errors) {
+        setErrors(childAccountResult.errors);
+        setChildAccount(childAccountResult);
+        // history.push("/child-accounts");
+        // window.location.reload();
       } else {
         setChildAccount(childAccountResult);
       }
     }
   };
 
+  useEffect(() => {
+    console.log("errors", errors);
+    if (errors) {
+      const errorMessages = Object.keys(errors).map((key) => {
+        return `${key}: ${errors[key]}`;
+      });
+      console.log("errorMessages", errorMessages);
+      const errorList = new IonicSafeString(
+        errorMessages.map((msg) => `<li>${msg}</li>`).join("")
+      );
+      setToastMessage(errorList);
+      setIsOpen(true);
+    }
+  }, [errors]);
+
   const onCancel = () => {
     history.push("/child_accounts");
     setChildAccount(null);
-    // window.location.reload();
   };
 
-  useEffect(() => {
-    setChildAccount(childAccount);
-  }, [childAccount]);
+  // useEffect(() => {
+  //   setChildAccount(childAccount);
+  // }, [childAccount]);
 
   const handleNameChange = (e: CustomEvent) => {
     setName(e.detail.value);
@@ -100,19 +125,6 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
       onSubmit={handleSubmit}
       className="w-full md:w-1/2 lg:w-1/2 mx-auto mt-4"
     >
-      {childAccount &&
-        childAccount.errors &&
-        childAccount?.errors?.length > 0 && (
-          <div className="text-red-500 p-2">
-            <h2>{`${childAccount.errors.length} error(s) prohibited this action from being saved:`}</h2>
-            <ul>
-              {childAccount.errors.map((error, index) => (
-                <li key={index}>{error}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
       <div className="flex flex-col gap-4">
         <div className="text-center">
           <IonInput
@@ -153,6 +165,17 @@ const ChildAccountForm: React.FC<ChildAccountFormProps> = ({
           />
         </div>
       </div>
+      <IonToast
+        isOpen={isOpen}
+        message={toastMessage}
+        position="middle"
+        onDidDismiss={() => setIsOpen(false)}
+        duration={3000}
+        header="Error"
+        color={"danger"}
+        icon={alertCircleOutline}
+        layout="stacked"
+      />
 
       <div className="flex justify-between mt-4">
         <IonButton color="medium" onClick={onCancel}>

@@ -52,6 +52,7 @@ import ForgotPasswordScreen from "./pages/auth/ForgotPasswordScreen";
 import ResetPasswordScreen from "./pages/auth/ResetPasswordScreen ";
 
 setupIonicReact({
+  innerHTMLTemplatesEnabled: true,
   platform: {
     /** The default `desktop` function returns false for devices with a touchscreen.
      * This is not always wanted, so this function tests the User Agent instead.
