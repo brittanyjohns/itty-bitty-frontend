@@ -196,7 +196,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
           </IonButtons>
-          <p className="text-center text-sm md:text-md lg:text-lg xl:text-xl font-bold">
+          <p className="text-sm md:text-md lg:text-lg xl:text-xl font-bold ion-text-center">
             {board?.name}
           </p>
           {showImages && <ImageList imageSrcList={selectedImageSrcs} />}
@@ -206,7 +206,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
               ref={inputRef}
               readonly={true}
               type="text"
-              className="ml-3 text-sm md:text-md lg:text-lg xl:text-xl text-center"
+              className="ml-1 text-sm md:text-md lg:text-lg xl:text-xl text-center"
             ></IonInput>
           </div>
           <IonButtons slot="end">
