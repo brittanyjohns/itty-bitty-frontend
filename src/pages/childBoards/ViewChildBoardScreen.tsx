@@ -114,6 +114,11 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   }, [selectedImageSrcs, audioList]);
 
   const handleImageClick = async (image: Image) => {
+    if (!currentAccount?.settings?.enable_text_display) {
+      if (inputRef.current) {
+        inputRef.current.hidden = true;
+      }
+    }
     if (currentAccount?.settings?.enable_image_display) {
       let imgSrc = image.src;
       if (!imgSrc) {
