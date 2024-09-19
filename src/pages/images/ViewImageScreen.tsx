@@ -413,6 +413,8 @@ const ViewImageScreen: React.FC = () => {
     setShowConfirmDeleteBoard(true);
   };
 
+  const [showConfirmDeleteImage, setShowConfirmDeleteImage] = useState(false);
+
   const [docToDelete, setDocToDelete] = useState<ImageDoc | null>(null);
 
   const handleConfirmRemoveDoc = (doc: ImageDoc) => {
@@ -549,25 +551,41 @@ const ViewImageScreen: React.FC = () => {
             </div>
             <div className="mt-4">
               {currentUser && image?.can_edit && (
-                <IonButtons className="flex justify-center">
-                  <IonButton
-                    onClick={() => setOpenAlert(true)}
-                    className="text-sm"
-                    fill="outline"
-                    size="small"
-                  >
-                    Clone Image
-                  </IonButton>
-
-                  <IonButton
-                    className="mt-2 "
-                    color="danger"
-                    fill="outline"
-                    onClick={() => setShowConfirmDeleteDoc(true)}
-                  >
-                    Delete Image
-                  </IonButton>
-                </IonButtons>
+                <>
+                  <IonButtons className="flex justify-center">
+                    <IonButton
+                      onClick={() => setOpenAlert(true)}
+                      className="text-sm"
+                      fill="outline"
+                      size="small"
+                    >
+                      Clone Image
+                    </IonButton>
+                    <IonButton
+                      className="mt-2 "
+                      color="danger"
+                      fill="outline"
+                      onClick={() => setShowConfirmDeleteImage(true)}
+                    >
+                      Delete Image
+                    </IonButton>
+                  </IonButtons>
+                  <ConfirmAlert
+                    onConfirm={() => {
+                      handleDeleteImage();
+                    }}
+                    onCanceled={() => {
+                      setShowConfirmDeleteImage(false);
+                    }}
+                    openAlert={showConfirmDeleteImage}
+                    onDidDismiss={() => {
+                      setShowConfirmDeleteImage(false);
+                    }}
+                    message={
+                      "Do you want to delete this image? This action cannot be undone."
+                    }
+                  />
+                </>
               )}
             </div>
             <InputAlert
