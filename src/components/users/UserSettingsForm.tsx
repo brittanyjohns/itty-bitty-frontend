@@ -9,6 +9,7 @@ import {
 } from "@ionic/react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { denyAccess, classNameForInput } from "../../data/users";
+import { key } from "ionicons/icons";
 
 interface VoiceSetting {
   name?: string;
@@ -70,6 +71,18 @@ const settingsConfig = [
     description: "Disable logging of user actions.",
     type: "toggle",
   },
+  {
+    key: "enable_text_display",
+    label: "Enable Text Display",
+    description: "Display text when user clicks each word.",
+    type: "toggle",
+  },
+  {
+    key: "enable_image_display",
+    label: "Enable Image Display",
+    description: "Display images when user clicks each word.",
+    type: "toggle",
+  },
 ];
 
 const getNestedProperty = (obj: any, path: string, defaultValue: any) => {
@@ -106,7 +119,6 @@ const UserSettingsForm: React.FC<UserSettingsFormProps> = ({
   }, [existingUserSetting]);
 
   const handleChange = (key: string, value: any) => {
-    console.log("handleChange", key, value);
     setSettings((prevSettings) => {
       const updatedSettings = { ...prevSettings };
       setNestedProperty(updatedSettings, key, value);

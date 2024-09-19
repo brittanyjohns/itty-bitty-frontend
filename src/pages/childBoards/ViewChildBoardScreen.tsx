@@ -86,8 +86,6 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   });
 
   const fetchBoard = async () => {
-    // closeChildMenu();
-
     const board = await getChildBoard(Number(params.id));
     if (!board) {
       console.error("Error fetching board");
@@ -103,7 +101,6 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
 
   useEffect(() => {
     const shouldSetShowText = currentAccount?.settings?.enable_text_display;
-    console.log("shouldSetShowText", shouldSetShowText);
     setShowText(shouldSetShowText);
     const shouldSetShowImages = currentAccount?.settings?.enable_image_display;
     setShowImages(shouldSetShowImages);
@@ -197,7 +194,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
       <IonHeader className="bg-inherit shadow-none">
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton routerLink={`/account-dashboard`} fill="clear">
+            <IonButton routerLink={`/`} fill="clear">
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
           </IonButtons>

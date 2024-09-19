@@ -28,11 +28,12 @@ import { useHistory, useParams } from "react-router";
 import React from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import DraggableGrid from "../../components/images/DraggableGrid";
-import { playAudioList } from "../../data/utils";
+import { generatePlaceholderImage, playAudioList } from "../../data/utils";
 import { Image } from "../../data/images";
 import { clickWord } from "../../data/audits";
 import FullscreenToggle from "../../components/utils/FullscreenToggle";
 import ActivityTrackingConsent from "../../components/utils/ActivityTrackingConsent";
+import ImageList from "../../components/utils/ImageList";
 
 const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();
@@ -46,6 +47,11 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const history = useHistory();
   const [previousLabel, setPreviousLabel] = useState<string | undefined>(
     undefined
+  );
+
+  const [selectedImageSrcs, setSelectedImageSrcs] = useState<string[]>([]);
+  const [showImages, setShowImages] = useState(
+    selectedImageSrcs.length > 0 ? true : false
   );
 
   const fetchBoard = async () => {
@@ -65,6 +71,25 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   };
 
   const handleImageClick = async (image: Image) => {
+    if (!currentUser?.settings?.enable_text_display) {
+      if (inputRef.current) {
+        inputRef.current.hidden = true;
+      }
+    }
+    if (currentUser?.settings?.enable_image_display) {
+      let imgSrc = image.src;
+      if (!imgSrc) {
+        const placeholderUrl = generatePlaceholderImage(image.label);
+        imgSrc = placeholderUrl;
+      }
+
+      const sourcesToSet = [...selectedImageSrcs, imgSrc];
+
+      setSelectedImageSrcs(sourcesToSet);
+      setShowIcon(true);
+      setShowImages(true);
+    }
+
     if (currentUser?.settings?.disable_audit_logging) {
       console.log("Audit logging is disabled");
       return;
@@ -124,16 +149,6 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
     }
   }, [board, currentScreenSize]);
 
-  // const [showTrackingConsent, setShowTrackingConsent] = useState(false);
-
-  // useEffect(() => {
-  //   const trackingConsent = document.cookie
-  //     .split("; ")
-  //     .find((row) => row.startsWith("tracking_consent="));
-
-  //   if (!trackingConsent) setShowTrackingConsent(true);
-  // }, []);
-
   const [audioList, setAudioList] = useState<string[]>([]);
 
   const handleUpdateAudioList = (audio: string) => {
@@ -160,34 +175,35 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
       <IonHeader className="bg-inherit shadow-none">
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton onClick={goToBoard}>
-              <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
-            </IonButton>
+            {board && (
+              <IonButton routerLink={`/boards/${board.id}`} fill="clear">
+                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
+              </IonButton>
+            )}
           </IonButtons>
-          <IonItem slot="start" className="ml-2 w-full" lines="none">
+          <p className="text-sm md:text-md lg:text-lg xl:text-xl font-bold ion-text-center">
+            {board?.name}
+          </p>
+          {showImages && <ImageList imageSrcList={selectedImageSrcs} />}
+          <div className="bg-inherit">
             <IonInput
               placeholder="Click an image to begin speaking"
               ref={inputRef}
               readonly={true}
               type="text"
-              className="w-full text-sm text-justify text-wrap"
+              className="ml-1 text-sm md:text-md lg:text-lg xl:text-xl text-center"
             ></IonInput>
-          </IonItem>
-
-          <IonButtons slot="start">
+          </div>
+          <IonButtons slot="end">
             {showIcon && (
               <IonButton size="small" onClick={handlePlayAudioList}>
                 <IonIcon
                   slot="icon-only"
                   className="tiny"
                   icon={playCircleOutline}
-                  // onClick={() => speak(inputRef.current?.value as string)}
                 ></IonIcon>
               </IonButton>
             )}
-          </IonButtons>
-          <IonButtons slot="end">
-            <FullscreenToggle />
 
             {showIcon && (
               <IonButton size="small" onClick={() => clearInput()}>

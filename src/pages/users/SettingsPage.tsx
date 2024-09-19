@@ -50,11 +50,9 @@ const SettingsPage: React.FC = () => {
     submittedUserSetting: UserSetting,
     userId?: string
   ) => {
-    console.log("save submittedUserSetting", submittedUserSetting, userId);
     const result = await updateUserSettings(submittedUserSetting, userId);
     console.log("result", result);
     if (result) {
-      console.log("settings saved");
       setIsOpen(true);
       setToastMessage("Settings saved");
     } else {
@@ -62,7 +60,7 @@ const SettingsPage: React.FC = () => {
       setIsOpen(true);
       setToastMessage("Error saving settings");
     }
-    window.location.reload();
+    // window.location.reload();
   };
 
   useEffect(() => {
@@ -116,29 +114,7 @@ const SettingsPage: React.FC = () => {
 
               <UserForm user={currentUser} />
             </IonCard>
-            {/* <div className="w-full md:w-2/3 mx-auto border p-4">
-              <h2 className="text-2xl">Account Information</h2>
-              <IonItem>
-                <IonLabel>Name:</IonLabel>
-                <IonInput
-                  value={name}
-                  placeholder="No Name Set"
-                  onIonChange={(e: any) => setName(e.detail.value!)}
-                ></IonInput>
-              </IonItem>
-              <IonItem>
-                <IonLabel>Email:</IonLabel>
-                <IonText>{currentUser && currentUser.email}</IonText>
-              </IonItem>
-              <IonItem>
-                <IonLabel>Plan Type:</IonLabel>
-                <IonText>{currentUser && currentUser.plan_type}</IonText>
-              </IonItem>
-              <IonItem>
-                <IonLabel>Trial Days Left:</IonLabel>
-                <IonText>{currentUser && currentUser.trial_days_left}</IonText>
-              </IonItem>
-            </div> */}
+
             <IonCard className="p-4 w-full md:w-4/5 mx-auto">
               <UserSettingsForm
                 onCancel={handleCancel}

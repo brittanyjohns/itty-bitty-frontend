@@ -68,7 +68,6 @@ const ViewChildAccountScreen: React.FC = () => {
 
     setChildAccount(childAccountToSet);
     if (childAccountToSet?.boards) {
-      console.log("childAccountToSet.boards", childAccountToSet.boards);
       setBoards(childAccountToSet.boards);
     }
     const userBoards = currentUser?.boards || [];
