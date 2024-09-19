@@ -52,6 +52,8 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   const [page, setPage] = useState(1);
   const [onlyUserImages, setOnlyUserImages] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [allCategories, setAllCategories] = useState<string[]>([]);
+  const [userCategories, setUserCategories] = useState<string[]>([]);
 
   const fetchBoards = async () => {
     const fetchedBoards = await getBoards(searchInput, page, onlyUserImages);
@@ -66,6 +68,8 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
       setPresetBoards(fetchedBoards["predefined_boards"]);
       setBoards(fetchedBoards["boards"]);
       setCategories(fetchedBoards["categories"]);
+      setUserCategories(fetchedBoards["categories"]);
+      setAllCategories(fetchedBoards["all_categories"]);
     }
   };
 
@@ -134,6 +138,13 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   useEffect(() => {
     console.log("Toggling - Segment type: ", segmentType);
     toggle(segmentType);
+    if (segmentType === "user") {
+      setPageTitle("Your Boards");
+      setCategories(userCategories);
+    } else if (segmentType === "preset") {
+      setPageTitle("Preset Boards");
+      setCategories(allCategories);
+    }
   }, [segmentType, userBoards, presetBoards]);
 
   const handleCategoryChange = (e: any) => {
