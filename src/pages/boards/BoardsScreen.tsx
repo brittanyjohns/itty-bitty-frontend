@@ -143,10 +143,10 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   const categoryDropdown = () => {
     return (
       <IonSelect
-        className="border border-gray-400 rounded-md p-1 w-full md:w-1/2"
         onIonChange={handleCategoryChange}
         placeholder="Select Category"
         value={selectedCategory}
+        fill="outline"
       >
         <IonSelectOption value="">All Categories</IonSelectOption>
         {categories &&
@@ -238,7 +238,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <div className="bg-inherit shadow-none w-full md:w-2/3 lg:w-1/2 mx-auto ">
+          <div className="bg-inherit shadow-none w-full md:w-2/3 lg:w-1/2 mx-auto">
             {currentUser && (
               <IonSegment
                 value={segmentType}
@@ -246,32 +246,31 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
                 className="w-full bg-inherit"
               >
                 <IonSegmentButton value="preset">
-                  <IonLabel className="text-sm lg:text-md mb-2">
-                    Preset
-                  </IonLabel>
-                  <IonIcon icon={imagesOutline} size="small" className="mt-2" />
+                  <IonLabel className="text-sm lg:text-md">Preset</IonLabel>
+                  <IonIcon icon={imagesOutline} size="small" className="" />
                 </IonSegmentButton>
                 <IonSegmentButton value="user">
-                  <IonLabel className="text-sm lg:text-md mb-2">
+                  <IonLabel className="text-sm lg:text-md">
                     Your Boards
                   </IonLabel>
-                  <IonIcon icon={personOutline} size="small" className="mt-2" />
+                  <IonIcon icon={personOutline} size="small" className="" />
                 </IonSegmentButton>
               </IonSegment>
             )}
           </div>
-          <div className="p-2 w-7/8 md:w-5/6 mx-auto">
-            <IonSearchbar
-              debounce={1000}
-              onIonInput={handleSearchInput}
-              onIonClear={() => clearInput()}
-              animated={true}
-              className="mt-4"
-              value={searchInput}
-              placeholder="Search boards"
-            ></IonSearchbar>
+          <div className="w-full md:w-34 lg:w-2/3 mx-auto grid grid-cols-1 md:grid-cols-2 gap-1 mt-6">
+            <div className="">
+              <IonSearchbar
+                debounce={1000}
+                onIonInput={handleSearchInput}
+                onIonClear={() => clearInput()}
+                animated={true}
+                value={searchInput}
+                placeholder="Search boards"
+              ></IonSearchbar>
+            </div>
+            <div className="w-1/2 mx-auto">{categoryDropdown()}</div>
           </div>
-          <div className="">{categoryDropdown()}</div>
           {segmentType === "user" && renderBoardGrid("user", boards)}
 
           {segmentType === "preset" && renderBoardGrid("preset", presetBoards)}
