@@ -96,7 +96,6 @@ const BoardView: React.FC<BoardViewProps> = ({
   useEffect(() => {
     if (currentBoard && currentBoard.layout) {
       const layout = currentBoard.layout[currentScreenSize];
-      console.log("layout: ", layout);
       setCurrentLayout(layout);
     }
   }, [currentBoard]);

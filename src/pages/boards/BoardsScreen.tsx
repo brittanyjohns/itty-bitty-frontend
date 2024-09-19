@@ -12,6 +12,8 @@ import {
   IonSearchbar,
   IonSegment,
   IonSegmentButton,
+  IonSelect,
+  IonSelectOption,
   IonTitle,
   IonToolbar,
   useIonViewWillEnter,
@@ -43,12 +45,13 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   const [childBoards, setChildBoards] = useState<any[]>([]);
   const [presetBoards, setPresetBoards] = useState<Board[]>([]);
   const [userBoards, setUserBoards] = useState<Board[]>([]);
-  const [scenarioBoards, setScenarioBoards] = useState<Board[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
   const [segmentType, setSegmentType] = useState("user");
   const [pageTitle, setPageTitle] = useState("Your Boards");
   const [searchInput, setSearchInput] = useState("");
   const [page, setPage] = useState(1);
   const [onlyUserImages, setOnlyUserImages] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
 
   const fetchBoards = async () => {
     const fetchedBoards = await getBoards(searchInput, page, onlyUserImages);
@@ -57,23 +60,16 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
         console.error("No current account found");
         return;
       }
-      const fetchedBoards = currentAccount.boards; // Replace with actual fetching logic
-      if (fetchedBoards) {
-        setChildBoards(fetchedBoards);
-      } else {
-        console.error("No child boards found");
-      }
     } else if (gridType === "user") {
       setUserBoards(fetchedBoards["boards"]);
-      setScenarioBoards(fetchedBoards["scenarios"]);
       setPresetBoards(fetchedBoards["predefined_boards"]);
       setBoards(fetchedBoards["boards"]);
+      setCategories(fetchedBoards["categories"]);
     }
   };
 
   const handleSearchInput = async (event: CustomEvent) => {
     const query = event.detail.value.toLowerCase();
-    console.log("query", query);
     setSearchInput(query);
     setPage(1); // Reset to first page on new search
   };
@@ -130,6 +126,38 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   useEffect(() => {
     toggle(segmentType);
   }, [segmentType, userBoards, presetBoards]);
+
+  const handleCategoryChange = (e: any) => {
+    const category = e.target.value;
+    setSelectedCategory(category);
+    if (category === "") {
+      setBoards(userBoards);
+    } else {
+      const filteredBoards = userBoards.filter(
+        (board) => board.category === category
+      );
+      setBoards(filteredBoards);
+    }
+  };
+
+  const categoryDropdown = () => {
+    return (
+      <IonSelect
+        className="border border-gray-400 rounded-md p-1 w-full md:w-1/2"
+        onIonChange={handleCategoryChange}
+        placeholder="Select Category"
+        value={selectedCategory}
+      >
+        <IonSelectOption value="">All Categories</IonSelectOption>
+        {categories &&
+          categories.map((category, i) => (
+            <IonSelectOption key={i} value={category}>
+              {category}
+            </IonSelectOption>
+          ))}
+      </IonSelect>
+    );
+  };
 
   const renderBoardGrid = (gridType: string, boardsToSet: Board[]) => {
     if (gridType === "preset" && presetBoards.length === 0) {
@@ -240,9 +268,10 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
               animated={true}
               className="mt-4"
               value={searchInput}
-              placeholder="Search existing images"
+              placeholder="Search boards"
             ></IonSearchbar>
           </div>
+          <div className="">{categoryDropdown()}</div>
           {segmentType === "user" && renderBoardGrid("user", boards)}
 
           {segmentType === "preset" && renderBoardGrid("preset", presetBoards)}

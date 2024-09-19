@@ -43,6 +43,7 @@ export interface Board {
   audio_url?: string;
   word_list?: string[];
   margin_settings: any;
+  category?: string;
 }
 
 // export interface PredictiveBoard {
@@ -53,12 +54,20 @@ export interface Board {
 //   images: Image[];
 // }
 
+export const getCategories = () => {
+  const boards = fetch(`${BASE_URL}boards/categories`, { headers: userHeaders }) // `localhostboards
+    .then((response) => response.json())
+    .then((data) => data)
+    .catch((error) => console.error("Error fetching data: ", error));
+
+  return boards;
+};
+
 export const getBoards = (
   searchTerm: string,
   page: number,
   userOnly?: boolean
 ) => {
-  console.log("userHeaders", userHeaders);
   const boards = fetch(
     `${BASE_URL}boards?page=${page}&query=${searchTerm}&user_only=${
       userOnly ? "1" : "0"
@@ -161,6 +170,7 @@ export const updateBoard = (board: Board | ChildBoard) => {
     display_image_url: board.display_image_url,
     predefined: board.predefined,
     bg_color: board.bg_color,
+    category: board.category,
   };
   const updatedBoard = fetch(`${BASE_URL}boards/${board.id}`, {
     method: "PUT",

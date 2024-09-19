@@ -2,6 +2,7 @@ import { Image } from "./images";
 import { BASE_URL, userHeaders } from "./constants";
 export interface ChildBoard {
   board_id: any;
+  category?: string;
   id?: string;
   name: string;
   description?: string;

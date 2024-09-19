@@ -1,4 +1,4 @@
-import { updateBoard } from "../../data/boards";
+import { getCategories, updateBoard } from "../../data/boards";
 import {
   IonButton,
   IonButtons,
@@ -44,10 +44,13 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   const [largeScreenColumns, setLargeScreenColumns] = React.useState<number>(
     board?.large_screen_columns || 1
   );
+  const [category, setCategory] = React.useState(board.category);
   const [isOpen, setIsOpen] = React.useState(false);
   const [voice, setVoice] = React.useState(board.voice);
   const [toastMessage, setToastMessage] = React.useState("");
   const [showLoading, setShowLoading] = React.useState(false);
+  const [categories, setCategories] = React.useState<any[]>([]);
+  const [selectedCategory, setSelectedCategory] = React.useState<string>("");
   const { currentUser } = useCurrentUser();
   const history = useHistory();
 
@@ -60,8 +63,15 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
     setSampleVoices(voices);
   };
 
+  const fetchCategories = async () => {
+    const categories = await getCategories();
+    setCategories(categories);
+  };
+
   useEffect(() => {
+    console.log("useEffect fetchSampleVoices", board);
     fetchSampleVoices();
+    fetchCategories();
   }, []);
 
   const handleColumnSizeChange = (event: CustomEvent) => {
@@ -93,7 +103,8 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
       return;
     }
     setShowLoading(true);
-    const updatingBoard = { ...board, number_of_columns: gridSize };
+    console.log("handleSubmit", board);
+    const updatingBoard = { ...board, number_of_columns: gridSize, category };
     // alert("Board saved successfully");
 
     const savedBoard = await updateBoard(updatingBoard);
@@ -103,6 +114,25 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
     setIsOpen(true);
     // window.location.reload();
     // history.push(`/boards/${savedBoard.id}`);
+  };
+
+  const categoryDropdown = () => {
+    return (
+      <IonSelect
+        className="border border-gray-400 rounded-md p-1 w-full md:w-1/2"
+        onIonChange={handleCategoryChange}
+        placeholder="Select Category"
+        value={selectedCategory}
+        selectedText={category}
+      >
+        <IonSelectOption value="">All Categories</IonSelectOption>
+        {categories.map((category, i) => (
+          <IonSelectOption key={i} value={category}>
+            {category}
+          </IonSelectOption>
+        ))}
+      </IonSelect>
+    );
   };
 
   const gridSizeOptions = [
@@ -117,6 +147,15 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
     console.log("Voice: ", voice);
     const updateBoard = { ...board, voice: event.detail.value };
     setBoard(updateBoard);
+  };
+
+  const handleCategoryChange = (event: CustomEvent) => {
+    const category = event.detail.value;
+    console.log("Category: ", category);
+    setCategory(category);
+    const updateBoard = { ...board, category: event.detail.value };
+    setBoard(updateBoard);
+    console.log("Board: ", board);
   };
 
   const playSampleVoice = (voice: string) => {
@@ -153,6 +192,11 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
               setBoard({ ...board, name: e.detail.value! })
             }
           ></IonInput>
+        </IonItem>
+        <IonItem className="mb-4 text-center">
+          {categoryDropdown()}
+
+          {/* <p className="text-center">Category: {category}</p> */}
         </IonItem>
         <IonItem className="mb-4">
           <IonSelect

@@ -100,7 +100,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
           </IonRefresher>
 
           <div className="">
-            {currentAccount && (
+            {currentAccount && currentAccount.username && (
               <>
                 <h2 className="text-xl font-semibold">
                   {currentAccount?.name || currentAccount?.username}'s Dashboard

@@ -97,6 +97,7 @@ export const generatePlaceholderImage = (text: string): string => {
 import { getMenu } from "./menu";
 import { User } from "../data/users";
 import { ChildAccount } from "../data/child_accounts";
+import { key } from "ionicons/icons";
 
 export const getFilterList = (
   currentUser?: User | null,
