@@ -90,6 +90,8 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
       setShowImages(true);
     }
 
+    console.log("image clicked", image.label);
+
     if (currentUser?.settings?.disable_audit_logging) {
       console.log("Audit logging is disabled");
       return;
@@ -113,6 +115,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
       inputRef.current.value = "";
     }
     setAudioList([]);
+    setSelectedImageSrcs([]);
     setShowIcon(false);
     setPreviousLabel(undefined);
   };
@@ -181,7 +184,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
               </IonButton>
             )}
           </IonButtons>
-          <p className="text-sm md:text-md lg:text-lg xl:text-xl font-bold ion-text-center">
+          <p className="text-sm md:text-md lg:text-lg xl:text-xl font-bold ion-text-center my-2">
             {board?.name}
           </p>
           {showImages && <ImageList imageSrcList={selectedImageSrcs} />}
@@ -191,7 +194,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
               ref={inputRef}
               readonly={true}
               type="text"
-              className="ml-1 text-sm md:text-md lg:text-lg xl:text-xl text-center"
+              className="ml-1 text-sm md:text-md lg:text-lg xl:text-xl"
             ></IonInput>
           </div>
           <IonButtons slot="end">

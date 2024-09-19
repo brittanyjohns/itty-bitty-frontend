@@ -46,6 +46,7 @@ import MainHeader from "../MainHeader";
 import ConfirmAlert from "../../components/utils/ConfirmAlert";
 import { getScreenSizeName } from "../../data/utils";
 import SuggestionForm from "../../components/boards/SuggestionForm";
+import { set } from "d3";
 
 const EditBoardScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -95,16 +96,22 @@ const EditBoardScreen: React.FC = () => {
     if (board) {
       const layout = board.layout[currentScreenSize];
       const margin = board.margin_settings[currentScreenSize];
+
+      console.log("Current screen size: ", currentScreenSize);
+      console.log("margin: ", margin);
       setCurrentLayout(layout);
       if (margin) {
         setXMargin(margin.x);
         setYMargin(margin.y);
       } else {
-        setXMargin(0);
-        setYMargin(0);
+        setXMargin(5);
+        setYMargin(5);
+        // board.margin_settings[currentScreenSize] = { x: 5, y: 5 };
+        // setBoard(board);
       }
+      setBoard(board);
     }
-  }, [board, currentScreenSize]);
+  }, [currentScreenSize]);
 
   const removeBoard = async () => {
     if (!board || !board) {
@@ -361,7 +368,7 @@ const EditBoardScreen: React.FC = () => {
                   <div>
                     <div className="w-5/6 md:w-1/2 mx-auto flex justify-center items-center mt-6">
                       <IonSelect
-                        value={board?.margin_settings[currentScreenSize]?.x}
+                        value={xMargin}
                         placeholder="X Margin"
                         labelPlacement="stacked"
                         label="X Margin"
@@ -377,7 +384,7 @@ const EditBoardScreen: React.FC = () => {
                         ))}
                       </IonSelect>
                       <IonSelect
-                        value={board?.margin_settings[currentScreenSize]?.y}
+                        value={yMargin}
                         placeholder="Y Margin"
                         labelPlacement="stacked"
                         label="Y Margin"

@@ -208,7 +208,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
               ref={inputRef}
               readonly={true}
               type="text"
-              className="ml-1 text-sm md:text-md lg:text-lg xl:text-xl text-center"
+              className="ml-1 text-sm md:text-md lg:text-lg xl:text-xl"
             ></IonInput>
           </div>
           <IonButtons slot="end">
