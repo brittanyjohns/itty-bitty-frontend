@@ -17,37 +17,28 @@ const Tabs: React.FC = () => {
   const { isWideScreen } = useCurrentUser();
 
   return (
-    <>
-      {!isWideScreen && (
-        <IonTabBar slot="bottom" className="">
-          <IonTabButton tab="home" href="/home" className="">
-            <IonIcon icon={home} />
-            <IonLabel>Home</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="boards" href="/boards">
-            <IonIcon icon={albumsOutline} />
-            <IonLabel>Boards</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="images" href="/images">
-            <IonIcon icon={imagesOutline} />
-            <IonLabel>Images</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="image-search" href="/image-search">
-            <IonIcon icon={searchSharp} />
-            <IonLabel>Search</IonLabel>
-          </IonTabButton>
-
-          <IonTabButton tab="accounts" href="/child-accounts">
-            <IonIcon icon={peopleCircleOutline} />
-            <IonLabel>Accounts</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="settings" onClick={toggleMainMenu}>
-            <IonIcon icon={menuSharp} />
-            <IonLabel>Menu</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      )}
-    </>
+    <IonTabBar>
+      <IonTabButton tab="home" href="/home" className="ml-1">
+        <IonIcon icon={home} size="small" />
+        <IonLabel className="text-xs">Home</IonLabel>
+      </IonTabButton>
+      <IonTabButton tab="boards" href="/boards">
+        <IonIcon icon={albumsOutline} />
+        <IonLabel>Boards</IonLabel>
+      </IonTabButton>
+      <IonTabButton tab="images" href="/images">
+        <IonIcon icon={imagesOutline} />
+        <IonLabel>Images</IonLabel>
+      </IonTabButton>
+      <IonTabButton tab="accounts" href="/child-accounts">
+        <IonIcon icon={peopleCircleOutline} />
+        <IonLabel>Accounts</IonLabel>
+      </IonTabButton>
+      <IonTabButton tab="settings" onClick={toggleMainMenu}>
+        <IonIcon icon={menuSharp} />
+        <IonLabel>Menu</IonLabel>
+      </IonTabButton>
+    </IonTabBar>
   );
 };
 export default Tabs;

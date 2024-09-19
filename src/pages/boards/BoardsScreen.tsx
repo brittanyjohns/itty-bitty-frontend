@@ -55,6 +55,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
 
   const fetchBoards = async () => {
     const fetchedBoards = await getBoards(searchInput, page, onlyUserImages);
+    console.log("Fetched boards: ", fetchedBoards);
     if (gridType === "child") {
       if (!currentAccount) {
         console.error("No current account found");
@@ -106,6 +107,13 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
     }, 3000);
   };
 
+  const clearSearchFields = () => {
+    setSelectedCategory("");
+    setSearchInput("");
+    fetchBoards();
+    console.log("Clearing search fields");
+  };
+
   const handleSegmentChange = (event: CustomEvent) => {
     const segmentValue = event.detail.value;
     setSegmentType(segmentValue);
@@ -124,38 +132,51 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   };
 
   useEffect(() => {
+    console.log("Toggling - Segment type: ", segmentType);
     toggle(segmentType);
   }, [segmentType, userBoards, presetBoards]);
 
   const handleCategoryChange = (e: any) => {
     const category = e.target.value;
     setSelectedCategory(category);
+    console.log("Category selected: ", category);
     if (category === "") {
-      setBoards(userBoards);
+      console.log("Category is empty", userBoards);
+      fetchBoards();
     } else {
-      const filteredBoards = userBoards.filter(
+      const filteredUserBoards = userBoards.filter(
         (board) => board.category === category
       );
-      setBoards(filteredBoards);
+      setBoards(filteredUserBoards);
+      setUserBoards(filteredUserBoards);
+      const filteredPresetBoards = presetBoards.filter(
+        (board) => board.category === category
+      );
+      setPresetBoards(filteredPresetBoards);
     }
   };
 
   const categoryDropdown = () => {
     return (
-      <IonSelect
-        onIonChange={handleCategoryChange}
-        placeholder="Select Category"
-        value={selectedCategory}
-        fill="outline"
-      >
-        <IonSelectOption value="">All Categories</IonSelectOption>
-        {categories &&
-          categories.map((category, i) => (
-            <IonSelectOption key={i} value={category}>
-              {category}
-            </IonSelectOption>
-          ))}
-      </IonSelect>
+      <div className="flex items-center justify-center">
+        <IonSelect
+          onIonChange={handleCategoryChange}
+          placeholder="Select Category"
+          value={selectedCategory}
+          fill="outline"
+        >
+          <IonSelectOption value="">All Categories</IonSelectOption>
+          {categories &&
+            categories.map((category, i) => (
+              <IonSelectOption key={i} value={category}>
+                {category}
+              </IonSelectOption>
+            ))}
+        </IonSelect>
+        <IonButton fill="clear" size="small" onClick={clearSearchFields}>
+          Clear
+        </IonButton>
+      </div>
     );
   };
 
@@ -177,7 +198,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
         <>
           <div className="flex flex-col items-center justify-center my-5">
             <p className="text-2xl font-semibold m-4">
-              You have no boards yet. Create one now!
+              You have no {selectedCategory} boards yet. Create one now!
             </p>
             <p className="text-lg w-3/4 text-center mb-5 md:w-1/2 font-md">
               Boards are collections of images with natural language labels that
