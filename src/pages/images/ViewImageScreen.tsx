@@ -660,7 +660,6 @@ const ViewImageScreen: React.FC = () => {
                       >
                         {doc.can_edit && (
                           <>
-                            <p>{doc.id}</p>
                             <IonIcon
                               icon={trashBinOutline}
                               className="absolute top-0 right-0 hover:cursor-pointer bg-white p-1 text-red-500"
