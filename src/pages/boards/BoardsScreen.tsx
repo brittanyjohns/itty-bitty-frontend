@@ -38,6 +38,7 @@ interface BoardsScreenProps {
 import SideMenu from "../../components/main_menu/SideMenu";
 import MainHeader from "../MainHeader";
 import StaticMenu from "../../components/main_menu/StaticMenu";
+import { useHistory } from "react-router";
 
 const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   const { currentAccount, currentUser, isWideScreen } = useCurrentUser();
@@ -54,6 +55,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [allCategories, setAllCategories] = useState<string[]>([]);
   const [userCategories, setUserCategories] = useState<string[]>([]);
+  const history = useHistory();
 
   const fetchBoards = async () => {
     const fetchedBoards = await getBoards(searchInput, page, onlyUserImages);
@@ -130,8 +132,9 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
       setBoards(userBoards);
       setPageTitle("Your Boards");
     } else if (segmentType === "preset") {
-      setBoards(presetBoards);
+      // setBoards(presetBoards);
       setPageTitle("Preset Boards");
+      history.push("/preset");
     }
   };
 
@@ -254,7 +257,6 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
       />
       <StaticMenu
         pageTitle={pageTitle}
-        isWideScreen={isWideScreen}
         currentUser={currentUser}
         currentAccount={currentAccount}
       />

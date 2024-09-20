@@ -10,6 +10,7 @@ import {
 import { menuController } from "@ionic/core/components";
 import { addCircleOutline, arrowBackCircleOutline } from "ionicons/icons";
 import { useEffect, useState } from "react";
+import { useCurrentUser } from "../contexts/UserContext";
 
 export const toggleMainMenu = async () => {
   await menuController.toggle("main-menu");
@@ -35,60 +36,62 @@ interface MainHeaderProps {
 }
 
 const MainHeader: React.FC<MainHeaderProps> = (props) => {
-  const [showMenuBtn, setShowMenuBtn] = useState(
-    props.showMenuButton || !props.startLink
-  );
-  const showHeader =
-    !props.isWideScreen ||
-    (props.isWideScreen && showMenuBtn) ||
-    (props.isWideScreen && !props.largeScreen);
+  const [showMenuBtn, setShowMenuBtn] = useState(false);
 
-  useEffect(() => {
-    setShowMenuBtn(props.showMenuButton || !props.startLink);
-  }, [props.isWideScreen]);
+  const { isWideScreen, smallScreen, mediumScreen, largeScreen } =
+    useCurrentUser();
 
-  const renderComponent = () => {
-    if (showHeader) {
-      return (
-        <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            {props.startLink && (
-              <IonButtons slot="start">
-                <IonButton routerLink={props.startLink}>
-                  <IonIcon
-                    slot="icon-only"
-                    icon={props.startIcon || arrowBackCircleOutline}
-                  />
-                </IonButton>
-              </IonButtons>
-            )}
-            {!props.startLink && props.showMenuButton && (
-              <IonMenuButton
-                className="text-white"
-                slot="start"
-                menu="main-menu"
-              ></IonMenuButton>
-            )}
-            <IonTitle className="text-center">{props.pageTitle}</IonTitle>
-            {props.endLink && (
-              <IonButtons className="p-0" slot="end">
-                <IonButton routerLink={props.endLink}>
-                  <IonIcon
-                    icon={props.endIcon || addCircleOutline}
-                    slot="icon-only"
-                  />
-                </IonButton>
-              </IonButtons>
-            )}
-          </IonToolbar>
-        </IonHeader>
-      );
-    } else {
-      return <></>;
-    }
+  const handleResize = () => {
+    const width = window.innerWidth;
+
+    // if (width < 1100) {
+    //   setShowMenuBtn(true);
+    // } else {
+    //   setShowMenuBtn(false);
+    // }
+    setShowMenuBtn(true);
+    // setShowMenuBtn(isWideScreen);
   };
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-  return <div>{renderComponent()}</div>;
+  return (
+    <IonHeader className="bg-inherit shadow-none">
+      <IonToolbar>
+        {props.startLink && (
+          <IonButtons slot="start">
+            <IonButton routerLink={props.startLink}>
+              <IonIcon
+                slot="icon-only"
+                icon={props.startIcon || arrowBackCircleOutline}
+              />
+            </IonButton>
+          </IonButtons>
+        )}
+        {showMenuBtn && (
+          <IonMenuButton
+            className="text-white"
+            slot="start"
+            menu="main-menu"
+          ></IonMenuButton>
+        )}
+        <IonTitle className="text-center">{props.pageTitle}</IonTitle>
+        {props.endLink && (
+          <IonButtons className="p-0" slot="end">
+            <IonButton routerLink={props.endLink}>
+              <IonIcon
+                icon={props.endIcon || addCircleOutline}
+                slot="icon-only"
+              />
+            </IonButton>
+          </IonButtons>
+        )}
+      </IonToolbar>
+    </IonHeader>
+  );
 };
 
 export default MainHeader;

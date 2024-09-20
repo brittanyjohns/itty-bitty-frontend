@@ -110,18 +110,22 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
 
   useEffect(() => {
     if (segmentType === "featured") {
-      setPageTitle("Your Boards");
+      setPageTitle("Featured Boards");
     } else if (segmentType === "preset") {
       setPageTitle("Preset Boards");
-      setCategories(allCategories);
+    } else if (segmentType === "popular") {
+      setPageTitle("Popular Boards");
+    } else {
+      setPageTitle("All Boards");
     }
+
     setFilter(segmentType);
   }, [segmentType]);
 
   const renderBoardGrid = () => {
     return (
       <>
-        <h1 className="text-center text-2xl font-bold mt-4">{segmentType}</h1>
+        {/* <h1 className="text-center text-2xl font-bold mt-4">{segmentType}</h1> */}
         {presetBoards && <BoardGrid boards={presetBoards} noBoardsMsg={""} />}
       </>
     );
@@ -194,9 +198,9 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
           showMenuButton={!isWideScreen}
           endLink="/boards/new"
         />
-        <div>
-          <div className="w-full md:w-34 lg:w-2/3 mx-auto grid grid-cols-1 md:grid-cols-2 gap-1 mt-6">
-            <div className="">
+        <div className="mt-4">
+          <div className="flex flex-col justify-center items-center">
+            <div className="w-full md:w-1/2 mx-auto">
               <IonSearchbar
                 debounce={1000}
                 onIonInput={handleSearchInput}
@@ -206,7 +210,7 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
                 placeholder="Search boards"
               ></IonSearchbar>
             </div>
-            <div className="w-1/2 mx-auto">{categoryDropdown()}</div>
+            <div className="w-full md:w-1/2 mx-auto">{categoryDropdown()}</div>
           </div>
         </div>
         <IonContent className="ion-padding">

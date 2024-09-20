@@ -18,11 +18,13 @@ import {
 import { MenuLink } from "../../data/menu";
 import MenuListItem from "./MainMenuListItem";
 import { getFilterList, getImageUrl } from "../../data/utils";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { User } from "../../data/users";
 import { ChildAccount } from "../../data/child_accounts";
 import ColorKey from "../utils/ColorKey";
 import { useHistory } from "react-router";
+import { useCurrentUser } from "../../contexts/UserContext";
+import { closeMainMenu } from "../../pages/MainHeader";
 
 interface StaticMenuProps {
   pageTitle?: string;
@@ -35,20 +37,45 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
   const [filteredLinks, setFilteredLinks] = useState<MenuLink[]>([]);
   const { currentUser, currentAccount } = props;
   const history = useHistory();
+  const { isWideScreen } = useCurrentUser();
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  const filterList = useCallback(() => {
-    return getFilterList(currentUser, currentAccount);
-  }, [currentUser, currentAccount]);
+  // const filterList = useCallback(() => {
+  //   return getFilterList(currentUser, currentAccount);
+  // }, [currentUser, currentAccount]);
 
   useEffect(() => {
-    const filtered = filterList();
-    setFilteredLinks(filtered);
-  }, [filterList]);
+    if (!isWideScreen) {
+      hideSelf();
+    }
+  }, []);
+  useEffect(() => {
+    if (!isWideScreen) {
+      hideSelf();
+    }
+  }, [isWideScreen]);
+
+  const hideSelf = () => {
+    if (menuRef.current) {
+      menuRef.current.style.display = "none";
+    }
+  };
 
   const feature1Image = getImageUrl("round_itty_bitty_logo_1", "png");
+  useEffect(() => {
+    const list = getFilterList(currentUser, currentAccount);
+    console.log("list", list);
+    setFilteredLinks(list);
+  }, []);
+
+  useEffect(() => {
+    const list = getFilterList(currentUser, currentAccount);
+    console.log("list", list);
+    setFilteredLinks(list);
+  }, [currentUser, currentAccount]);
 
   return (
-    <IonContent className="w-96">
+    <div className="h-full" id="static-menu" ref={menuRef}>
       <IonToolbar>
         <img slot="start" src={feature1Image} className="ml-2 h-10 w-10" />
         <div
@@ -156,7 +183,7 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
           )}
         </IonItem>
       </IonList>
-    </IonContent>
+    </div>
   );
 };
 

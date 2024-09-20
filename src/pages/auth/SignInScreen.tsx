@@ -91,15 +91,15 @@ const SignInScreen: React.FC = () => {
           endIcon={logInOutline}
           showMenuButton={!isWideScreen}
         />
-        <IonContent className="items-center py-6">
+        <IonContent className="items-center">
           <div className="relative lower-fixed-bg">
             {currentUser && (
-              <>
+              <div className="flex flex-col items-center bg-white bg-opacity-95 p-8 shadow-xl">
                 <h1 className="text-2xl font-bold text-center mt-4">
                   You're already signed in.
                 </h1>
                 <UserHome userName={currentUser?.name || currentUser.email} />
-              </>
+              </div>
             )}
             {!currentUser && (
               <div className="">
