@@ -182,7 +182,7 @@ const UserRoutes: React.FC = () => (
           <BoardsScreen gridType="user" />
         </Route>
         <Route path="/preset" exact={true}>
-          <PresetBoardsScreen initialSegmentType="featured" />
+          <PresetBoardsScreen initialSegmentType="all" />
         </Route>
         <Route path="/preset/featured" exact={true}>
           <PresetBoardsScreen initialSegmentType="featured" />
