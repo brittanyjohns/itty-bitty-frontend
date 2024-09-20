@@ -1,4 +1,5 @@
 import {
+  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
@@ -9,7 +10,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import MainMenu from "../components/main_menu/MainMenu";
+import SideMenu from "../components/main_menu/SideMenu";
 import Tabs from "../components/utils/Tabs";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import {
@@ -33,11 +34,6 @@ const AdminDashboard: React.FC = () => {
     }, 3000);
   };
 
-  useEffect(() => {
-    loadBetaRequests();
-    loadAllUsers();
-  }, []);
-
   const loadBetaRequests = async () => {
     const betaRequests = await fetchBetaRequests();
     setBetaRequests(betaRequests);
@@ -48,9 +44,18 @@ const AdminDashboard: React.FC = () => {
     setUsers(users);
   };
 
+  const loadData = async () => {
+    loadBetaRequests();
+    loadAllUsers();
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="Dashboard"
         isWideScreen={isWideScreen}
         currentUser={currentUser}
@@ -120,6 +125,13 @@ const AdminDashboard: React.FC = () => {
                     <span className="font-bold">{user.email}</span>
                     <span className="text-right">{user.role}</span>
                     <span className="text-xs block">{user.created_at}</span>
+                    <IonButton
+                      fill="clear"
+                      size="small"
+                      routerLink={`/admin/users/${user.id}`}
+                    >
+                      Edit
+                    </IonButton>
                   </li>
                 ))}
               </ul>

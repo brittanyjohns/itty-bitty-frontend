@@ -4,7 +4,7 @@ import { IonButton } from "@ionic/react";
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { isAccountSignedIn, signOut } from "../../data/child_accounts";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 const AccountSignOutScreen: React.FC = () => {
@@ -58,7 +58,7 @@ const AccountSignOutScreen: React.FC = () => {
   // Optionally, return null or a loading spinner while the redirect is being processed
   return (
     <div>
-      <MainMenu />
+      <SideMenu />
       <IonButton onClick={handleSignOut}>Sign Out</IonButton>
       {/* {!isAccountSignedIn() && (
         <IonButton onClick={() => history.push("/accounts/sign-in")}>

@@ -18,7 +18,7 @@ import {
 import { useHistory, useParams } from "react-router";
 // import "./ViewScenario.css";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 
 import MainHeader from "../MainHeader";
@@ -110,7 +110,7 @@ const ViewScenario: React.FC<ViewScenarioProps> = ({ mode }) => {
 
   return (
     <>
-      <MainMenu pageTitle="Scenarios" currentUser={currentUser} />
+      <SideMenu pageTitle="Scenarios" currentUser={currentUser} />
       <StaticMenu pageTitle="Scenarios" currentUser={currentUser} />
       <IonPage id="main-content">
         <MainHeader

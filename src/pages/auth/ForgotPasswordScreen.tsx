@@ -11,7 +11,7 @@ import {
 import { useHistory } from "react-router-dom";
 import { forgotPassword } from "../../data/users";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import MainHeader from "../MainHeader";
 import { getImageUrl } from "../../data/utils";
 import StaticMenu from "../../components/main_menu/StaticMenu";
@@ -51,14 +51,14 @@ const ForgotPasswordScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu pageTitle="Sign In" isWideScreen={isWideScreen} />
+      <SideMenu pageTitle="Sign In" isWideScreen={isWideScreen} />
       <StaticMenu pageTitle="Sign In" isWideScreen={isWideScreen} />
 
       <IonPage id="main-content">
         <MainHeader
           pageTitle="Forgot Password"
           isWideScreen={isWideScreen}
-          endLink="/sign-in"
+          endLink="/users/sign-in"
           endIcon={logInOutline}
           showMenuButton={!isWideScreen}
         />

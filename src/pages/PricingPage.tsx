@@ -1,6 +1,6 @@
 import React from "react";
 import { IonPage, IonContent } from "@ionic/react";
-import MainMenu from "../components/main_menu/MainMenu";
+import SideMenu from "../components/main_menu/SideMenu";
 import PricingTable from "../components/utils/PricingTable";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import MainHeader from "./MainHeader";
@@ -12,7 +12,7 @@ const PricingPage: React.FC = () => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="Pricing"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

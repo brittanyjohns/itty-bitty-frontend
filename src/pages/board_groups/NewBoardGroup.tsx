@@ -1,6 +1,6 @@
 import { IonContent, IonPage, useIonViewDidLeave } from "@ionic/react";
 import React, { useEffect, useRef } from "react";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
@@ -12,7 +12,7 @@ const NewBoard: React.FC = () => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="New Board Group"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

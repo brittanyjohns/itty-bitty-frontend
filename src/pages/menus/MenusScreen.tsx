@@ -12,7 +12,7 @@ import {
   IonSegment,
   IonSegmentButton,
 } from "@ionic/react";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import Tabs from "../../components/utils/Tabs";
 import MenuGrid from "../../components/menus/MenuGrid";
 import { useEffect, useState } from "react";
@@ -80,7 +80,7 @@ const MenusScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="Menus"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

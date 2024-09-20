@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IonPage, IonContent } from "@ionic/react";
 import { NewUser, signUp } from "../../data/users";
 import { useHistory, useLocation } from "react-router-dom";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import MainHeader from "../MainHeader";
 import StaticMenu from "../../components/main_menu/StaticMenu";
@@ -81,7 +81,7 @@ const SignUpScreen = ({ plan }: SignUpScreenProps) => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="Sign Up"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

@@ -9,7 +9,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import MainMenu from "../components/main_menu/MainMenu";
+import SideMenu from "../components/main_menu/SideMenu";
 import Tabs from "../components/utils/Tabs";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import PricingTable from "../components/utils/PricingTable";
@@ -27,7 +27,7 @@ const Upgrade: React.FC = () => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="Upgrade"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

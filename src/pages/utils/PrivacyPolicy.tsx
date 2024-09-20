@@ -1,6 +1,6 @@
 import React from "react";
 import { IonContent, IonPage } from "@ionic/react";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
@@ -9,7 +9,7 @@ const PrivacyPolicy: React.FC = () => {
   const { isWideScreen, currentAccount, currentUser } = useCurrentUser();
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="Privacy Policy"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

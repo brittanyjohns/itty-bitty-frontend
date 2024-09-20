@@ -19,7 +19,7 @@ import { saveLayout, rearrangeBoards } from "../../data/board_groups";
 import { Image } from "../../data/images";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/utils/Tabs";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import ImageCropper from "../../components/images/ImageCropper";
 import ConfirmDeleteAlert from "../../components/utils/ConfirmDeleteAlert";
 import StaticMenu from "../../components/main_menu/StaticMenu";
@@ -142,7 +142,7 @@ const EditBoardGroupScreen: React.FC<EditBoardGroupProps> = ({
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle={`Edit ${boardGroup?.name}`}
         isWideScreen={isWideScreen}
         currentUser={currentUser}

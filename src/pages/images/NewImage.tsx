@@ -1,6 +1,6 @@
 import { IonContent, IonPage } from "@ionic/react";
 import ImageCropper from "../../components/images/ImageCropper";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
@@ -10,7 +10,7 @@ const NewImage: React.FC = () => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="Images"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

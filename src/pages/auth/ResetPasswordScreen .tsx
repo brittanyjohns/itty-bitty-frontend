@@ -11,7 +11,7 @@ import {
 import { useHistory, useParams } from "react-router-dom";
 import { resetPassword } from "../../data/users";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import MainHeader from "../MainHeader";
 import { getImageUrl } from "../../data/utils";
 
@@ -64,7 +64,7 @@ const ResetPasswordScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu />
+      <SideMenu />
       <IonPage id="main-content">
         {!isWideScreen && <MainHeader />}
         <div className="container p-4 bg-white bg-opacity-50 mx-auto shadow-lg">

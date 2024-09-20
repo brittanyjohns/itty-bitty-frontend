@@ -82,12 +82,7 @@ export const signIn = async (user: User): Promise<any> => {
       body: JSON.stringify(user),
       signal: controller.signal,
     });
-
-    clearTimeout(timeoutId); // Clear timeout if fetch completes in time
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
+    clearTimeout(timeoutId);
 
     const data = await response.json();
     return data;
@@ -192,6 +187,19 @@ export const getCurrentUser = async () => {
   }
 };
 
+export const getUser = (userId: string) => {
+  const endpoint = `${BASE_URL}users/${userId}`;
+
+  const user = fetch(endpoint, {
+    headers: userHeaders,
+  })
+    .then((response) => response.json())
+    .then((data) => data)
+    .catch((error) => console.error("Error fetching user: ", error));
+
+  return user;
+};
+
 export const updateUser = (user: User, userId?: number) => {
   const endpoint = `${BASE_URL}users/${userId}`;
 
@@ -221,6 +229,33 @@ export const updateUserSettings = (
   userId?: string
 ) => {
   const endpoint = `${BASE_URL}users/${userId}/update_settings`;
+
+  const userSettingRequest = fetch(endpoint, {
+    headers: userHeaders,
+    method: "PUT",
+    body: JSON.stringify(userSetting),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.error) {
+        console.error("Error:", result.error);
+        return result;
+      } else {
+        return result;
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      return error;
+    });
+  return userSettingRequest;
+};
+
+export const adminUpdateUserSettings = (
+  userSetting: UserSetting,
+  userId?: string
+) => {
+  const endpoint = `${BASE_URL}users/${userId}/admin_update_settings`;
 
   const userSettingRequest = fetch(endpoint, {
     headers: userHeaders,

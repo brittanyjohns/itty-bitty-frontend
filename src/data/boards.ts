@@ -81,6 +81,22 @@ export const getBoards = (
   return boards;
 };
 
+export const getPresetBoards = (
+  searchTerm: string,
+  page: number,
+  filter?: string
+) => {
+  const boards = fetch(
+    `${BASE_URL}boards/preset?page=${page}&query=${searchTerm}&filter=${filter}`,
+    { headers: userHeaders }
+  ) // `localhostboards
+    .then((response) => response.json())
+    .then((data) => data)
+    .catch((error) => console.error("Error fetching data: ", error));
+
+  return boards;
+};
+
 export interface BoardMargins {
   xMargin: number;
   yMargin: number;

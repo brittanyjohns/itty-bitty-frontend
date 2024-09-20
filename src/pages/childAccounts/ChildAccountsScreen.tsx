@@ -7,7 +7,7 @@ import {
   IonRefresherContent,
 } from "@ionic/react";
 import ChildAccountList from "../../components/childAccounts/ChildAccountList";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/utils/Tabs";
 import { useEffect, useState } from "react";
@@ -45,7 +45,7 @@ const ChildAccountsScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle=" Child Accounts"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

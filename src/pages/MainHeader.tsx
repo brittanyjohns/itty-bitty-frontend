@@ -62,7 +62,7 @@ const MainHeader: React.FC<MainHeaderProps> = (props) => {
                 </IonButton>
               </IonButtons>
             )}
-            {!props.startLink && (
+            {!props.startLink && props.showMenuButton && (
               <IonMenuButton
                 className="text-white"
                 slot="start"

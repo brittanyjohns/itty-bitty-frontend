@@ -18,7 +18,7 @@ import React from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { Team } from "../../data/teams";
 import Tabs from "../../components/utils/Tabs";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import BoardGroupView from "../../components/board_groups/BoardGroupView";
@@ -87,7 +87,7 @@ const ViewBoardGroup: React.FC<ViewBoardGroupProps> = ({ locked }) => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle={`${boardGroup?.name || "Board Group"}`}
         isWideScreen={isWideScreen}
         currentUser={currentUser}

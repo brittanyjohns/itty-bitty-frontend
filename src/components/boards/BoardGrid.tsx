@@ -10,8 +10,14 @@ interface BoardGridProps {
   gridType?: string;
   loadBoards?: any;
   searchInput?: string;
+  noBoardsMsg?: string;
 }
-const BoardGrid = ({ boards, gridType, loadBoards }: BoardGridProps) => {
+const BoardGrid = ({
+  boards,
+  gridType,
+  loadBoards,
+  noBoardsMsg = "No boards found",
+}: BoardGridProps) => {
   const { currentUser } = useCurrentUser();
   const gridRef = createRef<HTMLDivElement>();
   const [currentBoards, setCurrentBoards] = useState<any>(boards);
@@ -60,9 +66,9 @@ const BoardGrid = ({ boards, gridType, loadBoards }: BoardGridProps) => {
             </div>
           ))}
       </div>
-      {currentUser && boards?.length === 0 && (
+      {noBoardsMsg != "" && currentUser && boards?.length === 0 && (
         <div className="w-full mx-auto text-center">
-          <p className="text-lg">No boards found</p>
+          <p className="text-lg">{noBoardsMsg}</p>
           <p className="text-sm">Create a new board to get started</p>
         </div>
       )}

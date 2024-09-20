@@ -17,7 +17,7 @@ import {
 import { SubmitHandler, useForm } from "react-hook-form";
 import { arrowBackCircleOutline } from "ionicons/icons";
 import React, { useEffect, useRef } from "react";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { denyAccess } from "../../data/users";
 import StaticMenu from "../../components/main_menu/StaticMenu";
@@ -115,7 +115,7 @@ const NewBoard: React.FC = (props: any) => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="New Board"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

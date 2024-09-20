@@ -80,6 +80,13 @@ const menuLinks: MenuLink[] = [
     icon: gridOutline,
     id: 4,
   },
+  {
+    endpoint: "/preset",
+    name: "Preset",
+    slug: "preset",
+    icon: gridOutline,
+    id: 44,
+  },
 
   {
     endpoint: "/images",

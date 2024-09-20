@@ -30,7 +30,7 @@ import DraggableGrid from "../images/DraggableGrid";
 import AddToTeamForm from "../teams/AddToTeamForm";
 import { useHistory } from "react-router";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import MainMenu from "../main_menu/MainMenu";
+import SideMenu from "../main_menu/SideMenu";
 import { getScreenSizeName } from "../../data/utils";
 import ConfirmDeleteAlert from "../utils/ConfirmAlert";
 import { set } from "d3";

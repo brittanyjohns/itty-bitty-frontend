@@ -16,7 +16,7 @@ import { useRef, useState } from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/utils/Tabs";
 import ImagePasteHandler from "../../components/utils/ImagePasteHandler";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 
@@ -154,7 +154,7 @@ const NewMenu: React.FC = (props: any) => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="New Menu"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

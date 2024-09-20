@@ -4,7 +4,7 @@ import {
   IonRefresher,
   IonRefresherContent,
 } from "@ionic/react";
-import MainMenu from "../components/main_menu/MainMenu";
+import SideMenu from "../components/main_menu/SideMenu";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import Tabs from "../components/utils/Tabs";
 import MainPageContent from "./MainPageContent";
@@ -51,7 +51,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="SpeakAnyWay"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

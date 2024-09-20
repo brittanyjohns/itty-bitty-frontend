@@ -18,7 +18,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import { arrowBackCircleOutline } from "ionicons/icons";
 import ImageCropper from "../../components/images/ImageCropper";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import { useCurrentUser } from "../../contexts/UserContext";
@@ -49,7 +49,7 @@ const EditImageScreen: React.FC = (props: any) => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="Images"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

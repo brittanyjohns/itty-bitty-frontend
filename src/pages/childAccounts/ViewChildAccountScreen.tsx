@@ -32,7 +32,7 @@ import {
 } from "ionicons/icons";
 import BoardGrid from "../../components/boards/BoardGrid";
 import ChildBoardDropdown from "../../components/childBoards/ChildBoardDropdown";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import ChildAccountForm from "../../components/childAccounts/ChildAccountForm";
 import MainHeader from "../MainHeader";
 import StaticMenu from "../../components/main_menu/StaticMenu";
@@ -112,7 +112,7 @@ const ViewChildAccountScreen: React.FC = () => {
   if (loading) {
     return (
       <>
-        <MainMenu />
+        <SideMenu />
         <IonPage id="main-content">
           <IonHeader className="bg-inherit shadow-none">
             <IonToolbar>
@@ -132,7 +132,7 @@ const ViewChildAccountScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="Accounts"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

@@ -19,7 +19,7 @@ import {
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 
 import MainHeader from "../MainHeader";
@@ -141,7 +141,7 @@ const ViewBoard: React.FC<any> = () => {
 
   return (
     <>
-      <MainMenu pageTitle="Boards" currentUser={currentUser} />
+      <SideMenu pageTitle="Boards" currentUser={currentUser} />
       <StaticMenu pageTitle="Boards" currentUser={currentUser} />
       <IonPage id="main-content">
         <MainHeader pageTitle={board?.name || "Board"} />

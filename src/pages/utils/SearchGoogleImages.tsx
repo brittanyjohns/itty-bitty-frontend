@@ -1,6 +1,6 @@
 import React from "react";
 import { IonContent, IonPage } from "@ionic/react";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
@@ -12,7 +12,7 @@ const SearchGoogleImages: React.FC = () => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="Search Google Images"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

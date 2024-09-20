@@ -23,7 +23,7 @@ import { Image } from "../../data/images";
 import SelectImageGallery from "../../components/images/SelectImageGallery";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/utils/Tabs";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import ImageCropper from "../../components/images/ImageCropper";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
@@ -163,7 +163,7 @@ const SelectGalleryScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle={board?.name}
         isWideScreen={isWideScreen}
         currentUser={currentUser}

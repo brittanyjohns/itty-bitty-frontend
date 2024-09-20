@@ -21,7 +21,7 @@ import {
   getMoreImages,
   getUserImages,
 } from "../../data/images";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import SelectImageGallery from "../../components/images/SelectImageGallery";
 import { useHistory } from "react-router";
 import Tabs from "../../components/utils/Tabs";
@@ -132,7 +132,7 @@ const ImagesScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="Images"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

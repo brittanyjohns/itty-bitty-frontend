@@ -88,7 +88,7 @@ const InlineSignUp = ({ plan }: InlineSignUpProps) => {
             fill="outline"
             color="medium"
             className="mt-2"
-            onClick={() => history.push("/sign-in")}
+            onClick={() => history.push("/users/sign-in")}
           >
             Sign In
           </IonButton>

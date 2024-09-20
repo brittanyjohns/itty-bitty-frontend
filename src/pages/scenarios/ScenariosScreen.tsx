@@ -32,7 +32,7 @@ interface ScenariosScreenProps {
   gridType: string;
 }
 // import "./ViewScenario.css";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import MainHeader from "../MainHeader";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 
@@ -100,7 +100,7 @@ const ScenariosScreen: React.FC<ScenariosScreenProps> = () => {
   };
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle={pageTitle}
         isWideScreen={isWideScreen}
         currentUser={currentUser}

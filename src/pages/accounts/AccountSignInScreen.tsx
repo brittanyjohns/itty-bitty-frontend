@@ -15,7 +15,7 @@ import { useHistory } from "react-router-dom";
 import { ChildAccount, signIn } from "../../data/child_accounts";
 import { getImageUrl } from "../../data/utils";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import MainHeader from "../MainHeader";
 import Footer from "../../components/utils/Footer";
 
@@ -70,7 +70,7 @@ const AccountSignInScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu />
+      <SideMenu />
       <IonPage id="main-content">
         <MainHeader />
 

@@ -15,7 +15,7 @@ import { BoardGroup, getBoardGroups } from "../../data/board_groups";
 import BoardGroupGrid from "../../components/board_groups/BoardGroupGrid";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import MainHeader from "../MainHeader";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import { imagesOutline, personOutline } from "ionicons/icons";
@@ -57,7 +57,7 @@ const BoardGroupsScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="Board Groups"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

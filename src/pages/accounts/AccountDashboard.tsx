@@ -7,7 +7,7 @@ import {
   useIonViewWillEnter,
 } from "@ionic/react";
 import "../../components/main.css";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import Tabs from "../../components/utils/Tabs";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useState, useEffect } from "react";
@@ -62,7 +62,7 @@ const AccountDashboard: React.FC<DashboardProps> = () => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle={`${
           currentAccount?.name || currentAccount?.username
         }'s Dashboard`}

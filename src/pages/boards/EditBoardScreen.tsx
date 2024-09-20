@@ -40,7 +40,7 @@ import BoardForm from "../../components/boards/BoardForm";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/utils/Tabs";
 import DraggableGrid from "../../components/images/DraggableGrid";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import ConfirmAlert from "../../components/utils/ConfirmAlert";
@@ -258,7 +258,7 @@ const EditBoardScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle={`Edit ${board?.name}`}
         isWideScreen={isWideScreen}
         currentUser={currentUser}

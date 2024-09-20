@@ -20,37 +20,56 @@ import {
 import SideMenu from "../../components/main_menu/SideMenu";
 import Tabs from "../../components/utils/Tabs";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import UserSettingsForm from "../../components/users/UserSettingsForm";
-import { User, UserSetting, updateUserSettings } from "../../data/users";
+import UserSettingsForm from "../../components/admin/AdminUserSettingsForm";
+import {
+  User,
+  UserSetting,
+  getUser,
+  adminUpdateUserSettings,
+} from "../../data/users";
 import { useEffect, useState } from "react";
 import UserForm from "../../components/users/UserForm";
-import { useHistory } from "react-router";
+import { useHistory, useParams } from "react-router";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
+import { set } from "d3";
+import AdminUserSettingsForm from "../../components/admin/AdminUserSettingsForm";
 
-const SettingsPage: React.FC = () => {
+const UserPage: React.FC = () => {
   const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
-  const [user, setUser] = useState<User | null>(currentUser || null);
+  //   const { id } = useParams<{ id: string }>();
+  const [userId, setUserId] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [userSetting, setUserSetting] = useState<UserSetting | null>(null);
-  const [name, setName] = useState<string | null>(currentUser?.name || null);
+  const [name, setName] = useState<string | null>(user?.name || null);
   const history = useHistory();
   const [toastMessage, setToastMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [planType, setPlanType] = useState<string>("free");
 
-  const handleSubmit = (submittedUserSetting: UserSetting) => {
-    console.log("handle submit: submittedUserSetting", submittedUserSetting);
+  const loadData = async () => {
+    const queryString = window.location.pathname;
+    const urlParams = queryString.split("/");
 
-    setUserSetting(submittedUserSetting);
-
-    saveSettings(submittedUserSetting, `${currentUser?.id}`);
+    const id = urlParams[3];
+    if (!id) {
+      console.error("No user id found");
+      return;
+    }
+    setUserId(id);
+    const user = await getUser(id);
+    setUser(user);
   };
+
+  useEffect(() => {
+    loadData();
+  }, []);
 
   const saveSettings = async (
     submittedUserSetting: UserSetting,
-    userId?: string
+    userId: string
   ) => {
-    const result = await updateUserSettings(submittedUserSetting, userId);
+    const result = await adminUpdateUserSettings(submittedUserSetting, userId);
     console.log("result", result);
     if (result) {
       setIsOpen(true);
@@ -64,9 +83,9 @@ const SettingsPage: React.FC = () => {
   };
 
   useEffect(() => {
-    const planTypeToSet = currentUser?.plan_type || planType || "free";
+    const planTypeToSet = user?.plan_type || planType || "free";
     setPlanType(planTypeToSet);
-  }, [currentUser]);
+  }, [user]);
 
   const handleCancel = () => {
     console.log("cancel");
@@ -106,20 +125,19 @@ const SettingsPage: React.FC = () => {
           </IonRefresher>
           <div className="w-full md:w-4/5 mx-auto">
             <IonCard className="p-4 text-center w-full md:w-4/5 mx-auto">
-              <h1 className="text-2xl">User Settings</h1>
-              <p className="text-lg mb-3">
-                This is where you can view your account information, manage your
-                subscriptions, and more.
-              </p>
+              <h1 className="text-2xl">
+                Admin User Settings for {user?.name || user?.email}
+              </h1>
 
-              <UserForm user={currentUser} />
+              <UserForm user={user} />
             </IonCard>
 
             <IonCard className="p-4 w-full md:w-4/5 mx-auto">
-              <UserSettingsForm
+              <AdminUserSettingsForm
                 onCancel={handleCancel}
-                onSave={handleSubmit}
-                existingUserSetting={currentUser?.settings}
+                onSave={saveSettings}
+                existingUserSetting={user?.settings}
+                userId={userId || ""}
               />
             </IonCard>
           </div>
@@ -137,4 +155,4 @@ const SettingsPage: React.FC = () => {
   );
 };
 
-export default SettingsPage;
+export default UserPage;

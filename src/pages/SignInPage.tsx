@@ -1,5 +1,5 @@
 import { IonButton, IonContent, IonPage } from "@ionic/react";
-import MainMenu from "../components/main_menu/MainMenu";
+import SideMenu from "../components/main_menu/SideMenu";
 import MainHeader from "./MainHeader";
 import { getImageUrl } from "../data/utils";
 import { useCurrentUser } from "../hooks/useCurrentUser";
@@ -13,7 +13,7 @@ const SignInPage: React.FC = () => {
   const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="Sign Up"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

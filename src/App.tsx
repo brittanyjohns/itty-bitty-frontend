@@ -91,6 +91,8 @@ import AccountDashboard from "./pages/accounts/AccountDashboard";
 import ScenariosScreen from "./pages/scenarios/ScenariosScreen";
 import ViewScenario from "./pages/scenarios/ViewScenario";
 import SearchGoogleImages from "./pages/utils/SearchGoogleImages";
+import PresetBoardsScreen from "./pages/boards/PresetBoardsScreen";
+import UserPage from "./pages/admin/UserPage";
 
 const UserRoutes: React.FC = () => (
   <UserProvider>
@@ -179,6 +181,15 @@ const UserRoutes: React.FC = () => (
         <Route path="/boards" exact={true}>
           <BoardsScreen gridType="user" />
         </Route>
+        <Route path="/preset" exact={true}>
+          <PresetBoardsScreen initialSegmentType="featured" />
+        </Route>
+        <Route path="/preset/featured" exact={true}>
+          <PresetBoardsScreen initialSegmentType="featured" />
+        </Route>
+        <Route path="/preset/popular" exact={true}>
+          <PresetBoardsScreen initialSegmentType="popular" />
+        </Route>
 
         <Route path="/menus/new" component={NewMenu} exact={true} />
 
@@ -260,6 +271,7 @@ const UserRoutes: React.FC = () => (
           component={AccountSignInScreen}
           exact={true}
         />
+        <Route path="/admin/users/:id" component={UserPage} />
       </IonRouterOutlet>
     </IonReactRouter>
   </UserProvider>

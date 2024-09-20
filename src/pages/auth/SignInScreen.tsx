@@ -12,7 +12,7 @@ import {
 import { useHistory } from "react-router-dom";
 import { User, signIn } from "../../data/users";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import MainHeader from "../MainHeader";
 import { getImageUrl } from "../../data/utils";
 import StaticMenu from "../../components/main_menu/StaticMenu";
@@ -65,7 +65,7 @@ const SignInScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="Sign In"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

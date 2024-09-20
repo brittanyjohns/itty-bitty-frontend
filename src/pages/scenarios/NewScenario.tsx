@@ -12,7 +12,7 @@ import {
 } from "@ionic/react";
 import NewScenarioForm from "../../components/scenarios/NewScenarioForm";
 import { useState } from "react";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
@@ -45,7 +45,7 @@ const NewScenario: React.FC = (props: any) => {
   };
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="New Scenario"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

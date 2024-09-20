@@ -1,11 +1,9 @@
 // SignOut.tsx
 
-import { IonButton } from "@ionic/react";
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { isUserSignedIn, signOut } from "../../data/users";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import MainMenu from "../../components/main_menu/MainMenu";
 
 const SignOutScreen: React.FC = () => {
   const history = useHistory();
@@ -18,36 +16,26 @@ const SignOutScreen: React.FC = () => {
       console.log("User signed out");
       localStorage.removeItem("token");
       setCurrentUser(null);
-      history.push("/");
+      history.push("/users/sign-in");
       window.location.reload();
       // Handle success (e.g., redirect to dashboard)
     } catch (error) {
       console.error("Error signing up: ", error);
-      alert("Error signing out: " + error);
-      history.push("/home");
+      history.push("/users/sign-in");
       // Handle error (e.g., show error message)
     }
   };
 
   useEffect(() => {
-    handleSignOut().then(() => {
-      history.push("/home");
-      window.location.reload();
-    });
-  }, [history]);
+    if (!isUserSignedIn()) {
+      history.push("/users/sign-in");
+    } else {
+      handleSignOut();
+    }
+  }, []);
 
   // Optionally, return null or a loading spinner while the redirect is being processed
-  return (
-    <div>
-      <MainMenu />
-      {!isUserSignedIn() && (
-        <IonButton onClick={() => history.push("/sign-in")}>Sign In</IonButton>
-      )}
-      {isUserSignedIn() && (
-        <IonButton onClick={handleSignOut}>Sign Out</IonButton>
-      )}
-    </div>
-  );
+  return <div></div>;
 };
 
 export default SignOutScreen;

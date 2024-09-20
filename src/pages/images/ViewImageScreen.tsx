@@ -42,7 +42,7 @@ import {
   searchOutline,
   trashBinOutline,
 } from "ionicons/icons";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import MainHeader from "../MainHeader";
 import ImageCropper from "../../components/images/ImageCropper";
 import { Board, removeImageFromBoard } from "../../data/boards";
@@ -454,7 +454,7 @@ const ViewImageScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="Images"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

@@ -23,7 +23,7 @@ import {
 import { useHistory, useParams } from "react-router";
 import { getMenu, Menu, rerunMenuJob, updateMenu } from "../../data/menus"; // Adjust imports based on actual functions
 import { Image } from "../../data/images";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import BoardView from "../../components/boards/BoardView";
 import { Team } from "../../data/teams";
@@ -230,7 +230,7 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="Menus"
         isWideScreen={isWideScreen}
         currentUser={currentUser}

@@ -12,7 +12,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import TeamList from "../../components/teams/TeamList";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import Tabs from "../../components/utils/Tabs";
 import { useEffect, useState } from "react";
@@ -47,7 +47,7 @@ const TeamsScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu />
+      <SideMenu />
       <IonPage id="main-content">
         <IonHeader className="bg-inherit shadow-none">
           <IonToolbar>

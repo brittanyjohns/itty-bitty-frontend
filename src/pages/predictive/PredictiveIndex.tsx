@@ -11,7 +11,7 @@ import {
   IonRefresherContent,
 } from "@ionic/react";
 import { Image, getPredictiveImages } from "../../data/images";
-import MainMenu from "../../components/main_menu/MainMenu";
+import SideMenu from "../../components/main_menu/SideMenu";
 import { useHistory, useParams } from "react-router";
 import Tabs from "../../components/utils/Tabs";
 import {
@@ -184,7 +184,7 @@ const PredictiveImagesScreen: React.FC = () => {
 
   return (
     <>
-      <MainMenu
+      <SideMenu
         pageTitle="Predictive - beta"
         isWideScreen={isWideScreen}
         currentUser={currentUser}
