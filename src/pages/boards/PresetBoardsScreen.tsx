@@ -131,6 +131,11 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
     );
   };
 
+  useIonViewWillLeave(() => {
+    console.log("ionViewWillLeave event fired");
+    setSegmentType("all");
+  }, []);
+
   const handleCategoryChange = (e: any) => {
     const category = e.target.value;
     setSelectedCategory(category);
