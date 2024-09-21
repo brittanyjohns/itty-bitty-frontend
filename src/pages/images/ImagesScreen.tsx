@@ -2,6 +2,7 @@ import { createRef, useEffect, useRef, useState } from "react";
 import {
   IonButton,
   IonContent,
+  IonHeader,
   IonIcon,
   IonItem,
   IonLabel,
@@ -12,6 +13,7 @@ import {
   IonSegment,
   IonSegmentButton,
   IonText,
+  IonToolbar,
   useIonViewWillEnter,
 } from "@ionic/react";
 import {
@@ -152,9 +154,45 @@ const ImagesScreen: React.FC = () => {
           endLink="/images/add"
           showMenuButton={!isWideScreen}
         />
+        <IonHeader className="ion-no-border">
+          <IonToolbar>
+            <IonSegment
+              value={segmentType}
+              onIonChange={handleSegmentChange}
+              className="w-full bg-inherit"
+            >
+              <IonSegmentButton value="all">
+                <IonLabel className="text-sm lg:text-md mb-2">Gallery</IonLabel>
+                <IonIcon className="mt-2" icon={imagesOutline} />
+              </IonSegmentButton>
+              <IonSegmentButton value="user">
+                <IonLabel className="text-sm lg:text-md mb-2">
+                  Your Images
+                </IonLabel>
+                <IonIcon className="mt-2" icon={personOutline} />
+              </IonSegmentButton>
+            </IonSegment>
+            <div className="p-2 w-7/8 md:w-5/6 mx-auto">
+              <IonSearchbar
+                debounce={1000}
+                onIonInput={handleSearchInput}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleGetMoreImages(page, searchInput);
+                  }
+                }}
+                onIonClear={() => clearInput()}
+                animated={true}
+                className="mt-4"
+                value={searchInput}
+                placeholder="Search existing images"
+              ></IonSearchbar>
+            </div>
+          </IonToolbar>
+        </IonHeader>
 
         <IonContent className="ion-padding">
-          <IonSegment
+          {/* <IonSegment
             value={segmentType}
             onIonChange={handleSegmentChange}
             className="w-full bg-inherit"
@@ -185,7 +223,7 @@ const ImagesScreen: React.FC = () => {
               value={searchInput}
               placeholder="Search existing images"
             ></IonSearchbar>
-          </div>
+          </div> */}
           {showCreateBtn && (
             <IonList>
               <IonItem slot="start" className="w-full">

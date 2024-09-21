@@ -72,13 +72,9 @@ const MainHeader: React.FC<MainHeaderProps> = (props) => {
           </IonButtons>
         )}
         {showMenuBtn && (
-          <IonMenuButton
-            className="text-white"
-            slot="start"
-            menu="main-menu"
-          ></IonMenuButton>
+          <IonMenuButton slot="start" menu="main-menu"></IonMenuButton>
         )}
-        <IonTitle className="ml-6">{props.pageTitle}</IonTitle>
+        <IonTitle className="">{props.pageTitle}</IonTitle>
         {props.endLink && (
           <IonButtons className="p-0" slot="end">
             <IonButton routerLink={props.endLink}>
