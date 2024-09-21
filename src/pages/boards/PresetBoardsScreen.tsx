@@ -159,12 +159,12 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
 
   const categoryDropdown = () => {
     return (
-      <div className="flex items-center justify-center w-3/4 mx-auto">
+      <div className="w-full md:w-1/2 mx-auto flex justify-between items-center px-2 border-2 rounded-lg">
         <IonSelect
           onIonChange={handleCategoryChange}
           placeholder="Select Category"
           value={selectedCategory}
-          fill="outline"
+          // fill="outline"
         >
           <IonSelectOption value="">All Categories</IonSelectOption>
           {categories &&
@@ -205,8 +205,8 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
         />
         <IonHeader className="ion-no-border">
           <IonToolbar>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
-              <div className="w-full mx-auto">
+            <div className="w-full mx-auto">
+              <div className="flex justify-center items-center my-3">
                 <IonSearchbar
                   debounce={1000}
                   onIonInput={handleSearchInput}
@@ -216,7 +216,7 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
                   placeholder="Search boards"
                 ></IonSearchbar>
               </div>
-              <div className="w-full mx-auto py-3">{categoryDropdown()}</div>
+              {categoryDropdown()}
             </div>
             {allCategories && (
               <IonSegment value={segmentType} onIonChange={handleSegmentChange}>

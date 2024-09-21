@@ -267,23 +267,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
           showMenuButton={!isWideScreen}
           endLink="/boards/new"
         />
-        <IonToolbar className="px-4">
-          {currentUser && (
-            <IonSegment
-              value={segmentType}
-              onIonChange={handleSegmentChange}
-              className="w-full bg-inherit"
-            >
-              <IonSegmentButton value="preset">
-                <IonLabel className="text-sm lg:text-md">Preset</IonLabel>
-                <IonIcon icon={imagesOutline} size="small" className="" />
-              </IonSegmentButton>
-              <IonSegmentButton value="user">
-                <IonLabel className="text-sm lg:text-md">Your Boards</IonLabel>
-                <IonIcon icon={personOutline} size="small" className="" />
-              </IonSegmentButton>
-            </IonSegment>
-          )}
+        <IonToolbar className="pb-4">
           <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-1 mt-6">
             <div className="">
               <IonSearchbar

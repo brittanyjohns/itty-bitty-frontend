@@ -16,6 +16,7 @@ import { logInOutline } from "ionicons/icons";
 import UserHome from "../components/utils/UserHome";
 import Footer from "../components/utils/Footer";
 import LandingPage from "./LandingPage";
+import UserInfo from "../components/users/UserInfo";
 
 const Home: React.FC = () => {
   const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
@@ -76,7 +77,8 @@ const Home: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <LandingPage />
+          {(!currentUser && <LandingPage />) || null}
+          {(currentUser && <UserInfo user={currentUser} />) || null}
           {/* <div className="bg-inherit shadow-none w-full mx-auto">
             {(currentUser && (
               <UserHome

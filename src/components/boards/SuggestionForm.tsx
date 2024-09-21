@@ -165,7 +165,7 @@ const SuggestionForm = ({
                   className=""
                 >
                   {" "}
-                  Add {numberOfWords} words to the board
+                  Add these words to the board
                 </IonButton>
                 <IonButton
                   onClick={() => {

@@ -75,7 +75,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser, currentAccount }) => {
           </div>
         </IonToolbar>
       </IonHeader>
-      <div className="h-full">
+      <div className="h-full overflow-y-auto">
         <IonList>
           {currentUser && (
             <IonItem
