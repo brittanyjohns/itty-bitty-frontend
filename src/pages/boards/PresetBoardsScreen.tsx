@@ -88,11 +88,11 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
 
   useEffect(() => {
     fetchBoards();
-  }, [filter]);
+  }, []);
 
   useEffect(() => {
     fetchBoards();
-  }, [searchInput, page]);
+  }, [searchInput, page, filter]);
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {

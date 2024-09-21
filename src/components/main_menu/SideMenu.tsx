@@ -52,6 +52,14 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser, currentAccount }) => {
       history.push("/sign-in");
     }
   };
+  const goToSettings = () => {
+    if (currentAccount || currentUser) {
+      closeMainMenu();
+      history.push("/settings");
+    } else {
+      closeMainMenu();
+    }
+  };
   const feature1Image = getImageUrl("round_itty_bitty_logo_1", "png");
 
   return (
@@ -72,7 +80,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser, currentAccount }) => {
           {currentUser && (
             <IonItem
               slot="header"
-              routerLink="/settings"
+              onClick={goToSettings}
               detail={true}
               className=""
               lines="none"
