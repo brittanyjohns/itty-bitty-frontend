@@ -34,7 +34,8 @@ ion-toolbar {
 /* } */
 
 ion-toolbar ion-buttons ion-button {
-  --color: rgb(238, 238, 238);
+  /* --color: rgb(238, 238, 238); */
+  --color: #13496f;
 }
 /* 
 .secondary-toolbar {
@@ -42,7 +43,7 @@ ion-toolbar ion-buttons ion-button {
   --color: rgb(238, 238, 238);
 } */
 
-ion-toolbar ion-buttons ion-button:hover {
+/* ion-toolbar ion-buttons ion-button:hover {
   --color: rgb(238, 238, 238);
 }
 
@@ -52,15 +53,15 @@ ion-toolbar ion-buttons ion-button:active {
 
 ion-toolbar ion-buttons ion-button:focus {
   --color: rgb(238, 238, 238);
-}
+} */
 
-ion-toolbar ion-buttons ion-menu-button {
+/* ion-toolbar ion-buttons ion-menu-button {
   --color: rgb(238, 238, 238);
 }
 
 ion-toolbar ion-buttons ion-back-button {
   --color: rgb(238, 238, 238);
-}
+} */
 ion-segment {
   --color: rgb(238, 238, 238);
   --background: none;
