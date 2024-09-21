@@ -78,7 +78,9 @@ const Home: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           {(!currentUser && <LandingPage />) || null}
-          {(currentUser && <UserInfo user={currentUser} />) || null}
+          <div className="bg-inherit shadow-none w-3/4 mx-auto">
+            {(currentUser && <UserInfo user={currentUser} />) || null}
+          </div>
           {/* <div className="bg-inherit shadow-none w-full mx-auto">
             {(currentUser && (
               <UserHome
