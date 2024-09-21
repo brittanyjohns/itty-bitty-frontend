@@ -94,6 +94,10 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
     fetchBoards();
   }, [searchInput, page, filter]);
 
+  useEffect(() => {
+    setSegmentType("all");
+  }, [searchInput]);
+
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
       fetchBoards();

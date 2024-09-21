@@ -60,7 +60,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   const [audioList, setAudioList] = useState<string[]>([]);
   const [account, setAccount] = useState(currentAccount);
 
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [selectedImages, setSelectedImages] = useState<Image[]>([]);
   const [showImages, setShowImages] = useState(
     selectedImages.length > 0 ? true : false
   );
@@ -123,9 +123,9 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
         imgSrc = placeholderUrl;
       }
 
-      const sourcesToSet = [...selectedImages, imgSrc];
+      const imagesToSet = [...selectedImages, image];
 
-      setSelectedImages(sourcesToSet);
+      setSelectedImages(imagesToSet);
       setShowIcon(true);
       setShowImages(true);
     }
