@@ -265,6 +265,23 @@ export async function addImageToBoard(
   return board;
 }
 
+export async function addImagesToBoard(
+  id: string,
+  imageIds: string[]
+): Promise<any> {
+  const requestInfo = {
+    method: "PUT",
+    headers: userHeaders,
+    body: JSON.stringify({ image_ids: imageIds }),
+  };
+  const response = await fetch(
+    `${BASE_URL}boards/${id}/associate_images`,
+    requestInfo
+  );
+  const board: Board = await response.json();
+  return board;
+}
+
 export async function removeImageFromBoard(
   id: string,
   image_id: string

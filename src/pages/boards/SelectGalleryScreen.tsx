@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   IonButton,
+  IonButtons,
   IonContent,
   IonIcon,
   IonItem,
@@ -9,12 +10,13 @@ import {
   IonSearchbar,
   IonText,
   IonToast,
+  useIonViewDidLeave,
 } from "@ionic/react";
 import { useParams } from "react-router";
 import { addCircleOutline, create, createOutline } from "ionicons/icons";
 import {
   getBoard,
-  addImageToBoard,
+  addImagesToBoard,
   Board,
   getRemainingImages,
 } from "../../data/boards"; // Adjust imports based on actual functions
@@ -27,6 +29,7 @@ import SideMenu from "../../components/main_menu/SideMenu";
 import ImageCropper from "../../components/images/ImageCropper";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
+import { set } from "d3";
 
 const SelectGalleryScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -124,30 +127,38 @@ const SelectGalleryScreen: React.FC = () => {
     }
   };
 
+  const [imageIds, setImageIds] = useState<string[]>([]);
+
   const handleImageClick = (image: Image) => {
     setImage(image);
     setLoadingMessage("Adding image to board");
-    setShowLoading(true);
-    async function addSelectedImageToBoard() {
-      if (!board?.id) {
-        console.error("Board ID is missing");
-        return;
-      }
-      const response = await addImageToBoard(board.id, image.id);
-      let message = "";
-      if (response["board"]) {
-        message = `${response["label"]} added to board: ${response["board"]["name"]}`;
-        setToastMessage(message);
-      } else {
-        message = `${response["error"]}`;
-        setToastMessage(message);
-      }
-      setShowLoading(false);
-      setIsOpen(true);
-    }
-    addSelectedImageToBoard();
-    // handleRearrangeImages();
+    setImageIds([...imageIds, image.id]);
   };
+
+  const addSelectedImageToBoard = async () => {
+    setLoadingMessage("Adding images to board");
+    setShowLoading(true);
+    if (!board?.id) {
+      console.error("Board ID is missing");
+      return;
+    }
+    const response = await addImagesToBoard(board.id, imageIds);
+    let message = "";
+    if (response["new_board_images"]) {
+      message = `Added ${response["new_board_images"].length} images to board: ${response["board"]["name"]}`;
+      setToastMessage(message);
+    } else {
+      message = `${response["error"]}`;
+      setToastMessage(message);
+    }
+    setShowLoading(false);
+    setIsOpen(true);
+    setImageIds([]);
+  };
+
+  useIonViewDidLeave(() => {
+    setImageIds([]);
+  }, []);
 
   const handleCreateImage = async (label: string) => {
     setLoadingMessage("Creating image");
@@ -237,6 +248,19 @@ const SelectGalleryScreen: React.FC = () => {
                 </IonItem>
               </IonList>
             )}
+            <p className="text-center mt-2">
+              {imageIds.length} images selected for board
+            </p>
+            <IonButtons className="flex justify-center my-2">
+              <IonButton
+                className="w-full md:w-1/2 mx-auto my-2"
+                size="large"
+                fill="outline"
+                onClick={addSelectedImageToBoard}
+              >
+                Add selected images to board
+              </IonButton>
+            </IonButtons>
             {remainingImages && (
               <SelectImageGallery
                 boardId={board?.id}
