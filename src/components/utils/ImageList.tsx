@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { IonContent, IonImg, IonPage, IonButton } from "@ionic/react";
+import { Image } from "../../data/images";
+import ImageGalleryItem from "../images/ImageGalleryItem";
 interface ImageListProps {
-  imageSrcList: string[];
+  images: Image[];
 }
-const ImageList: React.FC<ImageListProps> = ({ imageSrcList }) => {
+const ImageList: React.FC<ImageListProps> = ({ images }) => {
+  const [imgRef, setImgRef] = useState<HTMLDivElement | null>(null);
   return (
     <div className="grid grid-cols-6 md:grid-cols-12 lg:grid-cols-12 xl:grid-cols-16 gap-1 pb-1">
-      {imageSrcList.map((imageSrc, index) => (
-        <IonImg key={index} src={imageSrc} />
+      {images.map((img, index) => (
+        <ImageGalleryItem
+          key={index}
+          image={img}
+          setImgRef={(element: HTMLDivElement) => {
+            setImgRef(element);
+          }}
+        />
       ))}
     </div>
   );

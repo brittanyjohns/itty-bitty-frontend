@@ -138,41 +138,6 @@ const BoardView: React.FC<BoardViewProps> = ({
 
   return (
     <>
-      {/* <IonHeader className="ion-no-border">
-        <IonToolbar>
-          <div className="flex justify-center items-center my-3">
-            <IonButtons slot="end">
-              {board && (
-                <IonButton
-                  routerLink={`/boards/${board.id}/locked`}
-                  className="mr-1 text-xs md:text-md lg:text-lg"
-                >
-                  <IonIcon icon={chatbubbleEllipsesOutline} className="mx-2" />
-                  <IonLabel>Speak</IonLabel>
-                </IonButton>
-              )}
-              {board && showEdit && (
-                <IonButton
-                  routerLink={`/boards/${board.id}/edit`}
-                  className="mr-1 text-xs text-xs md:text-md lg:text-lg"
-                >
-                  <IonIcon icon={createOutline} className="mx-2" />
-                  <IonLabel>Edit</IonLabel>
-                </IonButton>
-              )}
-              {board && showEdit && (
-                <IonButton
-                  routerLink={`/boards/${board.id}/gallery`}
-                  className="mr-1 text-xs text-xs md:text-md lg:text-lg"
-                >
-                  <IonIcon icon={imageOutline} className="mx-2" />
-                  <IonLabel>Add</IonLabel>
-                </IonButton>
-              )}
-            </IonButtons>
-          </div>
-        </IonToolbar>
-      </IonHeader> */}
       <div className=" my-2 text-center">
         <IonButtons className="flex justify-center">
           <IonButton

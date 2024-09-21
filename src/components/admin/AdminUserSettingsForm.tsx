@@ -153,7 +153,6 @@ const AdminUserSettingsForm: React.FC<AdminUserSettingsFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("settings saving", settings);
     onSave(settings, userId);
   };
 

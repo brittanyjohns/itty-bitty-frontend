@@ -118,9 +118,6 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
         setShowLoading(true);
         setShowPaste(false);
 
-        console.log("Creating cropper", imageSrc);
-        console.log("Image element: ", imageElementRef.current);
-
         const cropperInstance = new Cropper(imageElementRef.current, {
           aspectRatio: 1,
           viewMode: 1,
@@ -128,12 +125,10 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
           // checkCrossOrigin: false,
           // checkOrientation: false,
         });
-        console.log("Cropper instance: ", cropperInstance);
         setCropper(cropperInstance);
         setShowLoading(false);
 
         return () => {
-          console.log("Destroying cropper");
           cropperInstance.destroy();
         };
       }

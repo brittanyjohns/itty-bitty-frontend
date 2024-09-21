@@ -35,7 +35,6 @@ const UserForm: React.FC<UsersFormProps> = ({
   const handlePlanSelection = async (e: string) => {
     setPlanType(e);
     const userToSave = { ...user, plan_type: e };
-    console.log("userToSave", userToSave);
   };
 
   const handleSave = async () => {
@@ -49,7 +48,6 @@ const UserForm: React.FC<UsersFormProps> = ({
       plan_type: planType || "free",
     };
     const updatedUser = await updateUser(userToSave, userId);
-    console.log("updatedUser", updatedUser);
   };
   useEffect(() => {
     setPlanType(user?.plan_type || "free");

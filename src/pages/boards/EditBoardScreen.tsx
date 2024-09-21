@@ -125,7 +125,6 @@ const EditBoardScreen: React.FC = () => {
 
   // Fetch board data and initialize state
   const fetchBoard = async () => {
-    console.log("Current screen size: ", currentScreenSize);
     const board = await getBoard(id);
     const layout = board.layout[currentScreenSize];
     setGridLayout(layout);

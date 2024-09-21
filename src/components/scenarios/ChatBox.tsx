@@ -33,7 +33,6 @@ const ChatBox: React.FC<ScenarioFormProps> = ({ scenario, setShowLoading }) => {
   };
 
   useEffect(() => {
-    console.log("updatedScenario", updatedScenario);
     if (updatedScenario.question_1) {
       setQuestion(updatedScenario.question_1);
     }

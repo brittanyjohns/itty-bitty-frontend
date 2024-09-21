@@ -21,10 +21,8 @@ const AudioList: React.FC<AudioListProps> = ({
   const handleDeleteAudioFile = async (
     audio_file_id: string | null | undefined
   ) => {
-    console.log("Delete audio file", audio_file_id);
     if (audio_file_id) {
       const response = await deleteAudioFile(image.id, audio_file_id);
-      console.log("Delete audio file response", response);
     }
     afterDeleteAudioFile();
   };

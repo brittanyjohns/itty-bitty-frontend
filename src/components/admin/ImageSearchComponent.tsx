@@ -5,9 +5,11 @@ import {
   IonButtons,
   IonIcon,
   IonInput,
+  IonItem,
   IonLoading,
   IonSelect,
   IonSelectOption,
+  IonText,
   useIonViewWillLeave,
 } from "@ionic/react";
 import React from "react";
@@ -77,14 +79,12 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
       }
       setImages(imgResult);
       if (imgResult.length > 0) {
-        console.log("Setting next start index: ", imgResult[0].startIndex);
         setNextStartIndex(imgResult[0].startIndex);
       } else {
         setShowNoResults(true);
       }
     } catch (error) {
       console.error("Image Search Error: ", error);
-      alert("Failed to load images");
     } finally {
       setLoading(false);
     }
@@ -92,7 +92,6 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
 
   useEffect(() => {
     if (query) {
-      console.log("Searching for: ", query);
     } else {
       setImages([]);
       if (startingQuery) {
@@ -124,13 +123,8 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
         tmpLabel = query;
       }
 
-      console.log("Saving image: ", imgUrl, tmpLabel);
-
-      console.log("Image ID: ", imageId);
-
       const result = await saveTempDoc(imgUrl, tmpLabel, imageId);
       if (result) {
-        console.log("Result: ", result);
         resetSearch();
         // setNewImageSrc(result["image_url"]);
         window.location.href = `/images/${result["id"]}`;
@@ -143,7 +137,6 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
     } finally {
       setLoading(false);
     }
-    console.log("Done with click");
   };
 
   const resetSearch = () => {
@@ -247,9 +240,20 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
         <IonInput
           value={orTerms}
           placeholder="OR Terms"
-          label="OR Terms"
+          aria-label="OR Terms"
+          helperText="Enter OR terms separated by commas"
           onIonChange={(e: any) => setOrTerms(e.detail.value || "")}
         />
+        <IonItem
+          className="flex items-center w-full mx-auto p-2 my-3"
+          lines="none"
+        >
+          <IonText className="text-xs text-center text-gray-500">
+            Images are sourced through Google and marked for public/commercial
+            use. However, it is the user's responsibility to ensure proper usage
+            rights for selected images.
+          </IonText>
+        </IonItem>
       </div>
       {showNoResults && (
         <div className="text-center my-4">

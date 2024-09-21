@@ -29,11 +29,12 @@ import React from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import DraggableGrid from "../../components/images/DraggableGrid";
 import { generatePlaceholderImage, playAudioList } from "../../data/utils";
-import { Image } from "../../data/images";
+import { Image, ImageGalleryProps } from "../../data/images";
 import { clickWord } from "../../data/audits";
 import FullscreenToggle from "../../components/utils/FullscreenToggle";
 import ActivityTrackingConsent from "../../components/utils/ActivityTrackingConsent";
 import ImageList from "../../components/utils/ImageList";
+import ImageGalleryItem from "../../components/images/ImageGalleryItem";
 
 const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();
@@ -50,6 +51,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   );
 
   const [selectedImageSrcs, setSelectedImageSrcs] = useState<string[]>([]);
+  const [selectedImages, setSelectedImages] = useState<Image[]>([]);
   const [showImages, setShowImages] = useState(
     selectedImageSrcs.length > 0 ? true : false
   );
@@ -86,6 +88,8 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
       const sourcesToSet = [...selectedImageSrcs, imgSrc];
 
       setSelectedImageSrcs(sourcesToSet);
+      const imagesToSet = [...selectedImages, image];
+      setSelectedImages(imagesToSet);
       setShowIcon(true);
       setShowImages(true);
     }
@@ -116,6 +120,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
     }
     setAudioList([]);
     setSelectedImageSrcs([]);
+    setSelectedImages([]);
     setShowIcon(false);
     setPreviousLabel(undefined);
   };
@@ -123,6 +128,11 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   useIonViewDidLeave(() => {
     inputRef.current?.value && clearInput();
   });
+
+  useEffect(() => {
+    console.log("Selected image sources", selectedImageSrcs);
+    console.log("Selected image components", selectedImages);
+  }, [selectedImageSrcs, selectedImages]);
 
   useIonViewWillEnter(() => {
     async function fetchData() {
@@ -187,7 +197,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
           <p className="text-sm md:text-md lg:text-lg xl:text-xl font-bold ion-text-center my-2">
             {board?.name}
           </p>
-          {showImages && <ImageList imageSrcList={selectedImageSrcs} />}
+          {showImages && <ImageList images={selectedImages} />}
           <div className="bg-inherit">
             <IonInput
               placeholder="Click an image to begin speaking"

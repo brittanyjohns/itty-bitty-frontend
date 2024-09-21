@@ -109,9 +109,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
     const audioSrc = image.audio;
     onPlayAudioList(audioSrc);
     const label = image.label;
-    console.log("inputRef: ", inputRef);
     if (inputRef?.current) {
-      console.log("inputRef.current: ", inputRef.current);
       inputRef.current.value += ` ${label}`;
       if (setShowIcon) {
         setShowIcon(Boolean(inputRef.current.value));

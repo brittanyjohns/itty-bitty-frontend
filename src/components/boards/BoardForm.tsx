@@ -69,7 +69,6 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
   };
 
   useEffect(() => {
-    console.log("useEffect fetchSampleVoices", board);
     fetchSampleVoices();
     fetchCategories();
   }, []);
@@ -144,18 +143,15 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
     const voice = event.detail.value;
     setVoice(voice);
     playSampleVoice(voice);
-    console.log("Voice: ", voice);
     const updateBoard = { ...board, voice: event.detail.value };
     setBoard(updateBoard);
   };
 
   const handleCategoryChange = (event: CustomEvent) => {
     const category = event.detail.value;
-    console.log("Category: ", category);
     setCategory(category);
     const updateBoard = { ...board, category: event.detail.value };
     setBoard(updateBoard);
-    console.log("Board: ", board);
   };
 
   const playSampleVoice = (voice: string) => {

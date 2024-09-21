@@ -60,9 +60,9 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   const [audioList, setAudioList] = useState<string[]>([]);
   const [account, setAccount] = useState(currentAccount);
 
-  const [selectedImageSrcs, setSelectedImageSrcs] = useState<string[]>([]);
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [showImages, setShowImages] = useState(
-    selectedImageSrcs.length > 0 ? true : false
+    selectedImages.length > 0 ? true : false
   );
   useEffect(() => {
     if (board) {
@@ -108,7 +108,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
     setShowHeader(
       shouldSetShowImages || shouldSetShowText || audioList.length > 0
     );
-  }, [selectedImageSrcs, audioList]);
+  }, [selectedImages, audioList]);
 
   const handleImageClick = async (image: Image) => {
     if (!currentAccount?.settings?.enable_text_display) {
@@ -123,9 +123,9 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
         imgSrc = placeholderUrl;
       }
 
-      const sourcesToSet = [...selectedImageSrcs, imgSrc];
+      const sourcesToSet = [...selectedImages, imgSrc];
 
-      setSelectedImageSrcs(sourcesToSet);
+      setSelectedImages(sourcesToSet);
       setShowIcon(true);
       setShowImages(true);
     }
@@ -155,7 +155,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
     setAudioList([]);
     setShowIcon(false);
     setPreviousLabel(undefined);
-    setSelectedImageSrcs([]);
+    setSelectedImages([]);
   };
 
   useIonViewDidLeave(() => {
@@ -201,7 +201,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
           <p className="text-sm md:text-md lg:text-lg xl:text-xl font-bold ion-text-center">
             {board?.name}
           </p>
-          {showImages && <ImageList imageSrcList={selectedImageSrcs} />}
+          {showImages && <ImageList images={selectedImages} />}
           <div className="bg-inherit">
             <IonInput
               placeholder="Click an image to begin speaking"
