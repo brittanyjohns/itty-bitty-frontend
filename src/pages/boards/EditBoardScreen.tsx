@@ -304,6 +304,54 @@ const EditBoardScreen: React.FC = () => {
                 <IonIcon className="mt-2" icon={gridOutline} />
               </IonSegmentButton>
             </IonSegment>
+            {segmentType === "layout" && (
+              <div className="my-5">
+                <IonButtons className="grid grid-cols-2 md:grid-cols-4 gap-1">
+                  <IonButton
+                    className="text-sm md:text-md lg:text-lg"
+                    onClick={() => setOpenAlert(true)}
+                    color={"danger"}
+                    fill="outline"
+                    size="small"
+                  >
+                    <IonIcon icon={appsOutline} className="mx-1" />
+                    <IonLabel className="mx-1">Reset Layout </IonLabel>
+                  </IonButton>
+
+                  <IonButton
+                    className="text-sm md:text-md lg:text-lg"
+                    onClick={handleSaveLayout}
+                    size="small"
+                    fill="outline"
+                  >
+                    <IonIcon icon={saveOutline} className="mx-1" />
+                    <IonLabel className="mx-1">Save Layout</IonLabel>
+                  </IonButton>
+                  <IonButton
+                    className="text-sm md:text-md lg:text-lg"
+                    onClick={() => setPreventCollision(!preventCollision)}
+                    color={"primary"}
+                    fill={preventCollision ? "solid" : "outline"}
+                    size="small"
+                  >
+                    <IonIcon icon={contractOutline} className="mx-1" />
+                    <IonLabel className="mx-1">
+                      Collision: {preventCollision ? "Off" : "On"}
+                    </IonLabel>
+                  </IonButton>
+                  <IonButton
+                    onClick={handleLayoutReload}
+                    color="primary"
+                    fill="outline"
+                    size="small"
+                    className="text-sm md:text-md lg:text-lg"
+                  >
+                    <IonIcon icon={appsOutline} className="mx-1" />
+                    <IonLabel className="mx-1">Reload</IonLabel>
+                  </IonButton>
+                </IonButtons>
+              </div>
+            )}
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
@@ -338,7 +386,7 @@ const EditBoardScreen: React.FC = () => {
           <div className="mt-2 hidden" ref={layoutTab}>
             <div className="my-2">
               {board && board.images && board.images.length > 0 && (
-                <div className="pb-10">
+                <div className="">
                   <p className="text-center font-bold text-lg">
                     This board currently has {board.images.length} images.
                   </p>
@@ -354,7 +402,7 @@ const EditBoardScreen: React.FC = () => {
                     screens with {numberOfColumns} columns.
                   </p>
                   <div>
-                    <div className="w-5/6 md:w-1/2 mx-auto flex justify-center items-center mt-6">
+                    <div className="w-5/6 md:w-1/2 mx-auto flex justify-center items-center mt-6 mb-2">
                       <IonSelect
                         value={xMargin}
                         placeholder="X Margin"
@@ -388,7 +436,7 @@ const EditBoardScreen: React.FC = () => {
                         ))}
                       </IonSelect>
                     </div>
-                    <div className="my-5">
+                    {/* <div className="my-5">
                       <IonButtons className="grid grid-cols-2 md:grid-cols-3 gap-1">
                         <IonButton
                           className="text-sm md:text-md lg:text-lg"
@@ -433,7 +481,7 @@ const EditBoardScreen: React.FC = () => {
                           <IonLabel className="mx-1">Reload</IonLabel>
                         </IonButton>
                       </IonButtons>
-                    </div>
+                    </div> */}
                     {board && (
                       <DraggableGrid
                         board={board}
@@ -465,52 +513,7 @@ const EditBoardScreen: React.FC = () => {
                 </div>
               )}
             </div>
-            <div className="mt-5">
-              <IonButtons className="grid grid-cols-2 md:grid-cols-3 gap-1">
-                <IonButton
-                  className="text-sm md:text-md lg:text-lg"
-                  onClick={() => setOpenAlert(true)}
-                  color={"danger"}
-                  fill="outline"
-                  size="small"
-                >
-                  <IonIcon icon={appsOutline} className="mx-1" />
-                  <IonLabel className="mx-1">Reset Layout </IonLabel>
-                </IonButton>
 
-                <IonButton
-                  className="text-sm md:text-md lg:text-lg"
-                  onClick={handleSaveLayout}
-                  size="small"
-                  fill="outline"
-                >
-                  <IonIcon icon={saveOutline} className="mx-1" />
-                  <IonLabel className="mx-1">Save Layout</IonLabel>
-                </IonButton>
-                <IonButton
-                  className="text-sm md:text-md lg:text-lg"
-                  onClick={() => setPreventCollision(!preventCollision)}
-                  color={"primary"}
-                  fill={preventCollision ? "solid" : "outline"}
-                  size="small"
-                >
-                  <IonIcon icon={contractOutline} className="mx-1" />
-                  <IonLabel className="mx-1">
-                    Collision: {preventCollision ? "Off" : "On"}
-                  </IonLabel>
-                </IonButton>
-                <IonButton
-                  onClick={handleLayoutReload}
-                  color="primary"
-                  fill="outline"
-                  size="small"
-                  className="text-sm md:text-md lg:text-lg"
-                >
-                  <IonIcon icon={appsOutline} className="mx-1" />
-                  <IonLabel className="mx-1">Reload</IonLabel>
-                </IonButton>
-              </IonButtons>
-            </div>
             <div className="flex justify-between items-center px-4 mt-4">
               <ConfirmAlert
                 onConfirm={handleRearrangeImages}
