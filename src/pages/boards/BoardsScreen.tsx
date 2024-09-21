@@ -59,7 +59,6 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
 
   const fetchBoards = async () => {
     const fetchedBoards = await getBoards(searchInput, page, onlyUserImages);
-    console.log("Fetched boards: ", fetchedBoards);
     if (gridType === "child") {
       if (!currentAccount) {
         console.error("No current account found");
@@ -268,11 +267,42 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
           showMenuButton={!isWideScreen}
           endLink="/boards/new"
         />
+        <IonToolbar className="px-4">
+          {currentUser && (
+            <IonSegment
+              value={segmentType}
+              onIonChange={handleSegmentChange}
+              className="w-full bg-inherit"
+            >
+              <IonSegmentButton value="preset">
+                <IonLabel className="text-sm lg:text-md">Preset</IonLabel>
+                <IonIcon icon={imagesOutline} size="small" className="" />
+              </IonSegmentButton>
+              <IonSegmentButton value="user">
+                <IonLabel className="text-sm lg:text-md">Your Boards</IonLabel>
+                <IonIcon icon={personOutline} size="small" className="" />
+              </IonSegmentButton>
+            </IonSegment>
+          )}
+          <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-1 mt-6">
+            <div className="">
+              <IonSearchbar
+                debounce={1000}
+                onIonInput={handleSearchInput}
+                onIonClear={() => clearInput()}
+                animated={true}
+                value={searchInput}
+                placeholder="Search boards"
+              ></IonSearchbar>
+            </div>
+            <div className="w-3/4 mx-auto">{categoryDropdown()}</div>
+          </div>
+        </IonToolbar>
         <IonContent className="ion-padding">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <IonToolbar>
+          {/* <IonToolbar>
             {currentUser && (
               <IonSegment
                 value={segmentType}
@@ -291,8 +321,21 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
                 </IonSegmentButton>
               </IonSegment>
             )}
-          </IonToolbar>
-          <div className="w-full md:w-34 lg:w-2/3 mx-auto grid grid-cols-1 md:grid-cols-2 gap-1 mt-6">
+            <div className="w-full md:w-34 lg:w-2/3 mx-auto grid grid-cols-1 md:grid-cols-2 gap-1 mt-6">
+              <div className="">
+                <IonSearchbar
+                  debounce={1000}
+                  onIonInput={handleSearchInput}
+                  onIonClear={() => clearInput()}
+                  animated={true}
+                  value={searchInput}
+                  placeholder="Search boards"
+                ></IonSearchbar>
+              </div>
+              <div className="w-1/2 mx-auto">{categoryDropdown()}</div>
+            </div>
+          </IonToolbar> */}
+          {/* <div className="w-full md:w-34 lg:w-2/3 mx-auto grid grid-cols-1 md:grid-cols-2 gap-1 mt-6">
             <div className="">
               <IonSearchbar
                 debounce={1000}
@@ -304,7 +347,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
               ></IonSearchbar>
             </div>
             <div className="w-1/2 mx-auto">{categoryDropdown()}</div>
-          </div>
+          </div> */}
           {segmentType === "user" && renderBoardGrid("user", boards)}
 
           {segmentType === "preset" && renderBoardGrid("preset", presetBoards)}

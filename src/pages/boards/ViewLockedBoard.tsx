@@ -176,7 +176,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   return (
     <IonPage id="view-board-page">
       <IonHeader className="bg-inherit shadow-none">
-        <IonToolbar>
+        <IonToolbar className="mb-3">
           <IonButtons slot="start">
             {board && (
               <IonButton routerLink={`/boards/${board.id}`} fill="clear">

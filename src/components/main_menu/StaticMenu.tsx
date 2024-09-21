@@ -48,6 +48,10 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
     if (!isWideScreen) {
       hideSelf();
     }
+    window.addEventListener("resize", hideSelf);
+    return () => {
+      window.removeEventListener("resize", hideSelf);
+    };
   }, []);
   useEffect(() => {
     if (!isWideScreen) {
@@ -56,6 +60,7 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
   }, [isWideScreen]);
 
   const hideSelf = () => {
+    console.log("hideSelf");
     if (menuRef.current) {
       menuRef.current.style.display = "none";
     }
@@ -64,7 +69,6 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
   const feature1Image = getImageUrl("round_itty_bitty_logo_1", "png");
   useEffect(() => {
     const list = getFilterList(currentUser, currentAccount);
-    console.log("list", list);
     setFilteredLinks(list);
   }, []);
 

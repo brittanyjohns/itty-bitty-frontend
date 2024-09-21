@@ -216,17 +216,9 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
                   placeholder="Search boards"
                 ></IonSearchbar>
               </div>
-              <div className="w-full mx-auto">{categoryDropdown()}</div>
+              <div className="w-full mx-auto py-3">{categoryDropdown()}</div>
             </div>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent className="ion-padding">
-          <IonRefresher slot="fixed" onIonRefresh={refresh}>
-            <IonRefresherContent></IonRefresherContent>
-          </IonRefresher>
-
-          {allCategories && (
-            <div className="flex justify-center items-center mt-4">
+            {allCategories && (
               <IonSegment value={segmentType} onIonChange={handleSegmentChange}>
                 <IonSegmentButton value="all">
                   <IonIcon icon={infiniteOutline} />
@@ -241,8 +233,13 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
                   <IonLabel>Popular</IonLabel>
                 </IonSegmentButton>
               </IonSegment>
-            </div>
-          )}
+            )}
+          </IonToolbar>
+        </IonHeader>
+        <IonContent className="ion-padding">
+          <IonRefresher slot="fixed" onIonRefresh={refresh}>
+            <IonRefresherContent></IonRefresherContent>
+          </IonRefresher>
 
           {presetBoards && renderBoardGrid()}
         </IonContent>
