@@ -13,6 +13,7 @@ import {
   IonSelect,
   IonSelectOption,
   IonToast,
+  IonToolbar,
   useIonViewWillEnter,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
@@ -279,8 +280,8 @@ const EditBoardScreen: React.FC = () => {
           startIcon={arrowBackCircleOutline}
           startLink={`/boards/${board?.id}`}
         />
-        <IonContent>
-          <IonHeader className="bg-inherit shadow-none">
+        <IonHeader className="ion-no-border">
+          <IonToolbar>
             <IonSegment
               value={segmentType}
               onIonChange={handleSegmentChange}
@@ -303,7 +304,9 @@ const EditBoardScreen: React.FC = () => {
                 <IonIcon className="mt-2" icon={gridOutline} />
               </IonSegmentButton>
             </IonSegment>
-          </IonHeader>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent className="ion-padding">
           <div className=" " ref={editForm}>
             <div className="w-11/12 lg:w-1/2 mx-auto">
               {board && (

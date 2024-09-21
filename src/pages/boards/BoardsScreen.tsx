@@ -272,7 +272,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          <div className="bg-inherit shadow-none w-full md:w-2/3 lg:w-1/2 mx-auto">
+          <IonToolbar>
             {currentUser && (
               <IonSegment
                 value={segmentType}
@@ -291,7 +291,7 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
                 </IonSegmentButton>
               </IonSegment>
             )}
-          </div>
+          </IonToolbar>
           <div className="w-full md:w-34 lg:w-2/3 mx-auto grid grid-cols-1 md:grid-cols-2 gap-1 mt-6">
             <div className="">
               <IonSearchbar

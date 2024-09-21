@@ -7,7 +7,11 @@ import {
 } from "../../data/boards";
 import {
   IonButton,
+  IonButtons,
   IonContent,
+  IonHeader,
+  IonIcon,
+  IonLabel,
   IonLoading,
   IonPage,
   IonRefresher,
@@ -25,7 +29,12 @@ import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import BoardView from "../../components/boards/BoardView";
 import Tabs from "../../components/utils/Tabs";
-import { refresh } from "ionicons/icons";
+import {
+  chatbubbleEllipsesOutline,
+  createOutline,
+  imageOutline,
+  refresh,
+} from "ionicons/icons";
 import { set } from "d3";
 
 const ViewBoard: React.FC<any> = () => {
@@ -145,6 +154,44 @@ const ViewBoard: React.FC<any> = () => {
       <StaticMenu pageTitle="Boards" currentUser={currentUser} />
       <IonPage id="main-content">
         <MainHeader pageTitle={board?.name || "Board"} />
+        <IonHeader className="ion-no-border">
+          <IonToolbar>
+            <div className="flex justify-center items-center my-3">
+              <IonButtons slot="end">
+                {board && (
+                  <IonButton
+                    routerLink={`/boards/${board.id}/locked`}
+                    className="mr-1 text-xs md:text-md lg:text-lg"
+                  >
+                    <IonIcon
+                      icon={chatbubbleEllipsesOutline}
+                      className="mx-2"
+                    />
+                    <IonLabel>Speak</IonLabel>
+                  </IonButton>
+                )}
+                {board && showEdit && (
+                  <IonButton
+                    routerLink={`/boards/${board.id}/edit`}
+                    className="mr-1 text-xs text-xs md:text-md lg:text-lg"
+                  >
+                    <IonIcon icon={createOutline} className="mx-2" />
+                    <IonLabel>Edit</IonLabel>
+                  </IonButton>
+                )}
+                {board && showEdit && (
+                  <IonButton
+                    routerLink={`/boards/${board.id}/gallery`}
+                    className="mr-1 text-xs text-xs md:text-md lg:text-lg"
+                  >
+                    <IonIcon icon={imageOutline} className="mx-2" />
+                    <IonLabel>Add</IonLabel>
+                  </IonButton>
+                )}
+              </IonButtons>
+            </div>
+          </IonToolbar>
+        </IonHeader>
         <IonContent>
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>

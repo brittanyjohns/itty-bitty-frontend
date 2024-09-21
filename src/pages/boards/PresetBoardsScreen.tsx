@@ -203,21 +203,23 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
           showMenuButton={!isWideScreen}
           endLink="/boards/new"
         />
-        <div className="mt-4 mx-auto w-11/12 pt-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
-            <div className="w-full mx-auto">
-              <IonSearchbar
-                debounce={1000}
-                onIonInput={handleSearchInput}
-                onIonClear={() => clearInput()}
-                animated={true}
-                value={searchInput}
-                placeholder="Search boards"
-              ></IonSearchbar>
+        <IonHeader className="ion-no-border">
+          <IonToolbar>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
+              <div className="w-full mx-auto">
+                <IonSearchbar
+                  debounce={1000}
+                  onIonInput={handleSearchInput}
+                  onIonClear={() => clearInput()}
+                  animated={true}
+                  value={searchInput}
+                  placeholder="Search boards"
+                ></IonSearchbar>
+              </div>
+              <div className="w-full mx-auto">{categoryDropdown()}</div>
             </div>
-            <div className="w-full mx-auto">{categoryDropdown()}</div>
-          </div>
-        </div>
+          </IonToolbar>
+        </IonHeader>
         <IonContent className="ion-padding">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>

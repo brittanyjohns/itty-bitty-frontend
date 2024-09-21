@@ -9,6 +9,7 @@ import {
 import {
   IonButton,
   IonButtons,
+  IonHeader,
   IonIcon,
   IonItem,
   IonLabel,
@@ -16,6 +17,7 @@ import {
   IonSelect,
   IonSelectOption,
   IonText,
+  IonToolbar,
 } from "@ionic/react";
 import {
   shareOutline,
@@ -30,7 +32,7 @@ import DraggableGrid from "../images/DraggableGrid";
 import AddToTeamForm from "../teams/AddToTeamForm";
 import { useHistory } from "react-router";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import SideMenu from "../main_menu/SideMenu";
+import MainMenu from "../main_menu/MainMenu";
 import { getScreenSizeName } from "../../data/utils";
 import ConfirmDeleteAlert from "../utils/ConfirmAlert";
 import { set } from "d3";
@@ -136,37 +138,41 @@ const BoardView: React.FC<BoardViewProps> = ({
 
   return (
     <>
-      <div className="flex justify-center items-center my-3">
-        <IonButtons slot="end">
-          {board && (
-            <IonButton
-              routerLink={`/boards/${board.id}/locked`}
-              className="mr-1 text-xs md:text-md lg:text-lg"
-            >
-              <IonIcon icon={chatbubbleEllipsesOutline} className="mx-2" />
-              <IonLabel>Speak</IonLabel>
-            </IonButton>
-          )}
-          {board && showEdit && (
-            <IonButton
-              routerLink={`/boards/${board.id}/edit`}
-              className="mr-1 text-xs text-xs md:text-md lg:text-lg"
-            >
-              <IonIcon icon={createOutline} className="mx-2" />
-              <IonLabel>Edit</IonLabel>
-            </IonButton>
-          )}
-          {board && showEdit && (
-            <IonButton
-              routerLink={`/boards/${board.id}/gallery`}
-              className="mr-1 text-xs text-xs md:text-md lg:text-lg"
-            >
-              <IonIcon icon={imageOutline} className="mx-2" />
-              <IonLabel>Add</IonLabel>
-            </IonButton>
-          )}
-        </IonButtons>
-      </div>
+      {/* <IonHeader className="ion-no-border">
+        <IonToolbar>
+          <div className="flex justify-center items-center my-3">
+            <IonButtons slot="end">
+              {board && (
+                <IonButton
+                  routerLink={`/boards/${board.id}/locked`}
+                  className="mr-1 text-xs md:text-md lg:text-lg"
+                >
+                  <IonIcon icon={chatbubbleEllipsesOutline} className="mx-2" />
+                  <IonLabel>Speak</IonLabel>
+                </IonButton>
+              )}
+              {board && showEdit && (
+                <IonButton
+                  routerLink={`/boards/${board.id}/edit`}
+                  className="mr-1 text-xs text-xs md:text-md lg:text-lg"
+                >
+                  <IonIcon icon={createOutline} className="mx-2" />
+                  <IonLabel>Edit</IonLabel>
+                </IonButton>
+              )}
+              {board && showEdit && (
+                <IonButton
+                  routerLink={`/boards/${board.id}/gallery`}
+                  className="mr-1 text-xs text-xs md:text-md lg:text-lg"
+                >
+                  <IonIcon icon={imageOutline} className="mx-2" />
+                  <IonLabel>Add</IonLabel>
+                </IonButton>
+              )}
+            </IonButtons>
+          </div>
+        </IonToolbar>
+      </IonHeader> */}
       <div className=" my-2 text-center">
         <IonButtons className="flex justify-center">
           <IonButton

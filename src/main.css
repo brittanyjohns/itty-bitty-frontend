@@ -14,13 +14,11 @@
   --tw-ring-shadow: none;
 }
 
-/* background-color: rgb(17 24 39 / var(--tw-bg-opacity)); */
-
 ion-toolbar {
   /* --background: #18547e; */
-  --tw-bg-opacity: 1;
+  /* --tw-bg-opacity: 1;
   --background: rgb(24, 24, 24);
-  --color: rgb(238, 238, 238);
+  --color: rgb(238, 238, 238); */
 
   /* --border-color: #255380; */
   /* --border-width: 2px 0; */
@@ -35,14 +33,14 @@ ion-toolbar {
 /* font-weight: 700; */
 /* } */
 
-ion-toolbar ion-buttons {
-  /* --padding-start: 10px; */
-  /* --padding-end: 10px; */
-}
-
 ion-toolbar ion-buttons ion-button {
   --color: rgb(238, 238, 238);
 }
+/* 
+.secondary-toolbar {
+  --background: rgb(24, 24, 24) !important;
+  --color: rgb(238, 238, 238);
+} */
 
 ion-toolbar ion-buttons ion-button:hover {
   --color: rgb(238, 238, 238);

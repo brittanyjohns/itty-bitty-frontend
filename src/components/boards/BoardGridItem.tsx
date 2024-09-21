@@ -62,7 +62,7 @@ const BoardGridItem: React.FC<BoardListItemProps> = ({
           alt={board.name}
           className="ion-img-contain mx-auto"
         />
-        <IonText className="text-md md:text-lg">
+        <IonText className="text-sm md:text-md font-semibold">
           {board.name.length > 50
             ? `${board.name.substring(0, 50)}...`
             : board.name}
