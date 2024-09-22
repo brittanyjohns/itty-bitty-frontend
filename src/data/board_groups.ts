@@ -29,6 +29,21 @@ export async function getBoardGroups(): Promise<BoardGroupsResponse> {
   const boardGroups: BoardGroupsResponse = await response.json();
   return boardGroups;
 }
+export const getPresetBoardGroups = (
+  searchTerm: string,
+  page: number,
+  filter?: string
+) => {
+  const boards = fetch(
+    `${BASE_URL}board_groups/preset?page=${page}&query=${searchTerm}&filter=${filter}`,
+    { headers: userHeaders }
+  )
+    .then((response) => response.json())
+    .then((data) => data)
+    .catch((error) => console.error("Error fetching data: ", error));
+
+  return boards;
+};
 
 export async function createBoardGroup(
   name: string,

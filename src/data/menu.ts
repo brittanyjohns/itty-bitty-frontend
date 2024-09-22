@@ -26,6 +26,7 @@ import {
   searchCircleOutline,
   searchCircle,
   searchSharp,
+  albumsOutline,
 } from "ionicons/icons";
 const menuLinks: MenuLink[] = [
   {
@@ -66,6 +67,13 @@ const menuLinks: MenuLink[] = [
     id: 333333,
   },
   {
+    endpoint: "/board-categories",
+    name: "Board Categories",
+    slug: "board-categories",
+    icon: bookOutline,
+    id: 111111,
+  },
+  {
     endpoint: "/board-groups",
     name: "Groups",
     slug: "groups",
@@ -77,7 +85,7 @@ const menuLinks: MenuLink[] = [
     endpoint: "/boards",
     name: "Boards",
     slug: "boards",
-    icon: gridOutline,
+    icon: albumsOutline,
     id: 4,
   },
   {
@@ -171,6 +179,7 @@ const menuLinks: MenuLink[] = [
     icon: searchSharp,
     id: 9999,
   },
+
   // {
   //   endpoint: "/child-accounts/sign-out",
   //   name: "Sign Out",

@@ -11,6 +11,10 @@ import {
   settingsOutline,
   searchSharp,
   gridOutline,
+  infinite,
+  infiniteOutline,
+  flower,
+  flowerOutline,
 } from "ionicons/icons";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { toggleMainMenu } from "../../pages/MainHeader";

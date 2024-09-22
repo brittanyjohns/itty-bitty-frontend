@@ -53,7 +53,7 @@ const BoardGroupView: React.FC<BoardViewProps> = ({
         <IonButtons slot="end">
           {boardGroup && (
             <IonButton
-              routerLink={`/board-groups/${boardGroup.id}/locked`}
+              routerLink={`/board-groups/${boardGroup.id}/speak`}
               className="mr-1 text-xs md:text-md lg:text-lg"
             >
               <IonIcon icon={chatbubbleEllipsesOutline} className="mx-2" />

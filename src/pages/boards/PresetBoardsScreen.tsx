@@ -66,13 +66,18 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
 
   useEffect(() => {
     const presetBoards = fetchBoardPayload["predefined_boards"];
-    const popularBoards = fetchBoardPayload["popular_boards"];
+    const welcomeBoards = fetchBoardPayload["welcome_boards"];
     const categories = fetchBoardPayload["categories"];
     const allCategories = fetchBoardPayload["all_categories"];
+
     setAllCategories(allCategories);
     setCategories(categories);
 
-    setPresetBoards(presetBoards);
+    if (segmentType === "welcome") {
+      setPresetBoards(welcomeBoards);
+    } else {
+      setPresetBoards(presetBoards);
+    }
   }, [fetchBoardPayload]);
 
   const handleSearchInput = async (event: CustomEvent) => {
@@ -95,7 +100,12 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
   }, [searchInput, page, filter]);
 
   useEffect(() => {
-    setSegmentType("all");
+    if (searchInput !== "") {
+      setSegmentType("all");
+    } else {
+      setSegmentType("welcome");
+      setFilter("");
+    }
   }, [searchInput]);
 
   const refresh = (e: CustomEvent) => {
@@ -108,17 +118,18 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
   const clearSearchFields = () => {
     setSelectedCategory("");
     setSearchInput("");
+    setSegmentType("welcome");
     fetchBoards();
     console.log("Clearing search fields");
   };
 
   useEffect(() => {
-    if (segmentType === "featured") {
-      setPageTitle("Featured Boards");
+    if (segmentType === "welcome") {
+      setPageTitle("Welcome to SpeakAnyWay!");
     } else if (segmentType === "preset") {
       setPageTitle("Preset Boards");
-    } else if (segmentType === "popular") {
-      setPageTitle("Popular Boards");
+    } else if (segmentType === "featured") {
+      setPageTitle("Featured Boards");
     } else {
       setPageTitle("All Boards");
     }
@@ -130,14 +141,16 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
     return (
       <>
         {/* <h1 className="text-center text-2xl font-bold mt-4">{segmentType}</h1> */}
-        {presetBoards && <BoardGrid boards={presetBoards} noBoardsMsg={""} />}
+        {presetBoards && (
+          <BoardGrid boards={presetBoards} noBoardsMsg={""} goToSpeak={true} />
+        )}
       </>
     );
   };
 
   useIonViewWillLeave(() => {
-    console.log("ionViewWillLeave event fired");
-    setSegmentType("all");
+    setSegmentType("welcome");
+    setSearchInput("");
   }, []);
 
   const handleCategoryChange = (e: any) => {
@@ -209,7 +222,7 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
         />
         <IonHeader className="ion-no-border">
           <IonToolbar>
-            <div className="w-full mx-auto">
+            <div className="w-5/6 md:w-3/4 mx-auto">
               <div className="flex justify-center items-center my-3">
                 <IonSearchbar
                   debounce={1000}
@@ -217,30 +230,30 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
                   onIonClear={() => clearInput()}
                   animated={true}
                   value={searchInput}
-                  placeholder="Search boards"
+                  placeholder="Search preset boards"
                 ></IonSearchbar>
               </div>
               {categoryDropdown()}
             </div>
-            {allCategories && (
-              <IonSegment value={segmentType} onIonChange={handleSegmentChange}>
-                <IonSegmentButton value="all">
-                  <IonIcon icon={infiniteOutline} />
-                  <IonLabel>All</IonLabel>
-                </IonSegmentButton>
-                <IonSegmentButton value="featured">
-                  <IonIcon icon={ribbonOutline} />
-                  <IonLabel>Featured</IonLabel>
-                </IonSegmentButton>
-                <IonSegmentButton value="popular">
-                  <IonIcon icon={podiumOutline} />
-                  <IonLabel>Popular</IonLabel>
-                </IonSegmentButton>
-              </IonSegment>
-            )}
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
+          {allCategories && (
+            <IonSegment value={segmentType} onIonChange={handleSegmentChange}>
+              <IonSegmentButton value="all">
+                <IonIcon icon={infiniteOutline} />
+                <IonLabel>All</IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="welcome">
+                <IonIcon icon={ribbonOutline} />
+                <IonLabel>Welcome</IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="featured">
+                <IonIcon icon={podiumOutline} />
+                <IonLabel>Featured</IonLabel>
+              </IonSegmentButton>
+            </IonSegment>
+          )}
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>

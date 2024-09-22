@@ -40,6 +40,7 @@ const SignInScreen: React.FC = () => {
       console.log("Sign in response: ", response);
       if (response && response.token) {
         localStorage.setItem("token", response.token);
+        localStorage.removeItem("child_token"); // Remove child token if exists
         setCurrentUser(response.user);
         history.push("/welcome");
         window.location.reload();

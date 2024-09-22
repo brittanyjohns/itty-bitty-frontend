@@ -40,16 +40,15 @@ import ConfirmAlert from "../utils/ConfirmAlert";
 
 interface BoardViewProps {
   board: Board;
-  showEdit: boolean;
+  showEdit?: boolean;
   currentUserTeams?: any;
   inputRef?: any;
-  setShowIcon: any;
-  showLoading: boolean;
+  setShowIcon?: any;
+  showLoading?: boolean;
   imageCount?: number;
   numOfColumns: number;
   // handleClone?: any;
-  showShare?: boolean;
-  setShowLoading: any;
+  setShowLoading?: any;
 }
 
 const BoardView: React.FC<BoardViewProps> = ({

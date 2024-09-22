@@ -107,6 +107,7 @@ export const getFilterList = (
   const adminLinks = [
     "home",
     "groups",
+    "board-categories",
     "dashboard",
     "sign-out",
     "boards",

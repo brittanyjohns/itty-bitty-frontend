@@ -93,6 +93,7 @@ import ViewScenario from "./pages/scenarios/ViewScenario";
 import SearchGoogleImages from "./pages/utils/SearchGoogleImages";
 import PresetBoardsScreen from "./pages/boards/PresetBoardsScreen";
 import UserPage from "./pages/admin/UserPage";
+import PresetBoardGroupsScreen from "./pages/board_groups/PresetBoardGroupsScreen";
 
 const UserRoutes: React.FC = () => (
   <UserProvider>
@@ -103,6 +104,17 @@ const UserRoutes: React.FC = () => (
         <Route
           path="/image-search"
           component={SearchGoogleImages}
+          exact={true}
+        />
+
+        <Route
+          path="/board-categories"
+          component={PresetBoardGroupsScreen}
+          exact={true}
+        />
+        <Route
+          path="/categories"
+          component={PresetBoardGroupsScreen}
           exact={true}
         />
 
@@ -145,7 +157,7 @@ const UserRoutes: React.FC = () => (
           component={EditBoardGroupScreen}
           exact={true}
         />
-        <Route path="/board-groups/:id/locked" exact={true}>
+        <Route path="/board-groups/:id/speak" exact={true}>
           <ViewBoardGroup locked={true} />
         </Route>
         {/* <Route path="/board-groups/:id/edit" component={EditBoardGroup} exact={true} /> */}
@@ -156,7 +168,7 @@ const UserRoutes: React.FC = () => (
         />
         <Route path="/boards/:id" component={ViewBoard} exact={true} />
         <Route
-          path="/boards/:id/locked"
+          path="/boards/:id/speak"
           component={ViewLockedBoard}
           exact={true}
         />
@@ -182,7 +194,7 @@ const UserRoutes: React.FC = () => (
           <BoardsScreen gridType="user" />
         </Route>
         <Route path="/preset" exact={true}>
-          <PresetBoardsScreen initialSegmentType="all" />
+          <PresetBoardsScreen initialSegmentType="welcome" />
         </Route>
         <Route path="/preset/featured" exact={true}>
           <PresetBoardsScreen initialSegmentType="featured" />

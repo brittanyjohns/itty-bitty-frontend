@@ -24,6 +24,7 @@ interface BoardListItemProps {
   inputRef?: React.RefObject<HTMLInputElement>;
   showRemoveBtn?: boolean;
   removeChildBoard?: any;
+  goToSpeak?: boolean;
 }
 
 const BoardGridItem: React.FC<BoardListItemProps> = ({
@@ -31,6 +32,7 @@ const BoardGridItem: React.FC<BoardListItemProps> = ({
   gridType,
   showRemoveBtn,
   removeChildBoard,
+  goToSpeak,
 }) => {
   const { currentUser, currentAccount } = useCurrentUser();
   const history = useHistory();
@@ -40,6 +42,10 @@ const BoardGridItem: React.FC<BoardListItemProps> = ({
   );
 
   const handleBoardClick = (board: any) => {
+    if (goToSpeak) {
+      history.push(`/boards/${board.id}/speak`);
+      return;
+    }
     if (currentAccount) {
       history.push(`/child-boards/${board.id}`);
     } else if (gridType === "child") {

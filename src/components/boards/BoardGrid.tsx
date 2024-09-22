@@ -11,11 +11,13 @@ interface BoardGridProps {
   loadBoards?: any;
   searchInput?: string;
   noBoardsMsg?: string;
+  goToSpeak?: boolean;
 }
 const BoardGrid = ({
   boards,
   gridType,
   loadBoards,
+  goToSpeak,
   noBoardsMsg = "No boards found",
 }: BoardGridProps) => {
   const { currentUser } = useCurrentUser();
@@ -58,6 +60,7 @@ const BoardGrid = ({
               <BoardGridItem
                 board={board}
                 gridType={gridType}
+                goToSpeak={goToSpeak}
                 showRemoveBtn={
                   currentUser && gridType === "child" ? true : false
                 }

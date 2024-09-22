@@ -160,7 +160,7 @@ const ViewBoard: React.FC<any> = () => {
               <IonButtons slot="end">
                 {board && (
                   <IonButton
-                    routerLink={`/boards/${board.id}/locked`}
+                    routerLink={`/boards/${board.id}/speak`}
                     className="mr-1 text-xs md:text-md lg:text-lg"
                   >
                     <IonIcon
