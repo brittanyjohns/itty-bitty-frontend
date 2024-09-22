@@ -367,7 +367,6 @@ const ViewMenuScreen: React.FC<ViewMenuScreenProps> = () => {
                 showEdit={menu?.can_edit || false}
                 currentUserTeams={currentUserTeams}
                 setShowIcon={setShowIcon}
-                showShare={false} // Temporarily set to false
                 numOfColumns={numOfColumns}
                 showLoading={false}
               />

@@ -201,7 +201,6 @@ const ViewBoard: React.FC<any> = () => {
             <BoardView
               board={board}
               showEdit={showEdit}
-              showShare={true}
               setShowIcon={setShowIcon}
               inputRef={inputRef}
               numOfColumns={numOfColumns}

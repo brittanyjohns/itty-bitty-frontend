@@ -153,7 +153,6 @@ const ViewScenario: React.FC<ViewScenarioProps> = ({ mode }) => {
             <BoardView
               board={scenario.board}
               showEdit={showEdit}
-              showShare={true}
               setShowIcon={setShowIcon}
               inputRef={inputRef}
               numOfColumns={numOfColumns}
