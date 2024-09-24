@@ -60,12 +60,12 @@ const ImagesScreen: React.FC = () => {
 
   const fetchAllImages = async () => {
     const fetchedImages = await getImages();
-    setImages(fetchedImages);
     setAllImages(fetchedImages);
   };
 
   useIonViewWillEnter(() => {
-    fetchImages();
+    setSegmentType("all");
+    setImages(allImages);
   }, []);
 
   const handleGetMoreImages = async (
@@ -98,14 +98,6 @@ const ImagesScreen: React.FC = () => {
 
   const handleSegmentChange = (e: CustomEvent): void => {
     setSegmentType(e.detail.value);
-
-    if (e.detail.value === "all") {
-      fetchAllImages();
-      setPageTitle("Image Gallery");
-    } else {
-      fetchUserImages();
-      setPageTitle("Your Images");
-    }
   };
 
   const handleCreateImage = async (label: string) => {
@@ -121,6 +113,13 @@ const ImagesScreen: React.FC = () => {
   };
 
   useEffect(() => {
+    // if (e.detail.value === "all") {
+    //   fetchAllImages();
+    //   setPageTitle("Image Gallery");
+    // } else {
+    //   fetchUserImages();
+    //   setPageTitle("Your Images");
+    // }
     if (segmentType === "all") {
       setOnlyUserImages(false);
       setImages(allImages);
