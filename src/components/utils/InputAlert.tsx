@@ -29,7 +29,7 @@ const InputAlert: React.FC<InputAlertProps> = ({
       }
       onInputChange(inputToSet);
     }
-    if (role === "confirm") {
+    if (onConfirm && role === "confirm") {
       onConfirm();
     }
     if (role === "cancel") {
