@@ -546,7 +546,7 @@ const ViewImageScreen: React.FC = () => {
       // return;
     } else {
       setConfirmDeleteDocMessage(
-        `Are you sure you want to delete this image? This action cannot be undone. ${doc.id}`
+        `Are you sure you want to delete this image? This action cannot be undone.`
       );
 
       setDocToDelete(doc);
