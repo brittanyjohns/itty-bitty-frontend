@@ -6,8 +6,11 @@ import {
   IonButtons,
   IonTitle,
   IonActionSheet,
+  IonIcon,
 } from "@ionic/react";
 import { generatePlaceholderImage } from "../../data/utils";
+import { personCircleOutline, trashBinOutline } from "ionicons/icons";
+import { useCurrentUser } from "../../contexts/UserContext";
 
 const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
   images,
@@ -18,6 +21,12 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
   const [remainingImages, setRemainingImages] = useState<Image[]>(images);
   const [page, setPage] = useState(1);
   const [showActionList, setShowActionList] = useState(false);
+  const { currentUser } = useCurrentUser();
+
+  const isUserImage = (image: Image) => {
+    return image.user_id === currentUser?.id;
+  };
+
   // const placeholderUrl = useMemo(() => generatePlaceholderImage(image.label), [image.label]);
   const fetchImages = async () => {
     if (searchInput.length > 1) {
@@ -77,8 +86,20 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
                 <IonImg
                   src={image.src || generatePlaceholderImage(image.label)}
                   alt={image.label}
-                  className="absolute object-contain w-full h-full top-0 left-0"
+                  className="ion-img-contain mx-auto"
+                  style={{ width: "100%", height: "auto" }} // Make sure the image takes full width
                 />
+
+                {isUserImage(image) && (
+                  <IonIcon
+                    slot="icon-only"
+                    icon={personCircleOutline}
+                    size="small"
+                    color="dark"
+                    title="Your image"
+                    className="tiny absolute top-0 right-0 m-1 shadow-md bg-white bg-opacity-90 rounded-full p-1"
+                  />
+                )}
                 <div
                   className={`font-medium text-xs md:text-sm lg:text-md rounded-sm shadow-md bg-white bg-opacity-95 overflow-hidden absolute bottom-0 left-0 right-0 p-0 mt-2`}
                 >

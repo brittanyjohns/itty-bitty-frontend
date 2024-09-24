@@ -15,24 +15,22 @@ const InputAlert: React.FC<InputAlertProps> = ({
   onDidDismiss,
   openAlert,
   onInputChange,
+  onConfirm,
   initialValue,
 }) => {
   const handleDismiss = (event: CustomEvent) => {
     let inputToSet = event.detail.data.values.name;
     const role = event.detail.role;
-    console.log(`Dismissed with  input: ${inputToSet}`);
-    console.log("event", event);
     if (inputToSet && role === "confirm") {
       console.log("inputToSet", inputToSet);
       if (inputToSet === "") {
-        console.log(
-          "inputToSet is empty - setting to initialValue",
-          initialValue
-        );
         inputToSet = initialValue;
         return;
       }
       onInputChange(inputToSet);
+    }
+    if (role === "confirm") {
+      onConfirm();
     }
     if (role === "cancel") {
       onCanceled();

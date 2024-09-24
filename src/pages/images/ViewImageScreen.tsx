@@ -337,10 +337,12 @@ const ViewImageScreen: React.FC = () => {
 
   const handleInputChange = (str: string) => {
     setNewName(str);
-    handleCloneImage(str);
+    // handleCloneImage(str);
   };
 
   const handleCloneImage = async (name: string) => {
+    console.log("Cloning image: ", image);
+    console.log("New name: ", name);
     if (!image) return;
     setShowLoading(true);
     const result = await cloneImage(image.id, name);
@@ -731,6 +733,12 @@ const ViewImageScreen: React.FC = () => {
                     onCanceled={() => setOpenAlert(false)}
                     openAlert={openAlert}
                     onInputChange={handleInputChange}
+                    onDidDismiss={() => {
+                      setOpenAlert(false);
+                    }}
+                    onConfirm={() => {
+                      handleCloneImage(newName);
+                    }}
                     initialValue={image?.label}
                   />
                   {currentUser?.id === image?.user_id && (
