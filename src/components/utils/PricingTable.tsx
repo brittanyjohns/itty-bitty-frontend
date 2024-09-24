@@ -63,7 +63,7 @@ function PricingTable({ showHeader = true }: PricingTableProps) {
               <ul className="mt-4 text-left text-sm md:text-base">
                 <li>
                   <IonIcon icon={checkmarkCircleOutline} className="mr-2" />
-                  Unlimited Custom Boards
+                  Create up to 8 boards
                 </li>
                 <li>
                   <IonIcon icon={checkmarkCircleOutline} className="mr-2" />
@@ -75,7 +75,7 @@ function PricingTable({ showHeader = true }: PricingTableProps) {
                 </li>
                 <li>
                   <IonIcon icon={checkmarkCircleOutline} className="mr-2" />
-                  Basic Voice Output
+                  Natural Voice Output
                 </li>
                 <li>
                   <IonIcon icon={checkmarkCircleOutline} className="mr-2" />

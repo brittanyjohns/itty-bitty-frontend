@@ -229,7 +229,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
             <div className="flex flex-col items-center mt-8">
               <input
                 type="file"
-                id="file_field"
+                // id="file_field"
                 accept="image/*"
                 className="cursor-pointer"
                 onChange={onFileChange}

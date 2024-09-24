@@ -65,7 +65,7 @@ const ImagesScreen: React.FC = () => {
 
   useIonViewWillEnter(() => {
     setSegmentType("all");
-    setImages(allImages);
+    fetchImages();
   }, []);
 
   const handleGetMoreImages = async (
@@ -120,6 +120,7 @@ const ImagesScreen: React.FC = () => {
     //   fetchUserImages();
     //   setPageTitle("Your Images");
     // }
+    console.log("segmentType", segmentType);
     if (segmentType === "all") {
       setOnlyUserImages(false);
       setImages(allImages);
