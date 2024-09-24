@@ -31,6 +31,7 @@ const EditImageScreen: React.FC = (props: any) => {
     src: "",
     label: "",
     bg_color: "",
+    audio_url: "",
   });
 
   useIonViewWillEnter(() => {

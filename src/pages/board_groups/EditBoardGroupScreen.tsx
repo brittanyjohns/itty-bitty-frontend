@@ -66,6 +66,7 @@ const EditBoardGroupScreen: React.FC<EditBoardGroupProps> = ({
     audio: "",
     bg_color: "",
     layout: [],
+    audio_url: "",
   };
   const [image, setImage] = useState<Image | null>(initialImage);
 
