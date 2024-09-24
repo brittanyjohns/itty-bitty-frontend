@@ -29,13 +29,19 @@ const AudioList: React.FC<AudioListProps> = ({
   afterSetCurrentAudio,
 }) => {
   const [audioFiles, setAudioFiles] = useState(image.audio_files);
+  const [defaultAudioFiles, setDefaultAudioFiles] = useState(
+    image.audio_files || []
+  );
+  const [customAudioFiles, setCustomAudioFiles] = useState(
+    image.custom_audio_files
+  );
   const { currentUser } = useCurrentUser();
 
   useEffect(() => {
-    if (currentUser?.admin) {
-      setAudioFiles(image.audio_files);
+    if (image.can_edit) {
+      setAudioFiles(defaultAudioFiles.concat(customAudioFiles));
     } else {
-      setAudioFiles(image.custom_audio_files);
+      setAudioFiles(defaultAudioFiles);
     }
   }, [currentUser, image]);
   const handleDeleteAudioFile = async (
@@ -64,11 +70,11 @@ const AudioList: React.FC<AudioListProps> = ({
     <div>
       {image && image.audio_files && image.audio_files.length > 0 && (
         <div className="w-full md:w-5/6 mx-auto text-center">
+          {image.audio_url}
           <IonLabel className="font-bold text-sm md:text-md lg:text-lg">
             Audio Files
           </IonLabel>
           <IonList>
-            {/* This needs pulled out into a separate component */}
             {audioFiles &&
               audioFiles.map(
                 (

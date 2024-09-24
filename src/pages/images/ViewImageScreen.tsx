@@ -20,6 +20,7 @@ import {
   IonText,
   IonTextarea,
   IonToast,
+  useIonViewDidLeave,
   useIonViewWillEnter,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
@@ -341,12 +342,14 @@ const ViewImageScreen: React.FC = () => {
 
   const handleCloneImage = async (name: string) => {
     if (!image) return;
+    setShowLoading(true);
     const result = await cloneImage(image.id, name);
     if (result) {
       history.push(`/images/${result.id}`);
     } else {
       alert("Error cloning image.");
     }
+    setShowLoading(false);
   };
   const handleAddNextWords = async () => {
     if (!image) return;
@@ -435,11 +438,6 @@ const ViewImageScreen: React.FC = () => {
         </div>
       );
     }
-  };
-
-  const handleSetSearchButtonRef = (ref: any) => {
-    console.log("Setting search button ref: ", ref);
-    setSearchButtonRef(ref);
   };
 
   const wordBgColor = (word: string) => {
@@ -540,7 +538,6 @@ const ViewImageScreen: React.FC = () => {
 
   const handleConfirmRemoveDoc = (doc: ImageDoc) => {
     if (doc.user_id !== currentUser?.id && !currentUser?.admin) {
-      // alert("You do not have permission to delete this image.");
       setConfirmDeleteDocMessage(
         `You do not have permission to delete this image.`
       );
@@ -562,8 +559,6 @@ const ViewImageScreen: React.FC = () => {
     const result = await removeImageFromBoard(board.id, image.id);
     if (result["status"] === "ok") {
       getData();
-
-      // return result;
     } else {
       alert("Error removing image from board");
     }
@@ -571,6 +566,12 @@ const ViewImageScreen: React.FC = () => {
 
   useIonViewWillEnter(() => {
     setupData();
+  }, []);
+
+  useIonViewDidLeave(() => {
+    setShowLoading(false);
+    setSegmentType("gallery");
+    toggleForms("gallery");
   }, []);
 
   return (
@@ -875,7 +876,7 @@ const ViewImageScreen: React.FC = () => {
               <h1 className="text-xl">Upload Custom Audio</h1>
 
               <IonInput
-                placeholder="Label your audio"
+                placeholder="Name of audio file"
                 value={newAudioLabel}
                 onIonChange={(e: any) => setNewAudioLabel(e.detail.value || "")}
               ></IonInput>
@@ -928,7 +929,6 @@ const ViewImageScreen: React.FC = () => {
                   className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 mt-3 p-2"
                   ref={imageGrid}
                 >
-                  {/* This needs pulled out into a separate component */}
                   {image?.docs &&
                     image.docs.map((doc, index) => (
                       <div

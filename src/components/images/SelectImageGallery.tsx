@@ -7,8 +7,6 @@ import {
   IonTitle,
   IonActionSheet,
 } from "@ionic/react";
-import { useHistory } from "react-router";
-import { addImageToBoard } from "../../data/boards";
 import { generatePlaceholderImage } from "../../data/utils";
 
 const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
@@ -20,9 +18,7 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
   const [remainingImages, setRemainingImages] = useState<Image[]>(images);
   const [page, setPage] = useState(1);
   const [showActionList, setShowActionList] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
   // const placeholderUrl = useMemo(() => generatePlaceholderImage(image.label), [image.label]);
-  const [userBoards, setUserBoards] = useState([]);
   const fetchImages = async () => {
     if (searchInput.length > 1) {
       setPage(1);
@@ -75,8 +71,6 @@ const SelectImageGallery: React.FC<SelectImageGalleryProps> = ({
                   image.bg_color || "bg-white"
                 } rounded-sm`}
                 onClick={(event) => handleOnImageClick(event, image)}
-                // onTouchStart={() => handleButtonPress(image)}
-                // onTouchEnd={handleButtonRelease}
                 key={image.id}
                 id={`image_${image.id}`}
               >
