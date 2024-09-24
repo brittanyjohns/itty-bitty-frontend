@@ -37,7 +37,6 @@ const ChildBoardDropdown: React.FC<ChildBoardDropdownProps> = ({
 
   const handleSelectChange = (e: CustomEvent) => {
     const boardId = e.detail.value;
-    console.log("boardId", boardId);
     setShowLoading(true);
     async function addSelectedBoardToAccount() {
       const response = await assignBoardToChildAccount(

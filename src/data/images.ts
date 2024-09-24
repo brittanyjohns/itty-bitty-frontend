@@ -16,6 +16,7 @@ export interface Image {
   id: string;
   user_id?: string;
   src: string | null;
+  audio_url: string | null;
   label: string;
   image_prompt?: string;
   audio?: string;
@@ -44,6 +45,7 @@ export interface Image {
   created_at?: string;
   updated_at?: string;
   audio_files?: any[];
+  custom_audio_files?: any[];
   can_edit?: boolean;
 }
 
@@ -172,6 +174,38 @@ export const updateImage = (formData: FormData) => {
     .then((response) => response.json())
     .then((data) => data)
     .catch((error) => console.error("Error updating image: ", error));
+
+  return img;
+};
+
+export const uploadAudioFile = (imageId: string, formData: FormData) => {
+  const img = fetch(`${BASE_URL}images/${imageId}/upload_audio`, {
+    headers: createHeaders,
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((data) => data)
+    .catch((error) => console.error("Error uploading audio file: ", error));
+
+  return img;
+};
+
+export const setCurrentAudio = (imageId: string, formData: FormData) => {
+  const audioFileId = formData.get("audio_file_id");
+  if (!audioFileId) {
+    console.error("No audio file id provided");
+    return;
+  }
+  console.log("Setting current audio", imageId, audioFileId);
+  const img = fetch(`${BASE_URL}images/${imageId}/set_current_audio`, {
+    headers: createHeaders,
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((data) => data)
+    .catch((error) => console.error("Error setting current audio: ", error));
 
   return img;
 };

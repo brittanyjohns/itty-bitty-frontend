@@ -6,6 +6,7 @@ interface InputAlertProps {
   onDidDismiss?: (detail: any) => void;
   openAlert: boolean;
   onInputChange: (str: string) => void;
+  initialValue?: string;
 }
 const InputAlert: React.FC<InputAlertProps> = ({
   //   onConfirm,
@@ -14,14 +15,23 @@ const InputAlert: React.FC<InputAlertProps> = ({
   onDidDismiss,
   openAlert,
   onInputChange,
+  initialValue,
 }) => {
   const handleDismiss = (event: CustomEvent) => {
-    const inputToSet = event.detail.data.values.name;
+    let inputToSet = event.detail.data.values.name;
     const role = event.detail.role;
     console.log(`Dismissed with  input: ${inputToSet}`);
     console.log("event", event);
     if (inputToSet && role === "confirm") {
       console.log("inputToSet", inputToSet);
+      if (inputToSet === "") {
+        console.log(
+          "inputToSet is empty - setting to initialValue",
+          initialValue
+        );
+        inputToSet = initialValue;
+        return;
+      }
       onInputChange(inputToSet);
     }
     if (role === "cancel") {
@@ -53,6 +63,11 @@ const InputAlert: React.FC<InputAlertProps> = ({
           {
             text: "OK",
             role: "confirm",
+            handler: (input) => {
+              console.log("input", input);
+
+              onInputChange(input["name"]);
+            },
           },
         ]}
         onDidDismiss={handleDismiss}
@@ -61,6 +76,7 @@ const InputAlert: React.FC<InputAlertProps> = ({
             name: "name",
             type: "text",
             placeholder: "Enter image label",
+            value: initialValue,
           },
         ]}
       ></IonAlert>

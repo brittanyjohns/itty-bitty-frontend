@@ -45,7 +45,7 @@ function PricingTable({ showHeader = true }: PricingTableProps) {
           </p>
         </div>
       )}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 my-4">
         {currentUser && currentUser.plan_type === "free" && (
           <IonCard className="h-fit">
             <IonCardHeader className="text-center">

@@ -68,8 +68,6 @@ const BoardGalleryItem: React.FC<BoardGalleryItemProps> = ({
   const handleBoardClick = (board: Board) => {
     if (viewOnClick) {
       history.push(`/boards/${board.id}`);
-    } else {
-      console.log("Board clicked: ", board);
     }
     if (onBoardClick) {
       onBoardClick(board);

@@ -102,7 +102,6 @@ const BoardForm: React.FC<BoardFormProps> = ({ board, setBoard }) => {
       return;
     }
     setShowLoading(true);
-    console.log("handleSubmit", board);
     const updatingBoard = { ...board, number_of_columns: gridSize, category };
     // alert("Board saved successfully");
 

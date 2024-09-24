@@ -22,7 +22,6 @@ import { useEffect, useState } from "react";
 import StaticMenu from "../components/main_menu/StaticMenu";
 import MainHeader from "./MainHeader";
 import ImageSearchComponent from "../components/admin/ImageSearchComponent";
-import ImageCropper from "../components/images/ImageCropper";
 const AdminDashboard: React.FC = () => {
   const { isWideScreen, currentUser, currentAccount } = useCurrentUser();
   const [betaRequests, setBetaRequests] = useState<BetaRequest[]>([]);

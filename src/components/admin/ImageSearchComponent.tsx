@@ -21,19 +21,22 @@ import { labelForScreenSize } from "../../data/utils";
 interface ImageSearchComponentProps {
   startingQuery?: string;
   imageId?: string;
+  triggerSearch?: boolean;
 }
 
 const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
   startingQuery,
   imageId,
+  triggerSearch,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const searchButtonRef = useRef<HTMLIonButtonElement>(null);
   const [loading, setLoading] = useState(false);
   const [showNoResults, setShowNoResults] = useState(false);
   const [query, setQuery] = useState(startingQuery || "");
   const [imgColorType, setImgColorType] = useState<string>("color");
   const imgColorTypes = ["color", "gray", "mono", "trans"];
-  const [orTerms, setOrTerms] = useState<string>("");
+  const [secondarySearch, setSecondarySearch] = useState<string>("");
   const [placeholder, setPlaceholder] = useState("smile");
   const [images, setImages] = useState<ImageResult[]>([]);
   const [newImageSrc, setNewImageSrc] = useState<string | null>(null);
@@ -66,7 +69,7 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
         start: nextStartIndex,
         num: 10,
         imgColorType: imgColorType,
-        orTerms: orTerms,
+        secondarySearch: secondarySearch,
       };
       if (query === "") {
         return;
@@ -74,7 +77,7 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
       const imgResult = await imageSearch(query, params);
 
       if (!imgResult) {
-        alert("Something went wrong. Please try again later");
+        console.log("Something went wrong. Please try again later");
         return;
       }
       setImages(imgResult);
@@ -92,20 +95,25 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
 
   useEffect(() => {
     if (query) {
+      console.log("Query: ", query);
     } else {
       setImages([]);
       if (startingQuery) {
         setQuery(startingQuery);
         setPlaceholder(startingQuery);
-        // loadInitialImages();
         load();
       } else {
         setPlaceholder("smile");
-        // loadInitialImages();
         load();
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (triggerSearch && images.length === 0) {
+      handleSearch();
+    }
+  }, [triggerSearch]);
 
   const handleClick = async (imageResult: ImageResult) => {
     setLoading(true);
@@ -140,7 +148,9 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
   };
 
   const resetSearch = () => {
-    setQuery("");
+    setQuery(startingQuery || "");
+    setSecondarySearch("");
+    setImgColorType("color");
     setImages([]);
     setPageNumber(1);
   };
@@ -149,7 +159,7 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
     setQuery(inputStr);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: any) => {
     if (e.key === "Enter") {
       setImages([]); // Reset images on new search
       setPageNumber(1); // Reset to first page
@@ -195,6 +205,7 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
           />
           <IonButton
             type="submit"
+            ref={searchButtonRef}
             className="mx-2"
             onClick={() => {
               setImages([]);
@@ -237,12 +248,21 @@ const ImageSearchComponent: React.FC<ImageSearchComponentProps> = ({
             ))}
           </IonSelect>
         </div>
+
         <IonInput
-          value={orTerms}
-          placeholder="OR Terms"
-          aria-label="OR Terms"
-          helperText="Enter OR terms separated by commas"
-          onIonChange={(e: any) => setOrTerms(e.detail.value || "")}
+          value={secondarySearch}
+          placeholder="Secondary Search"
+          aria-label="Secondary Search"
+          helperText="Enter additional search terms - this will override the main search above but will not affect the image label"
+          onIonInput={(e: any) => setSecondarySearch(e.detail.value || "")}
+          onKeyDown={handleKeyDown}
+          // onKeyDown={(e: any) => {
+          //   if (e.key === "Enter") {
+          //     setImages([]); // Reset images on new search
+          //     setPageNumber(1); // Reset to first page
+          //     handleSearch();
+          //   }
+          // }}
         />
         <IonItem
           className="flex items-center w-full mx-auto p-2 my-3"

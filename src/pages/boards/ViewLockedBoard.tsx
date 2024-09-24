@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { Board, getBoard } from "../../data/boards";
+import {
+  Board,
+  cloneBoard,
+  getBoard,
+  rearrangeImages,
+} from "../../data/boards";
 import {
   IonButton,
   IonButtons,
@@ -8,6 +13,7 @@ import {
   IonIcon,
   IonInput,
   IonItem,
+  IonLabel,
   IonLoading,
   IonPage,
   IonRefresher,
@@ -19,7 +25,10 @@ import {
 } from "@ionic/react";
 
 import {
+  albumsOutline,
   arrowBackCircleOutline,
+  copy,
+  copyOutline,
   playCircleOutline,
   trashBinOutline,
 } from "ionicons/icons";
@@ -35,6 +44,7 @@ import FullscreenToggle from "../../components/utils/FullscreenToggle";
 import ActivityTrackingConsent from "../../components/utils/ActivityTrackingConsent";
 import ImageList from "../../components/utils/ImageList";
 import ImageGalleryItem from "../../components/images/ImageGalleryItem";
+import ConfirmAlert from "../../components/utils/ConfirmAlert";
 
 const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();
@@ -56,6 +66,30 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
     selectedImageSrcs.length > 0 ? true : false
   );
 
+  const handleClone = async () => {
+    setShowLoading(true);
+    try {
+      if (!board) {
+        console.error("Board is missing");
+        alert("Board is missing");
+        return;
+      }
+      const clonedBoard = await cloneBoard(board.id);
+      if (clonedBoard) {
+        const updatedBoard = await rearrangeImages(clonedBoard.id);
+        setBoard(updatedBoard || clonedBoard);
+        history.push(`/boards/${clonedBoard.id}`);
+      } else {
+        console.error("Error cloning board");
+        alert("Error cloning board");
+      }
+    } catch (error) {
+      console.error("Error cloning board: ", error);
+      alert("Error cloning board");
+    }
+    setShowLoading(false);
+  };
+
   const fetchBoard = async () => {
     const board = await getBoard(params.id);
     if (!board) {
@@ -64,7 +98,6 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
     } else {
       const imgCount = board?.images?.length;
       setImageCount(imgCount as number);
-      setCurrentLayout(board.layout);
       setShowLoading(false);
 
       setBoard(board);
@@ -143,15 +176,16 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
 
   const [xMargin, setXMargin] = useState(0);
   const [yMargin, setYMargin] = useState(0);
-  const [currentLayout, setCurrentLayout] = useState([]);
+  const [cloneIsOpen, setCloneIsOpen] = useState(false);
   const [currentScreenSize, setCurrentScreenSize] = useState("lg");
+
+  const isPreset = board?.predefined === true;
 
   useEffect(() => {
     if (board) {
       setBoard(board);
       const layout = board.layout[currentScreenSize];
       const margin = board.margin_settings[currentScreenSize];
-      setCurrentLayout(layout);
       if (margin) {
         setXMargin(margin.x);
         setYMargin(margin.y);
@@ -171,11 +205,6 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const handlePlayAudioList = async () => {
     await playAudioList(audioList);
   };
-
-  const goToBoard = () => {
-    history.push("/boards");
-  };
-
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
       e.detail.complete();
@@ -188,15 +217,61 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
       <IonHeader className="bg-inherit shadow-none">
         <IonToolbar className="mb-3">
           <IonButtons slot="start">
-            {board && (
-              <IonButton routerLink={`/boards/${board.id}`} fill="clear">
+            {board && !isPreset && (
+              <IonButton
+                routerLink={`/boards/${board.id}`}
+                fill="clear"
+                title="Back to board"
+              >
                 <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
               </IonButton>
             )}
+            {board && isPreset && (
+              <IonButton
+                routerLink={`/preset`}
+                fill="clear"
+                title="Back to presets"
+              >
+                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
+              </IonButton>
+            )}
+
+            {board && currentUser?.admin && (
+              <IonButton
+                routerLink={`/boards/${board.id}`}
+                fill="clear"
+                title="View board"
+                className="cursor-pointer"
+              >
+                <IonIcon slot="icon-only" icon={albumsOutline} />
+              </IonButton>
+            )}
           </IonButtons>
-          <p className="text-sm md:text-md lg:text-lg xl:text-xl font-bold ion-text-center my-2">
-            {board?.name}
-          </p>
+          <ConfirmAlert
+            onConfirm={handleClone}
+            onCanceled={() => {}}
+            openAlert={cloneIsOpen}
+            message="Are you sure you want to CLONE this board?"
+            onDidDismiss={() => setCloneIsOpen(false)}
+          />
+          <div className="flex justify-center items-center">
+            <p className="text-sm md:text-md lg:text-lg xl:text-xl font-bold ion-text-center">
+              {board?.name}
+            </p>
+            {board && isPreset && (
+              <IonButtons slot="end" className="flex justify-center ml-2">
+                <IonButton
+                  onClick={() => setCloneIsOpen(true)}
+                  fill="clear"
+                  shape="round"
+                  size="small"
+                  title="Clone board"
+                >
+                  <IonIcon icon={copyOutline} />
+                </IonButton>
+              </IonButtons>
+            )}
+          </div>
           {showImages && <ImageList images={selectedImages} />}
           <div className="bg-inherit">
             <IonInput

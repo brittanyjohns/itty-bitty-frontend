@@ -78,10 +78,10 @@ const Home: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           {(!currentUser && <LandingPage />) || null}
-          <div className="bg-inherit shadow-none w-3/4 mx-auto">
+          {/* <div className="bg-inherit shadow-none w-3/4 mx-auto">
             {(currentUser && <UserInfo user={currentUser} />) || null}
-          </div>
-          {/* <div className="bg-inherit shadow-none w-full mx-auto">
+          </div> */}
+          <div className="bg-inherit shadow-none w-full mx-auto">
             {(currentUser && (
               <UserHome
                 userName={currentUser?.name || currentUser.email}
@@ -90,7 +90,7 @@ const Home: React.FC = () => {
                 tokens={currentUser?.tokens ? currentUser.tokens : 0}
               />
             )) || <MainPageContent ipAddr={ip} />}
-          </div> */}
+          </div>
 
           {currentAccount && (
             <BoardGrid

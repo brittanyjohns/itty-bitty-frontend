@@ -71,7 +71,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser, currentAccount }) => {
             className="font-bold ml-2 hover:cursor-pointer"
             onClick={goToDashboard}
           >
-            SpeakAnyWay side
+            SpeakAnyWay
           </div>
         </IonToolbar>
       </IonHeader>

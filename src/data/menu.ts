@@ -27,6 +27,8 @@ import {
   searchCircle,
   searchSharp,
   albumsOutline,
+  arrowUp,
+  arrowUpCircleOutline,
 } from "ionicons/icons";
 const menuLinks: MenuLink[] = [
   {
@@ -42,6 +44,14 @@ const menuLinks: MenuLink[] = [
     slug: "pricing",
     icon: pricetagOutline,
     id: 1,
+  },
+
+  {
+    endpoint: "/upgrade",
+    name: "Upgrade",
+    slug: "upgrade",
+    icon: arrowUpCircleOutline,
+    id: 9123,
   },
 
   {
@@ -83,14 +93,14 @@ const menuLinks: MenuLink[] = [
   },
   {
     endpoint: "/boards",
-    name: "Boards",
+    name: "Your Boards",
     slug: "boards",
     icon: albumsOutline,
     id: 4,
   },
   {
     endpoint: "/preset",
-    name: "Preset",
+    name: "Preset Boards",
     slug: "preset",
     icon: gridOutline,
     id: 44,
