@@ -1,4 +1,5 @@
 import {
+  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
@@ -58,6 +59,15 @@ const Upgrade: React.FC = () => {
                 <h1 className="text-2xl font-bold">
                   You are already on a paid plan.
                 </h1>
+                <IonButtons>
+                  <IonButton
+                    routerLink="/settings"
+                    color="secondary"
+                    fill="outline"
+                  >
+                    Go to Settings
+                  </IonButton>
+                </IonButtons>
               </div>
             )}
           </div>
