@@ -127,6 +127,22 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
             <IonItem
               slot="header"
               routerLink="/account-dashboard"
+              className="border-t-2 border-b-2"
+              lines="none"
+            >
+              <p className="text-gray-500 text-xs font-bold ml-10">
+                {/* {"enable_text_display":false,"enable_image_display":true} */}
+                {currentAccount.settings.enable_text_display
+                  ? "Text Display Enabled"
+                  : ""}
+                {currentAccount.settings.enable_image_display
+                  ? "Image Display Enabled"
+                  : ""}
+              </p>
+            </IonItem>
+            <IonItem
+              slot="header"
+              routerLink="/account-dashboard"
               className=""
               lines="none"
             >
@@ -146,16 +162,23 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
                 </span>
               </p>
             </IonItem>
+            <IonItem
+              slot="header"
+              routerLink="/account-dashboard"
+              className=""
+              lines="none"
+            >
+              <ColorKey />
+            </IonItem>
           </>
         )}
-        {filteredLinks.map((link) => (
-          <IonItem key={link.id} lines={currentAccount ? "none" : "full"}>
-            <MenuListItem menuLink={link} />
-          </IonItem>
-        ))}
-        <IonItem lines="none">
-          {(currentUser || currentAccount) && <ColorKey />}
-        </IonItem>
+        {!currentAccount &&
+          filteredLinks.map((link) => (
+            <IonItem key={link.id} lines={currentAccount ? "none" : "full"}>
+              <MenuListItem menuLink={link} />
+            </IonItem>
+          ))}
+        <IonItem lines="none">{currentUser && <ColorKey />}</IonItem>
         <IonItem lines="none">
           {currentAccount && (
             <MenuListItem

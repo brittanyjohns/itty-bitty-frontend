@@ -22,7 +22,7 @@ import {
   trashBinOutline,
 } from "ionicons/icons";
 
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import React from "react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import DraggableGrid from "../../components/images/DraggableGrid";
@@ -40,7 +40,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   const [showIcon, setShowIcon] = useState(false);
   const [showLoading, setShowLoading] = useState(true);
   const [imageCount, setImageCount] = useState(0);
-  const { currentUser, currentAccount } = useCurrentUser();
+  const { currentUser, currentAccount, smallScreen } = useCurrentUser();
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [previousLabel, setPreviousLabel] = useState<string | undefined>(
     undefined
@@ -51,6 +51,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   );
 
   const [showHeader, setShowHeader] = useState(true);
+  const history = useHistory();
 
   const [xMargin, setXMargin] = useState(0);
   const [yMargin, setYMargin] = useState(0);
@@ -186,6 +187,10 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
     }, 3000);
   };
 
+  const gotToAccountDashboard = () => {
+    history.push("/account-dashboard");
+  };
+
   return (
     <IonPage id="view-board-page">
       <FullscreenToggle />
@@ -194,7 +199,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
       <IonHeader className="bg-inherit shadow-none">
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton routerLink={`/`} fill="clear">
+            <IonButton fill="clear" onClick={gotToAccountDashboard}>
               <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
             </IonButton>
           </IonButtons>
@@ -211,22 +216,32 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
               className="ml-1 text-sm md:text-md lg:text-lg xl:text-xl"
             ></IonInput>
           </div>
-          <IonButtons slot="end">
+          <IonButtons slot="end" className="">
             {showIcon && (
-              <IonButton size="small" onClick={handlePlayAudioList}>
+              <IonButton
+                size={smallScreen ? "default" : "large"}
+                onClick={handlePlayAudioList}
+                fill="default"
+              >
                 <IonIcon
                   slot="icon-only"
-                  className="tiny"
+                  className=""
+                  color="success"
                   icon={playCircleOutline}
                 ></IonIcon>
               </IonButton>
             )}
 
             {showIcon && (
-              <IonButton size="small" onClick={() => clearInput()}>
+              <IonButton
+                size={smallScreen ? "default" : "large"}
+                fill="default"
+                onClick={() => clearInput()}
+              >
                 <IonIcon
                   slot="icon-only"
-                  className="tiny"
+                  className=""
+                  color="danger"
                   icon={trashBinOutline}
                   onClick={() => clearInput()}
                 ></IonIcon>

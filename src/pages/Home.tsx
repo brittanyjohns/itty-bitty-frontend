@@ -17,11 +17,13 @@ import UserHome from "../components/utils/UserHome";
 import Footer from "../components/utils/Footer";
 import LandingPage from "./LandingPage";
 import UserInfo from "../components/users/UserInfo";
+import { useHistory } from "react-router";
 
 const Home: React.FC = () => {
   const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
 
   const [ip, setIP] = useState("");
+  const history = useHistory();
 
   const getData = async () => {
     const res = await fetch("https://api.ipify.org/?format=json");
@@ -30,6 +32,11 @@ const Home: React.FC = () => {
   };
 
   useEffect(() => {
+    if (currentAccount) {
+      console.log("Current Account: ", currentAccount);
+      history.push("/account-dashboard");
+      return;
+    }
     //passing getData method to the lifecycle method
     getData();
   }, []);
@@ -77,7 +84,7 @@ const Home: React.FC = () => {
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
-          {(!currentUser && <LandingPage />) || null}
+          {(!currentUser && !currentAccount && <LandingPage />) || null}
           {/* <div className="bg-inherit shadow-none w-3/4 mx-auto">
             {(currentUser && <UserInfo user={currentUser} />) || null}
           </div> */}

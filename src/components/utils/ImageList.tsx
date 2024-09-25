@@ -6,8 +6,13 @@ interface ImageListProps {
 }
 const ImageList: React.FC<ImageListProps> = ({ images }) => {
   const [imgRef, setImgRef] = useState<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (imgRef) {
+      imgRef.scrollIntoView();
+    }
+  }, [imgRef]);
   return (
-    <div className="grid grid-cols-6 md:grid-cols-12 lg:grid-cols-12 xl:grid-cols-16 gap-1 pb-1">
+    <div className="grid grid-cols-3 md:grid-cols-12 lg:grid-cols-12 xl:grid-cols-16 gap-1 pb-1">
       {images.map((img, index) => (
         <ImageGalleryItem
           key={index}

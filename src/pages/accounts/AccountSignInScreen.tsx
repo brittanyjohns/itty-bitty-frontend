@@ -10,6 +10,7 @@ import {
   IonMenuButton,
   IonTitle,
   IonToolbar,
+  IonLoading,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import { ChildAccount, signIn } from "../../data/child_accounts";
@@ -18,6 +19,8 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 import SideMenu from "../../components/main_menu/SideMenu";
 import MainHeader from "../MainHeader";
 import Footer from "../../components/utils/Footer";
+import { logInOutline } from "ionicons/icons";
+import StaticMenu from "../../components/main_menu/StaticMenu";
 
 const AccountSignInScreen: React.FC = () => {
   const history = useHistory();
@@ -26,7 +29,9 @@ const AccountSignInScreen: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [showAlert, setShowAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const { currentUser, isWideScreen } = useCurrentUser();
+  const { setCurrentAccount, isWideScreen, currentUser, currentAccount } =
+    useCurrentUser();
+  const [showLoading, setShowLoading] = useState(false);
 
   const handleSignIn = async () => {
     const account: ChildAccount = {
@@ -41,6 +46,7 @@ const AccountSignInScreen: React.FC = () => {
       if (response.token) {
         localStorage.setItem("child_token", response.token);
         history.push("/account-dashboard");
+        setCurrentAccount(response.child);
         // alert("ChildAccount signed in");
         window.location.reload();
       } else if (response.error) {
@@ -70,11 +76,33 @@ const AccountSignInScreen: React.FC = () => {
 
   return (
     <>
-      <SideMenu />
-      <IonPage id="main-content">
-        <MainHeader />
+      <SideMenu
+        pageTitle="Sign In"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle="Sign In"
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
 
-        <IonContent className="flex flex-col items-center p-6">
+      <IonPage id="main-content">
+        <IonLoading
+          isOpen={showLoading}
+          onDidDismiss={() => setShowLoading(false)}
+          message={"Please wait..."}
+        />
+        <MainHeader
+          pageTitle="Sign In"
+          isWideScreen={isWideScreen}
+          endLink="/sign-up"
+          endIcon={logInOutline}
+          showMenuButton={!isWideScreen}
+        />
+        <IonContent className="items-center">
           <div className="relative lower-fixed-bg">
             <div className="flex flex-col justify-center items-center text-center py-10 bg-black bg-opacity-80">
               <h1 className="text-2xl md:text-5xl font-bold text-white">
