@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Image } from "../../data/images";
 import ImageGalleryItem from "../images/ImageGalleryItem";
+import { list } from "ionicons/icons";
 
 interface ImageListProps {
   images: Image[];
@@ -12,15 +13,20 @@ const ImageList: React.FC<ImageListProps> = ({ images, columns }) => {
 
   const listRef = React.createRef<HTMLDivElement>();
   const [numOfColumns, setNumOfColumns] = useState(columns);
-  const [gridClasses, setGridClasses] = useState(
-    `grid grid-cols-${columns} gap-4`
-  );
+  const [gridClasses, setGridClasses] = useState<string | null>(null);
 
   // Set numOfColumns and grid classes when columns prop changes
   useEffect(() => {
     console.log("ImageList", columns);
+    if (columns > 8) {
+      // grid-template-columns: repeat(11, minmax(0, 1fr));
+      setNumOfColumns(8);
 
-    setNumOfColumns(columns);
+      // listRef.current?.classList.add("grid-cols-11");
+    } else {
+      setNumOfColumns(columns);
+      // listRef.current?.classList.remove("grid-cols-11");
+    }
   }, [columns]);
 
   useEffect(() => {
