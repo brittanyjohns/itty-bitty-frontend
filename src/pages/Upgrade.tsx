@@ -51,8 +51,14 @@ const Upgrade: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           <div className="">
-            {currentUser && currentUser?.plan_type === "free" && (
+            {currentUser && currentUser?.plan_type === "free" ? (
               <PricingTable showHeader={false} />
+            ) : (
+              <div className="text-center p-4">
+                <h1 className="text-2xl font-bold">
+                  You are already on a paid plan.
+                </h1>
+              </div>
             )}
           </div>
         </IonContent>
