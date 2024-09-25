@@ -49,7 +49,6 @@ export const labelForScreenSize = (
     return label.substring(0, 20) + "...";
   }
   if (label.length > 20) {
-    console.log("Row height: ", rowHeight);
     if (rowHeight && rowHeight < 100) {
       return label.substring(0, 10) + "...";
     }

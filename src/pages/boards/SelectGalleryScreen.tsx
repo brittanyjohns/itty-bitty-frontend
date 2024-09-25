@@ -30,6 +30,7 @@ import ImageCropper from "../../components/images/ImageCropper";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
 import { set } from "d3";
+import ImageList from "../../components/utils/ImageList";
 
 const SelectGalleryScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -46,7 +47,14 @@ const SelectGalleryScreen: React.FC = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("Loading board");
-  const { currentUser, isWideScreen, currentAccount } = useCurrentUser();
+  const {
+    currentUser,
+    isWideScreen,
+    currentAccount,
+    smallScreen,
+    mediumScreen,
+    largeScreen,
+  } = useCurrentUser();
   const [showCreateBtn, setShowCreateBtn] = useState(false);
   const [numberOfColumns, setNumberOfColumns] = useState(4); // Default number of columns
   const [showEdit, setShowEdit] = useState(false);
@@ -129,11 +137,19 @@ const SelectGalleryScreen: React.FC = () => {
   };
 
   const [imageIds, setImageIds] = useState<string[]>([]);
+  const [selectedImages, setSelectedImages] = useState<Image[]>([]);
 
   const handleImageClick = (image: Image) => {
     setImage(image);
-    setLoadingMessage("Adding image to board");
-    setImageIds([...imageIds, image.id]);
+    if (!imageIds.includes(image.id)) {
+      setLoadingMessage("Adding image to board");
+      setImageIds([...imageIds, image.id]);
+      setSelectedImages([...selectedImages, image]);
+    } else {
+      setLoadingMessage("Removing image from board");
+      setImageIds(imageIds.filter((id) => id !== image.id));
+      setSelectedImages(selectedImages.filter((img) => img.id !== image.id));
+    }
   };
 
   const addSelectedImageToBoard = async () => {
@@ -155,6 +171,7 @@ const SelectGalleryScreen: React.FC = () => {
     setShowLoading(false);
     setIsOpen(true);
     setImageIds([]);
+    setSelectedImages([]);
   };
 
   useIonViewDidLeave(() => {
@@ -172,6 +189,16 @@ const SelectGalleryScreen: React.FC = () => {
       handleImageClick(newImage);
     }
   };
+
+  useEffect(() => {
+    if (board) {
+      if (smallScreen) setNumberOfColumns(board?.small_screen_columns || 4);
+      else if (mediumScreen)
+        setNumberOfColumns(board?.medium_screen_columns || 4);
+      else if (largeScreen)
+        setNumberOfColumns(board?.large_screen_columns || 4);
+    }
+  }, [smallScreen, mediumScreen, largeScreen, board]);
 
   return (
     <>
@@ -252,10 +279,23 @@ const SelectGalleryScreen: React.FC = () => {
             <p className="text-center mt-2">
               {imageIds.length} images selected for board
             </p>
+            {/* <div className="grid grid-cols-8 gap-4 w-full">
+              <p>Test</p>
+              <p>Test</p>
+              <p>Test</p>
+              <p>Test</p>
+              <p>Test</p>
+              <p>Test</p>
+            </div> */}
+
+            <div className="w-full">
+              <ImageList images={selectedImages} columns={numberOfColumns} />
+            </div>
             <IonButtons className="flex justify-center my-2">
               <IonButton
                 className="w-full md:w-1/2 mx-auto my-2"
                 size="large"
+                disabled={imageIds.length === 0}
                 fill="outline"
                 onClick={addSelectedImageToBoard}
               >

@@ -206,7 +206,9 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
           <p className="text-sm md:text-md lg:text-lg xl:text-xl font-bold ion-text-center">
             {board?.name}
           </p>
-          {showImages && <ImageList images={selectedImages} />}
+          {showImages && (
+            <ImageList images={selectedImages} columns={numOfColumns} />
+          )}
           <div className="bg-inherit">
             <IonInput
               placeholder="Click an image to begin speaking"

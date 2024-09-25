@@ -53,7 +53,8 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const [showIcon, setShowIcon] = useState(false);
   const [showLoading, setShowLoading] = useState(true);
   const [imageCount, setImageCount] = useState(0);
-  const { currentUser } = useCurrentUser();
+  const { currentUser, smallScreen, mediumScreen, largeScreen } =
+    useCurrentUser();
   const [numOfColumns, setNumOfColumns] = useState(4);
   const history = useHistory();
   const [previousLabel, setPreviousLabel] = useState<string | undefined>(
@@ -101,7 +102,8 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
       setShowLoading(false);
 
       setBoard(board);
-      setNumOfColumns(board.number_of_columns);
+      const layout = board.layout[currentScreenSize];
+      const margin = board.margin_settings[currentScreenSize];
     }
   };
 
@@ -164,6 +166,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
 
   useEffect(() => {
     console.log("Selected image sources", selectedImageSrcs);
+    console.log("column count", numOfColumns);
     console.log("Selected image components", selectedImages);
   }, [selectedImageSrcs, selectedImages]);
 
@@ -173,6 +176,14 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
     }
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (board) {
+      if (smallScreen) setNumOfColumns(board?.small_screen_columns || 4);
+      else if (mediumScreen) setNumOfColumns(board?.medium_screen_columns || 4);
+      else if (largeScreen) setNumOfColumns(board?.large_screen_columns || 4);
+    }
+  }, [smallScreen, mediumScreen, largeScreen, board]);
 
   const [xMargin, setXMargin] = useState(0);
   const [yMargin, setYMargin] = useState(0);
@@ -272,32 +283,44 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
               </IonButtons>
             )}
           </div>
-          {showImages && <ImageList images={selectedImages} />}
-          <div className="bg-inherit">
+          {showImages && (
+            <ImageList images={selectedImages} columns={numOfColumns} />
+          )}
+          <div className="bg-inherit w-full">
             <IonInput
               placeholder="Click an image to begin speaking"
               ref={inputRef}
               readonly={true}
               type="text"
-              className="ml-1 text-sm md:text-md lg:text-lg xl:text-xl"
+              className="ml-1 text-sm md:text-md lg:text-lg xl:text-xl w-full"
             ></IonInput>
           </div>
-          <IonButtons slot="end">
+          <IonButtons slot="end" className="">
             {showIcon && (
-              <IonButton size="small" onClick={handlePlayAudioList}>
+              <IonButton
+                size={smallScreen ? "default" : "large"}
+                onClick={handlePlayAudioList}
+                fill="default"
+              >
                 <IonIcon
                   slot="icon-only"
-                  className="tiny"
+                  className=""
+                  color="success"
                   icon={playCircleOutline}
                 ></IonIcon>
               </IonButton>
             )}
 
             {showIcon && (
-              <IonButton size="small" onClick={() => clearInput()}>
+              <IonButton
+                size={smallScreen ? "default" : "large"}
+                fill="default"
+                onClick={() => clearInput()}
+              >
                 <IonIcon
                   slot="icon-only"
-                  className="tiny"
+                  className=""
+                  color="danger"
                   icon={trashBinOutline}
                   onClick={() => clearInput()}
                 ></IonIcon>
