@@ -40,7 +40,13 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   const [showIcon, setShowIcon] = useState(false);
   const [showLoading, setShowLoading] = useState(true);
   const [imageCount, setImageCount] = useState(0);
-  const { currentUser, currentAccount, smallScreen } = useCurrentUser();
+  const {
+    currentUser,
+    currentAccount,
+    smallScreen,
+    mediumScreen,
+    largeScreen,
+  } = useCurrentUser();
   const [numOfColumns, setNumOfColumns] = useState(4);
   const [previousLabel, setPreviousLabel] = useState<string | undefined>(
     undefined
@@ -49,6 +55,14 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   const [showText, setShowText] = useState(
     currentAccount?.settings?.enable_text_display
   );
+
+  useEffect(() => {
+    if (board) {
+      if (smallScreen) setNumOfColumns(board?.small_screen_columns || 4);
+      else if (mediumScreen) setNumOfColumns(board?.medium_screen_columns || 4);
+      else if (largeScreen) setNumOfColumns(board?.large_screen_columns || 4);
+    }
+  }, [smallScreen, mediumScreen, largeScreen, board]);
 
   const [showHeader, setShowHeader] = useState(true);
   const history = useHistory();

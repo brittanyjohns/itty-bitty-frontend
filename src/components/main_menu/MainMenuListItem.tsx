@@ -7,6 +7,7 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { lockClosed, lockOpenOutline } from "ionicons/icons";
 import { User, denyAccess } from "../../data/users";
 import { closeMainMenu } from "../../pages/MainHeader";
+import ConfirmAlert from "../utils/ConfirmAlert";
 interface MainMenuListItemProps {
   menuLink: MenuLink;
 }
@@ -15,6 +16,7 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({ menuLink }) => {
   const history = useHistory();
   const itemRef = useRef<HTMLIonItemElement>(null);
   const { currentUser } = useCurrentUser();
+  const [openAlert, setOpenAlert] = useState(false);
 
   const freeTrial = menuLink.pro && currentUser?.free_trial;
 
@@ -83,6 +85,10 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({ menuLink }) => {
       return;
     }
     closeMainMenu();
+    if (slug === "child-sign-out") {
+      setOpenAlert(true);
+      return;
+    }
     history.push(endpoint ?? "");
   };
 
@@ -122,6 +128,12 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({ menuLink }) => {
       detail={false}
       ref={itemRef}
     >
+      <ConfirmAlert
+        message="Are you sure you want to sign out?"
+        onConfirm={() => console.log("confirm")}
+        onCanceled={() => console.log("cancel")}
+        openAlert={openAlert}
+      />
       <IonIcon
         icon={iconToUse()}
         className={`mr-2 ${shouldDisable(menuLink.slug) ? "text-red-700" : ""}`}

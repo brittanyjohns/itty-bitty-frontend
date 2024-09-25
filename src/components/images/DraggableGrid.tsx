@@ -127,7 +127,6 @@ const DraggableGrid: React.FC<DraggableGridProps> = ({
     setCurrentScreenSize(newBreakpoint);
     setCurrentNumberOfColumns(newCols);
     if (updateScreenSize) {
-      console.log("newBreakpoint: ", newBreakpoint);
       updateScreenSize(newBreakpoint);
     }
   };

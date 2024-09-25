@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Image } from "../../data/images";
 import ImageGalleryItem from "../images/ImageGalleryItem";
-import { list } from "ionicons/icons";
+import { set } from "d3";
 
 interface ImageListProps {
   images: Image[];
@@ -18,14 +18,20 @@ const ImageList: React.FC<ImageListProps> = ({ images, columns }) => {
   // Set numOfColumns and grid classes when columns prop changes
   useEffect(() => {
     console.log("ImageList", columns);
-    if (columns > 8) {
-      // grid-template-columns: repeat(11, minmax(0, 1fr));
-      setNumOfColumns(8);
-
-      // listRef.current?.classList.add("grid-cols-11");
-    } else {
-      setNumOfColumns(columns);
-      // listRef.current?.classList.remove("grid-cols-11");
+    switch (columns) {
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 6:
+      case 7:
+      case 8:
+      case 11:
+        setNumOfColumns(columns);
+        break;
+      default:
+        setNumOfColumns(12);
+        break;
     }
   }, [columns]);
 

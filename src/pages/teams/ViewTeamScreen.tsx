@@ -137,7 +137,6 @@ const ViewTeamScreen: React.FC<ViewTeamScreenProps> = () => {
   const handleCreateTeamBoard = async () => {
     const newBoard = await createTeamBoard(id, boardName);
     if (newBoard) {
-      console.log("newBoard", newBoard);
       setBoardName("");
     }
   };

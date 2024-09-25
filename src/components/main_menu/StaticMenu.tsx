@@ -108,7 +108,6 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
         )}
         {currentAccount && (
           <>
-            {console.log(currentAccount)}
             <IonItem
               slot="header"
               routerLink="/account-dashboard"
