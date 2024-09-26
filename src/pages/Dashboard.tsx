@@ -1,5 +1,6 @@
 import {
   IonButton,
+  IonButtons,
   IonCard,
   IonContent,
   IonLabel,
@@ -132,14 +133,26 @@ const Dashboard: React.FC<DashboardProps> = () => {
                   <p className="text-md mb-3 font-bold">
                     To access more features, please upgrade your plan.
                   </p>
-                  <IonButton
-                    routerLink="/upgrade"
-                    color="success"
-                    expand="block"
-                    size="large"
-                  >
-                    Upgrade Plan
-                  </IonButton>
+                  <IonButtons>
+                    <IonButton
+                      routerLink="/upgrade"
+                      color="success"
+                      expand="block"
+                      size="large"
+                      fill="outline"
+                    >
+                      Upgrade Plan
+                    </IonButton>
+                    <IonButton
+                      routerLink="/settings"
+                      color="dark"
+                      expand="block"
+                      size="large"
+                      fill="outline"
+                    >
+                      User Settings
+                    </IonButton>
+                  </IonButtons>
                 </div>
               )}
 

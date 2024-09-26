@@ -12,7 +12,7 @@ const ImageList: React.FC<ImageListProps> = ({ images, columns }) => {
   const [imgRef, setImgRef] = useState<HTMLDivElement | null>(null);
 
   const listRef = React.createRef<HTMLDivElement>();
-  const [numOfColumns, setNumOfColumns] = useState(columns);
+  const [numOfColumns, setNumOfColumns] = useState(8);
   const [gridClasses, setGridClasses] = useState<string | null>(null);
 
   // Set numOfColumns and grid classes when columns prop changes
@@ -28,6 +28,12 @@ const ImageList: React.FC<ImageListProps> = ({ images, columns }) => {
       case 8:
       case 11:
         setNumOfColumns(columns);
+        break;
+      case 5:
+      case 9:
+      case 10:
+      case 12:
+        setNumOfColumns(8);
         break;
       default:
         setNumOfColumns(12);

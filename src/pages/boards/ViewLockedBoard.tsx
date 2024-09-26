@@ -45,6 +45,7 @@ import ActivityTrackingConsent from "../../components/utils/ActivityTrackingCons
 import ImageList from "../../components/utils/ImageList";
 import ImageGalleryItem from "../../components/images/ImageGalleryItem";
 import ConfirmAlert from "../../components/utils/ConfirmAlert";
+import { getCurrentUser } from "../../data/users";
 
 const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<Board>();
@@ -53,13 +54,20 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const [showIcon, setShowIcon] = useState(false);
   const [showLoading, setShowLoading] = useState(true);
   const [imageCount, setImageCount] = useState(0);
-  const { currentUser, smallScreen, mediumScreen, largeScreen } =
-    useCurrentUser();
+  const {
+    currentUser,
+    smallScreen,
+    mediumScreen,
+    largeScreen,
+    setCurrentUser,
+  } = useCurrentUser();
   const [numOfColumns, setNumOfColumns] = useState(4);
   const history = useHistory();
   const [previousLabel, setPreviousLabel] = useState<string | undefined>(
     undefined
   );
+
+  const [retryCount, setRetryCount] = useState(0);
 
   const [selectedImageSrcs, setSelectedImageSrcs] = useState<string[]>([]);
   const [selectedImages, setSelectedImages] = useState<Image[]>([]);
@@ -164,16 +172,26 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
     inputRef.current?.value && clearInput();
   });
 
-  useEffect(() => {
-    console.log("Selected image sources", selectedImageSrcs);
-    console.log("column count", numOfColumns);
-    console.log("Selected image components", selectedImages);
-  }, [selectedImageSrcs, selectedImages]);
-
   useIonViewWillEnter(() => {
     async function fetchData() {
       await fetchBoard();
     }
+
+    const fetchUser = async () => {
+      // let retryCount = 0;
+      console.log("Fetching user...", retryCount);
+      const user = await getCurrentUser();
+      if (user) setCurrentUser(user);
+      {
+        setRetryCount(retryCount + 1);
+        if (retryCount < 3) {
+          console.log("Retrying...");
+        }
+      }
+      console.log("User: ", user);
+      return user;
+    };
+    fetchUser();
     fetchData();
   }, []);
 
