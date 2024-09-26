@@ -89,14 +89,14 @@ const Home: React.FC = () => {
             {(currentUser && <UserInfo user={currentUser} />) || null}
           </div> */}
           <div className="bg-inherit shadow-none w-full mx-auto">
-            {(currentUser && (
+            {currentUser && (
               <UserHome
                 userName={currentUser?.name || currentUser.email}
                 trialDaysLeft={currentUser?.trial_days_left}
                 freeAccount={currentUser?.plan_type === "free"}
                 tokens={currentUser?.tokens ? currentUser.tokens : 0}
               />
-            )) || <MainPageContent ipAddr={ip} />}
+            )}
           </div>
 
           {currentAccount && (

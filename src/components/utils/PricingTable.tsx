@@ -45,7 +45,8 @@ function PricingTable({ showHeader = true }: PricingTableProps) {
           </p>
         </div>
       )}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 my-4">
+      <h1 className="text-2xl font-bold text-center mt-4">Choose Your Plan</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
         {currentUser && currentUser.plan_type === "free" && (
           <IonCard className="h-fit">
             <IonCardHeader className="text-center">
@@ -121,7 +122,7 @@ function PricingTable({ showHeader = true }: PricingTableProps) {
           <IonCardHeader className="text-center">
             <div className="text-3xl font-bold">Pro</div>
           </IonCardHeader>
-          <IonCardContent className="text-center">
+          <div className="text-center">
             {currentUser && (
               <stripe-pricing-table
                 pricing-table-id={STRIPE_PRICING_TABLE_ID}
@@ -156,7 +157,7 @@ function PricingTable({ showHeader = true }: PricingTableProps) {
                 </IonButton>
               </div>
             )}
-          </IonCardContent>
+          </div>
         </IonCard>
 
         <IonCard className="h-fit">

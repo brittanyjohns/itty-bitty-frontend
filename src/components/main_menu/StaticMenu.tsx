@@ -91,7 +91,7 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
         {currentUser && (
           <IonItem
             slot="header"
-            routerLink="/settings"
+            routerLink="/dashboard"
             detail={true}
             className=""
             lines="none"

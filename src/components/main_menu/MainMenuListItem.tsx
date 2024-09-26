@@ -8,6 +8,7 @@ import { lockClosed, lockOpenOutline } from "ionicons/icons";
 import { User, denyAccess } from "../../data/users";
 import { closeMainMenu } from "../../pages/MainHeader";
 import ConfirmAlert from "../utils/ConfirmAlert";
+import { h } from "ionicons/dist/types/stencil-public-runtime";
 interface MainMenuListItemProps {
   menuLink: MenuLink;
 }
@@ -130,8 +131,8 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({ menuLink }) => {
     >
       <ConfirmAlert
         message="Are you sure you want to sign out?"
-        onConfirm={() => console.log("confirm")}
-        onCanceled={() => console.log("cancel")}
+        onConfirm={() => history.push(menuLink.endpoint)}
+        onCanceled={() => setOpenAlert(false)}
         openAlert={openAlert}
       />
       <IonIcon

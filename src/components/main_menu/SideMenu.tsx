@@ -52,6 +52,15 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser, currentAccount }) => {
       history.push("/sign-in");
     }
   };
+  const goToHome = () => {
+    if (currentAccount || currentUser) {
+      closeMainMenu();
+      history.push("/home");
+    } else {
+      closeMainMenu();
+      history.push("/sign-in");
+    }
+  };
   const goToSettings = () => {
     if (currentAccount || currentUser) {
       closeMainMenu();
@@ -69,7 +78,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser, currentAccount }) => {
           <img slot="start" src={feature1Image} className="ml-4 h-10 w-10" />
           <div
             className="font-bold ml-2 hover:cursor-pointer"
-            onClick={goToDashboard}
+            onClick={goToHome}
           >
             SpeakAnyWay
           </div>
@@ -80,7 +89,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser, currentAccount }) => {
           {currentUser && (
             <IonItem
               slot="header"
-              onClick={goToSettings}
+              onClick={goToDashboard}
               detail={true}
               className=""
               lines="none"
