@@ -115,7 +115,7 @@ export const getFilterList = (
     "images",
     "menus",
     "preset",
-    // "teams",
+    "teams",
     "predictive",
     "settings",
     "admin-dashboard",

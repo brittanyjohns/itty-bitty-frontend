@@ -2,14 +2,9 @@ import {
   IonButton,
   IonButtons,
   IonContent,
-  IonHeader,
-  IonIcon,
-  IonMenuButton,
   IonPage,
   IonRefresher,
   IonRefresherContent,
-  IonTitle,
-  IonToolbar,
 } from "@ionic/react";
 import TeamList from "../../components/teams/TeamList";
 import SideMenu from "../../components/main_menu/SideMenu";
@@ -18,13 +13,14 @@ import Tabs from "../../components/utils/Tabs";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { getTeams } from "../../data/teams";
-import { addCircleOutline } from "ionicons/icons";
+import MainHeader from "../MainHeader";
+import StaticMenu from "../../components/main_menu/StaticMenu";
 const TeamsScreen: React.FC = () => {
-  const { currentUser, setCurrentUser } = useCurrentUser();
+  const { currentUser, setCurrentUser, isWideScreen, currentAccount } =
+    useCurrentUser();
   const history = useHistory();
   const [teams, setTeams] = useState([]);
   const [pageTitle, setPageTitle] = useState("Your Teams");
-
   const fetchTeams = async () => {
     const fetchedTeams = await getTeams();
     if (!fetchedTeams) {
@@ -47,21 +43,25 @@ const TeamsScreen: React.FC = () => {
 
   return (
     <>
-      <SideMenu />
+      <SideMenu
+        pageTitle={pageTitle}
+        isWideScreen={isWideScreen}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+      <StaticMenu
+        pageTitle={pageTitle}
+        currentUser={currentUser}
+        currentAccount={currentAccount}
+      />
+
       <IonPage id="main-content">
-        <IonHeader className="bg-inherit shadow-none">
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonMenuButton></IonMenuButton>
-            </IonButtons>
-            <IonTitle>Teams</IonTitle>
-            <IonButtons slot="end">
-              <IonButton routerLink="/teams/new">
-                <IonIcon icon={addCircleOutline} />
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
+        <MainHeader
+          pageTitle={pageTitle}
+          isWideScreen={isWideScreen}
+          showMenuButton={!isWideScreen}
+          endLink="/boards/new"
+        />
         <IonContent className="ion-padding">
           <IonRefresher slot="fixed" onIonRefresh={refresh}>
             <IonRefresherContent></IonRefresherContent>

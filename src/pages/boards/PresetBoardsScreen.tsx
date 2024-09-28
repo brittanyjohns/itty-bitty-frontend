@@ -5,7 +5,6 @@ import {
   IonHeader,
   IonIcon,
   IonLabel,
-  IonMenuButton,
   IonPage,
   IonRefresher,
   IonRefresherContent,
@@ -15,17 +14,13 @@ import {
   IonSelect,
   IonSelectOption,
   IonToolbar,
-  useIonViewWillEnter,
   useIonViewWillLeave,
 } from "@ionic/react";
 import Tabs from "../../components/utils/Tabs";
 import { useEffect, useState } from "react";
 import { Board, getBoards, getPresetBoards } from "../../data/boards";
 import {
-  addCircleOutline,
-  imagesOutline,
   infiniteOutline,
-  personOutline,
   podiumOutline,
   ribbon,
   ribbonOutline,
@@ -40,8 +35,6 @@ interface PresetBoardsScreenProps {
 import SideMenu from "../../components/main_menu/SideMenu";
 import MainHeader from "../MainHeader";
 import StaticMenu from "../../components/main_menu/StaticMenu";
-import { render } from "@testing-library/react";
-import { set } from "d3";
 
 const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
   initialSegmentType,
@@ -59,7 +52,6 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
   const [fetchBoardPayload, setFetchBoardPayload] = useState<any>({});
 
   const fetchBoards = async () => {
-    console.log("Fetching boards...", searchInput, page, filter);
     const fetchedBoards = await getPresetBoards(searchInput, page, filter);
     setFetchBoardPayload(fetchedBoards);
   };

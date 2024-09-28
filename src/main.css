@@ -112,3 +112,7 @@ ion-content::part(scroll) {
 a {
   cursor: pointer;
 }
+
+.sc-ion-buttons-md-s .button {
+  --background-hover: none;
+}

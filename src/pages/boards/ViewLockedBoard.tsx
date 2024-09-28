@@ -322,7 +322,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
               >
                 <IonIcon
                   slot="icon-only"
-                  className=""
+                  className="bg-transparent"
                   color="success"
                   icon={playCircleOutline}
                 ></IonIcon>
