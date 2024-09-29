@@ -95,7 +95,6 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
     if (searchInput !== "") {
       setSegmentType("all");
     } else {
-      setSegmentType("welcome");
       setFilter("");
     }
   }, [searchInput]);
@@ -110,9 +109,8 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
   const clearSearchFields = () => {
     setSelectedCategory("");
     setSearchInput("");
-    setSegmentType("welcome");
+    setSegmentType("all");
     fetchBoards();
-    console.log("Clearing search fields");
   };
 
   useEffect(() => {
@@ -161,7 +159,6 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
 
   const handleSegmentChange = (e: any) => {
     const segment = e.detail.value;
-    console.log("Segment selected: ", segment);
     setSegmentType(segment);
     setPage(1); // Reset to first page on new segment
   };
@@ -219,7 +216,12 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
                 <IonSearchbar
                   debounce={1000}
                   onIonInput={handleSearchInput}
-                  onIonClear={() => clearInput()}
+                  onIonClear={clearInput}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      fetchBoards();
+                    }
+                  }}
                   animated={true}
                   value={searchInput}
                   placeholder="Search preset boards"

@@ -73,14 +73,20 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     // let retryCount = 0;
     console.log("Fetching user...", retryCount);
     const user = await getCurrentUser();
-    if (user) setCurrentUser(user);
-    {
+    console.log("User fetched", user);
+    if (user) {
+      setCurrentUser(user);
+      return user;
+    } else {
       setRetryCount(retryCount + 1);
       if (retryCount < 3) {
         console.log("Retrying...");
+      } else {
+        console.error("Error fetching user");
+        return null;
       }
     }
-    console.log("User: ", user);
+    console.log("User returned", user);
     return user;
   };
 

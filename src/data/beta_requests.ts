@@ -34,7 +34,6 @@ export const fetchBetaRequests = () => {
 
 export const getAllUsers = async () => {
   const response = await fetch(`${BASE_URL}users`, { headers: userHeaders });
-  console.log("response", response);
   const users = await response.json();
   return users;
 };

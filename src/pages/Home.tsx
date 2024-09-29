@@ -105,7 +105,7 @@ const Home: React.FC = () => {
               boards={currentAccount.boards || []}
             />
           )}
-          <Footer />
+          {!currentAccount && <Footer />}
         </IonContent>
         {currentUser && <Tabs />}
 

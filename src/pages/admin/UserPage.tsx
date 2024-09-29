@@ -1,26 +1,14 @@
 import {
-  IonBackButton,
-  IonButtons,
   IonCard,
   IonContent,
-  IonHeader,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonMenuButton,
   IonPage,
   IonRefresher,
   IonRefresherContent,
-  IonText,
-  IonTitle,
   IonToast,
-  IonToolbar,
 } from "@ionic/react";
 import SideMenu from "../../components/main_menu/SideMenu";
 import Tabs from "../../components/utils/Tabs";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import UserSettingsForm from "../../components/admin/AdminUserSettingsForm";
 import {
   User,
   UserSetting,
@@ -32,7 +20,6 @@ import UserForm from "../../components/users/UserForm";
 import { useHistory, useParams } from "react-router";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 import MainHeader from "../MainHeader";
-import { set } from "d3";
 import AdminUserSettingsForm from "../../components/admin/AdminUserSettingsForm";
 
 const UserPage: React.FC = () => {
@@ -40,28 +27,37 @@ const UserPage: React.FC = () => {
   //   const { id } = useParams<{ id: string }>();
   const [userId, setUserId] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  const [userSetting, setUserSetting] = useState<UserSetting | null>(null);
-  const [name, setName] = useState<string | null>(user?.name || null);
   const history = useHistory();
   const [toastMessage, setToastMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [planType, setPlanType] = useState<string>("free");
 
   const loadData = async () => {
-    const queryString = window.location.pathname;
-    const urlParams = queryString.split("/");
+    console.log("loadData - UserPage");
+    let id = userId;
+    console.log("user id", userId);
+    if (!userId) {
+      console.log("no user id found, checking url");
+      const queryString = window.location.pathname;
+      const urlParams = queryString.split("/");
 
-    const id = urlParams[3];
-    if (!id) {
-      console.error("No user id found");
-      return;
+      id = urlParams[3];
+      if (!id) {
+        console.error("No user id found from url");
+        return;
+      }
+    } else {
+      console.log("user id found", userId);
+      id = userId;
     }
+    console.log("loading data for user id", id);
     setUserId(id);
     const user = await getUser(id);
     setUser(user);
   };
 
   useEffect(() => {
+    console.log("useEffect - UserPage - loadData");
     loadData();
   }, []);
 
@@ -79,6 +75,7 @@ const UserPage: React.FC = () => {
       setIsOpen(true);
       setToastMessage("Error saving settings");
     }
+    loadData();
     // window.location.reload();
   };
 

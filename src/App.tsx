@@ -194,7 +194,7 @@ const UserRoutes: React.FC = () => (
           <BoardsScreen gridType="user" />
         </Route>
         <Route path="/preset" exact={true}>
-          <PresetBoardsScreen initialSegmentType="welcome" />
+          <PresetBoardsScreen initialSegmentType="all" />
         </Route>
         <Route path="/preset/featured" exact={true}>
           <PresetBoardsScreen initialSegmentType="featured" />
@@ -283,7 +283,7 @@ const UserRoutes: React.FC = () => (
           component={AccountSignInScreen}
           exact={true}
         />
-        <Route path="/admin/users/:id" component={UserPage} />
+        <Route path="/admin/users/:id" component={UserPage} exact={true} />
       </IonRouterOutlet>
     </IonReactRouter>
   </UserProvider>
