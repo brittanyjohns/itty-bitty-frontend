@@ -79,8 +79,6 @@ import AccountSignInScreen from "./pages/accounts/AccountSignInScreen";
 import SignInPage from "./pages/SignInPage";
 import AccountSignOutScreen from "./pages/accounts/AccountSignOutScreen";
 import ViewChildBoardScreen from "./pages/childBoards/ViewChildBoardScreen";
-import CookiesConsent from "./components/utils/CookieConsent";
-import { useState, useEffect } from "react";
 import PrivacyPolicy from "./pages/utils/PrivacyPolicy";
 import BoardGroupsScreen from "./pages/board_groups/BoardGroupsScreen";
 import NewBoardGroup from "./pages/board_groups/NewBoardGroup";
@@ -290,23 +288,9 @@ const UserRoutes: React.FC = () => (
 );
 
 const App: React.FC = () => {
-  // const [showCookiesConsent, setShowCookiesConsent] = useState(false);
-
-  // useEffect(() => {
-  //   const cookiesConsent = document.cookie
-  //     .split("; ")
-  //     .find((row) => row.startsWith("cookies_consent=true"));
-
-  //   if (!cookiesConsent) {
-  //     console.log("No cookies consent found");
-  //     setShowCookiesConsent(true);
-  //   }
-  // }, []);
-
   return (
     <IonApp>
       <UserRoutes />
-      {/* {showCookiesConsent && <CookiesConsent />} */}
     </IonApp>
   );
 };

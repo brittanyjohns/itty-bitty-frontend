@@ -99,7 +99,8 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser, currentAccount }) => {
                 {currentUser?.email}
                 <br></br>
                 <span className="text-gray-500 text-xs">
-                  {currentUser?.plan_type} - {currentUser?.tokens} tokens
+                  {currentUser?.plan_type === "pro" ? "pro" : "free"} -{" "}
+                  {currentUser?.tokens} tokens
                 </span>
               </p>
             </IonItem>
@@ -153,30 +154,28 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser, currentAccount }) => {
           <IonItem lines="none">
             {(currentUser || currentAccount) && <ColorKey />}
           </IonItem>
-          <IonItem lines="none">
-            {currentAccount && (
-              <MenuListItem
-                menuLink={{
-                  id: 0,
-                  name: "Sign Out",
-                  slug: "child-sign-out",
-                  icon: arrowForwardCircleOutline,
-                  endpoint: "/child-accounts/sign-out",
-                }}
-              />
-            )}
-            {currentUser && (
-              <MenuListItem
-                menuLink={{
-                  id: 0,
-                  name: "Sign Out",
-                  slug: "sign-out",
-                  icon: logOutOutline,
-                  endpoint: "/users/sign-out",
-                }}
-              />
-            )}
-          </IonItem>
+          {currentAccount && (
+            <MenuListItem
+              menuLink={{
+                id: 0,
+                name: "Sign Out",
+                slug: "child-sign-out",
+                icon: arrowForwardCircleOutline,
+                endpoint: "/child-accounts/sign-out",
+              }}
+            />
+          )}
+          {currentUser && (
+            <MenuListItem
+              menuLink={{
+                id: 0,
+                name: "Sign Out",
+                slug: "sign-out",
+                icon: logOutOutline,
+                endpoint: "/users/sign-out",
+              }}
+            />
+          )}
         </IonList>
       </div>
     </IonMenu>

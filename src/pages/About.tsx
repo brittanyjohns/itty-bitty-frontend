@@ -1,16 +1,6 @@
-import {
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonMenuButton,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
+import { IonContent, IonPage } from "@ionic/react";
 import SideMenu from "../components/main_menu/SideMenu";
-import Tabs from "../components/utils/Tabs";
 import { useCurrentUser } from "../hooks/useCurrentUser";
-import { getImageUrl } from "../data/utils";
 import MainHeader from "./MainHeader";
 import StaticMenu from "../components/main_menu/StaticMenu";
 import Footer from "../components/utils/Footer";

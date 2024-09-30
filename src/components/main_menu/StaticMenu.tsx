@@ -109,6 +109,7 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
         {currentAccount && (
           <>
             <IonItem
+              button
               slot="header"
               routerLink="/account-dashboard"
               className=""
@@ -124,6 +125,7 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
               </p>
             </IonItem>
             <IonItem
+              button
               slot="header"
               routerLink="/account-dashboard"
               className="border-t-2 border-b-2"
@@ -140,6 +142,7 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
               </p>
             </IonItem>
             <IonItem
+              button
               slot="header"
               routerLink="/account-dashboard"
               className=""
@@ -162,6 +165,7 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
               </p>
             </IonItem>
             <IonItem
+              button
               slot="header"
               routerLink="/account-dashboard"
               className=""

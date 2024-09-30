@@ -121,10 +121,11 @@ const MenuListItem: React.FC<MainMenuListItemProps> = ({ menuLink }) => {
 
   return (
     <IonItem
+      button
       aria-label={menuLink.slug}
       key={menuLink.id}
       onClick={handleClick(menuLink.slug, menuLink.endpoint)}
-      className={`text-xs md:text-sm lg:text-md ${classNameForActive()} w-full`}
+      className={`text-xs md:text-sm lg:text-md ${classNameForActive()} w-full cursor-pointer`}
       lines="none"
       detail={false}
       ref={itemRef}

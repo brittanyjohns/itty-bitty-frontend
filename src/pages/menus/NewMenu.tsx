@@ -203,7 +203,7 @@ const NewMenu: React.FC = (props: any) => {
                 </IonItem>
 
                 <IonItem lines="none" className="ion-margin-bottom">
-                  <p className="w-3/4 md:w-1/2 mx-auto text-center text-lg font-bold">
+                  <p className="w-full md:w-4/5 mx-auto text-center text-lg font-bold">
                     This is the number of tokens that will be used to generate
                     this menu.
                   </p>
@@ -223,7 +223,7 @@ const NewMenu: React.FC = (props: any) => {
                   ></IonInput>
                 </IonItem>
                 <IonItem lines="none" className="ion-margin-bottom">
-                  <p className="w-3/4 md:w-1/2 mx-auto text-center">
+                  <p className="w-full md:w-4/5 mx-auto text-center">
                     You have {currentUser?.tokens} tokens
                     <br></br>
                     This menu will use a maximum of{" "}
@@ -234,12 +234,22 @@ const NewMenu: React.FC = (props: any) => {
                   lines="none"
                   className="ion-margin-bottom border-b-2 py-3"
                 >
-                  {currentUser?.tokens && (
-                    <p className="w-3/4 md:w-1/2 mx-auto text-center">
+                  {currentUser?.tokens && currentUser?.tokens > 0 ? (
+                    <p className="w-full md:w-4/5 mx-auto text-center">
                       You will have a minimum of {""}
                       {currentUser?.tokens - tokenLimit} tokens remaining after
                       creating this menu
                     </p>
+                  ) : (
+                    <div>
+                      <p className="w-full md:w-4/5 mx-auto text-center text-red-500 font-bold">
+                        You do not have enough tokens to create images for this
+                        menu.
+                      </p>
+                      <p className="w-full md:w-4/5 mx-auto text-center text-red-500">
+                        Placeholder text will be used instead.
+                      </p>
+                    </div>
                   )}
                 </IonItem>
                 <IonItem lines="none" className="ion-margin-bottom mx-2">

@@ -127,10 +127,6 @@ const AdminUserSettingsForm: React.FC<AdminUserSettingsFormProps> = ({
   ];
 
   useEffect(() => {
-    if (!currentUser?.admin) {
-      window.location.href = "/";
-      console.log("Access Denied");
-    }
     const initialSettings = settingsConfig.reduce((acc, setting) => {
       const value = getNestedProperty(
         existingUserSetting,

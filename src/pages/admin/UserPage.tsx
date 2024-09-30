@@ -1,6 +1,7 @@
 import {
   IonCard,
   IonContent,
+  IonItem,
   IonPage,
   IonRefresher,
   IonRefresherContent,
@@ -136,6 +137,29 @@ const UserPage: React.FC = () => {
                 existingUserSetting={user?.settings}
                 userId={userId || ""}
               />
+            </IonCard>
+          </div>
+
+          <div className="flex flex-col items-center">
+            <IonCard className="p-4 w-full md:w-4/5 mx-auto">
+              <h1 className="text-2xl">User Boards</h1>
+              <div className="flex flex-col items-center">
+                {user?.boards && (
+                  <div className="flex flex-col items-center">
+                    {user.boards.map((board) => (
+                      <div key={board.id} className="p-2">
+                        <IonItem
+                          lines="none"
+                          button
+                          onClick={() => history.push(`/board/${board.id}`)}
+                        >
+                          {board.name}
+                        </IonItem>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </IonCard>
           </div>
 
