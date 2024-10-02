@@ -33,7 +33,19 @@ const PricingPage: React.FC = () => {
         />
         <IonContent className="flex flex-col items-center p-6">
           <div className="relative lower-fixed-bg">
-            <PricingTable />
+            <div className="text-center bg-gray-900 p-4 font-sanserif text-center">
+              <h1 className="text-xl md:text-2xl font-bold text-white">
+                Find the plan that's right for you.
+              </h1>
+              <p className="mt-4 text-sm md:text-xl text-white">
+                Join the growing community of users who enhance their
+                communication with SpeakAnyWay.
+              </p>
+            </div>
+
+            <div className="bg-white bg-opacity-50 p-4 py-9 font-sanserif text-center">
+              <PricingTable />
+            </div>
           </div>
           <Footer />
         </IonContent>

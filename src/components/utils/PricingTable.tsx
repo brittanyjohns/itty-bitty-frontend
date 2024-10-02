@@ -34,20 +34,8 @@ function PricingTable({ showHeader = true }: PricingTableProps) {
   // Paste the stripe-pricing-table snippet in your React component
   return (
     <div className="p-4">
-      {showHeader && (
-        <div className="text-cente bg-gray-900 p-4 py-9 font-sanserif text-center">
-          <h1 className="text-xl md:text-2xl font-bold text-white">
-            Find the plan that's right for you.
-          </h1>
-          <p className="mt-4 text-sm md:text-xl text-white">
-            Join the growing community of users who enhance their communication
-            with SpeakAnyWay.
-          </p>
-        </div>
-      )}
-      <h1 className="text-2xl font-bold text-center mt-4">Choose Your Plan</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
-        {currentUser && currentUser.plan_type === "free" && (
+        {currentUser && currentUser.plan_type !== "pro" && (
           <IonCard className="h-fit">
             <IonCardHeader className="text-center">
               <div className="text-3xl font-bold">Free Forever</div>

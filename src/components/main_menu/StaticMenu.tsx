@@ -101,7 +101,8 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
               {currentUser?.email}
               <br></br>
               <span className="text-gray-500 text-xs">
-                {currentUser?.plan_type} - {currentUser?.tokens} tokens
+                {currentUser?.plan_type === "pro" ? "pro" : "free"} -{" "}
+                {currentUser?.tokens} tokens
               </span>
             </p>
           </IonItem>

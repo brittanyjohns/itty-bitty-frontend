@@ -75,8 +75,7 @@ const ViewImageScreen: React.FC = () => {
   const newWordInput = useRef<HTMLIonInputElement>(null);
   const [showLoading, setShowLoading] = useState(false);
   const [segmentType, setSegmentType] = useState("gallery");
-  const uploadForm = useRef<HTMLDivElement>(null);
-  const generateForm = useRef<HTMLDivElement>(null);
+  const newForm = useRef<HTMLDivElement>(null);
   const audioForm = useRef<HTMLDivElement>(null);
   const imageGridWrapper = useRef<HTMLDivElement>(null);
   const searchWrapper = useRef<HTMLDivElement>(null);
@@ -114,7 +113,6 @@ const ViewImageScreen: React.FC = () => {
   );
   const fetchImage = async () => {
     const img = await getImage(id);
-    console.log("Image: ", img);
     setImage(img);
     setNextImageWords(img?.next_words);
     return img;
@@ -207,20 +205,9 @@ const ViewImageScreen: React.FC = () => {
       imgToSet = image ?? undefined;
     }
     const label = imgToSet?.label ?? "";
-    if (segmentType === "generate") {
-      setPageTitle(`Generate an Image`);
-      uploadForm.current?.classList.add("hidden");
-      generateForm.current?.classList.remove("hidden");
-      imageGridWrapper.current?.classList.add("hidden");
-      searchWrapper.current?.classList.add("hidden");
-      deleteImageWrapper.current?.classList.add("hidden");
-      audioForm.current?.classList.add("hidden");
-      adminWrapper.current?.classList.add("hidden");
-    }
-    if (segmentType === "upload") {
-      setPageTitle(`Upload an Image`);
-      uploadForm.current?.classList.remove("hidden");
-      generateForm.current?.classList.add("hidden");
+    if (segmentType === "new") {
+      setPageTitle(`Add a New Image`);
+      newForm.current?.classList.remove("hidden");
       searchWrapper.current?.classList.add("hidden");
       imageGridWrapper.current?.classList.add("hidden");
       deleteImageWrapper.current?.classList.add("hidden");
@@ -228,9 +215,8 @@ const ViewImageScreen: React.FC = () => {
       adminWrapper.current?.classList.add("hidden");
     }
     if (segmentType === "gallery") {
-      setPageTitle(`Gallery for ${label}`);
-      uploadForm.current?.classList.add("hidden");
-      generateForm.current?.classList.add("hidden");
+      setPageTitle(`Select a display image for "${label}"`);
+      newForm.current?.classList.add("hidden");
       searchWrapper.current?.classList.add("hidden");
       imageGridWrapper.current?.classList.remove("hidden");
       deleteImageWrapper.current?.classList.add("hidden");
@@ -239,8 +225,7 @@ const ViewImageScreen: React.FC = () => {
     }
     if (segmentType === "delete") {
       setPageTitle(`Delete Image for ${label}`);
-      uploadForm.current?.classList.add("hidden");
-      generateForm.current?.classList.add("hidden");
+      newForm.current?.classList.add("hidden");
       searchWrapper.current?.classList.add("hidden");
       imageGridWrapper.current?.classList.add("hidden");
       deleteImageWrapper.current?.classList.remove("hidden");
@@ -250,8 +235,7 @@ const ViewImageScreen: React.FC = () => {
     if (segmentType === "search") {
       setPageTitle(`Search for Images`);
       setShouldTriggerSearch(true);
-      uploadForm.current?.classList.add("hidden");
-      generateForm.current?.classList.add("hidden");
+      newForm.current?.classList.add("hidden");
       searchWrapper.current?.classList.remove("hidden");
       imageGridWrapper.current?.classList.add("hidden");
       deleteImageWrapper.current?.classList.add("hidden");
@@ -260,8 +244,7 @@ const ViewImageScreen: React.FC = () => {
     }
     if (segmentType === "audio") {
       setPageTitle(`Audio for ${label}`);
-      uploadForm.current?.classList.add("hidden");
-      generateForm.current?.classList.add("hidden");
+      newForm.current?.classList.add("hidden");
       searchWrapper.current?.classList.add("hidden");
       imageGridWrapper.current?.classList.add("hidden");
       deleteImageWrapper.current?.classList.add("hidden");
@@ -270,8 +253,7 @@ const ViewImageScreen: React.FC = () => {
     }
     if (segmentType === "admin") {
       setPageTitle(`Admin for ${label}`);
-      uploadForm.current?.classList.add("hidden");
-      generateForm.current?.classList.add("hidden");
+      newForm.current?.classList.add("hidden");
       searchWrapper.current?.classList.add("hidden");
       imageGridWrapper.current?.classList.add("hidden");
       deleteImageWrapper.current?.classList.add("hidden");
@@ -414,34 +396,6 @@ const ViewImageScreen: React.FC = () => {
     }
   };
 
-  const renderImageUserInfo = (currentUser: any) => {
-    if (currentUser?.admin) {
-      return (
-        <div className="w-full md:w-1/2 mx-auto">
-          {(currentAccount?.id === image?.user_id || currentUser?.admin) && (
-            <IonText className="text-md block">
-              This image was created by:{" "}
-              {image?.user?.name || image?.user?.email || image?.user?.id}
-            </IonText>
-          )}
-          <IonText className="text-md block my-3">
-            This image was created on: {image?.created_at}
-          </IonText>
-
-          {currentAccount?.id === image?.user_id ? (
-            ""
-          ) : (
-            <IonText className="text-md block my-3">
-              This image is owned by: <br></br>
-              {image?.user?.name || image?.user?.email || image?.user?.id}{" "}
-              {image?.user?.role === "admin" ? "(admin)" : ""}
-            </IonText>
-          )}
-        </div>
-      );
-    }
-  };
-
   const wordBgColor = (word: string) => {
     if (wordsToRemove.includes(word)) {
       return "bg-red-300";
@@ -453,7 +407,6 @@ const ViewImageScreen: React.FC = () => {
     event.preventDefault();
     let file = event.target.files[0];
 
-    console.log("File: ", file);
     setNewAudioFile(file);
   };
 
@@ -486,7 +439,7 @@ const ViewImageScreen: React.FC = () => {
   const handleAfterSetCurrentAudio = (response: any) => {
     if (!response) {
       console.error("Error setting current audio - no response");
-      setToastMessage("Error setting current audio.");
+      setToastMessage("Error setting current audio. Please try again.");
       setShowLoading(false);
       setShowToast(true);
       return;
@@ -599,7 +552,7 @@ const ViewImageScreen: React.FC = () => {
           endLink="/images/add"
         />
 
-        <IonContent className="ion-padding">
+        <IonContent>
           {showToast === true && <p>true</p>}
           <IonToast
             isOpen={showToast}
@@ -613,7 +566,7 @@ const ViewImageScreen: React.FC = () => {
                 className="loading-icon"
                 cssClass="loading-icon"
                 isOpen={showLoading}
-                message={"Refreshing... Please wait."}
+                message={loadingMessage}
               />
             </IonRefresherContent>
           </IonRefresher>
@@ -621,7 +574,7 @@ const ViewImageScreen: React.FC = () => {
             <IonSegment
               value={segmentType}
               onIonChange={handleSegmentChange}
-              className="w-full bg-inherit"
+              className="w-full bg-inherit overflow-x-auto"
             >
               {image?.can_edit && (
                 <IonSegmentButton value="audio">
@@ -647,17 +600,6 @@ const ViewImageScreen: React.FC = () => {
                   <IonIcon className="mt-2" icon={lockClosedOutline} />
                 </IonSegmentButton>
               )}
-              <IonSegmentButton value="upload">
-                {!smallScreen ? (
-                  <IonLabel className="text-sm md:text-md lg:text-lg">
-                    Upload
-                  </IonLabel>
-                ) : (
-                  <IonLabel className="text-sm md:text-md lg:text-lg"></IonLabel>
-                )}
-
-                <IonIcon className="mt-2" icon={cloudUploadOutline} />
-              </IonSegmentButton>
               <IonSegmentButton value="gallery">
                 {!smallScreen ? (
                   <IonLabel className="text-sm md:text-md lg:text-lg">
@@ -668,16 +610,18 @@ const ViewImageScreen: React.FC = () => {
                 )}
                 <IonIcon className="mt-2" icon={imagesOutline} />
               </IonSegmentButton>
-              <IonSegmentButton value="generate">
+              <IonSegmentButton value="new">
                 {!smallScreen ? (
                   <IonLabel className="text-sm md:text-md lg:text-lg">
-                    Generate
+                    New
                   </IonLabel>
                 ) : (
                   <IonLabel className="text-sm md:text-md lg:text-lg"></IonLabel>
                 )}
-                <IonIcon className="mt-2" icon={refreshCircleOutline} />
+
+                <IonIcon className="mt-2" icon={cloudUploadOutline} />
               </IonSegmentButton>
+
               <IonSegmentButton value="search">
                 {!smallScreen ? (
                   <IonLabel className="text-sm md:text-md lg:text-lg">
@@ -695,8 +639,8 @@ const ViewImageScreen: React.FC = () => {
               {image?.label?.toUpperCase() || "no label"}
             </h1>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-2">
-            <IonCard className="p-1 border-2">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 p-2">
+            <div className="p-1 border-2 rounded-md">
               {image?.can_edit ? (
                 <div className="m-2">
                   <p className="text-md font-bold">
@@ -770,6 +714,33 @@ const ViewImageScreen: React.FC = () => {
                   )}
                 </IonButtons>
               )}
+            </div>
+            <div className="p-1 border-2 rounded-md">
+              {currentImage && image && (
+                <IonImg
+                  id={image.id}
+                  src={currentImage}
+                  alt={image.label}
+                  className={`mx-auto ${
+                    image.bg_color || "bg-white"
+                  } p-1 rounded-lg shadow-md`}
+                />
+              )}
+            </div>
+            <div className="p-1 border-2 rounded-md">
+              {image && remainingBoards && remainingBoards.length > 0 && (
+                <div className="m-2">
+                  <p className="text-md font-bold">
+                    Add this image to a board:
+                  </p>
+                  <p className="text-sm">
+                    You can edit the display image, upload your own audio,
+                    change the voice, & more.
+                  </p>
+
+                  <BoardDropdown imageId={image.id} boards={remainingBoards} />
+                </div>
+              )}
               <div className="mt-4">
                 {image?.user_boards && image?.user_boards?.length > 0 && (
                   <div className="">
@@ -806,78 +777,49 @@ const ViewImageScreen: React.FC = () => {
                   </div>
                 )}
               </div>
-            </IonCard>
-            <div className="mt-4">
-              {currentImage && image && (
-                <IonImg
-                  id={image.id}
-                  src={currentImage}
-                  alt={image.label}
-                  className={`w-5/6 mx-auto ${
-                    image.bg_color || "bg-white"
-                  } p-1 rounded-lg shadow-md`}
-                />
-              )}
-            </div>
-            <div className="mt-10">
-              {image && remainingBoards && remainingBoards.length > 0 && (
-                <div className="p-2 border-2">
-                  <p className="text-sm">Add this image to a board:</p>
-                  <BoardDropdown imageId={image.id} boards={remainingBoards} />
-                </div>
-              )}
             </div>
           </div>
-          <div className="w-full mx-auto mt-6">
-            <h1 className="text-lg md:text-xl lg:text-2xl text-center">
-              {pageTitle}
-            </h1>
-          </div>
-          <div className="mt-2 py-3 px-1 hidden" ref={uploadForm}>
-            <div className="w-full md:w-3/4 mx-auto m-2">
-              {image && (
-                <ImageCropper
-                  existingId={image.id}
-                  boardId={boardId}
-                  existingLabel={image.label}
-                />
-              )}
-            </div>
-          </div>
-          <div className="mt-2 hidden" ref={generateForm}>
-            <IonList className="w-full md:w-3/4 lg:w-1/2 mx-auto" lines="none">
-              <IonItem className="mt-2 border-2">
-                <IonLoading
-                  className="loading-icon"
-                  cssClass="loading-icon"
-                  isOpen={showLoading}
-                  message={loadingMessage}
-                />
+          <h1 className="text-xl md:text-2xl lg:text-3xl text-center font-bold">
+            {pageTitle}
+          </h1>
+          <div className="mt-2 hidden" ref={newForm}>
+            <div className="w-full md:w-3/4 mx-auto mt-2 flex justify-between">
+              <div className="mr-2">
                 {image && (
-                  <IonTextarea
-                    className=""
-                    placeholder="Enter prompt"
-                    value={image.image_prompt}
-                    onIonInput={(e: any) =>
-                      setImage({ ...image, image_prompt: e.detail.value! })
-                    }
-                  ></IonTextarea>
+                  <ImageCropper
+                    existingId={image.id}
+                    boardId={boardId}
+                    existingLabel={image.label}
+                  />
                 )}
-              </IonItem>
-              <IonItem className="mt-2">
-                <IonButton className="w-full text-lg" onClick={handleGenerate}>
-                  Generate Image
-                </IonButton>
-              </IonItem>
-              <IonItem className="mt-2 font-md">
-                <p className="text-sm">
-                  This will generate an image based on the prompt you enter.
-                </p>
-              </IonItem>
-              <IonItem className="mt-2 font-md">
-                <p className="text-sm">This will cost you 1 token.</p>
-              </IonItem>
-            </IonList>
+              </div>
+              <IonList className="w-full md:w-3/4 mx-auto" lines="none">
+                <IonItem className="mt-2 ">
+                  {image && (
+                    <IonTextarea
+                      className="p-1"
+                      placeholder="Enter a prompt to generate an image."
+                      helperText="The more detailed the prompt, the better the image. This will use 1 token."
+                      rows={3}
+                      value={image.image_prompt}
+                      onIonInput={(e: any) =>
+                        setImage({ ...image, image_prompt: e.detail.value! })
+                      }
+                    ></IonTextarea>
+                  )}
+                </IonItem>
+                <IonItem className="mt-2">
+                  <IonButton
+                    className="w-full text-lg"
+                    onClick={handleGenerate}
+                    disabled={!image?.image_prompt}
+                    size="large"
+                  >
+                    Generate Image
+                  </IonButton>
+                </IonItem>
+              </IonList>
+            </div>
           </div>
           <div className="mt-2 hidden" ref={audioForm}>
             <div className="flex flex-col w-full md:w-3/4 mx-auto p-2 border-2">
@@ -916,7 +858,6 @@ const ViewImageScreen: React.FC = () => {
 
           <div className="mt-2 hidden" ref={searchWrapper}>
             <div className="w-full md:w-3/4 mx-auto p-2">
-              <h2 className="text-center">Search for images</h2>
               {image && (
                 <ImageSearchComponent
                   startingQuery={image?.label}
@@ -928,6 +869,9 @@ const ViewImageScreen: React.FC = () => {
           </div>
 
           <div className="mt-2 hidden" ref={imageGridWrapper}>
+            {/* <h1 className="text-xl md:text-2xl lg:text-3xl text-center font-bold">
+              Image Gallery
+            </h1> */}
             {image && image.docs && image.docs.length > 0 && (
               <div className="w-full md:w-5/6 mx-auto text-center mt-8 p-1">
                 <IonLabel className="font-bold text-sm md:text-md lg:text-lg mt-2">
@@ -937,7 +881,7 @@ const ViewImageScreen: React.FC = () => {
                   className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 mt-3 p-2"
                   ref={imageGrid}
                 >
-                  {image?.docs &&
+                  {image?.docs && image?.docs.length > 0 ? (
                     image.docs.map((doc, index) => (
                       <div
                         key={index}
@@ -962,7 +906,12 @@ const ViewImageScreen: React.FC = () => {
                           className="object-contain bg-white"
                         />
                       </div>
-                    ))}
+                    ))
+                  ) : (
+                    <div className="w-full text-center">
+                      <p>No images found.</p>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

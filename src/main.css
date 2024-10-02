@@ -75,7 +75,7 @@ ion-segment {
 ion-segment-button {
   /* --color: rgb(238, 238, 238); */
   --background: none;
-  --padding-bottom: 10px;
+  --padding-bottom: 5px;
   --margin-top: 5px;
   /* --indicator-color: #badef8; */
   /* --background-checked: #13496f;

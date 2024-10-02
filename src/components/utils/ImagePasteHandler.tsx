@@ -66,8 +66,7 @@ const ImagePasteHandler: React.FC<ImagePasteHandlerProps> = ({ setFile }) => {
   }, []);
 
   return (
-    <div className="w-full md:w-1/2 lg:w-1/3 mx-auto">
-      {/* <input type="file" id="file_input" style={{ display: 'none' }} /> */}
+    <div className="w-full mx-auto h-48 bg-gray-200 flex items-center justify-center">
       <img id="preview" alt="Preview" style={{ display: "none" }} />
     </div>
   );

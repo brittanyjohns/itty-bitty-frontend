@@ -209,7 +209,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
   });
 
   return (
-    <div className="w-full md:w-1/2 lg:w-1/2 mx-auto border p-4">
+    <div className="ion-padding">
       <form onSubmit={handleSubmit} className="flex flex-col items-center">
         <div className="p-4 m-1">
           {!existingId ? (
@@ -226,7 +226,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
           ) : null}
 
           {showPaste && (
-            <div className="flex flex-col items-center mt-8">
+            <div className="flex flex-col items-center my-8">
               <input
                 type="file"
                 // id="file_field"
@@ -238,23 +238,19 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
           )}
         </div>
         {showPaste && (
-          <IonCard className="p-4 m-4 border text-center">
+          <IonCard className="p-4 text-center">
             <h2 className="text-xl font-bold">Paste an image</h2>
             <p className="text-sm">Right-click and paste an image here</p>
-            <IonItem className="mt-4">
-              <ImagePasteHandler setFile={handlePastedFile} />
-            </IonItem>
+            <ImagePasteHandler setFile={handlePastedFile} />
           </IonCard>
         )}
         {imageSrc && (
-          <>
-            <img
-              ref={imageElementRef}
-              src={imageSrc}
-              alt="Source"
-              style={{ display: imgDisplay }}
-            />
-          </>
+          <img
+            ref={imageElementRef}
+            src={imageSrc}
+            alt="Source"
+            style={{ display: imgDisplay }}
+          />
         )}
         <IonButtons className="mt-4">
           <IonButton
