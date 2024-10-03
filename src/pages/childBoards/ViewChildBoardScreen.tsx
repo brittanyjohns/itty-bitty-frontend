@@ -221,7 +221,14 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
             {board?.name}
           </p>
           {showImages && (
-            <ImageList images={selectedImages} columns={numOfColumns} />
+            <ImageList
+              images={selectedImages}
+              columns={numOfColumns}
+              setSelectedImages={setSelectedImages}
+              audioList={audioList}
+              setAudioList={setAudioList}
+              inputRef={inputRef}
+            />
           )}
           <div className="bg-inherit">
             <IonInput
