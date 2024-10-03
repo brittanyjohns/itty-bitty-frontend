@@ -643,9 +643,28 @@ const ViewImageScreen: React.FC = () => {
             <div className="p-1 border-2 rounded-md">
               {image?.can_edit ? (
                 <div className="m-2">
-                  <p className="text-md font-bold">
-                    This is <i>your</i> image item.
-                  </p>
+                  <div className="text-md font-bold">
+                    {currentUser?.admin ? (
+                      <>
+                        <p className="text-sm">
+                          You are viewing this image as an <i>admin</i>.
+                        </p>
+                        {image?.user_id ? (
+                          <p className="text-sm">
+                            <i>Created by: </i> {image?.user_id}
+                          </p>
+                        ) : (
+                          <>
+                            <i>Created by:</i> Admin
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        This is <i>your</i> image item.
+                      </>
+                    )}
+                  </div>
                   <p className="text-sm">
                     You can edit the display image, upload your own audio,
                     change the voice, & more.
