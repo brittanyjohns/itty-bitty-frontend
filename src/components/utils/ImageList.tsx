@@ -1,23 +1,58 @@
 import React, { useEffect, useState } from "react";
 import { Image } from "../../data/images";
 import ImageGalleryItem from "../images/ImageGalleryItem";
-import { set } from "d3";
 
 interface ImageListProps {
   images: Image[];
   columns: number;
+  inputRef?: any;
+  audioList: string[];
+  setAudioList: any;
+  setSelectedImages: any;
 }
 
-const ImageList: React.FC<ImageListProps> = ({ images, columns }) => {
-  const [imgRef, setImgRef] = useState<HTMLDivElement | null>(null);
-
+const ImageList: React.FC<ImageListProps> = ({
+  images,
+  columns,
+  audioList,
+  setAudioList,
+  inputRef,
+  setSelectedImages,
+}) => {
   const listRef = React.createRef<HTMLDivElement>();
   const [numOfColumns, setNumOfColumns] = useState(8);
   const [gridClasses, setGridClasses] = useState<string | null>(null);
+  const [currentImages, setCurrentImages] = useState<Image[]>(images);
 
-  // Set numOfColumns and grid classes when columns prop changes
+  const afterRemoveFromList = (image: Image) => {
+    const labelToRemove = image.label;
+    const audioToRemove = image.audio;
+    const newAudioList = audioList.filter((audio) => audio !== audioToRemove);
+    setAudioList(newAudioList);
+    if (!inputRef.current || !inputRef.current.value) {
+      return;
+    }
+    if (typeof inputRef.current.value === "string") {
+      const valWithSpace = inputRef.current?.value.replaceAll(
+        `${labelToRemove} `,
+        ""
+      );
+      const valWithout = inputRef.current?.value.replaceAll(labelToRemove, "");
+      const newVal =
+        valWithSpace?.length < valWithout?.length ? valWithSpace : valWithout;
+
+      inputRef.current.value = newVal;
+    }
+  };
+
+  const onImageClick = (image: Image) => {
+    const newImages = currentImages.filter((img) => img.id !== image.id);
+    setCurrentImages(newImages);
+    setSelectedImages(newImages);
+    afterRemoveFromList(image);
+    return;
+  };
   useEffect(() => {
-    console.log("ImageList", columns);
     switch (columns) {
       case 1:
       case 2:
@@ -25,13 +60,13 @@ const ImageList: React.FC<ImageListProps> = ({ images, columns }) => {
       case 4:
       case 7:
       case 8:
-      case 11:
         setNumOfColumns(columns);
         break;
       case 5:
       case 6:
       case 9:
       case 10:
+      case 11:
       case 12:
         setNumOfColumns(8);
         break;
@@ -45,16 +80,22 @@ const ImageList: React.FC<ImageListProps> = ({ images, columns }) => {
     setGridClasses(`grid grid-cols-${numOfColumns} gap-1`);
   }, [numOfColumns]);
 
+  useEffect(() => {
+    setCurrentImages(images);
+  }, [images]);
+
   return (
     <div className={`${gridClasses}`} ref={listRef}>
-      {images?.length > 0 ? (
-        images.map((img, index) => (
+      {currentImages?.length > 0 ? (
+        currentImages.map((img, index) => (
           <ImageGalleryItem
-            key={index + img.id}
+            key={index}
             image={img}
-            setImgRef={(element: HTMLDivElement) => {
-              setImgRef(element);
-            }}
+            inputRef={inputRef}
+            mute={true}
+            showRemoveBtn={false}
+            removeFromList={true}
+            onImageClick={onImageClick}
           />
         ))
       ) : (

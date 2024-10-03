@@ -22,6 +22,8 @@ interface ImageGalleryItemProps {
   rowHeight?: number;
   setRowHeight?: any;
   setImgRef?: any;
+  removeFromList?: boolean;
+  afterRemove?: any;
 }
 
 const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
@@ -38,6 +40,8 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   rowHeight,
   setRowHeight,
   setImgRef,
+  removeFromList,
+  afterRemove,
 }) => {
   const [imgRefElement, setImgRefElement] = useState<HTMLDivElement | null>(
     null
@@ -50,6 +54,9 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   const history = useHistory();
 
   const removeImage = async () => {
+    if (removeFromList) {
+      return;
+    }
     try {
       await removeImageFromBoard(board.id, image.id);
       if (imgRefElement) {
@@ -62,11 +69,8 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   };
 
   const handleResize = () => {
-    console.log("Image ref offsetWidth: ", imgRefElement?.offsetWidth);
-    console.log("Image ref clientWidth: ", imgRefElement?.clientWidth);
     if (imgRefElement?.clientWidth) {
       const width = imgRefElement.clientWidth;
-      console.log("Image width: ", width);
       if (isMobile && smallScreen) {
         setRowHeight(width * 1.2); // Adjust height based on width
       } else {
@@ -74,7 +78,6 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       }
     } else {
       setRowHeight(0);
-      console.log("Image ref is null or undefined");
     }
   };
 
@@ -111,7 +114,7 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
       onPlayAudioList(audioSrc);
     }
     const label = image.label;
-    if (inputRef?.current) {
+    if (inputRef?.current && !removeFromList) {
       inputRef.current.value += ` ${label}`;
       if (setShowIcon) {
         setShowIcon(Boolean(inputRef.current.value));
@@ -163,8 +166,12 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
   return (
     <div
       ref={(el) => {
-        setImgRefElement(el);
-        setImgRef(el);
+        if (setImgRefElement) {
+          setImgRefElement(el);
+        }
+        if (setImgRef) {
+          setImgRef(el);
+        }
       }}
       className={`relative cursor-pointer ${
         image.bg_color || "bg-white"
@@ -199,12 +206,19 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({
           slot="icon-only"
           icon={trashBinOutline}
           size="small"
-          onClick={() => setIsOpen(true)}
+          onClick={() => {
+            if (removeFromList) {
+              removeImage();
+              return;
+            } else {
+              setIsOpen(true);
+            }
+          }}
           color="danger"
           className="tiny absolute bottom-0 right-0"
         />
       )}
-      {showRemoveBtn && (
+      {showRemoveBtn && !removeFromList && (
         <IonIcon
           slot="icon-only"
           icon={imageStarIcon(image)}

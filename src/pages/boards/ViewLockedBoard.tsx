@@ -158,7 +158,9 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
     }
   };
   const clearInput = () => {
+    console.log("Clearing input");
     if (inputRef.current) {
+      console.log("Input ref: ", inputRef.current);
       inputRef.current.value = "";
     }
     setAudioList([]);
@@ -209,6 +211,29 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
   const [currentScreenSize, setCurrentScreenSize] = useState("lg");
 
   const isPreset = board?.predefined === true;
+
+  // const afterRemoveFromList = (image: Image) => {
+  //   console.log("AFTER Remove image from list: ", image);
+
+  //   const labelToRemove = image.label;
+  //   const audioToRemove = image.audio;
+  //   const newAudioList = audioList.filter((audio) => audio !== audioToRemove);
+  //   setAudioList(newAudioList);
+  //   if (!inputRef.current || !inputRef.current.value) {
+  //     return;
+  //   }
+  //   if (typeof inputRef.current.value === "string") {
+  //     const newVal = inputRef.current?.value.replace(labelToRemove, "");
+  //     console.log("New value: ", newVal);
+  //     console.log("labelToRemove", labelToRemove);
+  //     console.log("inputRef.current.value", inputRef.current.value);
+  //     inputRef.current.value = newVal;
+  //   }
+  //   // const newImages = selectedImages.filter((img) => img.id !== image.id);
+  //   // console.log("New images: ", newImages);
+  //   // setSelectedImages(newImages);
+  //   // setShowIcon(Boolean(newImages.length));
+  // };
 
   useEffect(() => {
     if (board) {
@@ -302,7 +327,15 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
             )}
           </div>
           {showImages && (
-            <ImageList images={selectedImages} columns={numOfColumns} />
+            <ImageList
+              images={selectedImages}
+              setSelectedImages={setSelectedImages}
+              columns={numOfColumns}
+              // afterRemoveFromList={afterRemoveFromList}
+              setAudioList={setAudioList}
+              audioList={audioList}
+              inputRef={inputRef}
+            />
           )}
           <div className="bg-inherit w-full">
             <IonInput
