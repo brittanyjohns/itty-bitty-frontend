@@ -3,7 +3,6 @@ import { IonButton, IonButtons } from "@ionic/react";
 import { getImageUrl } from "../data/utils";
 import "./LandingPage.css";
 import { useHistory } from "react-router";
-import SignUpForm from "../components/utils/SignUpForm";
 import InlineSignUp from "../components/utils/InlineSignUp";
 import EmailForm from "../components/utils/EmailForm";
 

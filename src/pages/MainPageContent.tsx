@@ -71,31 +71,6 @@ const MainPageContent = ({ ipAddr }: MainPageContentProps) => {
     },
   ];
 
-  const [toastMessage, setToastMessage] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-  const [email, setEmail] = useState("");
-  const handleSubmitEmail = () => {
-    console.log("Email submitted: ", email);
-    const betaRequest: BetaRequest = { email, ip: ipAddr }; // Create a betaRequest object
-    createBetaRequest(betaRequest) // Pass the betaRequest object as an argument
-      .then((response: any) => {
-        console.log("Beta request submitted successfully: ", response);
-        // Handle success
-      })
-      .catch((error: any) => {
-        console.error("Error submitting beta request: ", error);
-        // Handle error
-      });
-
-    setEmail(""); // Clear the email input field
-    setToastMessage("Thank you for joining the beta! We'll be in touch soon.");
-    setIsOpen(true);
-    setTimeout(() => {
-      setIsOpen(false);
-    }, 2500);
-    window.location.href = "/sign-up?email=" + email;
-  };
-
   return (
     <div className="relative lower-fixed-bg">
       <div className="w-full md:w-11/12 lg:w-11/12 mx-auto">
