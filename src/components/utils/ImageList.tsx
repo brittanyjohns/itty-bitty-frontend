@@ -80,6 +80,7 @@ const ImageList: React.FC<ImageListProps> = ({
   }, [columns]);
 
   useEffect(() => {
+    console.log("setting grid classes with ", numOfColumns);
     setGridClasses(`grid grid-cols-${numOfColumns} gap-1`);
   }, [numOfColumns]);
 
@@ -88,7 +89,7 @@ const ImageList: React.FC<ImageListProps> = ({
   }, [images, numOfColumns]);
 
   return (
-    <div className={`${gridClasses}`} ref={listRef}>
+    <div className={`grid grid-cols-4 md:grid-cols-8 gap-1`}>
       {currentImages?.length > 0 ? (
         currentImages.map((img, index) => (
           <ImageGalleryItem
