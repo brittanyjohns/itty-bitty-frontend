@@ -137,16 +137,12 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
       setShowImages(true);
     }
 
-    console.log("image clicked", image.label);
-
     if (currentUser?.settings?.disable_audit_logging) {
       console.log("Audit logging is disabled");
       return;
     }
     const text = image.label;
-    if (previousLabel === text) {
-      console.log("Same label clicked", text);
-    } else {
+    if (previousLabel !== text) {
       const payload = {
         word: text,
         previousWord: previousLabel,

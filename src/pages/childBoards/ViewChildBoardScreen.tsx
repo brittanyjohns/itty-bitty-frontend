@@ -19,6 +19,8 @@ import {
   arrowBackCircleOutline,
   create,
   playCircleOutline,
+  playCircleSharp,
+  trashBin,
   trashBinOutline,
 } from "ionicons/icons";
 
@@ -244,13 +246,17 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
               <IonButton
                 size={smallScreen ? "default" : "large"}
                 onClick={handlePlayAudioList}
-                fill="default"
+                fill="outline"
+                shape="round"
+                className="p-2"
+                color={audioList.length > 0 ? "success" : "medium"}
               >
                 <IonIcon
                   slot="icon-only"
                   className=""
                   color="success"
-                  icon={playCircleOutline}
+                  size="medium"
+                  icon={playCircleSharp}
                 ></IonIcon>
               </IonButton>
             )}
@@ -258,14 +264,16 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
             {showIcon && (
               <IonButton
                 size={smallScreen ? "default" : "large"}
-                fill="default"
+                fill="outline"
                 onClick={() => clearInput()}
+                shape="round"
+                color={selectedImages.length > 0 ? "danger" : "medium"}
+                className="p-2"
               >
                 <IonIcon
                   slot="icon-only"
-                  className=""
-                  color="danger"
-                  icon={trashBinOutline}
+                  size="medium"
+                  icon={trashBin}
                   onClick={() => clearInput()}
                 ></IonIcon>
               </IonButton>

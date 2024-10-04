@@ -62,11 +62,11 @@ const ImageList: React.FC<ImageListProps> = ({
       case 3:
       case 4:
       case 7:
-      case 8:
         setNumOfColumns(columns);
         break;
       case 5:
       case 6:
+      case 8:
       case 9:
       case 10:
       case 11:
@@ -85,7 +85,7 @@ const ImageList: React.FC<ImageListProps> = ({
 
   useEffect(() => {
     setCurrentImages(images);
-  }, [images]);
+  }, [images, numOfColumns]);
 
   return (
     <div className={`${gridClasses}`} ref={listRef}>
