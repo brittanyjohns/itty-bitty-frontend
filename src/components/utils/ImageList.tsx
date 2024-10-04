@@ -55,6 +55,7 @@ const ImageList: React.FC<ImageListProps> = ({
     return;
   };
   useEffect(() => {
+    console.log("columns", columns);
     switch (columns) {
       case 1:
       case 2:
