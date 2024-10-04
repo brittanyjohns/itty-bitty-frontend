@@ -279,17 +279,13 @@ const SelectGalleryScreen: React.FC = () => {
             <p className="text-center mt-2">
               {imageIds.length} images selected for board
             </p>
-            {/* <div className="grid grid-cols-8 gap-4 w-full">
-              <p>Test</p>
-              <p>Test</p>
-              <p>Test</p>
-              <p>Test</p>
-              <p>Test</p>
-              <p>Test</p>
-            </div> */}
 
             <div className="w-full">
-              <ImageList images={selectedImages} columns={numberOfColumns} />
+              <ImageList
+                images={selectedImages}
+                columns={numberOfColumns}
+                setSelectedImages={setSelectedImages}
+              />
             </div>
             <IonButtons className="flex justify-center my-2">
               <IonButton

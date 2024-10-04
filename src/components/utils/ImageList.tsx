@@ -6,8 +6,8 @@ interface ImageListProps {
   images: Image[];
   columns: number;
   inputRef?: any;
-  audioList: string[];
-  setAudioList: any;
+  audioList?: string[];
+  setAudioList?: any;
   setSelectedImages: any;
 }
 
@@ -27,8 +27,10 @@ const ImageList: React.FC<ImageListProps> = ({
   const afterRemoveFromList = (image: Image) => {
     const labelToRemove = image.label;
     const audioToRemove = image.audio;
-    const newAudioList = audioList.filter((audio) => audio !== audioToRemove);
-    setAudioList(newAudioList);
+    if (audioList) {
+      const newAudioList = audioList.filter((audio) => audio !== audioToRemove);
+      setAudioList(newAudioList);
+    }
     if (!inputRef.current || !inputRef.current.value) {
       return;
     }
