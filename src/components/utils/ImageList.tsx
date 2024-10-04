@@ -81,6 +81,7 @@ const ImageList: React.FC<ImageListProps> = ({
 
   useEffect(() => {
     console.log("setting grid classes with ", numOfColumns);
+    //  temporary disable _dynamic_ grid classes
     setGridClasses(`grid grid-cols-${numOfColumns} gap-1`);
   }, [numOfColumns]);
 
