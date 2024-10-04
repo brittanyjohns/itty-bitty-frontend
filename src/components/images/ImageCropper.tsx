@@ -14,8 +14,6 @@ import {
 import { cropImage, findOrCreateImage } from "../../data/images";
 import { useHistory } from "react-router";
 import ImagePasteHandler from "../utils/ImagePasteHandler";
-import { set } from "d3";
-import { image } from "ionicons/icons";
 
 interface ImageCropperProps {
   existingId?: string;
@@ -211,7 +209,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
   return (
     <div className="ion-padding">
       <form onSubmit={handleSubmit} className="flex flex-col items-center">
-        <div className="p-4 m-1">
+        <div className="p-4 m-1 border border-gray-300 rounded-md">
           {!existingId ? (
             <IonInput
               value={label}
@@ -238,11 +236,11 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
           )}
         </div>
         {showPaste && (
-          <IonCard className="p-4 text-center">
+          <div className="p-4 text-center">
             <h2 className="text-xl font-bold">Paste an image</h2>
             <p className="text-sm">Right-click and paste an image here</p>
             <ImagePasteHandler setFile={handlePastedFile} />
-          </IonCard>
+          </div>
         )}
         {imageSrc && (
           <img
@@ -273,7 +271,6 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
           </IonButton>
         </IonButtons>
       </form>
-      <IonLoading isOpen={showLoading} message="Uploading..." />
     </div>
   );
 };

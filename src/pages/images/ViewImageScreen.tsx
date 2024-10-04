@@ -641,6 +641,69 @@ const ViewImageScreen: React.FC = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 p-2">
             <div className="p-1 border-2 rounded-md">
+              {image && remainingBoards && remainingBoards.length > 0 && (
+                <div className="m-2">
+                  <p className="text-md font-bold">
+                    Add this image to a board:
+                  </p>
+                  <p className="text-sm my-2">
+                    You can edit the display image, upload your own audio,
+                    change the voice, & more.
+                  </p>
+
+                  <BoardDropdown imageId={image.id} boards={remainingBoards} />
+                </div>
+              )}
+              <div className="mt-4">
+                {image?.user_boards && image?.user_boards?.length > 0 && (
+                  <div className="">
+                    <IonText className="text-sm font-bold">
+                      This image is associated with {image?.user_boards?.length}{" "}
+                      of your boards:
+                    </IonText>
+                    <IonList>
+                      {image?.user_boards?.map((board) => (
+                        <IonItem
+                          key={board.id}
+                          lines="none"
+                          className="text-sm font-bold mb-1 border rounded-lg"
+                        >
+                          <IonButton
+                            className="text-sm font-md w-full"
+                            fill="clear"
+                            routerLink={`/boards/${board.id}`}
+                          >
+                            {" "}
+                            {board.name}
+                          </IonButton>
+                          <IonIcon
+                            icon={trashBinOutline}
+                            color="danger"
+                            className="hover:cursor-pointer"
+                            slot="end"
+                            onClick={() => handleConfirmRemoveFromBoard(board)}
+                          />
+                          <p className="text-xs">voice: {board.voice}</p>
+                        </IonItem>
+                      ))}
+                    </IonList>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="p-1 border-2 rounded-md">
+              {currentImage && image && (
+                <IonImg
+                  id={image.id}
+                  src={currentImage}
+                  alt={image.label}
+                  className={`mx-auto ${
+                    image.bg_color || "bg-white"
+                  } p-1 rounded-lg shadow-md`}
+                />
+              )}
+            </div>
+            <div className="p-1 border-2 rounded-md">
               {image?.can_edit ? (
                 <div className="m-2">
                   <div className="text-md font-bold">
@@ -734,76 +797,13 @@ const ViewImageScreen: React.FC = () => {
                 </IonButtons>
               )}
             </div>
-            <div className="p-1 border-2 rounded-md">
-              {currentImage && image && (
-                <IonImg
-                  id={image.id}
-                  src={currentImage}
-                  alt={image.label}
-                  className={`mx-auto ${
-                    image.bg_color || "bg-white"
-                  } p-1 rounded-lg shadow-md`}
-                />
-              )}
-            </div>
-            <div className="p-1 border-2 rounded-md">
-              {image && remainingBoards && remainingBoards.length > 0 && (
-                <div className="m-2">
-                  <p className="text-md font-bold">
-                    Add this image to a board:
-                  </p>
-                  <p className="text-sm">
-                    You can edit the display image, upload your own audio,
-                    change the voice, & more.
-                  </p>
-
-                  <BoardDropdown imageId={image.id} boards={remainingBoards} />
-                </div>
-              )}
-              <div className="mt-4">
-                {image?.user_boards && image?.user_boards?.length > 0 && (
-                  <div className="">
-                    <IonText className="text-sm font-bold">
-                      This image is associated with {image?.user_boards?.length}{" "}
-                      of your boards:
-                    </IonText>
-                    <IonList>
-                      {image?.user_boards?.map((board) => (
-                        <IonItem
-                          key={board.id}
-                          lines="none"
-                          className="text-sm font-bold mb-1 border rounded-lg"
-                        >
-                          <IonButton
-                            className="text-sm font-md w-full"
-                            fill="clear"
-                            routerLink={`/boards/${board.id}`}
-                          >
-                            {" "}
-                            {board.name}
-                          </IonButton>
-                          <IonIcon
-                            icon={trashBinOutline}
-                            color="danger"
-                            className="hover:cursor-pointer"
-                            slot="end"
-                            onClick={() => handleConfirmRemoveFromBoard(board)}
-                          />
-                          <p className="text-xs">voice: {board.voice}</p>
-                        </IonItem>
-                      ))}
-                    </IonList>
-                  </div>
-                )}
-              </div>
-            </div>
           </div>
           <h1 className="text-xl md:text-2xl lg:text-3xl text-center font-bold">
             {pageTitle}
           </h1>
-          <div className="mt-2 hidden" ref={newForm}>
-            <div className="w-full md:w-3/4 mx-auto mt-2 flex justify-between">
-              <div className="mr-2">
+          <div className="mt-2 hidden p-2" ref={newForm}>
+            <div className="w-full mx-auto mt-2 flex justify-between">
+              <div className="w-full mx-auto">
                 {image && (
                   <ImageCropper
                     existingId={image.id}
@@ -812,32 +812,34 @@ const ViewImageScreen: React.FC = () => {
                   />
                 )}
               </div>
-              <IonList className="w-full md:w-3/4 mx-auto" lines="none">
-                <IonItem className="mt-2 ">
+              <div className="w-full">
+                <div className="mt-2 mx-auto">
                   {image && (
                     <IonTextarea
                       className="p-1"
                       placeholder="Enter a prompt to generate an image."
                       helperText="The more detailed the prompt, the better the image. This will use 1 token."
-                      rows={3}
+                      rows={8}
+                      fill="outline"
                       value={image.image_prompt}
                       onIonInput={(e: any) =>
                         setImage({ ...image, image_prompt: e.detail.value! })
                       }
                     ></IonTextarea>
                   )}
-                </IonItem>
-                <IonItem className="mt-2">
+                </div>
+                <div className="mt-2 w-1/2 mx-auto">
                   <IonButton
-                    className="w-full text-lg"
+                    className="w-full"
                     onClick={handleGenerate}
                     disabled={!image?.image_prompt}
                     size="large"
+                    fill="outline"
                   >
                     Generate Image
                   </IonButton>
-                </IonItem>
-              </IonList>
+                </div>
+              </div>
             </div>
           </div>
           <div className="mt-2 hidden" ref={audioForm}>
@@ -888,9 +890,6 @@ const ViewImageScreen: React.FC = () => {
           </div>
 
           <div className="mt-2 hidden" ref={imageGridWrapper}>
-            {/* <h1 className="text-xl md:text-2xl lg:text-3xl text-center font-bold">
-              Image Gallery
-            </h1> */}
             {image && image.docs && image.docs.length > 0 && (
               <div className="w-full md:w-5/6 mx-auto text-center mt-8 p-1">
                 <IonLabel className="font-bold text-sm md:text-md lg:text-lg mt-2">
