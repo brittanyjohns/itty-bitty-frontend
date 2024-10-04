@@ -26,7 +26,6 @@ export const openMainMenu = async () => {
 
 interface MainHeaderProps {
   pageTitle?: string;
-  isWideScreen?: boolean;
   endLink?: string;
   endIcon?: string; // Ensure this is string type
   startLink?: string;
@@ -41,16 +40,18 @@ const MainHeader: React.FC<MainHeaderProps> = (props) => {
   const { isWideScreen, smallScreen, mediumScreen, largeScreen } =
     useCurrentUser();
 
-  const handleResize = () => {
-    const width = window.innerWidth;
+  useEffect(() => {
+    setShowMenuBtn(!isWideScreen);
+  }, [isWideScreen]);
 
-    // if (width < 1100) {
-    //   setShowMenuBtn(true);
-    // } else {
+  const handleResize = () => {
+    // console.log("resize");
+    // if (!smallScreen) {
+    //   console.log("smallScreen");
     //   setShowMenuBtn(false);
+    // } else {
+    //   setShowMenuBtn(true);
     // }
-    setShowMenuBtn(true);
-    // setShowMenuBtn(isWideScreen);
   };
   useEffect(() => {
     window.addEventListener("resize", handleResize);

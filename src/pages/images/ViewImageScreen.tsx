@@ -905,13 +905,13 @@ const ViewImageScreen: React.FC = () => {
                         key={index}
                         className={` ${
                           image.bg_color || "bg-white"
-                        } relative p-2 rounded-lg shadow-md`}
+                        } relative p-2 rounded-lg shadow-md cursor-pointer`}
                       >
                         {doc.can_edit && (
                           <>
                             <IonIcon
                               icon={trashBinOutline}
-                              className="absolute top-0 right-0 hover:cursor-pointer bg-white p-1 text-red-500"
+                              className="absolute top-0 right-0 hover:cursor-pointer bg-white p-1 text-red-500 hover:shadow-lg rounded-sm hover:bg-red-100"
                               onClick={() => handleConfirmRemoveDoc(doc)}
                             />
                           </>
@@ -921,7 +921,7 @@ const ViewImageScreen: React.FC = () => {
                           src={doc.src}
                           alt={doc.label}
                           onClick={handleDocClick}
-                          className="object-contain bg-white"
+                          className="object-contain bg-white hover:p-1 hover:shadow-md rounded-lg"
                         />
                       </div>
                     ))
