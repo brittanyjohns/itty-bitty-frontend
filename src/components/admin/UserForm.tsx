@@ -59,7 +59,7 @@ const UserForm: React.FC<UsersFormProps> = ({
         <div className="w-full md:w-2/3 mx-auto border p-4">
           <h2 className="text-2xl">Account Information</h2>
           <IonItem>
-            <IonLabel>Name:</IonLabel>
+            <IonLabel>Name: </IonLabel>
             <IonInput
               value={name}
               placeholder="No Name Set"

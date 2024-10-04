@@ -42,8 +42,8 @@ function PricingTable({ showHeader = true }: PricingTableProps) {
             </IonCardHeader>
             <IonCardContent className="text-center">
               <p>
-                Create up to 8 custom boards, use images from our library or
-                upload your own, and more.
+                Create custom boards, use images from our library or upload your
+                own, and more.
               </p>
               <div className="text-2xl font-bold my-2 text-green-500 font-bold text-lg bg-green-100 p-2 rounded-lg">
                 Your Current Plan
@@ -52,7 +52,7 @@ function PricingTable({ showHeader = true }: PricingTableProps) {
               <ul className="mt-4 text-left text-sm md:text-base">
                 <li>
                   <IonIcon icon={checkmarkCircleOutline} className="mr-2" />
-                  Create up to 8 boards
+                  Create boards
                 </li>
                 <li>
                   <IonIcon icon={checkmarkCircleOutline} className="mr-2" />
@@ -89,8 +89,8 @@ function PricingTable({ showHeader = true }: PricingTableProps) {
             </IonCardHeader>
             <IonCardContent className="text-center">
               <p>
-                Create up to 8 custom boards, use images from our library or
-                upload your own, and more.
+                Create custom boards, use images from our library or upload your
+                own, and more.
               </p>
               <div className="text-2xl font-bold my-4">Free Forever</div>
               <p className="mt-2">All basic features</p>

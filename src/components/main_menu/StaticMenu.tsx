@@ -92,7 +92,7 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
           <IonItem
             slot="header"
             routerLink="/dashboard"
-            detail={true}
+            // detail={true}
             className=""
             lines="none"
           >

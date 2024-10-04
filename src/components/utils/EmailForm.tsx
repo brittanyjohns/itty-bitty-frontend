@@ -7,6 +7,7 @@ import {
   IonToolbar,
   IonTitle,
   IonText,
+  IonInput,
 } from "@ionic/react";
 
 const EmailForm: React.FC = () => {
@@ -27,63 +28,58 @@ const EmailForm: React.FC = () => {
     setShowModal(false);
   };
 
-  const handleDecline = () => {
-    document.cookie = "cookies_consent=false; path=/";
+  const handleSignMeUp = () => {
+    document.cookie = "email_signup=true; path=/;";
     setShowModal(false);
+  };
+  const handleEmailInput = (e: any) => {
+    if (!e || !e.target || !e.target.value) {
+      return;
+    }
+    if (e.target.value.includes("@")) {
+      console.log("valid email");
+      return;
+    } else {
+      console.log("invalid email", e.target.value);
+    }
+    //
   };
 
   return (
     <IonModal isOpen={showModal}>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>
+          <IonTitle className="text-center">Sign Up for email updates</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
         <IonText className="text-center">
-          <h2 className="text-xl">Enhance Your Experience</h2>
+          <h2 className="text-xl">Join our mailing list</h2>
           <p className="text-center my-2">
-            We use cookies to provide you with a better experience on
-            SpeakAnyWay.
+            Sign up to receive our email updates.
           </p>
           <div className="text-left m-5">
-            <p className="font-bold">Cookies help us to:</p>
-            <ul className="list-disc list-inside mb-2">
-              <li>Understand your preferences for future visits</li>
-              <li>
-                Analyze site traffic and interactions to improve our services
-              </li>
-              <li>Offer personalized content and advertisements</li>
-            </ul>
+            <p className="font-bold"></p>
           </div>
-          <p className="mt-2">
-            By clicking <span className="font-bold">"Accept"</span>, you consent
-            to our use of cookies.
-          </p>
-          <p className="mt-2">
-            You can manage your preferences in our{" "}
-            <a href="/privacy-policy">Privacy Policy</a>.
-          </p>
         </IonText>
         <div className="ion-padding-top mt-5">
+          <IonInput
+            type="email"
+            placeholder="Enter your email"
+            className="mb-2"
+            title="email"
+            onIonChange={handleEmailInput}
+            fill="outline"
+          />
           <IonButton
-            color={"primary"}
+            className="mb-2 w-3/4 mx-auto"
+            expand="block"
             fill="solid"
-            className="mb-2"
-            shape="round"
-            expand="block"
-            onClick={handleAccept}
+            size="large"
+            color="secondary"
+            onClick={handleSignMeUp}
           >
-            Accept
-          </IonButton>
-          <IonButton
-            className="mb-2"
-            shape="round"
-            expand="block"
-            color="danger"
-            onClick={handleDecline}
-          >
-            Decline
+            Sign Me Up
           </IonButton>
         </div>
       </IonContent>

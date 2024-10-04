@@ -1,6 +1,6 @@
-import { IonIcon, useIonViewWillEnter } from "@ionic/react";
+import { IonCard, IonIcon, IonItem, useIonViewWillEnter } from "@ionic/react";
 import { logoFacebook } from "ionicons/icons";
-import React, { useState } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 
 interface UserHomeProps {
@@ -20,237 +20,131 @@ const UserHome: React.FC<UserHomeProps> = ({
   useIonViewWillEnter(() => {});
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="p-2">
-        <h1 className="text-4xl font-bold mb-4 text-center">
+    <div className="flex flex-col items-center justify-center py-8 px-4">
+      <div className="p-4 text-center">
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">
           Welcome to SpeakAnyWay!
         </h1>
-        <h2 className="text-2xl font-semibold mb-4 text-center">
+        <h2 className="text-xl font-semibold text-gray-600 mb-4">
           Empowering Communication Through Technology
         </h2>
       </div>
-      <h3 className="text-lg my-6 text-center">
+
+      <h3 className="text-lg text-gray-700 my-4">
         Hi {userName}, we're thrilled to have you here!
       </h3>
 
       {freeAccount && (
-        <section className="mb-2 text-center  cursor-pointer">
-          {trialDaysLeft && trialDaysLeft > 0 && (
-            <>
-              <div
-                className="text-xl p-4 bg-green-100 text-green-900 rounded-lg hover:bg-green-200 w-full md:w-3/4 mx-auto"
-                onClick={() => history.push("/upgrade")}
-              >
-                <span className="font-bold block mb-2">
-                  7 days of Free Access:{" "}
-                </span>
-                <span className="text-2xl">
-                  Enjoy all the <strong>premium</strong> features of SpeakAnyWay
-                  for free.
-                </span>
-                <span className="my-3 text-sm font-bold block">
-                  You have {trialDaysLeft} days left in your free trial. Click
-                  to upgrade now!
-                </span>
-              </div>
-              <div
-                className="mb-4 text-sm p-2 bg-green-100 text-green-900 rounded-lg hover:bg-green-200 w-full md:w-3/4 mx-auto"
-                onClick={() => history.push("/upgrade")}
-              >
-                <span className="font-bold block">Reminder:</span> Upgrade to
-                continue using our <strong>premium</strong> features.
-                <span className="mt-3 text-lg font-bold block">
-                  After your trial ends, you'll still have access to our{" "}
-                  <strong>all</strong> other features FREE!
-                </span>
-                <span className="mt-3 text-sm font-md block">
-                  You'll still be able to create boards, upload images, and
-                  more!
-                </span>
-              </div>
-            </>
-          )}
-          {trialDaysLeft && trialDaysLeft <= 0 && (
-            <>
-              <div
-                className="text-center text-2xl p-4 bg-red-100 text-red-900 rounded-lg cursor-pointer hover:bg-red-200 w-full md:w-3/4 mx-auto"
-                onClick={() => history.push("/upgrade")}
-              >
-                <span className="font-mono font-bold block">
-                  Free Trial Expired:
-                </span>{" "}
-                Subscribe to continue using our premium features.
-              </div>
-              <div
-                className="text-center mb-4 text-2xl p-4 bg-red-100 text-red-900 rounded-lg cursor-pointer hover:bg-red-200 w-full md:w-3/4 mx-auto"
-                onClick={() => history.push("/upgrade")}
-              >
-                <span className="font-bold block">
-                  {" "}
-                  Upgrade to continue using our premium features.
-                </span>
-                <span className="mt-3 text-sm font-bold block">
-                  Remember, you still have access to all other features.
-                </span>
-                <span className="mt-3 text-sm font-md block">
-                  You can create boards, upload images, and more!
-                </span>
-              </div>
-            </>
+        <section className="mb-6 text-center">
+          {trialDaysLeft && trialDaysLeft > 0 ? (
+            <div
+              className="text-lg p-4 bg-blue-100 text-blue-900 rounded-lg hover:bg-blue-200 w-full md:w-3/4 mx-auto cursor-pointer"
+              onClick={() => history.push("/upgrade")}
+            >
+              <span className="font-semibold block mb-2">
+                Free Trial: {trialDaysLeft} Days Left
+              </span>
+              <p>
+                Enjoy premium features of SpeakAnyWay. Click to upgrade and
+                continue unlocking all the tools!
+              </p>
+            </div>
+          ) : (
+            <div
+              className="text-lg p-4 bg-red-100 text-red-900 rounded-lg hover:bg-red-200 w-full md:w-3/4 mx-auto cursor-pointer"
+              onClick={() => history.push("/upgrade")}
+            >
+              <span className="font-semibold block mb-2">Trial Expired</span>
+              <p>Upgrade to continue accessing premium features.</p>
+            </div>
           )}
         </section>
       )}
 
       <div className="px-2 w-full md:w-3/4 mx-auto">
-        <section className="mb-2">
-          <h4 className="text-2xl font-semibold mb-2">Getting Started</h4>
-
-          <ol className="list-decimal list-inside space-y-2">
-            <li className="mb-2 ml-3">
-              <span className="font-bold">Personalize Your Experience:</span>
-              <ul className="list-disc list-inside ml-3">
+        <IonCard className="mb-4 p-4 shadow-md">
+          <h4 className="text-xl font-semibold text-gray-800 mb-4">
+            Getting Started
+          </h4>
+          <ul className="list-disc pl-6 space-y-3 text-gray-700">
+            <li>
+              <strong>Personalize Your Experience:</strong>
+              <ul className="list-inside list-disc pl-4 mt-2">
                 <li
+                  className="hover:underline cursor-pointer text-blue-700"
                   onClick={() => history.push("/settings")}
-                  className="cursor-pointer hover:underline text-blue-700"
                 >
                   Customize your profile and preferences.
                 </li>
                 <li
+                  className="hover:underline cursor-pointer text-blue-700"
                   onClick={() => history.push("/boards")}
-                  className="cursor-pointer  hover:underline text-blue-700"
                 >
                   Create a new communication board.
                 </li>
                 <li
+                  className="hover:underline cursor-pointer text-blue-700"
                   onClick={() => history.push("/images")}
-                  className="cursor-pointer  hover:underline text-blue-700"
                 >
-                  Search for images or upload your own.
+                  Search or upload images.
                 </li>
               </ul>
             </li>
-            <li className="mb-2 ml-3">
-              <span className="font-bold">Explore SpeakAnyWay:</span>
-              <ul className="list-disc list-inside ml-3">
-                <li className="mb-2 ml-3">
-                  Create boards & share them with others
-                </li>
-                <li className="mb-2 ml-3">
-                  {" "}
-                  Customizable settings for voice output
-                </li>
-                <li className="mb-2 ml-3">
-                  Try out the Menu Creator & Scenario Boards
-                </li>
-              </ul>
-            </li>
-          </ol>
-          <div className="mt-2 font-md border p-2">
-            <h1 className="text-md font-bold mt-2 text-left ml-2">
-              What's a token?
-            </h1>
-            <p className="text-md font-bold">
-              You currently have {tokens || 0} tokens.
-            </p>
-            <ul className="list-[square] ml-4">
-              <li className="text-sm mt-2 text-left">
-                A token is a unit of currency used for the AI features.
-              </li>
-              <li className="text-sm mt-2 text-left">
-                We offer a limited number of free tokens to get you started.
-              </li>
-              <li className="text-sm mt-2 text-left">
-                When you subscribe, you'll receive additional tokens each month.
-              </li>
-            </ul>
-          </div>
-        </section>
+          </ul>
+        </IonCard>
 
-        <section className="mb-4 p-1 ">
-          <h4 className="text-2xl font-semibold mb-3">Features Overview</h4>
-          <ul className="list-[square] space-y-2">
-            <li className="mb-2 ml-3">
-              <span className="font-bold block">Communication Boards:</span>{" "}
-              <span className="ml-3">
-                Choose from a variety of pre-made boards.
-              </span>
+        <section className="mb-6 p-4 bg-gray-100 rounded-lg shadow-sm">
+          <h4 className="text-xl font-semibold text-gray-800 mb-4">
+            Features Overview
+          </h4>
+          <ul className="list-disc pl-6 space-y-3 text-gray-700">
+            <li>
+              <strong>Communication Boards:</strong> Choose from a variety of
+              pre-made boards.
             </li>
             <li
+              className="hover:underline cursor-pointer text-blue-700"
               onClick={() => history.push("/boards/new")}
-              className="cursor-pointer hover:underline text-blue-700 mb-2 ml-3"
             >
-              <span className="font-bold block">Scenario Board Creator:</span>{" "}
-              <span className="ml-3">
-                Create boards for specific scenarios.
-              </span>
+              Scenario Board Creator: Create boards for specific scenarios.
             </li>
-            <li className="mb-2 ml-3">
-              <span className="font-bold block">Multiple Voice Options:</span>{" "}
-              <span className="ml-3">
-                Choose from a variety of voices for your boards.
-              </span>
-            </li>
-            <li
-              onClick={() => history.push("/menus/new")}
-              className="cursor-pointer hover:underline text-blue-700 mb-2 ml-3"
-            >
-              <span className="font-bold block">Menu Conversion:</span>
-              <span className="ml-3">
-                Convert text menus into image boards.
-              </span>
-            </li>
-            <li className="mb-2 ml-3">
-              <span className="font-bold block">AI-Generated Images:</span>{" "}
-              <span className="ml-3">
-                Leverage AI for perfect image matches.
-              </span>
-            </li>
-            <li
-              onClick={() => history.push("/settings")}
-              className="cursor-pointer hover:underline text-blue-700 mb-2 ml-3"
-            >
-              <span className="font-bold block">Customizable Settings:</span>{" "}
-              <span className="ml-3">
-                Adjust voice speed, pitch, and other settings.
-              </span>
-            </li>
-            <li className="mb-2 ml-3">
-              <span className="font-bold block">More Coming Soon:</span>{" "}
-              <span className="ml-3">
-                Stay tuned for innovative communication tools.
-              </span>
+            <li>
+              <strong>Multiple Voice Options:</strong> Customize voice output
+              for your boards.
             </li>
           </ul>
         </section>
 
-        <section className="mb-4 p-2">
-          <h4 className="text-xl font-semibold">Stay Connected</h4>
-          <p className="text-md text-left flex items-center">
-            Follow us on social media for updates, tips, and stories from our
-            community:{" "}
+        <section className="mb-4 p-4">
+          <h4 className="text-xl font-semibold text-gray-800 mb-2">
+            Stay Connected
+          </h4>
+          <p className="text-md text-gray-700">
+            Follow us on social media for updates:{" "}
             <a href="https://www.facebook.com/speakanywayaac" className="m-2">
               <IonIcon
                 size="large"
                 icon={logoFacebook}
-                className="text-blue-500"
+                className="text-blue-600"
               />
             </a>
           </p>
         </section>
 
-        <section className="mb-6 p-2">
-          <h4 className="text-lg font-semibold mb-2">Need Help?</h4>
-          <p className="text-md text-left">
-            If you have any questions or need assistance, please reach out to
-            our support team:{" "}
-            <a href="mailto:hello@speakanyway.com" className="">
+        <section className="mb-6 p-4 bg-gray-100 rounded-lg shadow-sm">
+          <h4 className="text-lg font-semibold text-gray-800 mb-2">
+            Need Help?
+          </h4>
+          <p className="text-md text-gray-700">
+            Contact support:{" "}
+            <a href="mailto:hello@speakanyway.com" className="text-blue-700">
               hello@speakanyway.com
             </a>
           </p>
         </section>
 
-        <footer className="text-center my-3 mb-8">
-          <p className="text-lg">
+        <footer className="text-center my-4">
+          <p className="text-md text-gray-700">
             Happy Communicating,
             <br />
             The SpeakAnyWay Team

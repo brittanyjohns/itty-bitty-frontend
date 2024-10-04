@@ -19,7 +19,7 @@ const ChildAccountListItem: React.FC<ChildAccountListItemProps> = ({
     <IonItem
       key={childAccount.id}
       routerLink={`/child-accounts/${childAccount.id}`}
-      detail={true}
+      // detail={true}
       lines="none"
       className="p-4 w-full"
     >

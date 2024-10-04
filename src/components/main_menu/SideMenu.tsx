@@ -90,7 +90,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser, currentAccount }) => {
             <IonItem
               slot="header"
               onClick={goToDashboard}
-              detail={true}
+              // detail={true}
               className=""
               lines="none"
             >

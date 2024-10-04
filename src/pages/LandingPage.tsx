@@ -5,6 +5,7 @@ import "./LandingPage.css";
 import { useHistory } from "react-router";
 import SignUpForm from "../components/utils/SignUpForm";
 import InlineSignUp from "../components/utils/InlineSignUp";
+import EmailForm from "../components/utils/EmailForm";
 
 const LandingPage: React.FC = () => {
   const history = useHistory();
@@ -38,6 +39,7 @@ const LandingPage: React.FC = () => {
             </IonButton>
           </IonButtons>
         </div>
+        <EmailForm />
 
         <div className="xfixed-bg rounded-lg shadow-lg xbg-white bg-opacity-95 p-4 md:p-8 lg:p-8 mt-2"></div>
       </div>

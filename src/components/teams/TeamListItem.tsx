@@ -17,7 +17,7 @@ const TeamListItem: React.FC<TeamListItemProps> = ({ team }) => {
   return (
     <IonItem
       routerLink={`/teams/${team.id}`}
-      detail={true}
+      // detail={true}
       lines="none"
       className="p-4 w-full"
     >
