@@ -32,6 +32,7 @@ interface MainHeaderProps {
   startIcon?: string; // Ensure this is string type
   showMenuButton?: boolean;
   largeScreen?: boolean;
+  isWideScreen?: boolean;
 }
 
 const MainHeader: React.FC<MainHeaderProps> = (props) => {
