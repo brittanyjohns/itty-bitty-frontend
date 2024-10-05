@@ -42,18 +42,15 @@ const MainHeader: React.FC<MainHeaderProps> = (props) => {
     useCurrentUser();
 
   useEffect(() => {
-    setShowMenuBtn(!isWideScreen);
-  }, [isWideScreen]);
+    console.log("isWideScreen", isWideScreen);
+    console.log("smallScreen", smallScreen);
+    console.log("mediumScreen", mediumScreen);
+    console.log("largeScreen", largeScreen);
 
-  const handleResize = () => {
-    // console.log("resize");
-    // if (!smallScreen) {
-    //   console.log("smallScreen");
-    //   setShowMenuBtn(false);
-    // } else {
-    //   setShowMenuBtn(true);
-    // }
-  };
+    setShowMenuBtn(!isWideScreen);
+  }, []);
+
+  const handleResize = () => {};
   useEffect(() => {
     window.addEventListener("resize", handleResize);
     handleResize();

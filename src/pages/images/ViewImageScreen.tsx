@@ -731,11 +731,13 @@ const ViewImageScreen: React.FC = () => {
                   <p className="text-sm">
                     As always, you can edit the display image &/or upload your
                     own. But <strong>now</strong> you can also: <br /> <br />
-                    <ul className="list-disc list-inside">
+                    <ul className="list-none list-inside">
                       <li>Select a different voice</li>
                       <li>Upload your own audio</li>
                       <li>Customize the audio label vs image label</li>
-                      <li>& more!</li>
+                      <li className="font-md p-1  text-lg">
+                        Visit the <strong>AUDIO</strong> tab to learn more.
+                      </li>
                     </ul>
                   </p>
                 </div>
@@ -804,7 +806,7 @@ const ViewImageScreen: React.FC = () => {
               )}
             </div>
           </div>
-          <h1 className="text-xl md:text-2xl lg:text-3xl text-center font-bold">
+          <h1 className="text-xl md:text-2xl lg:text-3xl text-center font-bold my-8">
             {pageTitle}
           </h1>
           <div className="mt-2 hidden p-2" ref={newForm}>
@@ -902,7 +904,7 @@ const ViewImageScreen: React.FC = () => {
                   Click an image to display it for the word: "{image.label}"
                 </IonLabel>
                 <div
-                  className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 mt-3 p-2"
+                  className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 p-2"
                   ref={imageGrid}
                 >
                   {image?.docs && image?.docs.length > 0 ? (

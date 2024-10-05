@@ -75,7 +75,6 @@ const EmailForm: React.FC = () => {
       const emailResult = await handleSubmitEmail(e.target.value);
       console.log("emailResult", emailResult);
       handleAccept(emailResult);
-      return;
     } else {
       console.log("invalid email", e.target.value);
       setEmail("");
