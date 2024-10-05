@@ -69,7 +69,7 @@ const EmailForm: React.FC = () => {
   };
 
   const handleEmailInput = async (e: any) => {
-    if (e.target.value.includes("@" && ".")) {
+    if (e.target.value.includes("@") && e.target.value.includes(".")) {
       console.log("valid email", e.target.value);
       setEmail(e.target.value);
       const emailResult = await handleSubmitEmail(e.target.value);
