@@ -723,14 +723,20 @@ const ViewImageScreen: React.FC = () => {
                         )}
                       </>
                     ) : (
-                      <>
+                      <p className="text-md mb-2">
                         This is <i>your</i> image item.
-                      </>
+                      </p>
                     )}
                   </div>
                   <p className="text-sm">
-                    You can edit the display image, upload your own audio,
-                    change the voice, & more.
+                    As always, you can edit the display image &/or upload your
+                    own. But <strong>now</strong> you can also: <br /> <br />
+                    <ul className="list-disc list-inside">
+                      <li>Select a different voice</li>
+                      <li>Upload your own audio</li>
+                      <li>Customize the audio label vs image label</li>
+                      <li>& more!</li>
+                    </ul>
                   </p>
                 </div>
               ) : (

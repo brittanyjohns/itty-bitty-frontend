@@ -139,6 +139,7 @@ const SignInScreen: React.FC = () => {
                       onIonChange={(e: any) => setPassword(e.detail.value!)}
                       clearInput
                     />
+
                     <IonButton
                       expand="block"
                       className="mt-6"
@@ -149,6 +150,17 @@ const SignInScreen: React.FC = () => {
                       Sign In
                     </IonButton>
                   </form>
+                  <IonButton
+                    expand="block"
+                    fill="outline"
+                    color="medium"
+                    routerLink="/sign-up"
+                    className="mt-4"
+                  >
+                    <IonLabel className="text-md font-semibold">
+                      Don't have an account? Sign Up
+                    </IonLabel>
+                  </IonButton>
                   <IonAlert
                     isOpen={showAlert}
                     onDidDismiss={() => setShowAlert(false)}
@@ -156,7 +168,7 @@ const SignInScreen: React.FC = () => {
                     message={errorMessage}
                     buttons={["OK"]}
                   />
-                  <div className="py-2 rounded-md mt-20">
+                  <div className="pt-2 rounded-md mt-10">
                     <IonButtons className="flex justify-center">
                       <IonButton
                         expand="block"

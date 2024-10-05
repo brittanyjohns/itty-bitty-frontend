@@ -97,7 +97,7 @@ const SignUpForm = ({ plan }: SignUpFormProps) => {
           <div className="mb-4">
             <IonInput
               value={email}
-              fill="solid"
+              fill="outline"
               className="mt-4"
               label="Email"
               labelPlacement="stacked"
@@ -108,7 +108,7 @@ const SignUpForm = ({ plan }: SignUpFormProps) => {
             <IonInput
               label="Password"
               type="password"
-              fill="solid"
+              fill="outline"
               className="mt-4"
               labelPlacement="stacked"
               value={password}
@@ -119,7 +119,7 @@ const SignUpForm = ({ plan }: SignUpFormProps) => {
             <IonInput
               label="Password Confirmation"
               type="password"
-              fill="solid"
+              fill="outline"
               value={passwordConfirmation}
               labelPlacement="stacked"
               onIonInput={(e: any) =>

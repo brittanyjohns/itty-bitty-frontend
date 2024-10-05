@@ -38,9 +38,12 @@ const LandingPage: React.FC = () => {
             </IonButton>
           </IonButtons>
         </div>
-        <EmailForm />
 
-        <div className="xfixed-bg rounded-lg shadow-lg xbg-white bg-opacity-95 p-4 md:p-8 lg:p-8 mt-2"></div>
+        {/* <div className="xfixed-bg rounded-lg shadow-lg xbg-white bg-opacity-95 p-4 md:p-8 lg:p-8 mt-2"> */}
+        <div className="flex flex-col md:flex-row lg:flex-row justify-center items-center">
+          <EmailForm />
+        </div>
+        {/* </div> */}
       </div>
 
       {/* Features Section */}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { IonModal, IonButton, IonText, IonInput } from "@ionic/react";
+import { IonModal, IonButton, IonText, IonInput, IonToast } from "@ionic/react";
 import { save } from "ionicons/icons";
 import { BetaRequest, createBetaRequest } from "../../data/beta_requests";
 
@@ -7,6 +7,8 @@ const EmailForm: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [email, setEmail] = useState("");
   const emailRef = useRef<HTMLIonInputElement>(null);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [showToast, setShowToast] = useState(false);
 
   const handleAccept = (e: any) => {
     console.log("handleAccept", e);
@@ -67,10 +69,6 @@ const EmailForm: React.FC = () => {
   };
 
   const handleEmailInput = async (e: any) => {
-    if (!e.target.value) {
-      setEmail("");
-      return;
-    }
     if (e.target.value.includes("@" && ".")) {
       console.log("valid email", e.target.value);
       setEmail(e.target.value);
@@ -82,14 +80,14 @@ const EmailForm: React.FC = () => {
       console.log("invalid email", e.target.value);
       setEmail("");
       setShowModal(true);
-      alert("Please enter a valid email address.");
+      setErrorMsg("Please enter a valid email address.");
       return;
     }
   };
 
   return (
-    <IonModal isOpen={showModal} className="">
-      <div className="ion-padding">
+    <IonModal isOpen={showModal} style={{ background: "rgba(0,0,0,0.5)" }}>
+      <div className="ion-padding ion-text-center">
         <IonText className="text-center">
           <h2 className="text-xl">Join our mailing list</h2>
           <p className="text-center my-2">
@@ -121,6 +119,12 @@ const EmailForm: React.FC = () => {
             Sign Me Up
           </IonButton>
         </div>
+        <IonToast
+          isOpen={showToast}
+          onDidDismiss={() => setIsOpen(false)}
+          message={toastMessage}
+          duration={2000}
+        />
       </div>
     </IonModal>
   );
