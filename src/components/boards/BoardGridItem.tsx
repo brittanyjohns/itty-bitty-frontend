@@ -1,13 +1,20 @@
 import {
   IonActionSheet,
   IonAlert,
+  IonButton,
+  IonButtons,
   IonIcon,
   IonImg,
   IonItem,
   IonLabel,
   IonText,
 } from "@ionic/react";
-import { Board, deleteBoard } from "../../data/boards";
+import {
+  Board,
+  cloneBoard,
+  deleteBoard,
+  rearrangeImages,
+} from "../../data/boards";
 import "./BoardListItem.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ActionList from "../utils/ActionList";
@@ -15,7 +22,8 @@ import { useHistory } from "react-router";
 import { generatePlaceholderImage } from "../../data/utils";
 import { ChildBoard } from "../../data/child_boards";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { trashBinOutline } from "ionicons/icons";
+import { copyOutline, trashBinOutline } from "ionicons/icons";
+import ConfirmAlert from "../utils/ConfirmAlert";
 
 interface BoardListItemProps {
   board: Board | ChildBoard;
@@ -36,10 +44,38 @@ const BoardGridItem: React.FC<BoardListItemProps> = ({
 }) => {
   const { currentUser, currentAccount } = useCurrentUser();
   const history = useHistory();
+  const [showLoading, setShowLoading] = useState(true);
+
   const placeholderUrl = useMemo(
     () => generatePlaceholderImage(board.name),
     [board.name]
   );
+
+  const [cloneIsOpen, setCloneIsOpen] = useState(false);
+
+  const handleClone = async () => {
+    setShowLoading(true);
+    try {
+      if (!board?.id) {
+        console.error("Board is missing");
+        alert("Board is missing");
+        return;
+      }
+      const clonedBoard = await cloneBoard(board.id);
+      if (clonedBoard) {
+        // const updatedBoard = await rearrangeImages(clonedBoard.id);
+        // setBoard(updatedBoard || clonedBoard);
+        history.push(`/boards/${clonedBoard.id}`);
+      } else {
+        console.error("Error cloning board");
+        alert("Error cloning board");
+      }
+    } catch (error) {
+      console.error("Error cloning board: ", error);
+      alert("Error cloning board");
+    }
+    setShowLoading(false);
+  };
 
   const handleBoardClick = (board: any) => {
     if (goToSpeak) {
@@ -74,6 +110,17 @@ const BoardGridItem: React.FC<BoardListItemProps> = ({
             : board.name}
         </IonText>
       </div>
+      {board && (
+        <IonIcon
+          slot="icon-only"
+          icon={copyOutline}
+          title="Clone Board"
+          size="small"
+          onClick={() => setCloneIsOpen(true)}
+          color="secondary"
+          className="tiny absolute bottom-3 right-3"
+        />
+      )}
       {showRemoveBtn && (
         <IonIcon
           slot="icon-only"
@@ -106,6 +153,13 @@ const BoardGridItem: React.FC<BoardListItemProps> = ({
         ]}
         onDidDismiss={() => setIsOpen(false)}
       ></IonAlert>
+      <ConfirmAlert
+        onConfirm={handleClone}
+        onCanceled={() => {}}
+        openAlert={cloneIsOpen}
+        message="Are you sure you want to CLONE this board?"
+        onDidDismiss={() => setCloneIsOpen(false)}
+      />
     </>
   );
 };

@@ -1,20 +1,13 @@
 import {
   IonButton,
-  IonButtons,
   IonContent,
-  IonHeader,
   IonIcon,
-  IonLabel,
-  IonMenuButton,
   IonPage,
   IonRefresher,
   IonRefresherContent,
   IonSearchbar,
-  IonSegment,
-  IonSegmentButton,
   IonSelect,
   IonSelectOption,
-  IonTitle,
   IonToolbar,
   useIonViewWillEnter,
   useIonViewWillLeave,
@@ -22,15 +15,9 @@ import {
 import Tabs from "../../components/utils/Tabs";
 import { useEffect, useState } from "react";
 import { Board, getBoards } from "../../data/boards";
-import {
-  addCircleOutline,
-  imagesOutline,
-  personOutline,
-  toggle,
-} from "ionicons/icons";
+import { addCircleOutline } from "ionicons/icons";
 import BoardGrid from "../../components/boards/BoardGrid";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { ChildBoard } from "../../data/child_boards";
 
 interface BoardsScreenProps {
   gridType: string;
@@ -117,13 +104,6 @@ const BoardsScreen: React.FC<BoardsScreenProps> = ({ gridType }) => {
     setSearchInput("");
     fetchBoards();
     console.log("Clearing search fields");
-  };
-
-  const handleSegmentChange = (event: CustomEvent) => {
-    const segmentValue = event.detail.value;
-    setSegmentType(segmentValue);
-    // setPageTitle(segmentValue === "user" ? "Your Boards" : "Preset Boards");
-    toggle(segmentValue);
   };
 
   const toggle = (segmentType: string) => {

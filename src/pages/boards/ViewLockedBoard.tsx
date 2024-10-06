@@ -75,30 +75,6 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
     selectedImageSrcs.length > 0 ? true : false
   );
 
-  const handleClone = async () => {
-    setShowLoading(true);
-    try {
-      if (!board) {
-        console.error("Board is missing");
-        alert("Board is missing");
-        return;
-      }
-      const clonedBoard = await cloneBoard(board.id);
-      if (clonedBoard) {
-        const updatedBoard = await rearrangeImages(clonedBoard.id);
-        setBoard(updatedBoard || clonedBoard);
-        history.push(`/boards/${clonedBoard.id}`);
-      } else {
-        console.error("Error cloning board");
-        alert("Error cloning board");
-      }
-    } catch (error) {
-      console.error("Error cloning board: ", error);
-      alert("Error cloning board");
-    }
-    setShowLoading(false);
-  };
-
   const fetchBoard = async () => {
     const board = await getBoard(params.id);
     if (!board) {
@@ -266,61 +242,67 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
     <IonPage id="view-board-page">
       <IonHeader className="bg-inherit shadow-none">
         <IonToolbar className="mb-3">
-          <IonButtons slot="start">
-            {board && !isPreset && (
-              <IonButton
-                routerLink={`/boards/${board.id}`}
-                fill="clear"
-                title="Back to board"
-              >
-                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
-              </IonButton>
-            )}
-            {board && isPreset && (
-              <IonButton
-                routerLink={`/preset`}
-                fill="clear"
-                title="Back to presets"
-              >
-                <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
-              </IonButton>
-            )}
-
-            {board && currentUser?.admin && (
-              <IonButton
-                routerLink={`/boards/${board.id}`}
-                fill="clear"
-                title="View board"
-                className="cursor-pointer"
-              >
-                <IonIcon slot="icon-only" icon={albumsOutline} />
-              </IonButton>
-            )}
-          </IonButtons>
-          <ConfirmAlert
-            onConfirm={handleClone}
-            onCanceled={() => {}}
-            openAlert={cloneIsOpen}
-            message="Are you sure you want to CLONE this board?"
-            onDidDismiss={() => setCloneIsOpen(false)}
-          />
-          <div className="flex justify-center items-center">
+          <div className="flex justify-between items-center py-2 mb-4">
+            <IonButtons slot="start">
+              {board && !isPreset && (
+                <IonButton
+                  routerLink={`/boards/${board.id}`}
+                  fill="default"
+                  title="Back to board"
+                  size={smallScreen ? "default" : "large"}
+                >
+                  <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
+                </IonButton>
+              )}
+              {board && isPreset && (
+                <IonButton
+                  routerLink={
+                    currentUser?.admin ? `/boards/${board.id}` : "/presets"
+                  }
+                  fill="clear"
+                  title="Back to presets"
+                  size={smallScreen ? "default" : "large"}
+                >
+                  <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
+                </IonButton>
+              )}
+            </IonButtons>
             <p className="text-sm md:text-md lg:text-lg xl:text-xl font-bold ion-text-center">
               {board?.name}
             </p>
-            {board && isPreset && (
-              <IonButtons slot="end" className="flex justify-center ml-2">
+            <IonButtons slot="end" className="mr-2">
+              {showIcon && (
                 <IonButton
-                  onClick={() => setCloneIsOpen(true)}
-                  fill="clear"
-                  shape="round"
-                  size="small"
-                  title="Clone board"
+                  size={smallScreen ? "default" : "large"}
+                  onClick={handlePlayAudioList}
+                  fill="outline"
+                  color={"success"}
                 >
-                  <IonIcon icon={copyOutline} />
+                  <IonIcon
+                    slot="icon-only"
+                    color="success"
+                    icon={playCircleOutline}
+                  ></IonIcon>
                 </IonButton>
-              </IonButtons>
-            )}
+              )}
+
+              {showIcon && (
+                <IonButton
+                  size={smallScreen ? "default" : "large"}
+                  fill="outline"
+                  onClick={() => clearInput()}
+                  color={"danger"}
+                >
+                  <IonIcon
+                    slot="icon-only"
+                    className=""
+                    color="danger"
+                    icon={trashBinOutline}
+                    onClick={() => clearInput()}
+                  ></IonIcon>
+                </IonButton>
+              )}
+            </IonButtons>
           </div>
           {showImages && (
             <ImageList
@@ -342,7 +324,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
               className="ml-1 text-sm md:text-md lg:text-lg xl:text-xl w-full"
             ></IonInput>
           </div>
-          <IonButtons slot="end" className="">
+          {/* <div slot="end" className="">
             {showIcon && (
               <IonButton
                 size={smallScreen ? "default" : "large"}
@@ -361,7 +343,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
             {showIcon && (
               <IonButton
                 size={smallScreen ? "default" : "large"}
-                fill="default"
+                fill="outline"
                 onClick={() => clearInput()}
               >
                 <IonIcon
@@ -373,7 +355,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
                 ></IonIcon>
               </IonButton>
             )}
-          </IonButtons>
+          </div> */}
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen scrollY={true}>

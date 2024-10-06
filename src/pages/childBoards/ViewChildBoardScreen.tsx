@@ -59,6 +59,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   );
 
   useEffect(() => {
+    console.log("Board: ", board);
     if (board) {
       if (smallScreen) setNumOfColumns(board?.small_screen_columns || 4);
       else if (mediumScreen) setNumOfColumns(board?.medium_screen_columns || 4);
@@ -211,74 +212,77 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
     <IonPage id="view-board-page">
       <FullscreenToggle />
       <IonRefresher slot="fixed" onIonRefresh={refresh} />
-
       <IonHeader className="bg-inherit shadow-none">
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonButton fill="clear" onClick={gotToAccountDashboard}>
-              <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
-            </IonButton>
-          </IonButtons>
-          <p className="text-sm md:text-md lg:text-lg xl:text-xl font-bold ion-text-center">
-            {board?.name}
-          </p>
+        <IonToolbar className="mb-3">
+          <div className="flex justify-between items-center py-2 mb-4 mt-2">
+            <IonButtons slot="start">
+              {board && (
+                <IonButton
+                  routerLink={`/home`}
+                  fill="default"
+                  title="Back to board"
+                  size={smallScreen ? "default" : "large"}
+                >
+                  <IonIcon slot="icon-only" icon={arrowBackCircleOutline} />
+                </IonButton>
+              )}
+            </IonButtons>
+            <p className="text-sm md:text-md lg:text-lg xl:text-xl font-bold ion-text-center">
+              {board?.name}
+            </p>
+            <IonButtons slot="end" className="mr-2">
+              {showIcon && (
+                <IonButton
+                  size={smallScreen ? "default" : "large"}
+                  onClick={handlePlayAudioList}
+                  fill="outline"
+                  color={"success"}
+                >
+                  <IonIcon
+                    slot="icon-only"
+                    color="success"
+                    icon={playCircleOutline}
+                  ></IonIcon>
+                </IonButton>
+              )}
+
+              {showIcon && (
+                <IonButton
+                  size={smallScreen ? "default" : "large"}
+                  fill="outline"
+                  onClick={() => clearInput()}
+                  color={"danger"}
+                >
+                  <IonIcon
+                    slot="icon-only"
+                    className=""
+                    color="danger"
+                    icon={trashBinOutline}
+                    onClick={() => clearInput()}
+                  ></IonIcon>
+                </IonButton>
+              )}
+            </IonButtons>
+          </div>
           {showImages && (
             <ImageList
               images={selectedImages}
-              columns={numOfColumns}
               setSelectedImages={setSelectedImages}
-              audioList={audioList}
+              columns={numOfColumns}
               setAudioList={setAudioList}
+              audioList={audioList}
               inputRef={inputRef}
             />
           )}
-          <div className="bg-inherit">
+          <div className="bg-inherit w-full">
             <IonInput
               placeholder="Click an image to begin speaking"
               ref={inputRef}
               readonly={true}
               type="text"
-              className="ml-1 text-sm md:text-md lg:text-lg xl:text-xl"
+              className="ml-1 text-sm md:text-md lg:text-lg xl:text-xl w-full"
             ></IonInput>
           </div>
-          <IonButtons slot="end" className="">
-            {showIcon && (
-              <IonButton
-                size={smallScreen ? "default" : "large"}
-                onClick={handlePlayAudioList}
-                fill="outline"
-                shape="round"
-                className="p-2"
-                color={audioList.length > 0 ? "success" : "medium"}
-              >
-                <IonIcon
-                  slot="icon-only"
-                  className=""
-                  color="success"
-                  size="medium"
-                  icon={playCircleSharp}
-                ></IonIcon>
-              </IonButton>
-            )}
-
-            {showIcon && (
-              <IonButton
-                size={smallScreen ? "default" : "large"}
-                fill="outline"
-                onClick={() => clearInput()}
-                shape="round"
-                color={selectedImages.length > 0 ? "danger" : "medium"}
-                className="p-2"
-              >
-                <IonIcon
-                  slot="icon-only"
-                  size="medium"
-                  icon={trashBin}
-                  onClick={() => clearInput()}
-                ></IonIcon>
-              </IonButton>
-            )}
-          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent>

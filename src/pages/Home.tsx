@@ -76,8 +76,8 @@ const Home: React.FC = () => {
         <MainHeader
           pageTitle={isWideScreen ? "" : currentUser ? "Home" : "SpeakAnyWay"}
           isWideScreen={isWideScreen}
-          endIcon={logInOutline}
-          endLink={"/sign-up"}
+          endIcon={currentAccount ? undefined : logInOutline}
+          endLink={currentAccount ? undefined : "/sign-up"}
           showMenuButton={!isWideScreen}
         />
         <IonContent className="text-justified" scrollY={true}>

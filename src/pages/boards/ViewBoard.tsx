@@ -61,7 +61,7 @@ const ViewBoard: React.FC<any> = () => {
       return;
     }
     const board = await getBoard(params.id);
-    if (!board) {
+    if (!board?.id) {
       console.error("Error fetching board");
       console.error("Error fetching board");
       setToastMessage("Error fetching board");
