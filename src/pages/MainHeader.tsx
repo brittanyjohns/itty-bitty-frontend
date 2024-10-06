@@ -58,7 +58,7 @@ const MainHeader: React.FC<MainHeaderProps> = (props) => {
   }, []);
 
   return (
-    <IonHeader className="bg-inherit shadow-none">
+    <IonHeader className="bg-inherit shadow-none border-none">
       <IonToolbar>
         {props.startLink && (
           <IonButtons slot="start">

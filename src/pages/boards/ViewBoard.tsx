@@ -81,11 +81,6 @@ const ViewBoard: React.FC<any> = () => {
         history.push("/boards");
       }
       setShowLoading(false);
-
-      // const rearrangedBoard = await rearrangeImages(board.id);
-      // setBoard(rearrangedBoard);
-
-      // window.location.reload();
     } else {
       setBoard(board);
     }

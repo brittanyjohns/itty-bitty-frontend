@@ -29,7 +29,7 @@ import { useHistory } from "react-router";
 import Tabs from "../../components/utils/Tabs";
 import { addCircleOutline, imagesOutline, personOutline } from "ionicons/icons";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import MainHeader from "../MainHeader";
+import MainHeader, { closeMainMenu } from "../MainHeader";
 import StaticMenu from "../../components/main_menu/StaticMenu";
 
 const ImagesScreen: React.FC = () => {
@@ -66,6 +66,7 @@ const ImagesScreen: React.FC = () => {
   useIonViewWillEnter(() => {
     setSegmentType("all");
     fetchImages();
+    closeMainMenu();
   }, []);
 
   const handleGetMoreImages = async (
@@ -159,7 +160,7 @@ const ImagesScreen: React.FC = () => {
             <IonSegment
               value={segmentType}
               onIonChange={handleSegmentChange}
-              className="w-full bg-inherit"
+              className="w-full md:w-1/2 mx-auto"
             >
               <IonSegmentButton value="all">
                 <IonLabel className="text-sm lg:text-md mb-2">Gallery</IonLabel>
@@ -172,23 +173,23 @@ const ImagesScreen: React.FC = () => {
                 <IonIcon className="mt-2" icon={personOutline} />
               </IonSegmentButton>
             </IonSegment>
-            <div className="p-2 w-7/8 md:w-5/6 mx-auto">
-              <IonSearchbar
-                debounce={1000}
-                onIonInput={handleSearchInput}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleGetMoreImages(page, searchInput);
-                  }
-                }}
-                onIonClear={() => clearInput()}
-                animated={true}
-                className="mt-4"
-                value={searchInput}
-                placeholder="Search existing images"
-              ></IonSearchbar>
-            </div>
           </IonToolbar>
+          <div className="flex justify-center items-center w-full md:w-1/2 mx-auto">
+            <IonSearchbar
+              debounce={1000}
+              onIonInput={handleSearchInput}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleGetMoreImages(page, searchInput);
+                }
+              }}
+              onIonClear={() => clearInput()}
+              animated={true}
+              className=""
+              value={searchInput}
+              placeholder="Search existing images"
+            ></IonSearchbar>
+          </div>
         </IonHeader>
 
         <IonContent className="ion-padding">
