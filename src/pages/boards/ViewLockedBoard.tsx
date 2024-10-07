@@ -257,7 +257,7 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
               {board && isPreset && (
                 <IonButton
                   routerLink={
-                    currentUser?.admin ? `/boards/${board.id}` : "/presets"
+                    currentUser?.admin ? `/boards/${board.id}` : "/preset"
                   }
                   fill="clear"
                   title="Back to presets"
