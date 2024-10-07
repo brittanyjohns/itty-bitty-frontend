@@ -1,7 +1,9 @@
 import { IonCard, IonIcon, IonItem, useIonViewWillEnter } from "@ionic/react";
-import { logoFacebook } from "ionicons/icons";
+import { caretForwardOutline } from "ionicons/icons";
 import React from "react";
 import { useHistory } from "react-router-dom";
+import HowTo from "./HowTo";
+import EmailForm from "./EmailForm";
 
 interface UserHomeProps {
   userName: string;
@@ -63,57 +65,13 @@ const UserHome: React.FC<UserHomeProps> = ({
 
       <div className="px-2 w-full md:w-3/4 mx-auto">
         <IonCard className="mb-4 p-4 shadow-md">
-          <h4 className="text-xl font-semibold text-gray-800 mb-4">
-            Getting Started
-          </h4>
-          <ul className="list-disc pl-6 space-y-3 text-gray-700">
-            <li>
-              <strong>Personalize Your Experience:</strong>
-              <ul className="list-inside list-disc pl-4 mt-2">
-                <li
-                  className="hover:underline cursor-pointer text-blue-700"
-                  onClick={() => history.push("/settings")}
-                >
-                  Customize your profile and preferences.
-                </li>
-                <li
-                  className="hover:underline cursor-pointer text-blue-700"
-                  onClick={() => history.push("/boards")}
-                >
-                  Create a new communication board.
-                </li>
-                <li
-                  className="hover:underline cursor-pointer text-blue-700"
-                  onClick={() => history.push("/images")}
-                >
-                  Search or upload images.
-                </li>
-              </ul>
-            </li>
-          </ul>
+          <HowTo />
         </IonCard>
-
-        <section className="mb-6 p-4 bg-gray-100 rounded-lg shadow-sm">
-          <h4 className="text-xl font-semibold text-gray-800 mb-4">
-            Features Overview
-          </h4>
-          <ul className="list-disc pl-6 space-y-3 text-gray-700">
-            <li>
-              <strong>Communication Boards:</strong> Choose from a variety of
-              pre-made boards.
-            </li>
-            <li
-              className="hover:underline cursor-pointer text-blue-700"
-              onClick={() => history.push("/boards/new")}
-            >
-              Scenario Board Creator: Create boards for specific scenarios.
-            </li>
-            <li>
-              <strong>Multiple Voice Options:</strong> Customize voice output
-              for your boards.
-            </li>
-          </ul>
-        </section>
+        <div className="mb-4 p-4">
+          <div className="flex flex-col md:flex-row lg:flex-row justify-center items-center">
+            <EmailForm />
+          </div>
+        </div>
 
         <section className="mb-4 p-4">
           <h4 className="text-xl font-semibold text-gray-800 mb-2">
@@ -124,7 +82,7 @@ const UserHome: React.FC<UserHomeProps> = ({
             <a href="https://www.facebook.com/speakanywayaac" className="m-2">
               <IonIcon
                 size="large"
-                icon={logoFacebook}
+                icon={caretForwardOutline}
                 className="text-blue-600"
               />
             </a>

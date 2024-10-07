@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { IonModal, IonButton, IonText, IonInput, IonToast } from "@ionic/react";
 import { save } from "ionicons/icons";
 import { BetaRequest, createBetaRequest } from "../../data/beta_requests";
+import { rgb } from "d3";
+import { h } from "ionicons/dist/types/stencil-public-runtime";
 
 const EmailForm: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -85,7 +87,15 @@ const EmailForm: React.FC = () => {
   };
 
   return (
-    <IonModal isOpen={showModal} style={{ background: "rgba(0,0,0,0.5)" }}>
+    <IonModal
+      isOpen={showModal}
+      style={{
+        // background: rgb(255, 255, 255),
+        // height: "30%",
+        margin: "auto",
+        border: "1px solid #333",
+      }}
+    >
       <div className="ion-padding ion-text-center">
         <IonText className="text-center">
           <h2 className="text-xl">Join our mailing list</h2>
@@ -116,6 +126,16 @@ const EmailForm: React.FC = () => {
             onClick={handleAccept}
           >
             Sign Me Up
+          </IonButton>
+          <IonButton
+            className="mb-2 w-3/4 mx-auto"
+            expand="block"
+            fill="outline"
+            size="large"
+            color="secondary"
+            onClick={handleAccept}
+          >
+            No Thanks
           </IonButton>
         </div>
         <IonToast

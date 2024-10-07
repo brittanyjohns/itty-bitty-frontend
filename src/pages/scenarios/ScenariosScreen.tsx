@@ -1,11 +1,5 @@
 import {
-  IonButton,
-  IonButtons,
   IonContent,
-  IonHeader,
-  IonIcon,
-  IonLabel,
-  IonMenuButton,
   IonPage,
   IonRefresher,
   IonRefresherContent,
@@ -72,13 +66,6 @@ const ScenariosScreen: React.FC<ScenariosScreenProps> = () => {
       fetchScenarios();
       e.detail.complete();
     }, 3000);
-  };
-
-  const handleSegmentChange = (event: CustomEvent) => {
-    const segmentValue = event.detail.value;
-    setSegmentType(segmentValue);
-    // setPageTitle(segmentValue === "user" ? "Your Scenarios" : "Preset Scenarios");
-    toggle(segmentValue);
   };
 
   const toggle = (segmentType: string) => {

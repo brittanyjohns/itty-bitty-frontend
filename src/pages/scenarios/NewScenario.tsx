@@ -66,7 +66,7 @@ const NewScenario: React.FC = (props: any) => {
         />
         <IonContent fullscreen scrollY={true} className="ion-padding">
           <IonLoading message="Please wait..." isOpen={showLoading} />
-          <div className="flex justify-end border">
+          <div className="flex justify-end">
             <HelpList items={helpItems} additionalText={additionalText} />
           </div>
           <NewScenarioForm
