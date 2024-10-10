@@ -8,7 +8,7 @@ import SideMenu from "../components/main_menu/SideMenu";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import Tabs from "../components/utils/Tabs";
 import MainPageContent from "./MainPageContent";
-import MainHeader from "./MainHeader";
+import MainHeader, { showStaticMenu } from "./MainHeader";
 import { useEffect, useState } from "react";
 import BoardGrid from "../components/boards/BoardGrid";
 import StaticMenu from "../components/main_menu/StaticMenu";
@@ -35,6 +35,7 @@ const Home: React.FC = () => {
     if (currentAccount) {
       console.log("Current Account: ", currentAccount);
       history.push("/account-dashboard");
+      showStaticMenu();
       return;
     }
     //passing getData method to the lifecycle method

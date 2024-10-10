@@ -35,7 +35,7 @@ import { clickWord } from "../../data/audits";
 
 import FullscreenToggle from "../../components/utils/FullscreenToggle";
 import ImageList from "../../components/utils/ImageList";
-import { closeMainMenu, hideStaticMenu } from "../MainHeader";
+import { closeMainMenu, hideStaticMenu, showStaticMenu } from "../MainHeader";
 
 const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<ChildBoard>();
@@ -102,6 +102,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
 
   useIonViewDidLeave(() => {
     inputRef.current?.value && clearInput();
+    showStaticMenu();
     // openChildMenu();
   });
 
@@ -172,15 +173,12 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
     if (inputRef.current) {
       inputRef.current.value = "";
     }
+    hideStaticMenu();
     setAudioList([]);
     setShowIcon(false);
     setPreviousLabel(undefined);
     setSelectedImages([]);
   };
-
-  useIonViewDidLeave(() => {
-    inputRef.current?.value && clearInput();
-  });
 
   useIonViewWillEnter(() => {
     closeMainMenu();

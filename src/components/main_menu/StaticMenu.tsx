@@ -74,7 +74,11 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
   }, [currentUser, currentAccount]);
 
   return (
-    <div className="h-full overflow-y-scroll" id="static-menu" ref={menuRef}>
+    <div
+      className="h-full overflow-y-scroll static-menu"
+      id="static-menu"
+      ref={menuRef}
+    >
       <IonToolbar>
         <img slot="start" src={feature1Image} className="ml-2 h-10 w-10" />
         <div

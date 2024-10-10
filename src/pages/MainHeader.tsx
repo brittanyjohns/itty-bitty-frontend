@@ -21,9 +21,21 @@ export const closeMainMenu = async () => {
 };
 
 export const hideStaticMenu = () => {
-  const staticMenu = document.getElementById("static-menu");
+  const staticMenus = document.getElementsByClassName("static-menu");
+  for (let i = 0; i < staticMenus.length; i++) {
+    const staticMenu = staticMenus[i];
+    if (staticMenu) {
+      (staticMenu as HTMLElement).style.display = "none";
+    }
+  }
+};
+
+export const showStaticMenu = () => {
+  const staticMenus = document.getElementsByClassName("static-menu");
+  console.log("staticMenus", staticMenus);
+  const staticMenu = staticMenus[0];
   if (staticMenu) {
-    staticMenu.style.display = "none";
+    (staticMenu as HTMLElement).style.display = "block";
   }
 };
 
