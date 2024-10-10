@@ -7,6 +7,7 @@ import {
   IonIcon,
   IonLabel,
   IonList,
+  useIonViewWillLeave,
 } from "@ionic/react";
 import {
   arrowForward,
@@ -126,11 +127,11 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
               </p>
             </IonItem>
             <IonItem
-              button
               slot="header"
               routerLink="/account-dashboard"
               className="border-t-2 border-b-2"
               lines="none"
+              detail={false}
             >
               <p className="text-gray-500 text-xs font-bold ml-10">
                 {/* {"enable_text_display":false,"enable_image_display":true} */}

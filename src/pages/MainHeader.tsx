@@ -20,6 +20,13 @@ export const closeMainMenu = async () => {
   await menuController.close("main-menu");
 };
 
+export const hideStaticMenu = () => {
+  const staticMenu = document.getElementById("static-menu");
+  if (staticMenu) {
+    staticMenu.style.display = "none";
+  }
+};
+
 export const openMainMenu = async () => {
   await menuController.open("main-menu");
 };

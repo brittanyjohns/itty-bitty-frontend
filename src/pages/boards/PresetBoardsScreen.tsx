@@ -14,6 +14,7 @@ import {
   IonSelect,
   IonSelectOption,
   IonToolbar,
+  useIonViewWillEnter,
   useIonViewWillLeave,
 } from "@ionic/react";
 import Tabs from "../../components/utils/Tabs";
@@ -35,6 +36,7 @@ interface PresetBoardsScreenProps {
 import SideMenu from "../../components/main_menu/SideMenu";
 import MainHeader from "../MainHeader";
 import StaticMenu from "../../components/main_menu/StaticMenu";
+import { set } from "d3";
 
 const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
   initialSegmentType,
@@ -85,6 +87,12 @@ const PresetBoardsScreen: React.FC<PresetBoardsScreenProps> = ({
 
   useEffect(() => {
     fetchBoards();
+  }, []);
+
+  useIonViewWillEnter(() => {
+    setSegmentType("all");
+    setSearchInput("");
+    setPage(1);
   }, []);
 
   useEffect(() => {

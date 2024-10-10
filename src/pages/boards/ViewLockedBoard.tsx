@@ -224,6 +224,14 @@ const ViewLockedBoard: React.FC<any> = ({ boardId }) => {
 
   const [audioList, setAudioList] = useState<string[]>([]);
 
+  useEffect(() => {
+    if (audioList.length > 0) {
+      setShowIcon(true);
+    } else {
+      setShowIcon(false);
+    }
+  }, [audioList]);
+
   const handleUpdateAudioList = (audio: string) => {
     setAudioList([...audioList, audio]);
   };

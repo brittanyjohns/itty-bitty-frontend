@@ -13,6 +13,7 @@ import {
   IonRefresher,
   IonToolbar,
   useIonViewDidLeave,
+  useIonViewWillEnter,
 } from "@ionic/react";
 
 import {
@@ -34,6 +35,7 @@ import { clickWord } from "../../data/audits";
 
 import FullscreenToggle from "../../components/utils/FullscreenToggle";
 import ImageList from "../../components/utils/ImageList";
+import { closeMainMenu, hideStaticMenu } from "../MainHeader";
 
 const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<ChildBoard>();
@@ -179,6 +181,13 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   useIonViewDidLeave(() => {
     inputRef.current?.value && clearInput();
   });
+
+  useIonViewWillEnter(() => {
+    closeMainMenu();
+    console.log("closeMainMenu");
+    hideStaticMenu();
+    console.log("hideStaticMenu");
+  }, []);
 
   useEffect(() => {
     fetchBoard();

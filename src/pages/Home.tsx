@@ -85,10 +85,8 @@ const Home: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
           {(!currentUser && !currentAccount && <LandingPage />) || null}
-          {/* <div className="bg-inherit shadow-none w-3/4 mx-auto">
-            {(currentUser && <UserInfo user={currentUser} />) || null}
-          </div> */}
-          <div className="bg-inherit shadow-none w-full mx-auto">
+
+          <div className="bg-inherit shadow-none w-full md:w-2/3 lg:w-1/2 mx-auto">
             {currentUser && (
               <UserHome
                 userName={currentUser?.name || currentUser.email}
@@ -108,8 +106,6 @@ const Home: React.FC = () => {
           {!currentAccount && <Footer />}
         </IonContent>
         {currentUser && <Tabs />}
-
-        {/* {currentUser && !isWideScreen && <Tabs />} */}
       </IonPage>
     </>
   );

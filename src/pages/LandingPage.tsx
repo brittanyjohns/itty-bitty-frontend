@@ -10,8 +10,8 @@ const LandingPage: React.FC = () => {
   const history = useHistory();
   return (
     <div className="relative lower-fixed-bg">
-      <div className="w-full md:w-11/12 lg:w-11/12 mx-auto">
-        <div className="flex flex-col justify-center items-center text-center py-4 lg:py-8 shadow-overlay rounded-lg">
+      <div className="mx-auto shadow-overlay ">
+        <div className="flex flex-col justify-center items-center text-center rounded-lg">
           <h1 className="text-2xl md:text-5xl font-bold text-white mt-4">
             Empower Your Child's Communication
           </h1>
@@ -39,7 +39,6 @@ const LandingPage: React.FC = () => {
           </IonButtons>
         </div>
 
-        {/* <div className="xfixed-bg rounded-lg shadow-lg xbg-white bg-opacity-95 p-4 md:p-8 lg:p-8 mt-2"> */}
         <div className="flex flex-col md:flex-row lg:flex-row justify-center items-center">
           <EmailForm />
         </div>
@@ -49,7 +48,7 @@ const LandingPage: React.FC = () => {
       {/* Features Section */}
       <section
         id="features"
-        className="pb-6 pt-6 px-6 bg-black text-white bg-opacity-85 blur-box"
+        className="p-6 bg-black text-white bg-opacity-85 mt-4"
       >
         <h2 className="text-2xl  md:text-3xl lg:text-4xl font-bold text-center mb-8">
           Features
@@ -110,7 +109,7 @@ const LandingPage: React.FC = () => {
       {/* Customizable Communication Boards */}
       <section
         id="custom-boards"
-        className="pb-12 pt-6 px-6 bg-black text-white bg-opacity-85 blur-box"
+        className="p-6 bg-black text-white bg-opacity-85 mt-4"
       >
         <h3 className="text-xl md:text-3xl lg:text-4xl font-bold mb-4 pb-2 text-center">
           Customizable Communication Boards
@@ -179,7 +178,7 @@ const LandingPage: React.FC = () => {
       {/* Image Features */}
       <section
         id="custom-boards"
-        className="pb-12 pt-6 px-6 bg-black text-white bg-opacity-85 blur-box"
+        className="p-6 bg-black text-white bg-opacity-85 mt-4"
       >
         <h3 className="text-xl md:text-3xl lg:text-4xl font-bold mb-4 pb-2 text-center">
           Easily Add Images to Your Boards
@@ -249,7 +248,7 @@ const LandingPage: React.FC = () => {
       {/* Child Accounts */}
       <section
         id="custom-boards"
-        className="pb-12 pt-6 px-6 bg-black text-white bg-opacity-85 blur-box"
+        className="p-6 bg-black text-white bg-opacity-85 mt-4"
       >
         <h3 className="text-xl md:text-3xl lg:text-4xl font-bold mb-4 pb-2 text-center">
           Child Account Management
@@ -322,7 +321,7 @@ const LandingPage: React.FC = () => {
       {/* Subscription Details */}
       <section
         id="subscription"
-        className="py-12 px-4 bg-white text-black bg-opacity-95"
+        className="p-6 bg-white text-black bg-opacity-95 mt-4"
       >
         <div className="text-center">
           <h3 className="text-2xl font-bold mb-4">Subscription Options</h3>
@@ -344,7 +343,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-6 text-center">
+      <footer className="bg-gray-900 text-white p-6 text-center mt-4">
         <p>
           &copy; {new Date().getFullYear()} SpeakAnyWay. All rights reserved.
         </p>

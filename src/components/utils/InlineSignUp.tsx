@@ -53,22 +53,22 @@ const InlineSignUp = ({ plan }: InlineSignUpProps) => {
         >
           <IonInput
             value={email}
-            fill="outline"
-            className="w-full lg:w-1/3 border-b border-gray-300"
+            fill="solid"
+            className="w-full lg:w-1/3 border-gray-300"
             placeholder="Email"
             onIonInput={(e: any) => setEmail(e.detail.value!)}
           />
           <IonInput
             type="password"
-            fill="outline"
-            className="w-full lg:w-1/3 border-b border-gray-300"
+            fill="solid"
+            className="w-full lg:w-1/3 border-gray-300"
             placeholder="Password"
             onIonInput={(e: any) => setPassword(e.detail.value!)}
           />
           <IonInput
             type="password"
-            fill="outline"
-            className="w-full lg:w-1/3 border-b border-gray-300"
+            fill="solid"
+            className="w-full lg:w-1/3 border-gray-300"
             placeholder="Confirm Password"
             onIonInput={(e: any) => setPasswordConfirmation(e.detail.value!)}
           />
@@ -88,6 +88,7 @@ const InlineSignUp = ({ plan }: InlineSignUpProps) => {
             fill="outline"
             color="medium"
             className="mt-2"
+            size="large"
             onClick={() => history.push("/users/sign-in")}
           >
             Sign In

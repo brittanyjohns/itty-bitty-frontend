@@ -63,7 +63,7 @@ const UserHome: React.FC<UserHomeProps> = ({
         </section>
       )}
 
-      <div className="px-2 w-full md:w-3/4 mx-auto">
+      <div className="px-2 w-full md:w-7/8">
         <IonCard className="mb-4 p-4 shadow-md">
           <HowTo />
         </IonCard>
