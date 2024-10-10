@@ -56,6 +56,8 @@ const StaticMenu: React.FC<StaticMenuProps> = (props) => {
   }, [isWideScreen]);
 
   const hideSelf = () => {
+    const windowWidth = window.innerWidth;
+    const isWideScreen = windowWidth > 1099;
     const classToSet = isWideScreen ? "block" : "none";
     if (menuRef.current) {
       menuRef.current.style.display = classToSet;
