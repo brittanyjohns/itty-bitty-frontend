@@ -32,7 +32,6 @@ export const hideStaticMenu = () => {
 
 export const showStaticMenu = () => {
   const staticMenus = document.getElementsByClassName("static-menu");
-  console.log("staticMenus", staticMenus);
   const staticMenu = staticMenus[0];
   if (staticMenu) {
     (staticMenu as HTMLElement).style.display = "block";
@@ -61,11 +60,6 @@ const MainHeader: React.FC<MainHeaderProps> = (props) => {
     useCurrentUser();
 
   useEffect(() => {
-    console.log("isWideScreen", isWideScreen);
-    console.log("smallScreen", smallScreen);
-    console.log("mediumScreen", mediumScreen);
-    console.log("largeScreen", largeScreen);
-
     setShowMenuBtn(!isWideScreen);
   }, []);
 

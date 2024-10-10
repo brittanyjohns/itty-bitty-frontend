@@ -18,6 +18,7 @@ import {
   IonItem,
   IonInput,
   IonInputPasswordToggle,
+  useIonViewWillEnter,
 } from "@ionic/react";
 import { useHistory, useParams } from "react-router";
 import { getChildAccount, ChildAccount } from "../../data/child_accounts"; // Adjust imports based on actual functions
@@ -41,6 +42,8 @@ import WordCloudChart from "../../components/utils/WordCloudChart";
 import { WordEvent, fetchWordEventsByAccountId } from "../../data/word_event";
 import WordNetworkGraph from "../../components/utils/WordNetworkGraph";
 import { ChildBoard } from "../../data/child_boards";
+import { getCurrentUser } from "../../data/users";
+import { set } from "d3";
 
 const ViewChildAccountScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -53,7 +56,8 @@ const ViewChildAccountScreen: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
   const [wordEvents, setWordEvents] = useState<WordEvent[]>([]);
-  const { currentUser, currentAccount, isWideScreen } = useCurrentUser();
+  const { currentUser, currentAccount, isWideScreen, setCurrentUser } =
+    useCurrentUser();
 
   const fetchChildAccount = async () => {
     if (id === "new") {
@@ -73,6 +77,22 @@ const ViewChildAccountScreen: React.FC = () => {
     const userBoards = currentUser?.boards || [];
 
     setUserBoards(userBoards);
+  };
+
+  const reloadCurrentUserData = async () => {
+    setLoading(true);
+    const refreshedUser = await getCurrentUser();
+
+    if (refreshedUser) {
+      console.log("Refreshed User: ", refreshedUser);
+      setCurrentUser(refreshedUser);
+      const fetchedBoards = refreshedUser?.boards;
+      const remainingBoards = fetchedBoards?.filter((board: Board) => {
+        return !boards.some((b) => b.board_id === board.id);
+      });
+      setUserBoards(remainingBoards || []);
+    }
+    setLoading(false);
   };
 
   const fetchUserBoards = async () => {
@@ -102,6 +122,13 @@ const ViewChildAccountScreen: React.FC = () => {
     fetchUserBoards();
     loadWordEvents();
     setLoading(false);
+  }, []);
+
+  useIonViewWillEnter(() => {
+    console.log("View Will Enter");
+    fetchChildAccount();
+    fetchUserBoards();
+    loadWordEvents();
   }, []);
 
   const handleSegmentChange = (e: CustomEvent) => {

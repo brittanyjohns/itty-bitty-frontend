@@ -24,6 +24,7 @@ const Home: React.FC = () => {
 
   const [ip, setIP] = useState("");
   const history = useHistory();
+  const [childBoards, setChildBoards] = useState<any[]>([]);
 
   const getData = async () => {
     const res = await fetch("https://api.ipify.org/?format=json");
@@ -34,6 +35,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     if (currentAccount) {
       console.log("Current Account: ", currentAccount);
+      setChildBoards(currentAccount?.boards || []);
       history.push("/account-dashboard");
       showStaticMenu();
       return;
@@ -99,10 +101,7 @@ const Home: React.FC = () => {
           </div>
 
           {currentAccount && (
-            <BoardGrid
-              gridType={"child"}
-              boards={currentAccount.boards || []}
-            />
+            <BoardGrid gridType={"child"} boards={childBoards} />
           )}
           {!currentAccount && <Footer />}
         </IonContent>

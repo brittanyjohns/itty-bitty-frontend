@@ -36,6 +36,7 @@ import { clickWord } from "../../data/audits";
 import FullscreenToggle from "../../components/utils/FullscreenToggle";
 import ImageList from "../../components/utils/ImageList";
 import { closeMainMenu, hideStaticMenu, showStaticMenu } from "../MainHeader";
+import { set } from "d3";
 
 const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
   const [board, setBoard] = useState<ChildBoard>();
@@ -185,6 +186,7 @@ const ViewChildBoardScreen: React.FC<any> = ({ boardId }) => {
     console.log("closeMainMenu");
     hideStaticMenu();
     console.log("hideStaticMenu");
+    setAccount(currentAccount);
   }, []);
 
   useEffect(() => {
